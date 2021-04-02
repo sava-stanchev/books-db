@@ -24,4 +24,8 @@ app.post('/login', (req, res) => {
     }
 });
 
+app.get('/books', (req, res) => {
+    res.json(books);
+});
+
 app.listen(PORT, () => console.log(`Listening on ${PORT}...`));
