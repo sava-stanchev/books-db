@@ -13,13 +13,12 @@ app.use(cors());
 app.use(helmet());
 app.use(express.json());
 
-
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
     const user = users.find(u => { return u.username === username && u.password === password });
     if (user) {
         const accessToken = jwt.sign({ username: user.username }, process.env.ACCESS_TOKEN_SECRET);
-        res.json({ accessToken });
+        res.json({ accessToken: accessToken });
     } else {
         res.send('Username or password incorrect!');
     }
