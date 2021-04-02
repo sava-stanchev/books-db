@@ -27,9 +27,6 @@ app.post('/login', (req, res) => {
 app.get('/books', (req, res) => {
     const { title, sort } = req.query;
     let availableBooks = books.filter(b => b.isBorrowed === false && b.isDeleted === false);
-    if (title) {
-        availableBooks = availableBooks.filter(b => b.title.includes(title));
-    }
     if (sort) {
         availableBooks = availableBooks.sort((a, b) => {
             if (sort === 'year_asc') {
@@ -41,7 +38,12 @@ app.get('/books', (req, res) => {
             }
         })
     }
-    res.json(availableBooks);
+    if (title) {
+        let filterBooks = availableBooks.slice(0);
+        res.json(filterBooks.filter(b => b.title.includes(title)));
+    } else {
+        res.json(availableBooks);
+    }
 });
 
 app.listen(PORT, () => console.log(`Listening on ${PORT}...`));
