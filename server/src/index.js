@@ -15,7 +15,7 @@ app.use(express.json());
 
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
-    const user = users.find(u => { return u.username === username && u.password === password });
+    const user = users.find(u => u.username === username && u.password === password);
     if (user) {
         const accessToken = jwt.sign({ username: user.username }, process.env.ACCESS_TOKEN_SECRET);
         res.json({ accessToken: accessToken });
@@ -25,7 +25,23 @@ app.post('/login', (req, res) => {
 });
 
 app.get('/books', (req, res) => {
-    res.json(books);
+    const { title, sort } = req.query;
+    let availableBooks = books.filter(b => b.isBorrowed === false && b.isDeleted === false);
+    if (title) {
+        availableBooks = availableBooks.filter(b => b.title.includes(title));
+    }
+    if (sort) {
+        availableBooks = availableBooks.sort((a, b) => {
+            if (sort === 'year_asc') {
+                return a.year - b.year;
+            } else if (sort === 'year_desc') {
+                return b.year - a.year;
+            } else {
+                return;
+            }
+        })
+    }
+    res.json(availableBooks);
 });
 
 app.listen(PORT, () => console.log(`Listening on ${PORT}...`));
