@@ -13,11 +13,16 @@ app.use(cors());
 app.use(helmet());
 app.use(express.json());
 
+
 app.post('/login', (req, res) => {
-    const username = req.body.username;
-    const user = { name: username };
-    const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
-    res.json({ accessToken: accessToken });
+    const { username, password } = req.body;
+    const user = users.find(u => { return u.username === username && u.password === password });
+    if (user) {
+        const accessToken = jwt.sign({ username: user.username }, process.env.ACCESS_TOKEN_SECRET);
+        res.json({ accessToken });
+    } else {
+        res.send('Username or password incorrect!');
+    }
 });
 
 app.listen(PORT, () => console.log(`Listening on ${PORT}...`));
