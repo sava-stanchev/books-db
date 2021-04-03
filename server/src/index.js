@@ -39,11 +39,24 @@ app.get('/books', (req, res) => {
         })
     }
     if (title) {
-        let filterBooks = availableBooks.slice(0);
-        res.json(filterBooks.filter(b => b.title.includes(title)));
+        let getBooksByTitle = availableBooks.slice(0);
+        res.json(getBooksByTitle.filter(b => b.title.includes(title)));
     } else {
         res.json(availableBooks);
     }
 });
+
+app.post('/books/:id', (req, res) => {
+    const theBook = books.find(b => b.id === +req.params.id && !b.isDeleted)
+    if (!theBook) {
+        return res.status(404).json({ msg: `Book with id ${req.params.id} was not found!` });
+    }
+    if (theBook.isBorrowed === false) {
+        books.map(b => b.id === req.params.id ? { ...b, isBorrowed: true } : b);
+    } else {
+        return res.json({ msg: `Book has already been borrowed!`});
+    }
+    res.json({ msg: 'Book successfully borrowed!'});
+})
 
 app.listen(PORT, () => console.log(`Listening on ${PORT}...`));
