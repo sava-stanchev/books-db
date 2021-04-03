@@ -47,7 +47,7 @@ app.get('/books', (req, res) => {
 });
 
 app.post('/books/:id', (req, res) => {
-    const theBook = books.find(b => b.id === +req.params.id && !b.isDeleted);
+    const theBook = books.find(b => b.id === +req.params.id && b.isDeleted !== true);
     if (!theBook) {
         return res.status(404).json({ msg: `Book with id ${req.params.id} was not found!` });
     }
@@ -56,7 +56,19 @@ app.post('/books/:id', (req, res) => {
     } else {
         return res.json({ msg: `Book has already been borrowed!`});
     }
-    res.json({ msg: 'Book successfully borrowed!'});
+    res.json({ msg: 'Book successfully borrowed!' });
+})
+
+app.get('books/:id/reviews', (req, res) => {
+    const theBook = books.find(b => b.id === +req.params.id && b.isDeleted !== true);
+    if (!theBook) {
+        return res.status(404).json({ msg: `Book with id ${req.params.id} was not found!` });
+    }
+    if (theBook.reviews.length > 0) {
+        res.send(theBook.reviews);
+    } else {
+        return res.json({ msg: 'Book has no reviews yet!' });
+    }
 })
 
 app.listen(PORT, () => console.log(`Listening on ${PORT}...`));
