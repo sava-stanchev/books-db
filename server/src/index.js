@@ -20,7 +20,7 @@ app.post('/login', (req, res) => {
         const accessToken = jwt.sign({ username: user.username }, process.env.ACCESS_TOKEN_SECRET);
         res.json({ accessToken: accessToken });
     } else {
-        res.send('Username or password incorrect!');
+        res.json({ msg: 'Username or password incorrect!' });
     }
 });
 
@@ -39,7 +39,7 @@ app.get('/books', (req, res) => {
         })
     }
     if (title) {
-        let getBooksByTitle = availableBooks.slice(0);
+        let getBooksByTitle = availableBooks.slice();
         res.json(getBooksByTitle.filter(b => b.title.includes(title)));
     } else {
         res.json(availableBooks);
@@ -47,7 +47,7 @@ app.get('/books', (req, res) => {
 });
 
 app.post('/books/:id', (req, res) => {
-    const theBook = books.find(b => b.id === +req.params.id && !b.isDeleted)
+    const theBook = books.find(b => b.id === +req.params.id && !b.isDeleted);
     if (!theBook) {
         return res.status(404).json({ msg: `Book with id ${req.params.id} was not found!` });
     }
