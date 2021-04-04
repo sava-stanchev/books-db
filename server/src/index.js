@@ -23,7 +23,7 @@ app.post('/login', (req, res) => {
         res.json({ msg: 'Username or password incorrect!' });
     }
 });
-
+// retrieve all books
 app.get('/books', (req, res) => {
     const { title, sort } = req.query;
     let availableBooks = books.filter(b => b.isBorrowed === false && b.isDeleted === false);
@@ -45,7 +45,12 @@ app.get('/books', (req, res) => {
         res.json(availableBooks);
     }
 });
+// create new book - in admin 
+app.post('books', (req, res) => {});
+// view individual book by id
+app.get('/books/:id', (req, res) => {});
 
+// borrow a book by id - patch vs post
 app.post('/books/:id', (req, res) => {
     const theBook = books.find(b => b.id === +req.params.id && b.isDeleted !== true);
     if (!theBook) {
@@ -57,8 +62,10 @@ app.post('/books/:id', (req, res) => {
         return res.json({ msg: `Book has already been borrowed!`});
     }
     res.json({ msg: 'Book successfully borrowed!' });
-})
-
+});
+// return a book by id
+app.patch('/books/:id', (req, res) => {});
+// read book all reviews
 app.get('/books/:id/reviews', (req, res) => {
     const theBook = books.find(b => b.id === +req.params.id && b.isDeleted !== true);
     if (!theBook) {
@@ -70,5 +77,14 @@ app.get('/books/:id/reviews', (req, res) => {
         return res.json({ msg: 'Book has no reviews yet!' });
     }
 })
+// create book review
+app.post('/book/:id/reviews', (req, res) => {});
+// update book review
+app.put('books/:id/reviews/:reviewid', (req, res) => {});
+// delete book review
+app.put('/books/:id/reviews/:reviewid', (req, res) => {});
+// rete book
+
+
 
 app.listen(PORT, () => console.log(`Listening on ${PORT}...`));
