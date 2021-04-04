@@ -59,7 +59,7 @@ app.post('/books/:id', (req, res) => {
     res.json({ msg: 'Book successfully borrowed!' });
 })
 
-app.get('books/:id/reviews', (req, res) => {
+app.get('/books/:id/reviews', (req, res) => {
     const theBook = books.find(b => b.id === +req.params.id && b.isDeleted !== true);
     if (!theBook) {
         return res.status(404).json({ msg: `Book with id ${req.params.id} was not found!` });
