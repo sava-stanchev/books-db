@@ -1,5 +1,5 @@
 export default {
-//   -	number – auto, unique 
+// -	number – auto, unique 
 // -	username – string - [3 - 30], no special characters, unique
 // -	password – string – [7 - 20], one uppercase, one number
 // -	firstName – string – [1 - 20]
