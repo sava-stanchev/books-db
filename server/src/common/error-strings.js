@@ -21,10 +21,6 @@ export default {
     isBorrowed: 'Expected boolean',
   },
   reviews: {
-
-  },
-  reviews: {
-
-  },
-
+    text: 'Expected string with length [10 - 300]',
+  }
 };
