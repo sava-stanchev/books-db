@@ -13,6 +13,9 @@ app.use(cors());
 app.use(helmet());
 app.use(express.json());
 
+// register user
+app.post('/users', (req, res) => {});
+// login 
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
     const user = users.find(u => u.username === username && u.password === password);
@@ -23,10 +26,14 @@ app.post('/login', (req, res) => {
         res.json({ msg: 'Username or password incorrect!' });
     }
 });
+// logout
+app.post('/users', (req, res) => {});
 // retrieve all books
 app.get('/books', (req, res) => {
     const { title, sort } = req.query;
+//  from ware are books?
     let availableBooks = books.filter(b => b.isBorrowed === false && b.isDeleted === false);
+    // 
     if (sort) {
         availableBooks = availableBooks.sort((a, b) => {
             if (sort === 'year_asc') {
@@ -46,7 +53,7 @@ app.get('/books', (req, res) => {
     }
 });
 // create new book - in admin 
-app.post('books', (req, res) => {});
+app.post('/books', (req, res) => {});
 // view individual book by id
 app.get('/books/:id', (req, res) => {});
 
