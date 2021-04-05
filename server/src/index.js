@@ -15,6 +15,7 @@ app.use(express.json());
 
 // register user
 app.post('/users', (req, res) => {});
+
 // login 
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
@@ -26,12 +27,13 @@ app.post('/login', (req, res) => {
         res.json({ msg: 'Username or password incorrect!' });
     }
 });
+
 // logout
 app.post('/users', (req, res) => {});
+
 // retrieve all books
 app.get('/books', (req, res) => {
     const { title, sort } = req.query;
-//  from ware are books?
     let availableBooks = books.filter(b => b.isBorrowed === false && b.isDeleted === false);
     // 
     if (sort) {
@@ -52,6 +54,7 @@ app.get('/books', (req, res) => {
         res.json(availableBooks);
     }
 });
+
 // create new book - in admin 
 app.post('/books', (req, res) => {});
 // view individual book by id
@@ -70,9 +73,11 @@ app.post('/books/:id', (req, res) => {
     }
     res.json({ msg: 'Book successfully borrowed!' });
 });
+
 // return a book by id
 app.patch('/books/:id', (req, res) => {});
-// read book all reviews
+
+// read all book reviews
 app.get('/books/:id/reviews', (req, res) => {
     const theBook = books.find(b => b.id === +req.params.id && b.isDeleted !== true);
     if (!theBook) {
@@ -84,14 +89,26 @@ app.get('/books/:id/reviews', (req, res) => {
         return res.json({ msg: 'Book has no reviews yet!' });
     }
 })
+
 // create book review
 app.post('/book/:id/reviews', (req, res) => {});
-// update book review
-app.put('books/:id/reviews/:reviewid', (req, res) => {});
-// delete book review
-app.put('/books/:id/reviews/:reviewid', (req, res) => {});
-// rete book
 
+// update book review
+app.put('/books/:id/reviews/:reviewId', (req, res) => {
+    const theBook = books.find(b => b.id === +req.params.id && b.isDeleted !== true);
+    if (!theBook) {
+        return res.status(404).json({ msg: `Book with id ${req.params.id} was not found!` });
+    }
+    const newText = req.body.text;
+    const findReviewId = +req.params.reviewId;
+    theBook.reviews.map(r => r.reviewId === findReviewId ? { ...r, text: newText } : r);
+    res.json({ msg: 'Review successfully updated!' });
+});
+
+// delete book review
+app.delete('/books/:id/reviews/:reviewId', (req, res) => {});
+
+// rate book
 
 
 app.listen(PORT, () => console.log(`Listening on ${PORT}...`));
