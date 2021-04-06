@@ -4,7 +4,7 @@ let bookId = 1;
 
 export const addBook = (book) => books.push(book);
 
-export const getAllBooks = () => books.filter(book => !book.isDeleted);
+export const getAllBooks = () => books.filter(book => book.isDeleted !== true);
 
 export const getBookById = (id) => books.find(book => book.id === id && book.isDeleted === false);
 

@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "bb83b0a5-6dfc-4a94-9996-4ba65820c18a",
+		"_postman_id": "078f9065-29ce-4ded-9256-a45917838422",
 		"name": "Library",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -30,7 +30,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"title\": \"Mort\",\r\n    \"author\": \"Terry Pratchett\",\r\n    \"genre\": \"Fantasy\",\r\n    \"ageRecommendation\": \"12\",\r\n    \"isbn\": \"0575041714\",\r\n    \"year\": \"1987\",\r\n    \"language\": \"english\",\r\n    \"printLength\": \"304\"\r\n}",
+					"raw": "{\r\n    \"title\": \"Mort\",\r\n    \"author\": \"Terry Pratchett\",\r\n    \"genre\": \"Fantasy\",\r\n    \"ageRecommendation\": \"12\",\r\n    \"isbn\": \"0575041714\",\r\n    \"publishingYear\": \"1987\",\r\n    \"language\": \"english\",\r\n    \"printLength\": \"304\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -83,7 +83,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"title\": \"Interesting Times\",\r\n    \"author\": \"Terry Pratchett\",\r\n    \"genre\": \"Fantasy\",\r\n    \"ageRecommendation\": \"12\",\r\n    \"isbn\": \"0575058005\",\r\n    \"publicationDate\": \"1995/11/12\",\r\n    \"language\": \"english\",\r\n    \"printLength\": \"298\"\r\n}",
+					"raw": "{\r\n    \"title\": \"Interesting Times\",\r\n    \"author\": \"Terry Pratchett\",\r\n    \"genre\": \"Fantasy\",\r\n    \"ageRecommendation\": \"12\",\r\n    \"isbn\": \"0575058005\",\r\n    \"publishingYear\": \"1995\",\r\n    \"language\": \"english\",\r\n    \"printLength\": \"298\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
