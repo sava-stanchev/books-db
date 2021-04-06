@@ -52,7 +52,7 @@
 			"response": []
 		},
 		{
-			"name": "3.GET /books:id",
+			"name": "3. GET /books:id",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -99,6 +99,25 @@
 					"path": [
 						"admin",
 						"books"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "5. POST /books/:id",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:5555/books/1",
+					"host": [
+						"localhost"
+					],
+					"port": "5555",
+					"path": [
+						"books",
+						"1"
 					]
 				}
 			},
