@@ -76,7 +76,7 @@ app.get('/books', (req, res) => {
     // }
 });
 
-// create new book - in admin  SPH
+// create new book - in admin  SPH 
 app.post('/admin/books', validateBody('book', bookCreateValidator), (req, res) => {
     const book = createBook(req.body, 'user');
 
@@ -84,7 +84,7 @@ app.post('/admin/books', validateBody('book', bookCreateValidator), (req, res) =
 });
 
 // view individual book by id - SPH
-app.get('/books/:id', validateBody('book', bookUpdateValidator), (req, res) => {
+app.get('/books/:id', (req, res) => {
     res.json(getBookById(+req.params.id))
 });
 
