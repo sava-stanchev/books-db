@@ -6,6 +6,7 @@ import jwt from 'jsonwebtoken';
 import authenticateToken from './middlewares/authenticate-token.js';
 import {
     createBook,
+    getAllBooks,
     getBookById
 } from './data/books.js';
 import bookCreateValidator from './validators/book-create-validator.js';
@@ -49,29 +50,30 @@ app.post('/users', (req, res) => {});
 
 // retrieve all books
 app.get('/books', (req, res) => {
-    const {
-        title,
-        sort
-    } = req.query;
-    let availableBooks = books.filter(b => b.isBorrowed === false && b.isDeleted === false);
-    // 
-    if (sort) {
-        availableBooks = availableBooks.sort((a, b) => {
-            if (sort === 'year_asc') {
-                return a.year - b.year;
-            } else if (sort === 'year_desc') {
-                return b.year - a.year;
-            } else {
-                return;
-            }
-        })
-    }
-    if (title) {
-        let getBooksByTitle = availableBooks.slice();
-        res.json(getBooksByTitle.filter(b => b.title.includes(title)));
-    } else {
-        res.json(availableBooks);
-    }
+    res.json(getAllBooks());
+    // const {
+    //     title,
+    //     sort
+    // } = req.query;
+    // let availableBooks = books.filter(b => b.isBorrowed === false && b.isDeleted === false);
+    // // 
+    // if (sort) {
+    //     availableBooks = availableBooks.sort((a, b) => {
+    //         if (sort === 'year_asc') {
+    //             return a.year - b.year;
+    //         } else if (sort === 'year_desc') {
+    //             return b.year - a.year;
+    //         } else {
+    //             return;
+    //         }
+    //     })
+    // }
+    // if (title) {
+    //     let getBooksByTitle = availableBooks.slice();
+    //     res.json(getBooksByTitle.filter(b => b.title.includes(title)));
+    // } else {
+    //     res.json(availableBooks);
+    // }
 });
 
 // create new book - in admin  SPH
