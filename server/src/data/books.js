@@ -20,11 +20,12 @@ export const createBook = (book, createdBy) => {
   books.push({
     ...book,
     id: bookId++,
-    isBorrowed: false,
+    createdBy: createdBy,
     isDeleted: false,
+    isBorrowed: false,
     readingCount: 0,
-    bookCount: 1,
-    bookReservation: false
+    bookReservation: false,
+    bookCount: 1
   })
 
   return books[books.length - 1];
