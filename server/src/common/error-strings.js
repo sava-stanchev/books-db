@@ -14,7 +14,7 @@ export default {
     genre: 'Expected string with length [1 - 40]',
     age: 'Expected number bigger than 1',
     isbn: 'Expected string with length 10',
-    publicationDate: 'Expected date',
+    publishingYear: 'Expected date',
     language: 'Expected string with length [1 - 40]',
     printLength: 'Expected number bigger than 1',
     isDeleted: 'Expected boolean',

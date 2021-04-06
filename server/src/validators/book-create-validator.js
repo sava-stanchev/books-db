@@ -6,7 +6,7 @@ export default {
   genre: (value) => typeof value === 'string' && value.length > 1 && value.length < 40, // to check
   ageRecommendation: (value) => typeof +value === 'number' && +value > book.AGE_MIN,
   isbn: (value) => typeof value === 'string' && value.length === book.ISBN_LENGTH,
-  publicationDate: (value) => true, //value instanceof Date,
+  publishingYear: (value) => typeof +value === 'number',
   language: (value) => typeof value === 'string',
   printLength: (value) => typeof +value === 'number' && +value > book.PRINTLENGTH_MIN_LENGTH
   }

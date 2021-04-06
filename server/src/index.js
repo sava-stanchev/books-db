@@ -7,7 +7,8 @@ import authenticateToken from './middlewares/authenticate-token.js';
 import {
     createBook,
     getAllBooks,
-    getBookById
+    getBookById,
+    updateBook
 } from './data/books.js';
 import bookCreateValidator from './validators/book-create-validator.js';
 import bookUpdateValidator from './validators/book-update-validator.js'
@@ -76,14 +77,14 @@ app.get('/books', (req, res) => {
     // }
 });
 
-// create new book - in admin  SPH 
+// create new book - in admin  SPH - ready
 app.post('/admin/books', validateBody('book', bookCreateValidator), (req, res) => {
     const book = createBook(req.body, 'user');
 
     res.json(book);
 });
 
-// view individual book by id - SPH
+// view individual book by id - SPH - ready
 app.get('/books/:id', (req, res) => {
     res.json(getBookById(+req.params.id))
 });
@@ -112,7 +113,10 @@ app.post('/books/:id', (req, res) => {
 });
 
 // return a book by id - SPH
-app.patch('/books/:id', (req, res) => {});
+app.patch('/books/:id', (req, res) => {
+    const book = updateBook(req.params.id, updateBook);
+    res.json(book);
+});
 
 // read all book reviews
 app.get('/books/:id/reviews', (req, res) => {

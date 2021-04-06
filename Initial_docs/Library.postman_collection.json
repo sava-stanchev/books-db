@@ -30,7 +30,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"title\": \"Mort\",\r\n    \"author\": \"Terry Pratchett\",\r\n    \"genre\": \"Fantasy\",\r\n    \"ageRecommendation\": \"12\",\r\n    \"isbn\": \"0575041714\",\r\n    \"publicationDate\": \"1987/11/12\",\r\n    \"language\": \"english\",\r\n    \"printLength\": \"304\"\r\n}",
+					"raw": "{\r\n    \"title\": \"Mort\",\r\n    \"author\": \"Terry Pratchett\",\r\n    \"genre\": \"Fantasy\",\r\n    \"ageRecommendation\": \"12\",\r\n    \"isbn\": \"0575041714\",\r\n    \"year\": \"1987\",\r\n    \"language\": \"english\",\r\n    \"printLength\": \"304\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
