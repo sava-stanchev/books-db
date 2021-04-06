@@ -86,7 +86,7 @@ app.get('/books/:id', (req, res) => {
 
 // borrow a book by id - patch vs post
 app.post('/books/:id', (req, res) => {
-    const theBook = books.find(b => b.id === +req.params.id && b.isDeleted !== true);
+    const theBook = getBookById(+req.params.id);
     if (!theBook) {
         return res.status(404).json({
             msg: `Book with id ${req.params.id} was not found!`
