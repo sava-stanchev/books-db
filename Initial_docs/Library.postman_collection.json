@@ -105,7 +105,7 @@
 			"response": []
 		},
 		{
-			"name": "5. POST /books/:id",
+			"name": "borrow a book",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -118,6 +118,26 @@
 					"path": [
 						"books",
 						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "read book reviews",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:5555/books/1/reviews",
+					"host": [
+						"localhost"
+					],
+					"port": "5555",
+					"path": [
+						"books",
+						"1",
+						"reviews"
 					]
 				}
 			},
