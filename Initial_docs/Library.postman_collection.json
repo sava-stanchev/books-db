@@ -103,6 +103,34 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "5. POST /admin/books",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Winnetou\",\r\n    \"author\": \"Karl May\",\r\n    \"genre\": \"Fiction\",\r\n    \"ageRecommendation\": \"8\",\r\n    \"isbn\": \"0000000000\",\r\n    \"publicationDate\": \"1893\",\r\n    \"language\": \"english\",\r\n    \"printLength\": \"486\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5555/admin/books",
+					"host": [
+						"localhost"
+					],
+					"port": "5555",
+					"path": [
+						"admin",
+						"books"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
