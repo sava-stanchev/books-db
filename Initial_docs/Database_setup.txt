@@ -1,0 +1,136 @@
+CREATE SCHEMA `librarydb` ;
+CREATE TABLE `librarydb`.`genres` (
+  `genres_id` INT NOT NULL AUTO_INCREMENT,
+  `genre` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`genres_id`)
+);
+CREATE TABLE `librarydb`.`languages` (
+  `languages_id` INT NOT NULL AUTO_INCREMENT,
+  `language` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`languages_id`)
+);
+CREATE TABLE `librarydb`.`genders` (
+  `genders_id` INT NOT NULL AUTO_INCREMENT,
+  `gender` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`genders_id`)
+);
+CREATE TABLE `librarydb`.`users` (
+  `users_id` INT NOT NULL AUTO_INCREMENT,
+  `user_name` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(45) NOT NULL,
+  `first_name` VARCHAR(45) NOT NULL,
+  `last_name` VARCHAR(45) NOT NULL,
+  `user_age` INT NULL,
+  `e_mail` VARCHAR(45) NOT NULL,
+  `isAdmin` BIT(0) NOT NULL,
+  `isDeleted` BIT(0) NOT NULL,
+  `isBanned` BIT(0) NOT NULL,
+  `gender` INT NOT NULL,
+  PRIMARY KEY (`users_id`),
+  UNIQUE INDEX `user_name_UNIQUE` (`user_name` ASC) VISIBLE,
+  INDEX `fk_users_genders_genders_id_idx` (`gender` ASC) VISIBLE,
+  CONSTRAINT `fk_users_genders_genders_id`
+    FOREIGN KEY (`gender`)
+    REFERENCES `librarydb`.`genders` (`genders_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+CREATE TABLE `librarydb`.`books` (
+  `books_id` INT NOT NULL AUTO_INCREMENT,
+  `title` VARCHAR(255) NOT NULL,
+  `author` VARCHAR(255) NOT NULL,
+  `genre` INT NOT NULL,
+  `age_recommendation` INT NULL,
+  `isbn` VARCHAR(45) NULL,
+  `publication_date` INT NULL,
+  `language` INT NOT NULL,
+  `print_length` INT NULL,
+  `isDeleted` BIT(0) NOT NULL,
+  `isBorrowed` BIT(0) NOT NULL,
+  `book_count` INT NOT NULL,
+  `reading_count` INT NOT NULL,
+  `crated_by` INT NOT NULL,
+  PRIMARY KEY (`books_id`),
+  INDEX `fk_books_generes_genre_id_idx` (`genre` ASC) VISIBLE,
+  INDEX `fk_books_languages_languages_id_idx` (`language` ASC) VISIBLE,
+  INDEX `fk_books_users_users_id_idx` (`crated_by` ASC) VISIBLE,
+  CONSTRAINT `fk_books_generes_genre_id`
+    FOREIGN KEY (`genre`)
+    REFERENCES `librarydb`.`genres` (`genres_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_books_languages_languages_id`
+    FOREIGN KEY (`language`)
+    REFERENCES `librarydb`.`languages` (`languages_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_books_users_users_id`
+    FOREIGN KEY (`crated_by`)
+    REFERENCES `librarydb`.`users` (`users_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+
+CREATE TABLE `librarydb`.`reviews` (
+  `reviews_id` INT NOT NULL AUTO_INCREMENT,
+  `content` LONGTEXT NOT NULL,
+  `date_created` DATE NOT NULL,
+  `created_by` INT NOT NULL,
+  `book_title` INT NOT NULL,
+  `isDeleted` BIT(0) NOT NULL,
+  PRIMARY KEY (`reviews_id`),
+  INDEX `fk_reviews_users_users_id_idx` (`created_by` ASC) VISIBLE,
+  INDEX `fk_reviews_books_books_id_idx` (`book_title` ASC) VISIBLE,
+  CONSTRAINT `fk_reviews_users_users_id`
+    FOREIGN KEY (`created_by`)
+    REFERENCES `librarydb`.`users` (`users_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_reviews_books_books_id`
+    FOREIGN KEY (`book_title`)
+    REFERENCES `librarydb`.`books` (`books_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+CREATE TABLE `librarydb`.`review_likes` (
+  `review_likes_id` INT NOT NULL AUTO_INCREMENT,
+  `created_by` INT NOT NULL,
+  `review` INT NOT NULL,
+  `reaction` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`review_likes_id`),
+  INDEX `fk_review_likes_users_users_id_idx` (`created_by` ASC) VISIBLE,
+  INDEX `fk_review_likes_reviews_reviews_id_idx` (`review` ASC) VISIBLE,
+  CONSTRAINT `fk_review_likes_users_users_id`
+    FOREIGN KEY (`created_by`)
+    REFERENCES `librarydb`.`users` (`users_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_review_likes_reviews_reviews_id`
+    FOREIGN KEY (`review`)
+    REFERENCES `librarydb`.`reviews` (`reviews_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+CREATE TABLE `librarydb`.`book_ratings` (
+  `book_ratings_id` INT NOT NULL AUTO_INCREMENT,
+  `created_by` INT NOT NULL,
+  `book` INT NOT NULL,
+  `rating` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`book_ratings_id`),
+  INDEX `fk_book_ratings_users_users_id_idx` (`created_by` ASC) VISIBLE,
+  INDEX `fk_book_ratings_books_books_id_idx` (`book` ASC) VISIBLE,
+  CONSTRAINT `fk_book_ratings_users_users_id`
+    FOREIGN KEY (`created_by`)
+    REFERENCES `librarydb`.`users` (`users_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_book_ratings_books_books_id`
+    FOREIGN KEY (`book`)
+    REFERENCES `librarydb`.`books` (`books_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+
+
+  
+
