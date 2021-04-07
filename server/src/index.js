@@ -51,30 +51,25 @@ app.post('/users', (req, res) => {});
 
 // retrieve all books
 app.get('/books', (req, res) => {
-    res.json(getAllBooks());
-    // const {
-    //     title,
-    //     sort
-    // } = req.query;
-    // let availableBooks = books.filter(b => b.isBorrowed === false && b.isDeleted === false);
-    // // 
-    // if (sort) {
-    //     availableBooks = availableBooks.sort((a, b) => {
-    //         if (sort === 'year_asc') {
-    //             return a.year - b.year;
-    //         } else if (sort === 'year_desc') {
-    //             return b.year - a.year;
-    //         } else {
-    //             return;
-    //         }
-    //     })
-    // }
-    // if (title) {
-    //     let getBooksByTitle = availableBooks.slice();
-    //     res.json(getBooksByTitle.filter(b => b.title.includes(title)));
-    // } else {
-    //     res.json(availableBooks);
-    // }
+    const { title, sort } = req.query;
+    let theBooks = getAllBooks(); 
+    if (sort) {
+        theBooks = theBooks.sort((a, b) => {
+            if (sort === 'year_asc') {
+                return a.publishingYear - b.publishingYear;
+            } else if (sort === 'year_desc') {
+                return b.publishingYear - a.publishingYear;
+            } else {
+                return;
+            }
+        })
+    }
+    if (title) {
+        let getBooksByTitle = theBooks.slice();
+        res.json(getBooksByTitle.filter(b => b.title.includes(title)));
+    } else {
+        res.json(theBooks);
+    }
 });
 
 // create new book - in admin  SPH - ready
@@ -91,7 +86,7 @@ app.get('/books/:id', (req, res) => {
 
 // borrow a book by id - patch vs post
 app.post('/books/:id', (req, res) => {
-    const theBook = books.find(b => b.id === +req.params.id && b.isDeleted !== true);
+    const theBook = getBookById(+req.params.id);
     if (!theBook) {
         return res.status(404).json({
             msg: `Book with id ${req.params.id} was not found!`
