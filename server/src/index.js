@@ -1,4 +1,3 @@
-import '../load-env.js';
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -13,8 +12,11 @@ import {
 import bookCreateValidator from './validators/book-create-validator.js';
 import bookUpdateValidator from './validators/book-update-validator.js'
 import validateBody from './middlewares/validate-body.js';
+import dotenv from 'dotenv';
 
-const PORT = 5555;
+const config = dotenv.config().parsed;
+
+const PORT = config.PORT;
 
 const app = express();
 
