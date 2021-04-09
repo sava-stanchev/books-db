@@ -1,4 +1,3 @@
-import '../../load-env.js';
 import jwt from 'jsonwebtoken';
 
 export default function authenticateToken(req, res, next) {
