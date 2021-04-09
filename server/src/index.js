@@ -7,6 +7,7 @@ import {
     createBook,
     getAllBooks,
     getBookById,
+    getReviews,
     searchBooksByTitle,
     sortBooksByYear,
     updateBook
@@ -15,6 +16,7 @@ import bookCreateValidator from './validators/book-create-validator.js';
 import bookUpdateValidator from './validators/book-update-validator.js'
 import validateBody from './middlewares/validate-body.js';
 import dotenv from 'dotenv';
+import pool from './data/pool.js';
 
 const config = dotenv.config().parsed;
 
@@ -110,15 +112,16 @@ app.patch('/books/:id', (req, res) => {
 });
 
 // read all book reviews
-app.get('/books/:id/reviews', (req, res) => {
-    const theBook = books.find(b => b.id === +req.params.id && b.isDeleted !== true);
+app.get('/books/:id/reviews', async (req, res) => {
+    const theBook = await getBookById(+req.params.id);
     if (!theBook) {
         return res.status(404).json({
             msg: `Book with id ${req.params.id} was not found!`
         });
     }
-    if (theBook.reviews.length > 0) {
-        res.send(theBook.reviews);
+    const theReviews = await getReviews(+req.params.id);
+    if (theReviews.length > 0) {
+        res.send(theReviews);
     } else {
         return res.json({
             msg: 'Book has no reviews yet!'
@@ -132,8 +135,8 @@ app.post('/book/:id/reviews', (req, res) => {
 });
 
 // update book review
-app.put('/books/:id/reviews/:reviewId', (req, res) => {
-    const theBook = books.find(b => b.id === +req.params.id && b.isDeleted !== true);
+app.put('/books/:id/reviews/:reviewId', async (req, res) => {
+    const theBook = await getBookById(+req.params.id);
     if (!theBook) {
         return res.status(404).json({
             msg: `Book with id ${req.params.id} was not found!`
