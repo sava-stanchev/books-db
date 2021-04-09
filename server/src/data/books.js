@@ -11,7 +11,7 @@ export const getAllBooks = async () => {
     SELECT * FROM books b
     WHERE b.is_deleted != 1
   `);
-}
+};
 
 export const searchBooksByTitle = async (title) => {
   return await pool.query(`
@@ -19,7 +19,7 @@ export const searchBooksByTitle = async (title) => {
     WHERE b.is_deleted != 1 AND b.title
     LIKE '%${pool.escape(title).replace(/'/g, '')}%'
   `);
-}
+};
 
 export const sortBooksByYear = async (sort) => {
   if (sort === 'year_asc') {
@@ -36,14 +36,14 @@ export const sortBooksByYear = async (sort) => {
       ORDER BY b.publishing_year DESC
     `);  
   }
-}
+};
 
 export const getBookById = async (id) => {
   return await pool.query(`
     SELECT * FROM books b
     WHERE b.is_deleted != 1 AND b.books_id = '${id}'
   `);  
-}
+};
 
 export const getReviews = async (id) => {
   return await pool.query(`
@@ -52,7 +52,16 @@ export const getReviews = async (id) => {
       ON b.title = r.book_title
       WHERE b.is_deleted != 1 AND b.books_id = '${id}'
   `);
-}
+};
+
+export const borrowBook = async (id) => {
+  return await pool.query(`
+    UPDATE books SET
+    books.is_borrowed = 1
+    WHERE books.books_id = '${id}'
+    AND books.is_borrowed != 1
+  `);
+};
 
 export const updateBook = (id, bookUpdate) => {
   const book = getBookById(id);
@@ -81,8 +90,3 @@ export const deleteBook = (id, author) => {
   const book = getBookById(id);
   book.isDeleted = true;
 };
-
-export const borrowBook = (id) => {
-  const book = getBookById(id);
-  book.isBorrowed = true;
-}

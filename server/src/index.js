@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import jwt from 'jsonwebtoken';
 import authenticateToken from './middlewares/authenticate-token.js';
 import {
+    borrowBook,
     createBook,
     getAllBooks,
     getBookById,
@@ -83,26 +84,24 @@ app.get('/books/:id', (req, res) => {
 });
 
 // borrow a book by id - patch vs post
-app.post('/books/:id', (req, res) => {
-    const theBook = getBookById(+req.params.id);
+app.post('/books/:id', async (req, res) => {
+    const { id } = req.params;
+    const theBook = getBookById(+id);
     if (!theBook) {
         return res.status(404).json({
-            msg: `Book with id ${req.params.id} was not found!`
+            msg: `Book with id ${id} was not found!`
         });
     }
-    if (theBook.isBorrowed === false) {
-        books.map(b => b.id === req.params.id ? {
-            ...b,
-            isBorrowed: true
-        } : b);
-    } else {
-        return res.json({
+    const bookBorrowed = await borrowBook(+id);
+    if (!bookBorrowed) {
+        res.json({
             msg: `Book has already been borrowed!`
         });
+    } else {
+        res.json({
+            msg: 'Book successfully borrowed!'
+        });
     }
-    res.json({
-        msg: 'Book successfully borrowed!'
-    });
 });
 
 // return a book by id - SPH
