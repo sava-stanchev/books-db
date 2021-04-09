@@ -86,7 +86,7 @@ app.get('/books/:id', (req, res) => {
 // borrow a book by id - patch vs post
 app.post('/books/:id', async (req, res) => {
     const { id } = req.params;
-    const theBook = getBookById(+id);
+    const theBook = await getBookById(+id);
     if (!theBook) {
         return res.status(404).json({
             msg: `Book with id ${id} was not found!`
@@ -136,10 +136,11 @@ app.post('/book/:id/reviews', (req, res) => {
 
 // update book review
 app.put('/books/:id/reviews/:reviewId', async (req, res) => {
-    const theBook = await getBookById(+req.params.id);
+    const { id } = req.params;
+    const theBook = await getBookById(+id);
     if (!theBook) {
         return res.status(404).json({
-            msg: `Book with id ${req.params.id} was not found!`
+            msg: `Book with id ${id} was not found!`
         });
     }
     const newText = req.body.text;
