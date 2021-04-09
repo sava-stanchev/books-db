@@ -85,8 +85,10 @@ export const createBook = (book, createdBy) => {
   return books[books.length - 1];
 };
 
-export const deleteBook = (id, author) => {
-
-  const book = getBookById(id);
-  book.isDeleted = true;
+export const deleteBook = async (id) => {
+  return await pool.query(`
+    UPDATE books SET
+    books.is_deleted = 1
+    WHERE books.books_id = '${id}'
+  `);
 };

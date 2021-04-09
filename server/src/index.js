@@ -177,11 +177,11 @@ app.post('/admin/books/:id', (req, res) => {
 });
 
 //delete any book 
-app.delete('/admin/books/:id', (req, res) => {
-
+app.delete('/admin/books/:id', async (req, res) => {
+    await deleteTweet(+req.params.id);
     res.json({
-        message: `Book deleted`,
-    });
+      message: `Book deleted`,
+    });  
 })
 
 // ban user 
