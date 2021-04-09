@@ -113,13 +113,14 @@ app.patch('/books/:id', (req, res) => {
 
 // read all book reviews
 app.get('/books/:id/reviews', async (req, res) => {
-    const theBook = await getBookById(+req.params.id);
+    const { id } = req.params;
+    const theBook = await getBookById(+id);
     if (!theBook) {
         return res.status(404).json({
-            msg: `Book with id ${req.params.id} was not found!`
+            msg: `Book with id ${id} was not found!`
         });
     }
-    const theReviews = await getReviews(+req.params.id);
+    const theReviews = await getReviews(+id);
     if (theReviews.length > 0) {
         res.send(theReviews);
     } else {
