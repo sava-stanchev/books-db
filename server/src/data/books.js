@@ -1,10 +1,41 @@
-const books = [];
+import pool from "./pool.js";
 
 let bookId = 1;
 
 export const addBook = (book) => books.push(book);
 
-export const getAllBooks = () => books.filter(book => book.isDeleted !== true);
+export const getAllBooks = async () => {
+  return await pool.query(`
+    SELECT *
+    FROM books b
+    WHERE b.is_deleted != 1
+  `);
+}
+
+export const searchBooksByTitle = async (title) => {
+  return await pool.query(`
+    SELECT * FROM books b
+    WHERE b.is_deleted != 1 AND b.title
+    LIKE '%${pool.escape(title).replace(/'/g, '')}%'
+  `);
+}
+
+export const sortBooksByYear = async (sort) => {
+  if (sort === 'year_asc') {
+    return await pool.query(`
+      SELECT * FROM books b
+      WHERE b.is_deleted != 1
+      ORDER BY b.publishing_year
+    `);
+  }
+  if (sort === 'year_desc') {
+    return await pool.query(`
+      SELECT * FROM books b
+      WHERE b.is_deleted != 1
+      ORDER BY b.publishing_year DESC
+    `);  
+  }
+}
 
 export const getBookById = (id) => books.find(book => book.id === id && book.isDeleted !== true);
 

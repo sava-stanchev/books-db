@@ -7,6 +7,8 @@ import {
     createBook,
     getAllBooks,
     getBookById,
+    searchBooksByTitle,
+    sortBooksByYear,
     updateBook
 } from './data/books.js';
 import bookCreateValidator from './validators/book-create-validator.js';
@@ -52,26 +54,18 @@ app.post('/login', (req, res) => {
 app.post('/users', (req, res) => {});
 
 // retrieve all books
-app.get('/books', (req, res) => {
+app.get('/books', async (req, res) => {
     const { title, sort } = req.query;
-    let theBooks = getAllBooks(); 
     if (sort) {
-        theBooks = theBooks.sort((a, b) => {
-            if (sort === 'year_asc') {
-                return a.publishingYear - b.publishingYear;
-            } else if (sort === 'year_desc') {
-                return b.publishingYear - a.publishingYear;
-            } else {
-                return;
-            }
-        })
+        const theBooksSortedByYear = await sortBooksByYear(sort);
+        return res.json(theBooksSortedByYear);
     }
     if (title) {
-        let getBooksByTitle = theBooks.slice();
-        res.json(getBooksByTitle.filter(b => b.title.includes(title)));
-    } else {
-        res.json(theBooks);
+        const theBooksFoundByTitle = await searchBooksByTitle(title);
+        return res.json(theBooksFoundByTitle);
     }
+    const theBooks = await getAllBooks();
+    res.json(theBooks);
 });
 
 // create new book - in admin  SPH - ready
