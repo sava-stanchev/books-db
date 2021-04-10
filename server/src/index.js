@@ -183,9 +183,10 @@ app.delete('/admin/books/:id', async (req, res) => {
     res.json({
       message: `Book deleted`,
     });  
-})
+});
 
 // ban user 
+app.put('/admin/users/:id/banstatus', async (req, res) => {});
 
 // delete user - SPH
 
