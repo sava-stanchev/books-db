@@ -18,8 +18,7 @@ import bookUpdateValidator from './validators/book-update-validator.js'
 import validateBody from './middlewares/validate-body.js';
 import transformBody from './middlewares/transform-body.js';
 import dotenv from 'dotenv';
-import pool from './data/pool.js';
-import { getReviews } from './data/reviews.js';
+import { getAllReviews, getReviewsForBook } from './data/reviews.js';
 
 const config = dotenv.config().parsed;
 
@@ -112,7 +111,7 @@ app.patch('/books/:id', (req, res) => {
     res.json(book);
 });
 
-// read all book reviews
+// read all reviews for a book
 app.get('/books/:id/reviews', async (req, res) => {
     const { id } = req.params;
     const theBook = await getBookById(+id);
@@ -121,7 +120,7 @@ app.get('/books/:id/reviews', async (req, res) => {
             msg: `Book with id ${id} was not found!`
         });
     }
-    const theReviews = await getReviews(+id);
+    const theReviews = await getReviewsForBook(+id);
     if (theReviews.length > 0) {
         res.send(theReviews);
     } else {
@@ -170,7 +169,7 @@ app.delete('/books/:id/reviews/:reviewId', (req, res) => {
 
 // read any book
 
-// update any book 
+// update any book as admin
 app.put('/admin/books/:id', validateBody('book', bookUpdateValidator), async (req, res) => {
     const { id } = req.params;
     const updateData = req.body;
@@ -183,7 +182,7 @@ app.put('/admin/books/:id', validateBody('book', bookUpdateValidator), async (re
     }
 });
 
-//delete any book 
+// delete any book as admin
 app.delete('/admin/books/:id', async (req, res) => {
     await deleteBook(+req.params.id);
     res.json({
@@ -196,7 +195,11 @@ app.put('/admin/users/:id/banstatus', async (req, res) => {});
 
 // delete user - SPH
 
-// read review 
+// read reviews as admin
+app.get('/admin/reviews', async (req, res) => {
+    const reviews = await getAllReviews();
 
+    res.send(reviews)
+});
 
 app.listen(PORT, () => console.log(`Listening on ${PORT}...`));

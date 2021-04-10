@@ -1,12 +1,18 @@
+import pool from "./pool.js";
+
 const reviews = [];
 
 let reviewId = 1;
 
 export const addReview = (review) => reviews.push(review);
 
-//export const getAllBooks = () => books;
+export const getAllReviews = async () => {
+  return await pool.query(`
+    SELECT * FROM reviews
+  `);
+};
 
-export const getReviews = async (id) => {
+export const getReviewsForBook = async (id) => {
   return await pool.query(`
     SELECT content FROM books b
     JOIN reviews r
