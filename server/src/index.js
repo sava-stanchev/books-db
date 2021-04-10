@@ -6,6 +6,7 @@ import authenticateToken from './middlewares/authenticate-token.js';
 import {
     borrowBook,
     createBook,
+    deleteBook,
     getAllBooks,
     getBookById,
     getReviews,
@@ -169,7 +170,7 @@ app.delete('/books/:id/reviews/:reviewId', (req, res) => {
 // read any book
 
 // update any book 
-app.post('/admin/books/:id', (req, res) => {
+app.post('/admin/books/:id', async (req, res) => {
 
     res.json({
         message: `Book updated`,
@@ -178,7 +179,7 @@ app.post('/admin/books/:id', (req, res) => {
 
 //delete any book 
 app.delete('/admin/books/:id', async (req, res) => {
-    await deleteTweet(+req.params.id);
+    await deleteBook(+req.params.id);
     res.json({
       message: `Book deleted`,
     });  

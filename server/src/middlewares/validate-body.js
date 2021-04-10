@@ -1,6 +1,6 @@
 import errorStrings from '../common/error-strings.js';
 
-export default (resource, validator) => (req, res, next) => {
+export default (resource, validator) => async (req, res, next) => {
   const errors = {};
 
   Object.keys(validator).forEach(key => {
@@ -15,5 +15,5 @@ export default (resource, validator) => (req, res, next) => {
     });
   }
 
-  next();
+  await next();
 };
