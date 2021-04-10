@@ -16,6 +16,7 @@ import {
 import bookCreateValidator from './validators/book-create-validator.js';
 import bookUpdateValidator from './validators/book-update-validator.js'
 import validateBody from './middlewares/validate-body.js';
+import transformBody from './middlewares/transform-body.js';
 import dotenv from 'dotenv';
 import pool from './data/pool.js';
 import { getReviews } from './data/reviews.js';
@@ -170,11 +171,16 @@ app.delete('/books/:id/reviews/:reviewId', (req, res) => {
 // read any book
 
 // update any book 
-app.post('/admin/books/:id', async (req, res) => {
+app.put('/admin/books/:id', validateBody('book', bookUpdateValidator), async (req, res) => {
+    const { id } = req.params;
+    const updateData = req.body;
+    const updatedBook = await updateBook(+id, updateData);
 
-    res.json({
-        message: `Book updated`,
-    });
+    if (!updatedBook) {
+        res.status(404).send({ message: 'Book not found!' });
+    } else {
+        res.send({ message: 'Book updated!' });
+    }
 });
 
 //delete any book 

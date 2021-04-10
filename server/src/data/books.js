@@ -54,11 +54,37 @@ export const borrowBook = async (id) => {
   `);
 };
 
-export const updateBook = (id, bookUpdate) => {
-  const book = getBookById(id);
-  if (book) {
-    Object.keys(bookUpdate).forEach(key => book[key] = bookUpdate[key]);
+const updateBookSQL = async (book) => {
+  const { books_id, title, author, genre, age_recommendation,
+          isbn, publishing_year, language, print_length } = book;
+  
+  const sql = `
+      UPDATE books SET
+        title = ?,
+        author = ?,
+        genre = ?,
+        age_recommendation = ?,
+        isbn = ?,
+        publishing_year = ?,
+        language = ?,
+        print_length = ?
+      WHERE books_id = ?
+  `;
+
+  return await pool.query(sql, [books_id, title, author, genre, age_recommendation,
+                                isbn, publishing_year, language, print_length]);
+}
+
+export const updateBook = async (id, bookData) => {
+  const book = await getBookById(id);
+  if (!book) {
+    return null;
   }
+
+  const updated = { ...book, ...bookData };
+  const _ = await updateBookSQL(updated);
+
+  return updated;
 };
 
 export const createBook = (book, createdBy) => {
