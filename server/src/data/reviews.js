@@ -6,6 +6,15 @@ export const addReview = (review) => reviews.push(review);
 
 //export const getAllBooks = () => books;
 
+export const getReviews = async (id) => {
+  return await pool.query(`
+    SELECT content FROM books b
+    JOIN reviews r
+      ON b.title = r.book_title
+      WHERE b.is_deleted != 1 AND b.books_id = '${id}'
+  `);
+};
+
 export const getReviewById = (id) => reviews.find(review => review.id === id);
 
 // user owner check?

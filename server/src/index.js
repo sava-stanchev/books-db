@@ -9,7 +9,6 @@ import {
     deleteBook,
     getAllBooks,
     getBookById,
-    getReviews,
     searchBooksByTitle,
     sortBooksByYear,
     updateBook
@@ -19,6 +18,7 @@ import bookUpdateValidator from './validators/book-update-validator.js'
 import validateBody from './middlewares/validate-body.js';
 import dotenv from 'dotenv';
 import pool from './data/pool.js';
+import { getReviews } from './data/reviews.js';
 
 const config = dotenv.config().parsed;
 

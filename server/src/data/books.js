@@ -45,15 +45,6 @@ export const getBookById = async (id) => {
   `);  
 };
 
-export const getReviews = async (id) => {
-  return await pool.query(`
-    SELECT content FROM books b
-    JOIN reviews r
-      ON b.title = r.book_title
-      WHERE b.is_deleted != 1 AND b.books_id = '${id}'
-  `);
-};
-
 export const borrowBook = async (id) => {
   return await pool.query(`
     UPDATE books SET
