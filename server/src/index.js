@@ -19,6 +19,7 @@ import dotenv from 'dotenv';
 import { getAllReviews, getReviewsForBook } from './data/reviews.js';
 import createToken from './auth/create-token.js';
 import serviceErrors from './services/service-errors.js';
+import { signInUser } from './services/users-service.js';
 
 const config = dotenv.config().parsed;
 
