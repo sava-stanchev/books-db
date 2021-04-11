@@ -18,6 +18,7 @@ import transformBody from './middlewares/transform-body.js';
 import dotenv from 'dotenv';
 import { getAllReviews, getReviewsForBook } from './data/reviews.js';
 import createToken from './auth/create-token.js';
+import serviceErrors from './services/service-errors.js';
 
 const config = dotenv.config().parsed;
 
