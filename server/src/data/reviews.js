@@ -4,15 +4,15 @@ const reviews = [];
 
 let reviewId = 1;
 
-export const addReview = (review) => reviews.push(review);
+const addReview = (review) => reviews.push(review);
 
-export const getAllReviews = async () => {
+const getAllReviews = async () => {
   return await pool.query(`
     SELECT * FROM reviews
   `);
 };
 
-export const getReviewsForBook = async (id) => {
+const getReviewsForBook = async (id) => {
   return await pool.query(`
     SELECT content FROM books b
     JOIN reviews r
@@ -21,17 +21,17 @@ export const getReviewsForBook = async (id) => {
   `);
 };
 
-export const getReviewById = (id) => reviews.find(review => review.id === id);
+const getReviewById = (id) => reviews.find(review => review.id === id);
 
 // user owner check?
-export const updateReview = (id, reviewUpdate) => {
+const updateReview = (id, reviewUpdate) => {
   const review = getReviewById(id);
 
   Object.keys(reviewUpdate).forEach(key => review[key] = reviewUpdate[key]);
 
 };
 
-export const createReview = (review, createdBy) => {
+const createReview = (review, createdBy) => {
   reviews.push({
     ...review,
     id: reviewId++,
@@ -41,3 +41,12 @@ export const createReview = (review, createdBy) => {
 
   return reviews[reviews.length - 1];
 };
+
+export default {
+  addReview,
+  getAllReviews,
+  getReviewsForBook,
+  getReviewById,
+  updateReview,
+  createReview
+}

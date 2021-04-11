@@ -1,22 +1,14 @@
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
-import {
-    borrowBook,
-    createBook,
-    deleteBook,
-    getAllBooks,
-    getBookById,
-    searchBooksByTitle,
-    sortBooksByYear,
-    updateBook
-} from './data/books.js';
+import booksData from './data/books.js';
+import booksService from './services/books-service.js'
+import reviewsData from './data/reviews.js';
 import bookCreateValidator from './validators/book-create-validator.js';
 import bookUpdateValidator from './validators/book-update-validator.js'
 import validateBody from './middlewares/validate-body.js';
 import transformBody from './middlewares/transform-body.js';
 import dotenv from 'dotenv';
-import { getAllReviews, getReviewsForBook } from './data/reviews.js';
 import createToken from './auth/create-token.js';
 import serviceErrors from './services/service-errors.js';
 import { signInUser } from './services/users-service.js';
@@ -64,14 +56,14 @@ app.post('/users', (req, res) => {});
 app.get('/books', async (req, res) => {
     const { title, sort } = req.query;
     if (sort) {
-        const theBooksSortedByYear = await sortBooksByYear(sort);
+        const theBooksSortedByYear = await booksData.sortBooksByYear(sort);
         return res.json(theBooksSortedByYear);
     }
     if (title) {
-        const theBooksFoundByTitle = await searchBooksByTitle(title);
+        const theBooksFoundByTitle = await booksData.searchBooksByTitle(title);
         return res.json(theBooksFoundByTitle);
     }
-    const theBooks = await getAllBooks();
+    const theBooks = await booksData.getAllBooks();
     res.json(theBooks);
 });
 
@@ -90,13 +82,13 @@ app.get('/books/:id', (req, res) => {
 // borrow a book by id - patch vs post
 app.post('/books/:id', async (req, res) => {
     const { id } = req.params;
-    const theBook = await getBookById(+id);
+    const theBook = await booksData.getBookById(+id);
     if (!theBook) {
         return res.status(404).json({
             msg: `Book with id ${id} was not found!`
         });
     }
-    const bookBorrowed = await borrowBook(+id);
+    const bookBorrowed = await booksData.borrowBook(+id);
     if (!bookBorrowed) {
         res.json({
             msg: `Book has already been borrowed!`
@@ -117,13 +109,13 @@ app.patch('/books/:id', (req, res) => {
 // read all reviews for a book
 app.get('/books/:id/reviews', async (req, res) => {
     const { id } = req.params;
-    const theBook = await getBookById(+id);
+    const theBook = await booksData.getBookById(+id);
     if (!theBook) {
         return res.status(404).json({
             msg: `Book with id ${id} was not found!`
         });
     }
-    const theReviews = await getReviewsForBook(+id);
+    const theReviews = await reviewsData.getReviewsForBook(+id);
     if (theReviews.length > 0) {
         res.send(theReviews);
     } else {
@@ -131,7 +123,7 @@ app.get('/books/:id/reviews', async (req, res) => {
             msg: 'Book has no reviews yet!'
         });
     }
-})
+});
 
 // create book review - SPH
 app.post('/book/:id/reviews', (req, res) => {
@@ -141,7 +133,7 @@ app.post('/book/:id/reviews', (req, res) => {
 // update book review
 app.put('/books/:id/reviews/:reviewId', async (req, res) => {
     const { id } = req.params;
-    const theBook = await getBookById(+id);
+    const theBook = await booksData.getBookById(+id);
     if (!theBook) {
         return res.status(404).json({
             msg: `Book with id ${id} was not found!`
@@ -176,7 +168,7 @@ app.delete('/books/:id/reviews/:reviewId', (req, res) => {
 app.put('/admin/books/:id', validateBody('book', bookUpdateValidator), async (req, res) => {
     const { id } = req.params;
     const updateData = req.body;
-    const updatedBook = await updateBook(+id, updateData);
+    const updatedBook = await booksService.updateBook(+id, updateData);
 
     if (!updatedBook) {
         res.status(404).send({ message: 'Book not found!' });
@@ -187,7 +179,7 @@ app.put('/admin/books/:id', validateBody('book', bookUpdateValidator), async (re
 
 // delete any book as admin
 app.delete('/admin/books/:id', async (req, res) => {
-    await deleteBook(+req.params.id);
+    await booksData.deleteBook(+req.params.id);
     res.json({
       message: `Book deleted`,
     });  
@@ -200,7 +192,7 @@ app.put('/admin/users/:id/banstatus', async (req, res) => {});
 
 // read reviews as admin
 app.get('/admin/reviews', async (req, res) => {
-    const reviews = await getAllReviews();
+    const reviews = await reviewsData.getAllReviews();
 
     res.send(reviews)
 });

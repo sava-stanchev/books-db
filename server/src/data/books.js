@@ -4,16 +4,16 @@ const books = [];
 
 let bookId = 1;
 
-export const addBook = (book) => books.push(book);
+const addBook = (book) => books.push(book);
 
-export const getAllBooks = async () => {
+const getAllBooks = async () => {
   return await pool.query(`
     SELECT * FROM books b
     WHERE b.is_deleted != 1
   `);
 };
 
-export const searchBooksByTitle = async (title) => {
+const searchBooksByTitle = async (title) => {
   return await pool.query(`
     SELECT * FROM books b
     WHERE b.is_deleted != 1 AND b.title
@@ -21,7 +21,7 @@ export const searchBooksByTitle = async (title) => {
   `);
 };
 
-export const sortBooksByYear = async (sort) => {
+const sortBooksByYear = async (sort) => {
   if (sort === 'year_asc') {
     return await pool.query(`
       SELECT * FROM books b
@@ -38,14 +38,14 @@ export const sortBooksByYear = async (sort) => {
   }
 };
 
-export const getBookById = async (id) => {
+const getBookById = async (id) => {
   return await pool.query(`
     SELECT * FROM books b
     WHERE b.is_deleted != 1 AND b.books_id = '${id}'
   `);  
 };
 
-export const borrowBook = async (id) => {
+const borrowBook = async (id) => {
   return await pool.query(`
     UPDATE books SET
     books.is_borrowed = 1
@@ -75,19 +75,7 @@ const updateBookSQL = async (book) => {
                                 isbn, publishing_year, language, print_length]);
 }
 
-export const updateBook = async (id, bookData) => {
-  const book = await getBookById(id);
-  if (!book) {
-    return null;
-  }
-
-  const updated = { ...book, ...bookData };
-  const _ = await updateBookSQL(updated);
-
-  return updated;
-};
-
-export const createBook = (book, createdBy) => {
+const createBook = (book, createdBy) => {
   books.push({
     ...book,
     id: bookId++,
@@ -102,10 +90,22 @@ export const createBook = (book, createdBy) => {
   return books[books.length - 1];
 };
 
-export const deleteBook = async (id) => {
+const deleteBook = async (id) => {
   return await pool.query(`
     UPDATE books SET
     books.is_deleted = 1
     WHERE books.books_id = '${id}'
   `);
 };
+
+export default {
+  addBook,
+  getAllBooks,
+  searchBooksByTitle,
+  sortBooksByYear,
+  getBookById,
+  borrowBook,
+  updateBookSQL,
+  createBook,
+  deleteBook
+}
