@@ -1,8 +1,6 @@
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
-import jwt from 'jsonwebtoken';
-import authenticateToken from './middlewares/authenticate-token.js';
 import {
     borrowBook,
     createBook,
@@ -19,6 +17,7 @@ import validateBody from './middlewares/validate-body.js';
 import transformBody from './middlewares/transform-body.js';
 import dotenv from 'dotenv';
 import { getAllReviews, getReviewsForBook } from './data/reviews.js';
+import createToken from './auth/create-token.js';
 
 const config = dotenv.config().parsed;
 
@@ -34,22 +33,24 @@ app.use(express.json());
 app.post('/users', (req, res) => {});
 
 // login 
-app.post('/login', (req, res) => {
-    const {
-        username,
-        password
-    } = req.body;
-    const user = users.find(u => u.username === username && u.password === password);
-    if (user) {
-        const accessToken = jwt.sign({
-            username: user.username
-        }, process.env.ACCESS_TOKEN_SECRET);
-        res.json({
-            accessToken: accessToken
-        });
+app.post('/login', async (req, res) => {
+    const { username, password } = req.body;
+    const { error, user } = await signInUser(usersData)(username, password);
+    
+    if (error === serviceErrors.INVALID_SIGNIN) {
+        res.status(400).send({
+            message: 'Invalid username/password'
+        })
     } else {
-        res.json({
-            msg: 'Username or password incorrect!'
+        const payload = {
+            sub: user.id,
+            username: user.username,
+            role: user.role
+        };
+        const token = createToken(payload);
+
+        res.status(200).send({
+            token: token
         });
     }
 });
