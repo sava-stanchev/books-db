@@ -2,10 +2,11 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import booksData from './data/books.js';
-import booksService from './services/books-service.js'
+import booksService from './services/books-service.js';
 import reviewsData from './data/reviews.js';
+import userCreateValidator from './validators/user-create-validator.js';
 import bookCreateValidator from './validators/book-create-validator.js';
-import bookUpdateValidator from './validators/book-update-validator.js'
+import bookUpdateValidator from './validators/book-update-validator.js';
 import validateBody from './middlewares/validate-body.js';
 import transformBody from './middlewares/transform-body.js';
 import dotenv from 'dotenv';
@@ -24,7 +25,13 @@ app.use(helmet());
 app.use(express.json());
 
 // register user - SPH
-app.post('/users', (req, res) => {});
+app.post('/users', validateBody('users', userCreateValidator), async (req, res) => {
+    const user = req.body;
+    user.password = await bcrypt.hash(user.password, 10);
+    const newUser = await createUser(user);
+
+
+});
 
 // login 
 app.post('/login', async (req, res) => {
@@ -68,15 +75,15 @@ app.get('/books', async (req, res) => {
 });
 
 // create new book - in admin  SPH - ready
-app.post('/admin/books', validateBody('book', bookCreateValidator), (req, res) => {
-    const book = createBook(req.body, 'user');
+app.post('/admin/books', validateBody('book', bookCreateValidator), async (req, res) => {
+    const book = await createBook(req.body, 'user');
 
     res.json(book);
 });
 
 // view individual book by id - SPH - ready
-app.get('/books/:id', (req, res) => {
-    res.json(getBookById(+req.params.id))
+app.get('/books/:id', async (req, res) => {
+    res.json(await getBookById(+req.params.id))
 });
 
 // borrow a book by id - patch vs post

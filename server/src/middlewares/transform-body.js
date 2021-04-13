@@ -4,7 +4,6 @@ export default (validator) => async (req, res, next) => {
             delete req.body[key];
         }
     });
-  
+
     await next();
 };
-  

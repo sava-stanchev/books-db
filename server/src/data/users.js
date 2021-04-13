@@ -13,6 +13,25 @@ const getWithRole = async (username) => {
     return result[0];
 }
 
+const createUser = async (user) => {
+    const userExist = await db.query(`SELECT * FROM users AS u WHERE u.user_name = ?`, [user.user_name]);
+    if (userExist[0]) {
+        return {
+            error: true,
+            response: {
+                error: 'username should be unique!'
+            }
+        }
+    }
+    const sql = `
+    INSERT INTO users () 
+    VALUES (?, ?, ?, ?, ?, ?)
+    `; // да се допише
+    const result = await db.query(sql, []);
+
+}
+
 export default {
-    getWithRole
+    getWithRole,
+    createUser
 }
