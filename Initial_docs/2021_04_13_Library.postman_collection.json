@@ -26,11 +26,21 @@
 		{
 			"name": "2. POST /admin/books",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2Vyc19pZCI6MSwidXNlcl9uYW1lIjoiSXZhbiIsImlzX2FkbWluIjoxLCJpYXQiOjE2MTgzMjc5NDMsImV4cCI6MTYxODMzMTU0M30.LHzLK9O4Uo3O0e-a1saz8fOieKfI-qz3L5bTuqS43TY",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"title\": \"Mort\",\r\n    \"author\": \"Terry Pratchett\",\r\n    \"genre\": \"Fantasy\",\r\n    \"ageRecommendation\": \"12\",\r\n    \"isbn\": \"0575041714\",\r\n    \"year\": \"1987\",\r\n    \"language\": \"english\",\r\n    \"printLength\": \"304\"\r\n}",
+					"raw": "{\r\n    \"title\": \"Mort\",\r\n    \"author\": \"Terry Pratchett\",\r\n    \"genre\": \"Fantasy\",\r\n    \"ageRecommendation\": \"12\",\r\n    \"isbn\": \"0575041714\",\r\n    \"publishing_year\": null,\r\n    \"language\": \"english\",\r\n    \"printLength\": \"304\",\r\n    \"createdBy\": \"1\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -158,7 +168,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"userName\": \"Ivan\",\r\n    \"password\": \"123456\",\r\n    \"firstName\": \"Ivan\",\r\n    \"lastName\": \"Ivanov\",\r\n    \"userAge\": \"102\",\r\n    \"e_mail\": \"email@email.com\",\r\n    \"is_admin\": \"1\",\r\n    \"is_deleted\": \"0\",\r\n    \"is_banned\": \"0\",\r\n    \"gender\": \"1\"\r\n}",
+					"raw": "{\r\n    \"userName\": \"Kina\",\r\n    \"password\": \"123456\",\r\n    \"firstName\": \"Kina\",\r\n    \"lastName\": \"Chugunova\",\r\n    \"userAge\": \"99\",\r\n    \"e_mail\": \"email@email.com\",\r\n    \"is_admin\": \"0\",\r\n    \"is_deleted\": \"0\",\r\n    \"is_banned\": \"0\",\r\n    \"gender\": \"1\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -173,6 +183,33 @@
 					"port": "5555",
 					"path": [
 						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "8. POST/login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userName\": \"Ivan\",\r\n    \"password\": \"123456\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5555/login",
+					"host": [
+						"localhost"
+					],
+					"port": "5555",
+					"path": [
+						"login"
 					]
 				}
 			},

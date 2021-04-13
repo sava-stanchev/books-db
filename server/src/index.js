@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import booksData from './data/books.js';
-import createBook from './data/books.js';
+// import createBook from './data/books.js';
 import booksService from './services/books-service.js';
 import reviewsData from './data/reviews.js';
 import userCreateValidator from './validators/user-create-validator.js';
@@ -13,9 +13,18 @@ import transformBody from './middlewares/transform-body.js';
 import dotenv from 'dotenv';
 import createToken from './auth/create-token.js';
 import serviceErrors from './services/service-errors.js';
-import { signInUser } from './services/users-service.js';
+import {
+    signInUser
+} from './services/users-service.js';
 import bcrypt from 'bcrypt';
-import { getAllUsers, createUser } from './data/users.js';
+import {
+    getAllUsers,
+    createUser
+} from './data/users.js';
+import usersData from './data/users.js'
+import { authMiddleware } from './auth/auth-middleware.js';
+import passport from 'passport'
+import jwtStrategy from './auth/strategy.js'
 
 const config = dotenv.config().parsed;
 
@@ -27,13 +36,16 @@ app.use(cors());
 app.use(helmet());
 app.use(express.json());
 
+passport.use(jwtStrategy);
+app.use(passport.initialize());
+
 // register user - SPH - work
-app.post('/users', async (req, res) => {
+app.post('/users',  async (req, res) => {
     const user = req.body;
     user.password = await bcrypt.hash(user.password, 10);
 
     const newUser = await createUser(user);
-    if(newUser.error){
+    if (newUser.error) {
         return res.status(400).json(newUser.response);
     }
 
@@ -41,26 +53,29 @@ app.post('/users', async (req, res) => {
 
 });
 
-// login 
+// login  - work
 app.post('/login', async (req, res) => {
-    const { username, password } = req.body;
-    const { error, user } = await signInUser(usersData)(username, password);
-    
-    if (error === serviceErrors.INVALID_SIGNIN) {
-        res.status(400).send({
-            message: 'Invalid username/password'
-        })
-    } else {
-        const payload = {
-            sub: user.id,
-            username: user.username,
-            role: user.role
-        };
-        const token = createToken(payload);
-
-        res.status(200).send({
-            token: token
+    try {
+        const user = await signInUser(req.body);
+        if (user) {
+            const token = createToken({
+                users_id: user.users_id,
+                user_name: user.user_name,
+                is_admin: user.is_admin
+            })
+            res.status(200).json({
+                token
+            });
+        } else {
+            res.status(401).json({
+                error: 'Invalid credentials!'
+            })
+        }
+    } catch (error) {
+        res.status(400).json({
+            error: error.message
         });
+
     }
 });
 
@@ -69,7 +84,10 @@ app.post('/users', (req, res) => {});
 
 // retrieve all books
 app.get('/books', async (req, res) => {
-    const { title, sort } = req.query;
+    const {
+        title,
+        sort
+    } = req.query;
     if (sort) {
         const theBooksSortedByYear = await booksData.sortBooksByYear(sort);
         return res.json(theBooksSortedByYear);
@@ -83,8 +101,11 @@ app.get('/books', async (req, res) => {
 });
 
 // create new book - in admin  SPH - ready
-app.post('/admin/books', validateBody('book', bookCreateValidator), async (req, res) => {
-    const book = await createBook(req.body, 'user');
+app.post('/admin/books', authMiddleware, validateBody('book', bookCreateValidator), async (req, res) => {
+    const a = req.body;
+    const book = await booksData.createBook({ a,
+        users_id: req.user.users_id});
+
     res.json(book);
 });
 
@@ -95,7 +116,9 @@ app.get('/books/:id', async (req, res) => {
 
 // borrow a book by id - patch vs post
 app.post('/books/:id', async (req, res) => {
-    const { id } = req.params;
+    const {
+        id
+    } = req.params;
     const theBook = await booksData.getBookById(+id);
     if (!theBook) {
         return res.status(404).json({
@@ -122,7 +145,9 @@ app.patch('/books/:id', (req, res) => {
 
 // read all reviews for a book
 app.get('/books/:id/reviews', async (req, res) => {
-    const { id } = req.params;
+    const {
+        id
+    } = req.params;
     const theBook = await booksData.getBookById(+id);
     if (!theBook) {
         return res.status(404).json({
@@ -146,7 +171,9 @@ app.post('/book/:id/reviews', (req, res) => {
 
 // update book review
 app.put('/books/:id/reviews/:reviewId', async (req, res) => {
-    const { id } = req.params;
+    const {
+        id
+    } = req.params;
     const theBook = await booksData.getBookById(+id);
     if (!theBook) {
         return res.status(404).json({
@@ -180,14 +207,20 @@ app.delete('/books/:id/reviews/:reviewId', (req, res) => {
 
 // update any book as admin
 app.put('/admin/books/:id', validateBody('book', bookUpdateValidator), async (req, res) => {
-    const { id } = req.params;
+    const {
+        id
+    } = req.params;
     const updateData = req.body;
     const updatedBook = await booksService.updateBook(+id, updateData);
 
     if (!updatedBook) {
-        res.status(404).send({ message: 'Book not found!' });
+        res.status(404).send({
+            message: 'Book not found!'
+        });
     } else {
-        res.send({ message: 'Book updated!' });
+        res.send({
+            message: 'Book updated!'
+        });
     }
 });
 
@@ -195,8 +228,8 @@ app.put('/admin/books/:id', validateBody('book', bookUpdateValidator), async (re
 app.delete('/admin/books/:id', async (req, res) => {
     await booksData.deleteBook(+req.params.id);
     res.json({
-      message: `Book deleted`,
-    });  
+        message: `Book deleted`,
+    });
 });
 
 // ban user 

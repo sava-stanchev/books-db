@@ -7,18 +7,19 @@ export const getAllUsers = async () => {
     `);
   };
 
-const getWithRole = async (username) => {
-    const sql = `
-        SELECT u.users_id, u.user_name, u.password, r.name as role
-        FROM users u
-        JOIN roles r ON u.roleId = r.id
-        WHERE u.user_name = ?
-    `;
+// const getWithRole = async (userInfo) => {
+//     const { username, password } = userInfo;
+//     console.log(userInfo);
+//     const sql = `
+//         SELECT u.users_id, u.user_name, u.password, u.is_admin as role
+//         FROM users AS u
+//         WHERE u.user_name = ?
+//     `;
 
-    const result = await pool.query(sql, [username]);
+//     const result = await pool.query(sql, [username]);
 
-    return result[0];
-}
+//     return result[0];
+// }
 
 export const createUser = async (user) => {
     
@@ -54,7 +55,6 @@ export const createUser = async (user) => {
 }
 
 export default {
-    getWithRole,
     createUser,
     getAllUsers
 }

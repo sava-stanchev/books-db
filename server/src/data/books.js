@@ -1,5 +1,6 @@
 import pool from "./pool.js";
 
+
 const getAllBooks = async () => {
   return await pool.query(`
     SELECT * FROM books b
@@ -69,8 +70,11 @@ const updateBookSQL = async (book) => {
                                 isbn, publishing_year, language, print_length]);
 }
 
-export const createBook = async (book, createdBy) => {
-const { title, author, genre, age_recommendation, isbn, publishing_year, language, print_length, created_by } = book;
+const createBook = async (book, createdBy) => {
+console.log('*************');
+  console.log(book);
+  const { title, author, genre, age_recommendation, isbn, publishing_year, language, print_length, created_by } = book;
+
 const sql = `
       INSERT INTO books (title, author, genre, age_recommendation, isbn, publishing_year, language, print_length, created_by)
       VALUES 
@@ -107,6 +111,6 @@ export default {
   getBookById,
   borrowBook,
   updateBookSQL,
-  //createBook,
+  createBook,
   deleteBook
 }

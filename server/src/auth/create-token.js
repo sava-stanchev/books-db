@@ -7,7 +7,7 @@ const createToken = (payload) => {
     const token = jwt.sign(
         payload,
         config.PRIVATE_KEY,
-        { expiresIn: config.TOKEN_LIFETIME }
+        { expiresIn: 3600 }
     );
 
     return token;
