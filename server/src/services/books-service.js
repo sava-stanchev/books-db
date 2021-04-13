@@ -1,7 +1,7 @@
 import booksData from '../data/books.js'
 
 const updateBook = async (id, bookData) => {
-    const book = await booksData.getAllBooks(id);
+    const book = await booksData.getBookById(id);
     if (!book) {
       return null;
     }

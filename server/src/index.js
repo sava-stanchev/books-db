@@ -82,8 +82,8 @@ app.post('/login', async (req, res) => {
 // logout - SPH
 app.post('/users', (req, res) => {});
 
-// retrieve all books
-app.get('/books', async (req, res) => {
+// retrieve all books - working
+app.get('/books', authMiddleware, async (req, res) => {
     const {
         title,
         sort
@@ -100,7 +100,7 @@ app.get('/books', async (req, res) => {
     res.json(theBooks);
 });
 
-// create new book - in admin  SPH - ready
+// create new book - in admin  SPH
 app.post('/admin/books', authMiddleware, validateBody('book', bookCreateValidator), async (req, res) => {
     const a = req.body;
     const book = await booksData.createBook({ a,
@@ -110,15 +110,13 @@ app.post('/admin/books', authMiddleware, validateBody('book', bookCreateValidato
 });
 
 // view individual book by id - SPH - ready
-app.get('/books/:id', async (req, res) => {
-    res.json(await getBookById(+req.params.id))
+app.get('/books/:id', authMiddleware, async (req, res) => {
+    res.json(await booksData.getBookById(+req.params.id))
 });
 
-// borrow a book by id - patch vs post
-app.post('/books/:id', async (req, res) => {
-    const {
-        id
-    } = req.params;
+// borrow a book by id - working
+app.post('/books/:id', authMiddleware,  async (req, res) => {
+    const { id } = req.params;
     const theBook = await booksData.getBookById(+id);
     if (!theBook) {
         return res.status(404).json({
@@ -137,10 +135,18 @@ app.post('/books/:id', async (req, res) => {
     }
 });
 
-// return a book by id - SPH
-app.patch('/books/:id', (req, res) => {
-    const book = updateBook(req.params.id, updateBook);
-    res.json(book);
+// return a book by id - SPH - working
+app.patch('/books/:id', authMiddleware, async (req, res) => {
+    const book = await booksData.returnBook(+req.params.id);
+    if (!book) {
+        res.json({
+            msg: `Book has already been returned!`
+        });
+    } else {
+        res.json({
+            msg: 'Book successfully returned!'
+        });
+    }
 });
 
 // read all reviews for a book
@@ -165,7 +171,7 @@ app.get('/books/:id/reviews', async (req, res) => {
 });
 
 // create book review - SPH
-app.post('/book/:id/reviews', (req, res) => {
+app.post('/reviews', (req, res) => {
 
 });
 

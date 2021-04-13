@@ -29,7 +29,7 @@ CREATE TABLE `book_ratings` (
   `created_by` int(11) NOT NULL,
   `book` int(11) NOT NULL,
   `rating` varchar(45) NOT NULL,
-  `is_deleted` bit(1) NOT NULL,
+  `is_deleted` tinyint(3) NOT NULL,
   PRIMARY KEY (`book_ratings_id`),
   KEY `fk_book_ratings_users_users_id_idx` (`created_by`),
   KEY `fk_book_ratings_books_books_id_idx` (`book`),
@@ -64,8 +64,8 @@ CREATE TABLE `books` (
   `publishing_year` int(11) DEFAULT NULL,
   `language` int(11) NOT NULL,
   `print_length` int(11) DEFAULT NULL,
-  `is_deleted` bit(1) NOT NULL,
-  `is_borrowed` bit(1) NOT NULL,
+  `is_deleted` tinyint(3) NOT NULL,
+  `is_borrowed` tinyint(3) NOT NULL,
   `book_count` int(11) NOT NULL,
   `reading_count` int(11) NOT NULL,
   `created_by` int(11) NOT NULL,
@@ -76,7 +76,7 @@ CREATE TABLE `books` (
   CONSTRAINT `fk_books_generes_genre_id` FOREIGN KEY (`genre`) REFERENCES `genres` (`genres_id`),
   CONSTRAINT `fk_books_languages_languages_id` FOREIGN KEY (`language`) REFERENCES `languages` (`languages_id`),
   CONSTRAINT `fk_books_users_users_id` FOREIGN KEY (`created_by`) REFERENCES `users` (`users_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -85,6 +85,7 @@ CREATE TABLE `books` (
 
 LOCK TABLES `books` WRITE;
 /*!40000 ALTER TABLE `books` DISABLE KEYS */;
+INSERT INTO `books` VALUES (1,'Patilansko carstvo','Ran Bosilek',1,1,NULL,1945,1,100,0,0,1,0,1),(2,'Vinetu','KArl Main',1,4,NULL,1945,3,99,1,0,1,0,1);
 /*!40000 ALTER TABLE `books` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -203,7 +204,7 @@ CREATE TABLE `review_likes` (
   `created_by` int(11) NOT NULL,
   `review` int(11) NOT NULL,
   `reaction` varchar(45) NOT NULL,
-  `is_deleted` bit(1) NOT NULL,
+  `is_deleted` tinyint(3) NOT NULL,
   PRIMARY KEY (`review_likes_id`),
   KEY `fk_review_likes_users_users_id_idx` (`created_by`),
   KEY `fk_review_likes_reviews_reviews_id_idx` (`review`),
@@ -234,7 +235,7 @@ CREATE TABLE `reviews` (
   `date_created` date NOT NULL,
   `created_by` int(11) NOT NULL,
   `book_title` int(11) NOT NULL,
-  `is_deleted` bit(1) NOT NULL,
+  `is_deleted` tinyint(3) NOT NULL,
   PRIMARY KEY (`reviews_id`),
   KEY `fk_reviews_users_users_id_idx` (`created_by`),
   KEY `fk_reviews_books_books_id_idx` (`book_title`),
@@ -262,20 +263,20 @@ DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `users_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_name` varchar(45) NOT NULL,
-  `password` varchar(45) NOT NULL,
+  `password` longtext NOT NULL,
   `first_name` varchar(45) NOT NULL,
   `last_name` varchar(45) NOT NULL,
   `user_age` int(11) DEFAULT NULL,
   `e_mail` varchar(45) NOT NULL,
-  `is_admin` bit(1) NOT NULL,
-  `is_deleted` bit(1) NOT NULL,
-  `is_banned` bit(1) NOT NULL,
+  `is_admin` tinyint(3) NOT NULL,
+  `is_deleted` tinyint(3) NOT NULL,
+  `is_banned` tinyint(3) NOT NULL,
   `gender` int(11) NOT NULL,
   PRIMARY KEY (`users_id`),
   UNIQUE KEY `user_name_UNIQUE` (`user_name`),
   KEY `fk_users_genders_genders_id_idx` (`gender`),
   CONSTRAINT `fk_users_genders_genders_id` FOREIGN KEY (`gender`) REFERENCES `genders` (`genders_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -284,6 +285,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (1,'Ivan','$2b$10$6GvQNt0ej0u7pVNp.APhj.SHTEZm/xjGmJ0KYHRb9dcTjZ8PiIGYK','Ivan','Ivanov',102,'email@email.com',1,0,0,1),(2,'Dragan','$2b$10$dFUL/4t8DcipKUgzyLYTXuL7OwuNddg.JF3XxNZbC3zkonxo.9Oqa','Dragan','Draganov',99,'email@email.com',0,0,0,1),(3,'Gudio','$2b$10$d1bhnDCSGjxbTODD7wKLdeFbELtGdFbsX62Xg4xrtF.7LrkJokJTe','Gudio','Gudev',1,'email@email.com',0,0,0,1),(4,'Margaritka','$2b$10$OBhza.yTsFBSpI6jvBlUqO/uiyUund1WEyE5OyyunzonLcy6HOnge','Margaritka','Tcvetkova',23,'email@email.com',0,0,0,1),(5,'Tcvetelinka','$2b$10$VxPczxMYA0ktVy1xEt6ATu4txKcMtPbvN130EP1NE9.pQLgj09Qie','Tcvetelinka','Protnikova',22,'email@email.com',0,0,0,1),(6,'Kina','$2b$10$.pWJJblSVlJMz1LZjZH4UORKAskCA3.C1xH0KAWBiHOFgcEEWKvBq','Kina','Chugunova',99,'email@email.com',0,0,0,1),(7,'Roza','$2b$10$EyIazoccCd7UNEQBJZoRNOnEplCo3cQMw8jY1X/.oE45TCrW3gNw6','Roza','Chugunova',92,'email@email.com',1,0,0,1);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -296,4 +298,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-04-13  8:43:42
+-- Dump completed on 2021-04-13 21:20:15

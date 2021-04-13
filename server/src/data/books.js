@@ -49,6 +49,15 @@ const borrowBook = async (id) => {
   `);
 };
 
+const returnBook = async (id) => {
+  return await pool.query(`
+    UPDATE books SET
+    books.is_borrowed = 0
+    WHERE books.books_id = '${id}'
+    AND books.is_borrowed = 1
+  `);
+};
+
 const updateBookSQL = async (book) => {
   const { books_id, title, author, genre, age_recommendation,
           isbn, publishing_year, language, print_length } = book;
@@ -112,5 +121,6 @@ export default {
   borrowBook,
   updateBookSQL,
   createBook,
-  deleteBook
+  deleteBook,
+  returnBook
 }
