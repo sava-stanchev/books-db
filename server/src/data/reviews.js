@@ -14,9 +14,9 @@ const getAllReviews = async () => {
 
 const getReviewsForBook = async (id) => {
   return await pool.query(`
-    SELECT content FROM books b
-    JOIN reviews r
-      ON b.title = r.book_title
+    SELECT content FROM books AS b
+    JOIN reviews AS r
+      ON b.books_id = r.books_id
       WHERE b.is_deleted != 1 AND b.books_id = '${id}'
   `);
 };

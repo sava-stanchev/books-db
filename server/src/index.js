@@ -150,8 +150,8 @@ app.patch('/books/:id', authMiddleware, async (req, res) => {
     }
 });
 
-// read all reviews for a book
-app.get('/books/:id/reviews', async (req, res) => {
+// read all reviews for a book - working
+app.get('/books/:id/reviews', authMiddleware, async (req, res) => {
     const {
         id
     } = req.params;
@@ -171,7 +171,7 @@ app.get('/books/:id/reviews', async (req, res) => {
     }
 });
 
-// create book review - SPH
+// create book review - works
 app.post('/reviews', authMiddleware, async (req, res) => {
     const a = req.body.books_id;
     const book = await booksData.getBookById(+req.body.books_id);

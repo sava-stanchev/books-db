@@ -337,6 +337,48 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "12. GET /books/:id/reviews",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2Vyc19pZCI6MSwidXNlcl9uYW1lIjoiSXZhbiIsImlzX2FkbWluIjoxLCJpYXQiOjE2MTgzNDU1NjAsImV4cCI6MTYxODM0OTE2MH0.RE9LzhP_16UmCu2RoG3YAnygJJNj0L2x3so23dYFHCQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5555/books/1/reviews",
+					"host": [
+						"localhost"
+					],
+					"port": "5555",
+					"path": [
+						"books",
+						"1",
+						"reviews"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
