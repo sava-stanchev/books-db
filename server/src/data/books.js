@@ -1,11 +1,5 @@
 import pool from "./pool.js";
 
-const books = [];
-
-let bookId = 1;
-
-const addBook = (book) => books.push(book);
-
 const getAllBooks = async () => {
   return await pool.query(`
     SELECT * FROM books b
@@ -75,19 +69,27 @@ const updateBookSQL = async (book) => {
                                 isbn, publishing_year, language, print_length]);
 }
 
-const createBook = (book, createdBy) => {
-  books.push({
-    ...book,
-    id: bookId++,
-    createdBy: createdBy,
-    isDeleted: false,
-    isBorrowed: false,
-    readingCount: 0,
-    bookReservation: false,
-    bookCount: 1
-  })
-
-  return books[books.length - 1];
+export const createBook = async (book, createdBy) => {
+const { title, author, genre, age_recommendation, isbn, publishing_year, language, print_length, created_by } = book;
+const sql = `
+      INSERT INTO books (title, author, genre, age_recommendation, isbn, publishing_year, language, print_length, created_by)
+      VALUES 
+        title = ?,
+        author = ?,
+        genre = ?,
+        age_recommendation = ?,
+        isbn = ?,
+        publishing_year = ?,
+        language = ?,
+        print_length = ?,
+        created_by = ?,
+        is_deleted = 0,
+        is_borrowed = 0,
+        book_count = 1,
+        reading_count = 0,
+`;
+return await pool.query(sql, [title, author, genre, age_recommendation, isbn, publishing_year, language, print_length, created_by ])
+  
 };
 
 const deleteBook = async (id) => {
@@ -99,13 +101,12 @@ const deleteBook = async (id) => {
 };
 
 export default {
-  addBook,
   getAllBooks,
   searchBooksByTitle,
   sortBooksByYear,
   getBookById,
   borrowBook,
   updateBookSQL,
-  createBook,
+  //createBook,
   deleteBook
 }

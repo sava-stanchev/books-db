@@ -4,7 +4,7 @@ export default {
     password: `Expected string with length [1 - 30]`,
     firstName: `Expected string with length [1 - 20]`,
     lastName: `Expected string with length [1 - 20]`,
-    age: `Expected number bigger than 1`,
+    userAge: `Expected number bigger than 1`,
     gender: `Expected string with length [1 - 30]`,
     e_mail: `Expected valid e-mail`,
   },

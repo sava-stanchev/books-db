@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import booksData from './data/books.js';
+import createBook from './data/books.js';
 import booksService from './services/books-service.js';
 import reviewsData from './data/reviews.js';
 import userCreateValidator from './validators/user-create-validator.js';
@@ -13,6 +14,8 @@ import dotenv from 'dotenv';
 import createToken from './auth/create-token.js';
 import serviceErrors from './services/service-errors.js';
 import { signInUser } from './services/users-service.js';
+import bcrypt from 'bcrypt';
+import { getAllUsers, createUser } from './data/users.js';
 
 const config = dotenv.config().parsed;
 
@@ -25,11 +28,16 @@ app.use(helmet());
 app.use(express.json());
 
 // register user - SPH
-app.post('/users', validateBody('users', userCreateValidator), async (req, res) => {
+app.post('/users', async (req, res) => {
     const user = req.body;
     user.password = await bcrypt.hash(user.password, 10);
-    const newUser = await createUser(user);
 
+    const newUser = await createUser(user);
+    if(newUser.error){
+        return res.status(400).json(newUser.response);
+    }
+
+    res.json(newUser.response);
 
 });
 
@@ -77,7 +85,6 @@ app.get('/books', async (req, res) => {
 // create new book - in admin  SPH - ready
 app.post('/admin/books', validateBody('book', bookCreateValidator), async (req, res) => {
     const book = await createBook(req.body, 'user');
-
     res.json(book);
 });
 
@@ -196,6 +203,10 @@ app.delete('/admin/books/:id', async (req, res) => {
 app.put('/admin/users/:id/banstatus', async (req, res) => {});
 
 // delete user - SPH
+app.get('/admin/users', async (req, res) => {
+    const users = await getAllUsers();
+    res.json(users);
+})
 
 // read reviews as admin
 app.get('/admin/reviews', async (req, res) => {
