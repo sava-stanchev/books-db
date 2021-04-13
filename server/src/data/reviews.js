@@ -1,10 +1,10 @@
 import pool from "./pool.js";
+import booksData from '../data/books.js'
 
-const reviews = [];
-
-let reviewId = 1;
-
-const addReview = (review) => reviews.push(review);
+const addReview = async (req) => {
+  console.log(req);
+  const book = await booksData.getBookById();
+};
 
 const getAllReviews = async () => {
   return await pool.query(`
@@ -31,15 +31,29 @@ const updateReview = (id, reviewUpdate) => {
 
 };
 
-const createReview = (review, createdBy) => {
-  reviews.push({
-    ...review,
-    id: reviewId++,
-    isDeleted: false,
-    dateCreated: new Date()
-  })
+const createReview = async (review, createdBy) => {
+  const {
+    users_id,
+    books_id,
+    date_created,
+    is_deleted,
+    content
+  } = review;
+  
+  const sqlNewReview = `
+  INSERT INTO reviews (users_id, books_id, date_created, is_deleted, content)
+  VALUES (?, ?, ? , ?, ?)
+  `;
+  const result = await pool.query(sqlNewReview, [users_id, books_id, date_created, is_deleted, content]);
+  const sql = `SELECT * FROM reviews AS r
+              WHERE r.reviews_id = ?
+`;
+  const createdReview = (await pool.query(sql, [result.insertId]))[0];
 
-  return reviews[reviews.length - 1];
+  return {
+    success: true,
+    response: createdReview
+  };
 };
 
 export default {

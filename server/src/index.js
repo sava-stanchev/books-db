@@ -21,10 +21,11 @@ import {
     getAllUsers,
     createUser
 } from './data/users.js';
-import usersData from './data/users.js'
+import usersData from './data/users.js';
 import { authMiddleware } from './auth/auth-middleware.js';
-import passport from 'passport'
-import jwtStrategy from './auth/strategy.js'
+import passport from 'passport';
+import jwtStrategy from './auth/strategy.js';
+import books from './data/books.js';
 
 const config = dotenv.config().parsed;
 
@@ -171,7 +172,16 @@ app.get('/books/:id/reviews', async (req, res) => {
 });
 
 // create book review - SPH
-app.post('/reviews', (req, res) => {
+app.post('/reviews', authMiddleware, async (req, res) => {
+    const a = req.body.books_id;
+    const book = await booksData.getBookById(+req.body.books_id);
+    if (!book[0]) {
+        res.status(404).json({msg: `Book was not found!`});
+    }
+
+    const review = await reviewsData.createReview(req.body);
+    
+    res.status(200).json(review);
 
 });
 

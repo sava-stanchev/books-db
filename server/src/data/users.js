@@ -38,9 +38,7 @@ export const createUser = async (user) => {
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
     const result = await pool.query(sqlNewUser, [user.userName, user.password, user.firstName, user.lastName, user.userAge, user.e_mail, user.is_admin, user.is_deleted, user.is_banned, user.gender]);
-    console.log('----------------');
-    console.log(result);
-    console.log('----------------');
+
     const sql = `SELECT u.user_name, u.first_name, u.last_name
                 FROM users AS u
                 WHERE u.users_id = ?

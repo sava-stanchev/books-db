@@ -29,7 +29,7 @@ const sortBooksByYear = async (sort) => {
       SELECT * FROM books b
       WHERE b.is_deleted != 1
       ORDER BY b.publishing_year DESC
-    `);  
+    `);
   }
 };
 
@@ -37,7 +37,7 @@ const getBookById = async (id) => {
   return await pool.query(`
     SELECT * FROM books b
     WHERE b.is_deleted != 1 AND b.books_id = '${id}'
-  `);  
+  `);
 };
 
 const borrowBook = async (id) => {
@@ -59,9 +59,18 @@ const returnBook = async (id) => {
 };
 
 const updateBookSQL = async (book) => {
-  const { books_id, title, author, genre, age_recommendation,
-          isbn, publishing_year, language, print_length } = book;
-  
+  const {
+    books_id,
+    title,
+    author,
+    genre,
+    age_recommendation,
+    isbn,
+    publishing_year,
+    language,
+    print_length
+  } = book;
+
   const sql = `
       UPDATE books SET
         title = ?,
@@ -76,33 +85,43 @@ const updateBookSQL = async (book) => {
   `;
 
   return await pool.query(sql, [books_id, title, author, genre, age_recommendation,
-                                isbn, publishing_year, language, print_length]);
+    isbn, publishing_year, language, print_length
+  ]);
 }
 
 const createBook = async (book, createdBy) => {
-console.log('*************');
+  console.log('*************');
   console.log(book);
-  const { title, author, genre, age_recommendation, isbn, publishing_year, language, print_length, created_by } = book;
+  const {
+    title,
+    author,
+    genre,
+    age_recommendation,
+    isbn,
+    publishing_year,
+    language,
+    print_length,
+    created_by
+  } = book;
 
-const sql = `
+  const sqlNewBook = `
       INSERT INTO books (title, author, genre, age_recommendation, isbn, publishing_year, language, print_length, created_by)
-      VALUES 
-        title = ?,
-        author = ?,
-        genre = ?,
-        age_recommendation = ?,
-        isbn = ?,
-        publishing_year = ?,
-        language = ?,
-        print_length = ?,
-        created_by = ?,
-        is_deleted = 0,
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,  is_deleted = 0,
         is_borrowed = 0,
         book_count = 1,
-        reading_count = 0,
+        reading_count = 0)
 `;
-return await pool.query(sql, [title, author, genre, age_recommendation, isbn, publishing_year, language, print_length, created_by ])
-  
+  const result = await pool.query(sqlNewBook, [title, author, genre, age_recommendation, isbn, publishing_year, language, print_length, created_by])
+
+  const sql = `SELECT * FROM books AS b
+              WHERE b.books_id = ?
+`;
+  const createdBook = (await pool.query(sql, [result.insertId]))[0];
+
+  return {
+    success: true,
+    response: createdBook
+  };
 };
 
 const deleteBook = async (id) => {

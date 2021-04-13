@@ -233,15 +233,15 @@ CREATE TABLE `reviews` (
   `reviews_id` int(11) NOT NULL AUTO_INCREMENT,
   `content` longtext NOT NULL,
   `date_created` date NOT NULL,
-  `created_by` int(11) NOT NULL,
-  `book_title` int(11) NOT NULL,
+  `users_id` int(11) NOT NULL,
+  `books_id` int(11) NOT NULL,
   `is_deleted` tinyint(3) NOT NULL,
   PRIMARY KEY (`reviews_id`),
-  KEY `fk_reviews_users_users_id_idx` (`created_by`),
-  KEY `fk_reviews_books_books_id_idx` (`book_title`),
-  CONSTRAINT `fk_reviews_books_books_id` FOREIGN KEY (`book_title`) REFERENCES `books` (`books_id`),
-  CONSTRAINT `fk_reviews_users_users_id` FOREIGN KEY (`created_by`) REFERENCES `users` (`users_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  KEY `fk_reviews_users_users_id_idx` (`users_id`),
+  KEY `fk_reviews_books_books_id_idx` (`books_id`),
+  CONSTRAINT `fk_reviews_books_books_id` FOREIGN KEY (`books_id`) REFERENCES `books` (`books_id`),
+  CONSTRAINT `fk_reviews_users_users_id` FOREIGN KEY (`users_id`) REFERENCES `users` (`users_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -250,6 +250,7 @@ CREATE TABLE `reviews` (
 
 LOCK TABLES `reviews` WRITE;
 /*!40000 ALTER TABLE `reviews` DISABLE KEYS */;
+INSERT INTO `reviews` VALUES (1,'Text to publish','2021-04-12',1,1,0);
 /*!40000 ALTER TABLE `reviews` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -298,4 +299,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-04-13 21:20:15
+-- Dump completed on 2021-04-13 23:43:00
