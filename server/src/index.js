@@ -27,7 +27,7 @@ app.use(cors());
 app.use(helmet());
 app.use(express.json());
 
-// register user - SPH
+// register user - SPH - work
 app.post('/users', async (req, res) => {
     const user = req.body;
     user.password = await bcrypt.hash(user.password, 10);
@@ -203,6 +203,8 @@ app.delete('/admin/books/:id', async (req, res) => {
 app.put('/admin/users/:id/banstatus', async (req, res) => {});
 
 // delete user - SPH
+
+// get all users - SPH - work
 app.get('/admin/users', async (req, res) => {
     const users = await getAllUsers();
     res.json(users);
