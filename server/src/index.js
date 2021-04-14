@@ -35,7 +35,7 @@ app.use(express.json());
 passport.use(jwtStrategy);
 app.use(passport.initialize());
 
-// register user - SPH - work
+// register user - work
 app.post('/users', loggedUserGuard, async (req, res) => {
     const user = req.body;
     user.password = await bcrypt.hash(user.password, 10);
@@ -68,16 +68,14 @@ app.post('/login', async (req, res) => {
     }
 });
 
-// logout - working
+// logout - work
 app.delete('/logout', authMiddleware, async (req, res) => {
     await logoutUser(req.headers.authorization.replace('Bearer ', ''));
 
     res.json({ message: 'Successfully logged out!'});
 });
 
-
-
-// retrieve all books - working
+// retrieve all books - work
 app.get('/books', authMiddleware, loggedUserGuard, async (req, res) => {
     const {
         title,
@@ -95,7 +93,7 @@ app.get('/books', authMiddleware, loggedUserGuard, async (req, res) => {
     res.json(theBooks);
 });
 
-// create new book - in admin  - working to check validator
+// create new book - in admin  - work to check validator
 app.post('/admin/books', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), validateBody('book', bookCreateValidator), async (req, res) => {
     console.log(req.user);
     const book = await booksData.createBook( req.body, req.user);
@@ -103,9 +101,36 @@ app.post('/admin/books', authMiddleware, loggedUserGuard, roleAuth(userRole.Admi
     res.json(book);
 });
 
-// view individual book by id - working
+// view individual book by id - work
 app.get('/books/:id', authMiddleware, loggedUserGuard, async (req, res) => {
     res.json(await booksData.getBookById(+req.params.id))
+});
+
+// update any book as admin
+app.put('/admin/books/:id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), validateBody('book', bookUpdateValidator), async (req, res) => {
+    const {
+        id
+    } = req.params;
+    const updateData = req.body;
+    const updatedBook = await booksService.updateBook(+id, updateData);
+
+    if (!updatedBook) {
+        res.status(404).send({
+            message: 'Book not found!'
+        });
+    } else {
+        res.send({
+            message: 'Book updated!'
+        });
+    }
+});
+
+// delete any book as admin
+app.delete('/admin/books/:id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
+    await booksData.deleteBook(+req.params.id);
+    res.json({
+        message: `Book deleted`,
+    });
 });
 
 // borrow a book by id - working
@@ -129,7 +154,7 @@ app.post('/books/:id', authMiddleware, loggedUserGuard, async (req, res) => {
     }
 });
 
-// return a book by id - working
+// return a book by id - work
 app.patch('/books/:id', authMiddleware, loggedUserGuard, async (req, res) => {
     const book = await booksData.returnBook(+req.params.id);
     if (!book) {
@@ -214,32 +239,7 @@ app.delete('/books/:id/reviews/:reviewId', (req, res) => {
 
 // read any book admin 
 
-// update any book as admin
-app.put('/admin/books/:id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), validateBody('book', bookUpdateValidator), async (req, res) => {
-    const {
-        id
-    } = req.params;
-    const updateData = req.body;
-    const updatedBook = await booksService.updateBook(+id, updateData);
 
-    if (!updatedBook) {
-        res.status(404).send({
-            message: 'Book not found!'
-        });
-    } else {
-        res.send({
-            message: 'Book updated!'
-        });
-    }
-});
-
-// delete any book as admin
-app.delete('/admin/books/:id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
-    await booksData.deleteBook(+req.params.id);
-    res.json({
-        message: `Book deleted`,
-    });
-});
 
 // ban user 
 app.post('/admin/users/:id/ban', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
@@ -260,7 +260,7 @@ app.delete('/admin/users/:id', authMiddleware, loggedUserGuard, roleAuth(userRol
     res.status(200).json({message: 'User was successful deleted!'});
 });
 
-// get all users - SPH - work
+// get all users - work
 app.get('/admin/users', authMiddleware, loggedUserGuard, async (req, res) => {
     const users = await usersData.getAllUsers();
     res.json(users);

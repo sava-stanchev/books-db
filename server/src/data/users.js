@@ -72,8 +72,11 @@ export const logoutUser = async (token) => {
 };
 
 const deleteUser = async (id) => {
-    console.log('delete');
     await pool.query(`UPDATE users AS u SET u.is_deleted = 1 WHERE u.users_id = ?`, [id]);
+}
+
+const returnUser = async (id) => {
+
 }
 
 export default {
