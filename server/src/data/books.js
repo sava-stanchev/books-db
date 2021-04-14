@@ -89,9 +89,7 @@ const updateBookSQL = async (book) => {
   ]);
 }
 
-const createBook = async (book, createdBy) => {
-  console.log('*************');
-  console.log(book);
+const createBook = async (book, user) => {
   const {
     title,
     author,
@@ -100,18 +98,16 @@ const createBook = async (book, createdBy) => {
     isbn,
     publishing_year,
     language,
-    print_length,
-    created_by
+    print_length
   } = book;
+  console.log(book);
+  const {user_id, user_name, is_admin} = user;
 
   const sqlNewBook = `
-      INSERT INTO books (title, author, genre, age_recommendation, isbn, publishing_year, language, print_length, created_by)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,  is_deleted = 0,
-        is_borrowed = 0,
-        book_count = 1,
-        reading_count = 0)
+      INSERT INTO books (title, author, genre, age_recommendation, isbn, publishing_year, language, print_length, created_by, is_deleted, is_borrowed, book_count, reading_count )
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 0, 1, 0)
 `;
-  const result = await pool.query(sqlNewBook, [title, author, genre, age_recommendation, isbn, publishing_year, language, print_length, created_by])
+  const result = await pool.query(sqlNewBook, [title, author, +genre, age_recommendation, isbn, publishing_year, +language, print_length, user_id]);
 
   const sql = `SELECT * FROM books AS b
               WHERE b.books_id = ?

@@ -14,11 +14,11 @@ export default {
   // -	readingConts - number
   title: (value) => typeof value === 'string' && value.length > 1 && value.length < 256,
   author: (value) => typeof value === 'string' && value.length > 3 && value.length < 256,
-  genre: (value) => typeof value === 'string' && value.length > 1 && value.length < 40, // to check
+  genre: (value) => typeof value === 'number',
   age: (value) => typeof value === 'number' && value > 1,
   isbn: (value) => typeof +value === 'string' && value.length === 10,
   publishingYear: (value) => typeof +value === 'number',
-  language: (value) => typeof value === 'string',
+  language: (value) => typeof value === 'number',
   printLength: (value) => typeof +value === 'number' && value > 1,
   isDeleted: (value) => typeof value === 'boolean',
   isBorrowed: (value) => typeof value === 'boolean',

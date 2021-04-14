@@ -3,10 +3,13 @@ import bcrypt from 'bcrypt';
 import pool from '../data/pool.js';
 
 
-export const signInUser = async({userName, password}) => {
+export const signInUser = async ({
+    userName,
+    password
+}) => {
 
     const userData = await pool.query('SELECT * FROM users AS u WHERE u.user_name = ?', [userName]);
-    if(userData.length === 0) {
+    if (userData.length === 0) {
         throw new Error('Username does not exist!');
     }
 

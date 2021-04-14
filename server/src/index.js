@@ -102,10 +102,9 @@ app.get('/books', authMiddleware, async (req, res) => {
 });
 
 // create new book - in admin  SPH
-app.post('/admin/books', authMiddleware, validateBody('book', bookCreateValidator), async (req, res) => {
-    const a = req.body;
-    const book = await booksData.createBook({ a,
-        users_id: req.user.users_id});
+app.post('/admin/books', authMiddleware, validateBody('book', bookCreateValidator), async (req, res) => { //validateBody('book', bookCreateValidator)
+    console.log(req.user);
+    const book = await booksData.createBook( req.body, req.user);
 
     res.json(book);
 });

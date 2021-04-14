@@ -20,6 +20,9 @@ export const getAllUsers = async () => {
 
 //     return result[0];
 // }
+export const getUserById = async (userId) => {
+
+};
 
 export const createUser = async (user) => {
     
