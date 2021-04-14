@@ -84,15 +84,15 @@ app.get('/books', authMiddleware, async (req, res) => {
     res.json(theBooks);
 });
 
-// create new book - in admin  SPH
-app.post('/admin/books', authMiddleware, validateBody('book', bookCreateValidator), async (req, res) => { //validateBody('book', bookCreateValidator)
+// create new book - in admin  - working to check validator
+app.post('/admin/books', authMiddleware, validateBody('book', bookCreateValidator), async (req, res) => {
     console.log(req.user);
     const book = await booksData.createBook( req.body, req.user);
 
     res.json(book);
 });
 
-// view individual book by id - SPH - ready
+// view individual book by id - working
 app.get('/books/:id', authMiddleware, async (req, res) => {
     res.json(await booksData.getBookById(+req.params.id))
 });
