@@ -1,0 +1,452 @@
+{
+	"info": {
+		"_postman_id": "966e2f2d-67fd-4d6c-b3aa-35ef705ac86f",
+		"name": "Library",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "retrieve all books",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2Vyc19pZCI6MSwidXNlcl9uYW1lIjoiSXZhbiIsImlzX2FkbWluIjoxLCJpYXQiOjE2MTgzMzgyMzgsImV4cCI6MTYxODM0MTgzOH0.AIQYLBLDVWII2OK8Eg_uDqcUx2nqXSMqhaciSIgPcKE",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:5555/books",
+					"host": [
+						"localhost"
+					],
+					"port": "5555",
+					"path": [
+						"books"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2. POST /admin/books",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2Vyc19pZCI6MSwidXNlcl9uYW1lIjoiSXZhbiIsImlzX2FkbWluIjoxLCJpYXQiOjE2MTgzMjc5NDMsImV4cCI6MTYxODMzMTU0M30.LHzLK9O4Uo3O0e-a1saz8fOieKfI-qz3L5bTuqS43TY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Mort\",\r\n    \"author\": \"Terry Pratchett\",\r\n    \"genre\": \"Fantasy\",\r\n    \"ageRecommendation\": \"12\",\r\n    \"isbn\": \"0575041714\",\r\n    \"publishing_year\": null,\r\n    \"language\": \"english\",\r\n    \"printLength\": \"304\",\r\n    \"createdBy\": \"1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5555/admin/books",
+					"host": [
+						"localhost"
+					],
+					"port": "5555",
+					"path": [
+						"admin",
+						"books"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3.GET /books:id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:5555/books/:1",
+					"host": [
+						"localhost"
+					],
+					"port": "5555",
+					"path": [
+						"books",
+						":1"
+					],
+					"variable": [
+						{
+							"key": "1",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4. POST /admin/books",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Interesting Times\",\r\n    \"author\": \"Terry Pratchett\",\r\n    \"genre\": \"Fantasy\",\r\n    \"ageRecommendation\": \"12\",\r\n    \"isbn\": \"0575058005\",\r\n    \"publicationDate\": \"1995/11/12\",\r\n    \"language\": \"english\",\r\n    \"printLength\": \"298\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5555/admin/books",
+					"host": [
+						"localhost"
+					],
+					"port": "5555",
+					"path": [
+						"admin",
+						"books"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "5. POST /admin/books",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Winnetou\",\r\n    \"author\": \"Karl May\",\r\n    \"genre\": \"Fiction\",\r\n    \"ageRecommendation\": \"8\",\r\n    \"isbn\": \"0000000000\",\r\n    \"publicationDate\": \"1893\",\r\n    \"language\": \"english\",\r\n    \"printLength\": \"486\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5555/admin/books",
+					"host": [
+						"localhost"
+					],
+					"port": "5555",
+					"path": [
+						"admin",
+						"books"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "6. GET /admin/users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:5555/admin/users",
+					"host": [
+						"localhost"
+					],
+					"port": "5555",
+					"path": [
+						"admin",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "7. POST  /users",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userName\": \"Kina\",\r\n    \"password\": \"123456\",\r\n    \"firstName\": \"Kina\",\r\n    \"lastName\": \"Chugunova\",\r\n    \"userAge\": \"99\",\r\n    \"e_mail\": \"email@email.com\",\r\n    \"is_admin\": \"0\",\r\n    \"is_deleted\": \"0\",\r\n    \"is_banned\": \"0\",\r\n    \"gender\": \"1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5555/users",
+					"host": [
+						"localhost"
+					],
+					"port": "5555",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userName\": \"Ivan\",\r\n    \"password\": \"123456\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5555/login",
+					"host": [
+						"localhost"
+					],
+					"port": "5555",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "borrow a book",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2Vyc19pZCI6MSwidXNlcl9uYW1lIjoiSXZhbiIsImlzX2FkbWluIjoxLCJpYXQiOjE2MTgzMzgyMzgsImV4cCI6MTYxODM0MTgzOH0.AIQYLBLDVWII2OK8Eg_uDqcUx2nqXSMqhaciSIgPcKE",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"books_id\": \"1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5555/books/1",
+					"host": [
+						"localhost"
+					],
+					"port": "5555",
+					"path": [
+						"books",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "10. PATCH /books/:id",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2Vyc19pZCI6MSwidXNlcl9uYW1lIjoiSXZhbiIsImlzX2FkbWluIjoxLCJpYXQiOjE2MTgzMzgyMzgsImV4cCI6MTYxODM0MTgzOH0.AIQYLBLDVWII2OK8Eg_uDqcUx2nqXSMqhaciSIgPcKE",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"books_id\": \"1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5555/books/1",
+					"host": [
+						"localhost"
+					],
+					"port": "5555",
+					"path": [
+						"books",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "11. POST /reviews",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2Vyc19pZCI6MSwidXNlcl9uYW1lIjoiSXZhbiIsImlzX2FkbWluIjoxLCJpYXQiOjE2MTgzNDU1NjAsImV4cCI6MTYxODM0OTE2MH0.RE9LzhP_16UmCu2RoG3YAnygJJNj0L2x3so23dYFHCQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"users_id\": \"1\",\r\n    \"books_id\": \"1\",\r\n    \"date_created\": \"2021-04-12\",\r\n    \"is_deleted\": \"0\",\r\n    \"content\": \"Text to publish\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5555/reviews",
+					"host": [
+						"localhost"
+					],
+					"port": "5555",
+					"path": [
+						"reviews"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "read a book's reviews",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2Vyc19pZCI6MSwidXNlcl9uYW1lIjoiSXZhbiIsImlzX2FkbWluIjoxLCJpYXQiOjE2MTgzNDU1NjAsImV4cCI6MTYxODM0OTE2MH0.RE9LzhP_16UmCu2RoG3YAnygJJNj0L2x3so23dYFHCQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5555/books/1/reviews",
+					"host": [
+						"localhost"
+					],
+					"port": "5555",
+					"path": [
+						"books",
+						"1",
+						"reviews"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete book (admin)",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:5555/admin/books/1",
+					"host": [
+						"localhost"
+					],
+					"port": "5555",
+					"path": [
+						"admin",
+						"books",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update book (admin)",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"language\": \"9\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5555/admin/books/1",
+					"host": [
+						"localhost"
+					],
+					"port": "5555",
+					"path": [
+						"admin",
+						"books",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "read all reviews (admin)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:5555/admin/reviews",
+					"host": [
+						"localhost"
+					],
+					"port": "5555",
+					"path": [
+						"admin",
+						"reviews"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
