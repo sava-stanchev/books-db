@@ -19,6 +19,8 @@ import jwtStrategy from './auth/strategy.js';
 import loggedUserGuard from './middlewares/loggedUserGuard.js';
 import roleAuth from './middlewares/role-auth.js';
 import { userRole } from './common/user-role.js'
+import banGuard from './middlewares/ban-guard.js';
+import loggedUserGuard from './middlewares/loggedUserGuard.js'
 
 const config = dotenv.config().parsed;
 
@@ -240,7 +242,10 @@ app.delete('/admin/books/:id', authMiddleware, loggedUserGuard, roleAuth(userRol
 });
 
 // ban user 
-app.put('/admin/users/:id/banstatus', async (req, res) => {});
+app.post('/admin/users/:id/ban', async (req, res) => {
+    await usersData.banUser(+req.params.id);
+    res.json({ message: `User (${req.params.id}) banned!` });  
+});
 
 // delete user - SPH
 
