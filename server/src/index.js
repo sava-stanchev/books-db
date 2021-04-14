@@ -12,13 +12,19 @@ import transformBody from './middlewares/transform-body.js';
 import dotenv from 'dotenv';
 import createToken from './auth/create-token.js';
 import bcrypt from 'bcrypt';
-import usersData, { logoutUser } from './data/users.js';
-import { authMiddleware } from './auth/auth-middleware.js';
+import usersData, {
+    logoutUser
+} from './data/users.js';
+import {
+    authMiddleware
+} from './auth/auth-middleware.js';
 import passport from 'passport';
 import jwtStrategy from './auth/strategy.js';
 import loggedUserGuard from './middlewares/loggedUserGuard.js';
 import roleAuth from './middlewares/role-auth.js';
-import { userRole } from './common/user-role.js'
+import {
+    userRole
+} from './common/user-role.js'
 import banGuard from './middlewares/ban-guard.js';
 import pool from './data/pool.js';
 
@@ -59,12 +65,18 @@ app.post('/login', async (req, res) => {
                 user_name: user.user_name,
                 is_admin: user.is_admin
             })
-            res.json({ token });
+            res.json({
+                token
+            });
         } else {
-            res.status(401).json({ error: 'Invalid credentials!' })
+            res.status(401).json({
+                error: 'Invalid credentials!'
+            })
         }
     } catch (error) {
-        res.status(400).json({ error: error.message });
+        res.status(400).json({
+            error: error.message
+        });
     }
 });
 
@@ -72,7 +84,9 @@ app.post('/login', async (req, res) => {
 app.delete('/logout', authMiddleware, async (req, res) => {
     await logoutUser(req.headers.authorization.replace('Bearer ', ''));
 
-    res.json({ message: 'Successfully logged out!'});
+    res.json({
+        message: 'Successfully logged out!'
+    });
 });
 
 // retrieve all books - work
@@ -96,7 +110,7 @@ app.get('/books', authMiddleware, loggedUserGuard, async (req, res) => {
 // create new book - in admin  - work to check validator
 app.post('/admin/books', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), validateBody('book', bookCreateValidator), async (req, res) => {
     console.log(req.user);
-    const book = await booksData.createBook( req.body, req.user);
+    const book = await booksData.createBook(req.body, req.user);
 
     res.json(book);
 });
@@ -135,7 +149,9 @@ app.delete('/admin/books/:id', authMiddleware, loggedUserGuard, roleAuth(userRol
 
 // borrow a book by id - working
 app.post('/books/:id', authMiddleware, loggedUserGuard, async (req, res) => {
-    const { id } = req.params;
+    const {
+        id
+    } = req.params;
     const theBook = await booksData.getBookById(+id);
     if (!theBook) {
         return res.status(404).json({
@@ -194,11 +210,13 @@ app.post('/reviews', authMiddleware, loggedUserGuard, async (req, res) => {
     const a = req.body.books_id;
     const book = await booksData.getBookById(+req.body.books_id);
     if (!book[0]) {
-        res.status(404).json({msg: `Book was not found!`});
+        res.status(404).json({
+            msg: `Book was not found!`
+        });
     }
 
     const review = await reviewsData.createReview(req.body);
-    
+
     res.status(200).json(review);
 
 });
@@ -225,10 +243,39 @@ app.put('/books/:id/reviews/:reviewId', authMiddleware, loggedUserGuard, async (
     });
 });
 
-// delete book review - SPH
-app.delete('/books/:id/reviews/:reviewId', (req, res) => {
+// delete book review - work
+app.delete('/reviews/:reviews_id', authMiddleware, loggedUserGuard, async (req, res) => {
 
-    res.json({
+    const review = await reviewsData.getReviewById(req.params.reviews_id);
+    if (!review || review.is_deleted === 1) {
+        res.status(400).json({
+            message: 'Review not found!'
+        });
+    }
+    if (review.users_id !== req.user.user_id) {
+        return res.status(403).json({
+            message: 'You are not authorized to delete this review!'
+        })
+    }
+    await reviewsData.deleteReview(req.params.reviews_id);
+
+    res.status(200).json({
+        message: `Review deleted`,
+    });
+});
+
+// delete any review from admin - work
+app.delete('/admin/reviews/:reviews_id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
+    console.log('++++++++++');
+    const review = await reviewsData.getReviewById(req.params.reviews_id);
+    if (!review || review.is_deleted === 1) {
+        res.status(400).json({
+            message: 'Review not found!'
+        });
+    }
+    await reviewsData.deleteReview(req.params.reviews_id);
+
+    res.status(200).json({
         message: `Review deleted`,
     });
 });
@@ -244,21 +291,55 @@ app.delete('/books/:id/reviews/:reviewId', (req, res) => {
 // ban user 
 app.post('/admin/users/:id/ban', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
     await usersData.banUser(+req.params.id);
-    res.json({ message: `User (${req.params.id}) banned!` });  
+    res.json({
+        message: `User (${req.params.id}) banned!`
+    });
 });
 
-// delete user - working
-app.delete('/admin/users/:id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async(req, res) => {
-    console.log(req.params.id);
-    const user = await usersData.getUserById(req.params.id);
+// delete user - work
+app.delete('/admin/users/:id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
+    try {
+        const user = await usersData.getUserById(req.params.id);
 
-    if(!user || user.is_deleted) {
-        res.status(400).json({message: 'User not found or already was deleted!'});
+        if (!user || user.is_deleted) {
+            res.status(400).json({
+                message: 'User not found or already was deleted!'
+            });
+        }
+
+        await usersData.deleteUser(user.users_id);
+        res.status(200).json({
+            message: 'User was successful deleted!'
+        });
+    } catch (error) {
+        return res.status(400).json({
+            error: error.message
+        });
+    }
+});
+
+// return user - work
+app.put('/admin/users/:id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
+    try {
+        const user = await usersData.getUserById(req.params.id);
+        if (!user) {
+            res.status(400).json({
+                message: 'User not found!'
+            });
+        }
+
+        await usersData.returnUser(user.users_id);
+        res.status(200).json({
+            message: 'User was successful returned!'
+        });
+    } catch (error) {
+        return res.status(400).json({
+            error: error.message
+        });
     }
 
-    await usersData.deleteUser(user.users_id);
-    res.status(200).json({message: 'User was successful deleted!'});
-});
+
+})
 
 // get all users - work
 app.get('/admin/users', authMiddleware, loggedUserGuard, async (req, res) => {

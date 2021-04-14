@@ -19,7 +19,7 @@ const createUser = async (user) => {
             }
         }
     }
-    // console.log('HI HI HI');
+   
     const sqlNewUser = `
     INSERT INTO users (user_name, password, first_name, last_name, user_age, e_mail, is_admin, is_deleted, is_banned, gender) 
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -60,7 +60,7 @@ const banUser = async (id) => {
       await pool.query(`UPDATE users u SET u.ban_date = ? WHERE u.users_id = ?`, [new Date(Date.now() + 10 * 24 * 3600 * 1000), id]);
     }
 };
-  
+
 const liftBan = async (id) => {
     await pool.query(`UPDATE users u SET u.ban_date = NULL WHERE u.users_id = ?`, [id]);
 };
@@ -76,7 +76,7 @@ const deleteUser = async (id) => {
 }
 
 const returnUser = async (id) => {
-
+    await pool.query(`UPDATE users AS u SET u.is_deleted = 0 WHERE u.users_id = ?`, [id]);
 }
 
 export default {
@@ -86,5 +86,6 @@ export default {
     banUser,
     liftBan,
     getUserById,
-    deleteUser
+    deleteUser,
+    returnUser
 }

@@ -21,7 +21,16 @@ const getReviewsForBook = async (id) => {
   `);
 };
 
-const getReviewById = (id) => reviews.find(review => review.id === id);
+const getReviewById = async (id) => {
+  const sql = `
+  SELECT * FROM reviews AS r
+  WHERE r.reviews_id = ?
+  `;
+
+  const result = await pool.query(sql, [id]);  
+  return result[0];
+
+};
 
 // user owner check?
 const updateReview = (id, reviewUpdate) => {
@@ -56,11 +65,16 @@ const createReview = async (review, createdBy) => {
   };
 };
 
+const deleteReview = async (id) => {
+  await pool.query(`UPDATE reviews AS r SET r.is_deleted = 1 WHERE r.reviews_id = ?`, [id]);
+}
+
 export default {
   addReview,
   getAllReviews,
   getReviewsForBook,
   getReviewById,
   updateReview,
-  createReview
+  createReview,
+  deleteReview
 }
