@@ -16,7 +16,9 @@ import usersData, { logoutUser } from './data/users.js';
 import { authMiddleware } from './auth/auth-middleware.js';
 import passport from 'passport';
 import jwtStrategy from './auth/strategy.js';
-import loggedUserGuard from './middlewares/loggedUserGuard.js'
+import loggedUserGuard from './middlewares/loggedUserGuard.js';
+import roleAuth from './middlewares/role-auth.js';
+import { userRole } from './common/user-role.js'
 
 const config = dotenv.config().parsed;
 
@@ -92,7 +94,7 @@ app.get('/books', authMiddleware, loggedUserGuard, async (req, res) => {
 });
 
 // create new book - in admin  - working to check validator
-app.post('/admin/books', authMiddleware, loggedUserGuard,  validateBody('book', bookCreateValidator), async (req, res) => {
+app.post('/admin/books', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), validateBody('book', bookCreateValidator), async (req, res) => {
     console.log(req.user);
     const book = await booksData.createBook( req.body, req.user);
 
@@ -125,7 +127,7 @@ app.post('/books/:id', authMiddleware, loggedUserGuard, async (req, res) => {
     }
 });
 
-// return a book by id - SPH - working
+// return a book by id - working
 app.patch('/books/:id', authMiddleware, loggedUserGuard, async (req, res) => {
     const book = await booksData.returnBook(+req.params.id);
     if (!book) {
@@ -160,7 +162,7 @@ app.get('/books/:id/reviews', authMiddleware, loggedUserGuard, async (req, res) 
     }
 });
 
-// create book review - works
+// create book review - works to change
 app.post('/reviews', authMiddleware, loggedUserGuard, async (req, res) => {
     const a = req.body.books_id;
     const book = await booksData.getBookById(+req.body.books_id);
@@ -211,7 +213,7 @@ app.delete('/books/:id/reviews/:reviewId', (req, res) => {
 // read any book
 
 // update any book as admin
-app.put('/admin/books/:id', authMiddleware, loggedUserGuard, validateBody('book', bookUpdateValidator), async (req, res) => {
+app.put('/admin/books/:id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), validateBody('book', bookUpdateValidator), async (req, res) => {
     const {
         id
     } = req.params;
@@ -230,7 +232,7 @@ app.put('/admin/books/:id', authMiddleware, loggedUserGuard, validateBody('book'
 });
 
 // delete any book as admin
-app.delete('/admin/books/:id', authMiddleware, loggedUserGuard, async (req, res) => {
+app.delete('/admin/books/:id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
     await booksData.deleteBook(+req.params.id);
     res.json({
         message: `Book deleted`,
