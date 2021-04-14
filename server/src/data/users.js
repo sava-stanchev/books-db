@@ -65,11 +65,16 @@ const liftBan = async (id) => {
     await pool.query(`UPDATE users u SET u.ban_date = NULL WHERE u.users_id = ?`, [id]);
 };
 
-const getUserById = async (id) => (await pool.query('SELECT * FROM users u WHERE u.users_id = ?', [id]))[0];
-  
+const getUserById = async (id) => (await pool.query('SELECT * FROM users AS u WHERE u.users_id = ?', [id]))[0];
+
 export const logoutUser = async (token) => {
     return await pool.query('INSERT INTO tokens (token) VALUES (?)', [token]);
 };
+
+const deleteUser = async (id) => {
+    console.log('delete');
+    await pool.query(`UPDATE users AS u SET u.is_deleted = 1 WHERE u.users_id = ?`, [id]);
+}
 
 export default {
     createUser,
@@ -77,5 +82,6 @@ export default {
     validateUser,
     banUser,
     liftBan,
-    getUserById
+    getUserById,
+    deleteUser
 }

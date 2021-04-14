@@ -20,6 +20,7 @@ import loggedUserGuard from './middlewares/loggedUserGuard.js';
 import roleAuth from './middlewares/role-auth.js';
 import { userRole } from './common/user-role.js'
 import banGuard from './middlewares/ban-guard.js';
+import pool from './data/pool.js';
 
 const config = dotenv.config().parsed;
 
@@ -211,7 +212,7 @@ app.delete('/books/:id/reviews/:reviewId', (req, res) => {
 
 // like reviews - SPH
 
-// read any book
+// read any book admin 
 
 // update any book as admin
 app.put('/admin/books/:id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), validateBody('book', bookUpdateValidator), async (req, res) => {
@@ -246,7 +247,18 @@ app.post('/admin/users/:id/ban', authMiddleware, loggedUserGuard, roleAuth(userR
     res.json({ message: `User (${req.params.id}) banned!` });  
 });
 
-// delete user - SPH
+// delete user - working
+app.delete('/admin/users/:id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async(req, res) => {
+    console.log(req.params.id);
+    const user = await usersData.getUserById(req.params.id);
+
+    if(!user || user.is_deleted) {
+        res.status(400).json({message: 'User not found or already was deleted!'});
+    }
+
+    await usersData.deleteUser(user.users_id);
+    res.status(200).json({message: 'User was successful deleted!'});
+});
 
 // get all users - SPH - work
 app.get('/admin/users', authMiddleware, loggedUserGuard, async (req, res) => {
