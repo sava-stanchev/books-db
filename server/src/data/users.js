@@ -53,8 +53,25 @@ const validateUser = async({ userName, password }) => {
     return null;
 };
 
+const banUser = async (id) => {
+    const result = await pool.query(`SELECT * FROM users u WHERE u.users_id = ?`, [id]);
+  
+    if (result && result[0]) {
+      await pool.query(`UPDATE users u SET u.ban_date = ? WHERE u.users_id = ?`, [new Date(Date.now() + 10 * 24 * 3600 * 1000), id]);
+    }
+};
+  
+const liftBan = async (id) => {
+    await pool.query(`UPDATE users u SET u.ban_date = NULL WHERE u.users_id = ?`, [id]);
+};
+
+const getUserById = async (id) => (await pool.query('SELECT * FROM users u WHERE u.users_id = ?', [id]))[0];
+  
 export default {
     createUser,
     getAllUsers,
-    validateUser
+    validateUser,
+    banUser,
+    liftBan,
+    getUserById
 }

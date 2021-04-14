@@ -16,6 +16,7 @@ import usersData from './data/users.js';
 import { authMiddleware } from './auth/auth-middleware.js';
 import passport from 'passport';
 import jwtStrategy from './auth/strategy.js';
+import banGuard from './middlewares/ban-guard.js';
 
 const config = dotenv.config().parsed;
 
@@ -231,7 +232,10 @@ app.delete('/admin/books/:id', async (req, res) => {
 });
 
 // ban user 
-app.put('/admin/users/:id/banstatus', async (req, res) => {});
+app.post('/admin/users/:id/ban', async (req, res) => {
+    await usersData.banUser(+req.params.id);
+    res.json({ message: `User (${req.params.id}) banned!` });  
+});
 
 // delete user - SPH
 
