@@ -339,7 +339,7 @@
 			"response": []
 		},
 		{
-			"name": "read book reviews",
+			"name": "read a book's reviews",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -424,6 +424,25 @@
 						"admin",
 						"books",
 						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "read all reviews (admin)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:5555/admin/reviews",
+					"host": [
+						"localhost"
+					],
+					"port": "5555",
+					"path": [
+						"admin",
+						"reviews"
 					]
 				}
 			},
