@@ -12,10 +12,11 @@ import transformBody from './middlewares/transform-body.js';
 import dotenv from 'dotenv';
 import createToken from './auth/create-token.js';
 import bcrypt from 'bcrypt';
-import usersData from './data/users.js';
+import usersData, { logoutUser } from './data/users.js';
 import { authMiddleware } from './auth/auth-middleware.js';
 import passport from 'passport';
 import jwtStrategy from './auth/strategy.js';
+import loggedUserGuard from './middlewares/loggedUserGuard.js'
 
 const config = dotenv.config().parsed;
 
@@ -31,7 +32,7 @@ passport.use(jwtStrategy);
 app.use(passport.initialize());
 
 // register user - SPH - work
-app.post('/users',  async (req, res) => {
+app.post('/users', loggedUserGuard, async (req, res) => {
     const user = req.body;
     user.password = await bcrypt.hash(user.password, 10);
 
@@ -63,11 +64,17 @@ app.post('/login', async (req, res) => {
     }
 });
 
-// logout - SPH
-app.post('/users', (req, res) => {});
+// logout - working
+app.delete('/logout', authMiddleware, async (req, res) => {
+    await logoutUser(req.headers.authorization.replace('Bearer ', ''));
+
+    res.json({ message: 'Successfully logged out!'});
+});
+
+
 
 // retrieve all books - working
-app.get('/books', authMiddleware, async (req, res) => {
+app.get('/books', authMiddleware, loggedUserGuard, async (req, res) => {
     const {
         title,
         sort
@@ -85,7 +92,7 @@ app.get('/books', authMiddleware, async (req, res) => {
 });
 
 // create new book - in admin  - working to check validator
-app.post('/admin/books', authMiddleware, validateBody('book', bookCreateValidator), async (req, res) => {
+app.post('/admin/books', authMiddleware, loggedUserGuard,  validateBody('book', bookCreateValidator), async (req, res) => {
     console.log(req.user);
     const book = await booksData.createBook( req.body, req.user);
 
@@ -93,12 +100,12 @@ app.post('/admin/books', authMiddleware, validateBody('book', bookCreateValidato
 });
 
 // view individual book by id - working
-app.get('/books/:id', authMiddleware, async (req, res) => {
+app.get('/books/:id', authMiddleware, loggedUserGuard, async (req, res) => {
     res.json(await booksData.getBookById(+req.params.id))
 });
 
 // borrow a book by id - working
-app.post('/books/:id', authMiddleware,  async (req, res) => {
+app.post('/books/:id', authMiddleware, loggedUserGuard, async (req, res) => {
     const { id } = req.params;
     const theBook = await booksData.getBookById(+id);
     if (!theBook) {
@@ -119,7 +126,7 @@ app.post('/books/:id', authMiddleware,  async (req, res) => {
 });
 
 // return a book by id - SPH - working
-app.patch('/books/:id', authMiddleware, async (req, res) => {
+app.patch('/books/:id', authMiddleware, loggedUserGuard, async (req, res) => {
     const book = await booksData.returnBook(+req.params.id);
     if (!book) {
         res.json({
@@ -133,7 +140,7 @@ app.patch('/books/:id', authMiddleware, async (req, res) => {
 });
 
 // read all reviews for a book - working
-app.get('/books/:id/reviews', authMiddleware, async (req, res) => {
+app.get('/books/:id/reviews', authMiddleware, loggedUserGuard, async (req, res) => {
     const {
         id
     } = req.params;
@@ -154,7 +161,7 @@ app.get('/books/:id/reviews', authMiddleware, async (req, res) => {
 });
 
 // create book review - works
-app.post('/reviews', authMiddleware, async (req, res) => {
+app.post('/reviews', authMiddleware, loggedUserGuard, async (req, res) => {
     const a = req.body.books_id;
     const book = await booksData.getBookById(+req.body.books_id);
     if (!book[0]) {
@@ -168,7 +175,7 @@ app.post('/reviews', authMiddleware, async (req, res) => {
 });
 
 // update book review
-app.put('/books/:id/reviews/:reviewId', async (req, res) => {
+app.put('/books/:id/reviews/:reviewId', authMiddleware, loggedUserGuard, async (req, res) => {
     const {
         id
     } = req.params;
@@ -204,7 +211,7 @@ app.delete('/books/:id/reviews/:reviewId', (req, res) => {
 // read any book
 
 // update any book as admin
-app.put('/admin/books/:id', validateBody('book', bookUpdateValidator), async (req, res) => {
+app.put('/admin/books/:id', authMiddleware, loggedUserGuard, validateBody('book', bookUpdateValidator), async (req, res) => {
     const {
         id
     } = req.params;
@@ -223,7 +230,7 @@ app.put('/admin/books/:id', validateBody('book', bookUpdateValidator), async (re
 });
 
 // delete any book as admin
-app.delete('/admin/books/:id', async (req, res) => {
+app.delete('/admin/books/:id', authMiddleware, loggedUserGuard, async (req, res) => {
     await booksData.deleteBook(+req.params.id);
     res.json({
         message: `Book deleted`,
@@ -236,13 +243,13 @@ app.put('/admin/users/:id/banstatus', async (req, res) => {});
 // delete user - SPH
 
 // get all users - SPH - work
-app.get('/admin/users', async (req, res) => {
+app.get('/admin/users', authMiddleware, loggedUserGuard, async (req, res) => {
     const users = await usersData.getAllUsers();
     res.json(users);
 })
 
 // read reviews as admin
-app.get('/admin/reviews', async (req, res) => {
+app.get('/admin/reviews', authMiddleware, loggedUserGuard, async (req, res) => {
     const reviews = await reviewsData.getAllReviews();
 
     res.send(reviews)

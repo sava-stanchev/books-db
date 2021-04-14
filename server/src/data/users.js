@@ -53,6 +53,10 @@ const validateUser = async({ userName, password }) => {
     return null;
 };
 
+export const logoutUser = async (token) => {
+    return await pool.query('INSERT INTO tokens (token) VALUES (?)', [token]);
+  };
+
 export default {
     createUser,
     getAllUsers,
