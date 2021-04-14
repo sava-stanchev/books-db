@@ -1,27 +1,14 @@
 import pool from './pool.js';
+import bcrypt from 'bcrypt';
 
-export const getAllUsers = async () => {
+const getAllUsers = async () => {
     return await pool.query(`
       SELECT * FROM users AS u
       WHERE u.is_deleted != 1
     `);
-  };
+};
 
-// const getWithRole = async (userInfo) => {
-//     const { username, password } = userInfo;
-//     console.log(userInfo);
-//     const sql = `
-//         SELECT u.users_id, u.user_name, u.password, u.is_admin as role
-//         FROM users AS u
-//         WHERE u.user_name = ?
-//     `;
-
-//     const result = await pool.query(sql, [username]);
-
-//     return result[0];
-// }
-
-export const createUser = async (user) => {
+const createUser = async (user) => {
     
     const userExist = await pool.query(`SELECT * FROM users AS u WHERE u.user_name = ?`, [user.userName]);
     if (userExist[0]) {
@@ -52,7 +39,22 @@ export const createUser = async (user) => {
     }
 }
 
+const validateUser = async({ userName, password }) => {
+    const userData = await pool.query('SELECT * FROM users u WHERE u.user_name = ?', [userName]);
+    
+    if(userData.length === 0) {
+        throw new Error('Username does not exist!');
+    }
+
+    if (await bcrypt.compare(password, userData[0].password)) {
+        return userData[0];
+    }
+
+    return null;
+};
+
 export default {
     createUser,
-    getAllUsers
+    getAllUsers,
+    validateUser
 }

@@ -2,7 +2,6 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import booksData from './data/books.js';
-// import createBook from './data/books.js';
 import booksService from './services/books-service.js';
 import reviewsData from './data/reviews.js';
 import userCreateValidator from './validators/user-create-validator.js';
@@ -12,20 +11,11 @@ import validateBody from './middlewares/validate-body.js';
 import transformBody from './middlewares/transform-body.js';
 import dotenv from 'dotenv';
 import createToken from './auth/create-token.js';
-import serviceErrors from './services/service-errors.js';
-import {
-    signInUser
-} from './services/users-service.js';
 import bcrypt from 'bcrypt';
-import {
-    getAllUsers,
-    createUser
-} from './data/users.js';
 import usersData from './data/users.js';
 import { authMiddleware } from './auth/auth-middleware.js';
 import passport from 'passport';
 import jwtStrategy from './auth/strategy.js';
-import books from './data/books.js';
 
 const config = dotenv.config().parsed;
 
@@ -45,7 +35,7 @@ app.post('/users',  async (req, res) => {
     const user = req.body;
     user.password = await bcrypt.hash(user.password, 10);
 
-    const newUser = await createUser(user);
+    const newUser = await usersData.createUser(user);
     if (newUser.error) {
         return res.status(400).json(newUser.response);
     }
@@ -57,26 +47,19 @@ app.post('/users',  async (req, res) => {
 // login  - work
 app.post('/login', async (req, res) => {
     try {
-        const user = await signInUser(req.body);
+        const user = await usersData.validateUser(req.body);
         if (user) {
             const token = createToken({
                 users_id: user.users_id,
                 user_name: user.user_name,
                 is_admin: user.is_admin
             })
-            res.status(200).json({
-                token
-            });
+            res.json({ token });
         } else {
-            res.status(401).json({
-                error: 'Invalid credentials!'
-            })
+            res.status(401).json({ error: 'Invalid credentials!' })
         }
     } catch (error) {
-        res.status(400).json({
-            error: error.message
-        });
-
+        res.status(400).json({ error: error.message });
     }
 });
 
@@ -255,7 +238,7 @@ app.put('/admin/users/:id/banstatus', async (req, res) => {});
 
 // get all users - SPH - work
 app.get('/admin/users', async (req, res) => {
-    const users = await getAllUsers();
+    const users = await usersData.getAllUsers();
     res.json(users);
 })
 
