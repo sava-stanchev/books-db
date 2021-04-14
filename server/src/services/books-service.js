@@ -6,7 +6,7 @@ const updateBook = async (id, bookData) => {
       return null;
     }
   
-    const updated = { ...book, ...bookData };
+    const updated = { ...book[0], ...bookData };
     const _ = await booksData.updateBookSQL(updated);
   
     return updated;

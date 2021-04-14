@@ -72,21 +72,20 @@ const updateBookSQL = async (book) => {
   } = book;
 
   const sql = `
-      UPDATE books SET
-        title = ?,
-        author = ?,
-        genre = ?,
-        age_recommendation = ?,
-        isbn = ?,
-        publishing_year = ?,
-        language = ?,
-        print_length = ?
-      WHERE books_id = ?
+      UPDATE books AS b SET
+      b.title = ?,
+      b.author = ?,
+      b.genre = ?,
+      b.age_recommendation = ?,
+      b.isbn = ?,
+      b.publishing_year = ?,
+      b.language = ?,
+      b.print_length = ?
+      WHERE b.books_id = ?
   `;
 
-  return await pool.query(sql, [books_id, title, author, genre, age_recommendation,
-    isbn, publishing_year, language, print_length
-  ]);
+  return await pool.query(sql, [title, author, genre, age_recommendation,
+    isbn, publishing_year, language, print_length, books_id]);
 }
 
 const createBook = async (book, user) => {
