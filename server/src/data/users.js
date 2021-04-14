@@ -67,6 +67,10 @@ const liftBan = async (id) => {
 
 const getUserById = async (id) => (await pool.query('SELECT * FROM users u WHERE u.users_id = ?', [id]))[0];
   
+export const logoutUser = async (token) => {
+    return await pool.query('INSERT INTO tokens (token) VALUES (?)', [token]);
+};
+
 export default {
     createUser,
     getAllUsers,
