@@ -229,7 +229,7 @@ app.post('/books/:id', authMiddleware, loggedUserGuard, banGuard, async (req, re
         msg: `Book has already been borrowed!`,
       });
     } else {
-      res.status(200).send(theBook);
+      res.status(200).send(await booksData.getBookByIdForUser(+id));
     }
   } catch (error) {
     return res.status(400).json({
@@ -350,9 +350,7 @@ app.patch('/reviews/:reviewId', authMiddleware, loggedUserGuard, banGuard, async
     const reviewUpdated = await reviewService.updateReview(+reviewId, updateData);
 
     if (reviewUpdated) {
-      res.send({
-        message: 'Review updated!', // return updated review
-      });
+      res.send(await reviewsData.getReviewByIdForUser(+reviewId));
     }
   } catch (error) {
     return res.status(400).json({
