@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `library` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
+USE `library`;
 -- MariaDB dump 10.19  Distrib 10.5.9-MariaDB, for Win64 (AMD64)
 --
 -- Host: 127.0.0.1    Database: library
@@ -77,7 +79,7 @@ CREATE TABLE `books_ratings` (
   CONSTRAINT `fk_book_ratings_books_books_id` FOREIGN KEY (`books_id`) REFERENCES `books` (`books_id`),
   CONSTRAINT `fk_book_ratings_ratings_ratings_id` FOREIGN KEY (`ratings_id`) REFERENCES `ratings` (`ratings_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_book_ratings_users_users_id` FOREIGN KEY (`users_id`) REFERENCES `users` (`users_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -86,6 +88,7 @@ CREATE TABLE `books_ratings` (
 
 LOCK TABLES `books_ratings` WRITE;
 /*!40000 ALTER TABLE `books_ratings` DISABLE KEYS */;
+INSERT INTO `books_ratings` VALUES (1,4,1,1,0),(2,1,3,4,0);
 /*!40000 ALTER TABLE `books_ratings` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -218,17 +221,17 @@ DROP TABLE IF EXISTS `records`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `records` (
   `records_id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL,
-  `book_id` int(11) NOT NULL,
+  `users_id` int(11) NOT NULL,
+  `books_id` int(11) NOT NULL,
   `date_borrowed` date NOT NULL,
   `date_to_return` date NOT NULL,
   `date_returned` date DEFAULT NULL,
   PRIMARY KEY (`records_id`),
-  KEY `fk_records_users_user_id_idx` (`user_id`),
-  KEY `fk_records_books_book_id_idx` (`book_id`),
-  CONSTRAINT `fk_records_books_book_id` FOREIGN KEY (`book_id`) REFERENCES `books` (`books_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_records_users_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`users_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  KEY `fk_records_users_user_id_idx` (`users_id`),
+  KEY `fk_records_books_book_id_idx` (`books_id`),
+  CONSTRAINT `fk_records_books_book_id` FOREIGN KEY (`books_id`) REFERENCES `books` (`books_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_records_users_user_id` FOREIGN KEY (`users_id`) REFERENCES `users` (`users_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -237,6 +240,7 @@ CREATE TABLE `records` (
 
 LOCK TABLES `records` WRITE;
 /*!40000 ALTER TABLE `records` DISABLE KEYS */;
+INSERT INTO `records` VALUES (1,1,3,'2021-04-15','2021-05-10','2021-04-17'),(2,5,6,'2021-04-15','2021-05-10','2021-04-19'),(3,4,1,'2021-04-15','2021-05-10',NULL);
 /*!40000 ALTER TABLE `records` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -374,4 +378,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-04-15 14:47:13
+-- Dump completed on 2021-04-15 18:40:48
