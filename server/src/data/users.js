@@ -26,7 +26,7 @@ const createUser = async (user) => {
     `;
     const result = await pool.query(sqlNewUser, [user.userName, user.password, user.firstName, user.lastName, user.userAge, user.e_mail, user.is_admin, user.is_deleted, user.is_banned, user.gender]);
 
-    const sql = `SELECT u.user_name, u.first_name, u.last_name
+    const sql = `SELECT u.user_name, u.first_name, u.last_name, e_mail
                 FROM users AS u
                 WHERE u.users_id = ?
     `;

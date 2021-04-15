@@ -158,7 +158,7 @@ app.get('/books/:id', authMiddleware, loggedUserGuard, async (req, res) => {
     try {
         res.json(await booksData.getBookById(+req.params.id));
     } catch (error) {
-        return res.status(400).json({
+        return res.status(404).json({
             error: error.message
         });
     }
@@ -230,7 +230,7 @@ app.post('/books/:id', authMiddleware, loggedUserGuard, async (req, res) => {
             });
         } else {
             res.json({
-                msg: 'Book successfully borrowed!'
+                msg: 'Book successfully borrowed!' // return book data
             });
         }
     } catch (error) {
@@ -242,7 +242,7 @@ app.post('/books/:id', authMiddleware, loggedUserGuard, async (req, res) => {
 
 /**return a book by id
  * 
- */
+ */ //да се провери да ли е всета от този потребител и да върна книгата
 app.patch('/books/:id', authMiddleware, loggedUserGuard, async (req, res) => {
     try {
         const book = await booksData.returnBook(+req.params.id);
@@ -349,7 +349,7 @@ app.patch('/reviews/:reviewId', authMiddleware, loggedUserGuard, async (req, res
 
         if (reviewUpdated) {
             res.send({
-                message: 'Review updated!'
+                message: 'Review updated!' // return updated review
             });
         }
     } catch (error) {
@@ -378,7 +378,7 @@ app.delete('/reviews/:reviews_id', authMiddleware, loggedUserGuard, async (req, 
         await reviewsData.deleteReview(req.params.reviews_id);
 
         res.status(200).json({
-            message: `Review deleted`,
+            message: `Review deleted`, // return deleted review
         });
     } catch (error) {
         return res.status(400).json({
@@ -438,7 +438,7 @@ app.patch('/admin/reviews/:reviews_id', authMiddleware, loggedUserGuard, roleAut
     }
 });
 
-// rate a book
+// rate a book borrow return return book data
 app.put('/books/:id/rating', authMiddleware, loggedUserGuard, async (req, res) => {
     try {
         const bookId = req.params.id;
@@ -509,6 +509,7 @@ app.put('/reviews/:reviews_id/review_likes', authMiddleware, loggedUserGuard, as
 
 
 
+
 /**ban user from admin
  * 
  */
@@ -540,7 +541,7 @@ app.delete('/admin/users/:id', authMiddleware, loggedUserGuard, roleAuth(userRol
 
         await usersData.deleteUser(user.users_id);
         return res.status(200).json({
-            message: 'User was successful deleted!'
+            message: 'User was successful deleted!' // return user data
         });
     } catch (error) {
         return res.status(400).json({
