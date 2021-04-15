@@ -43,21 +43,21 @@ const getBookById = async (id) => {
 };
 
 const borrowBook = async (id) => {
-  return await pool.query(`
-    UPDATE books SET
-    books.is_borrowed = 1
-    WHERE books.books_id = '${id}'
-    AND books.is_borrowed != 1
-  `);
+  const sql = `
+  UPDATE books SET books.is_borrowed = 1
+  WHERE books.books_id = ?
+  AND books.is_borrowed != 1
+  `;
+  return await pool.query(sql, [id]);
 };
 
 const returnBook = async (id) => {
-  return await pool.query(`
-    UPDATE books SET
-    books.is_borrowed = 0
-    WHERE books.books_id = '${id}'
-    AND books.is_borrowed = 1
-  `);
+  const sql =`
+  UPDATE books SET books.is_borrowed = 0
+  WHERE books.books_id = ?
+  AND books.is_borrowed = 1
+  `;
+  return await pool.query(sql, [id]);
 };
 
 const updateBookSQL = async (book) => {
@@ -127,11 +127,11 @@ const createBook = async (book, user) => {
 };
 
 const deleteBook = async (id) => {
-  return await pool.query(`
-    UPDATE books SET
-    books.is_deleted = 1
-    WHERE books.books_id = '${id}'
-  `);
+  const sql = `
+  UPDATE books SET books.is_deleted = 1
+  WHERE books.books_id = ?
+  `;
+  return await pool.query(sql, [id]);
 };
 
 export default {
