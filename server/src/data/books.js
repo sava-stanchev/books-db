@@ -133,6 +133,17 @@ const deleteBook = async (id) => {
   return await pool.query(sql, [id]);
 };
 
+const isBookBorrowedAndReturned = async (bookId, userId) => {
+  const sql = `
+  SELECT * FROM records AS r
+  WHERE r.users_id = ? AND r.books_id =? AND r.date_returned IS NOT NULL
+  `;
+
+  const result = await pool.query(sql, [userId, bookId]);
+  console.log(result);
+  return result[0];
+}
+
 export default {
   getAllBooks,
   searchBooksByTitle,
@@ -142,5 +153,6 @@ export default {
   updateBookSQL,
   createBook,
   deleteBook,
-  returnBook
+  returnBook,
+  isBookBorrowedAndReturned
 }

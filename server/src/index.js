@@ -450,7 +450,11 @@ app.put('/books/:id/rating', authMiddleware, loggedUserGuard, async (req, res) =
                 massage: 'Book not found!'
             })
         }
-
+        const isBookBorrowedAndReturned = await booksData.isBookBorrowedAndReturned(bookId, userId);
+        
+        if(!isBookBorrowedAndReturned) {
+            return res.status(403).json({ message: 'To re'})
+        }
         const checkForRating = await booksRatingData.getBookRatingByUser(bookId, userId);
         if (checkForRating) {
             await booksRatingData.updateBookRating(checkForRating.book_ratings_id, rating);
