@@ -297,19 +297,30 @@ app.delete('/admin/reviews/:reviews_id', authMiddleware, loggedUserGuard, roleAu
     });
 });
 
-// update any review from admin
-app.put('/admin/reviews/:reviews_id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
-    const review = await reviewsData.getReviewById(req.params.reviews_id);
-    if (!review || review.is_deleted === 1) {
-        res.status(400).json({
-            message: 'Review not found!'
+// update any review from admin - work
+app.patch('/admin/reviews/:reviews_id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
+    try {
+        const reviewId = req.params.reviews_id;
+        const updateData = req.body;
+        const review = await reviewsData.getReviewById(+reviewId);
+
+        if (!review) {
+            return res.status(404).send({
+                message: 'Review not found!'
+            });
+        }
+        const reviewUpdated = await reviewService.updateReview(+reviewId, updateData);
+
+        if (reviewUpdated) {
+            return res.status(200).json({
+                message: 'Review updated!'
+            });
+        }
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message
         });
     }
-    await reviewsData.deleteReview(req.params.reviews_id);
-
-    res.status(200).json({
-        message: `Review deleted`,
-    });
 });
 
 // rate book
