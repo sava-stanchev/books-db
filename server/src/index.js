@@ -29,6 +29,7 @@ import banGuard from './middlewares/ban-guard.js';
 import pool from './data/pool.js';
 import reviewService from './services/review-service.js';
 import reviewsLikeData from './data/reviewsLike.js';
+import booksRatingData from './data/books-rating.js';
 
 
 const config = dotenv.config().parsed;
@@ -437,8 +438,38 @@ app.patch('/admin/reviews/:reviews_id', authMiddleware, loggedUserGuard, roleAut
     }
 });
 
-// rate book
-app.put('/books/:books_id/rating')
+// rate a book
+app.put('/books/:id/rating', authMiddleware, loggedUserGuard, async (req, res) => {
+    try {
+        const bookId = req.params.id;
+        const rating = req.body.rating;
+        const userId = req.user.user_id;
+        const book = await booksData.getBookById(bookId);
+        if (!book) {
+            return res.status(404).json({
+                massage: 'Book not found!'
+            })
+        }
+
+        const checkForRating = await booksRatingData.getBookRatingByUser(bookId, userId);
+        if (checkForRating) {
+            await booksRatingData.updateBookRating(checkForRating.book_ratings_id, rating);
+            return res.status(200).json({
+                message: 'Rating is updated!'
+            });
+
+        }
+        await booksRatingData.setRatingToBook(userId, bookId, rating);
+        return res.status(200).json({
+            message: 'Rating is given!'
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message
+        });
+    }    
+});
 
 /**like review
  * 
