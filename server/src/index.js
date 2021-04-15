@@ -211,10 +211,8 @@ app.delete('/admin/books/:id', authMiddleware, loggedUserGuard, roleAuth(userRol
 /**borrow a book by id
  * 
  */
-app.post('/books/:id', authMiddleware, loggedUserGuard, async (req, res) => {
-    const {
-        id
-    } = req.params;
+app.post('/books/:id', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
+    const { id } = req.params;
     try {
         const theBook = await booksData.getBookById(+id);
         if (!theBook) {
@@ -229,9 +227,7 @@ app.post('/books/:id', authMiddleware, loggedUserGuard, async (req, res) => {
                 msg: `Book has already been borrowed!`
             });
         } else {
-            res.json({
-                msg: 'Book successfully borrowed!' // return book data
-            });
+            res.status(200).send(theBook);
         }
     } catch (error) {
         return res.status(400).json({

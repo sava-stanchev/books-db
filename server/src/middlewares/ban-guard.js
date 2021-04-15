@@ -1,7 +1,7 @@
 import usersData from '../data/users.js';
 
 export default async (req, res, next) => {
-  const user = await usersData.getUserById(req.user.id);
+  const user = await usersData.getUserById(req.user.user_id);
 
   if (user.banDate) {
     const banDate = new Date(user.banDate);
@@ -10,7 +10,7 @@ export default async (req, res, next) => {
       return res.status(403).json({ error: `You're banned! `});
     }
 
-    await usersData.liftBan(user.id);
+    await usersData.liftBan(user.user_id);
   }
 
   await next();
