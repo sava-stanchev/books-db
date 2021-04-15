@@ -23,21 +23,24 @@ const getReviewsForBook = async (id) => {
 
 const getReviewById = async (id) => {
   const sql = `
-  SELECT * FROM reviews AS r
-  WHERE r.reviews_id = ?
+    SELECT * FROM reviews AS r
+    WHERE r.reviews_id = ?
   `;
 
   const result = await pool.query(sql, [id]);  
   return result[0];
-
 };
 
-// user owner check?
-const updateReview = (id, reviewUpdate) => {
-  const review = getReviewById(id);
+const updateReviewSQL = async (review) => {
+  const { reviews_id, content } = review;
 
-  Object.keys(reviewUpdate).forEach(key => review[key] = reviewUpdate[key]);
+  const sql = `
+      UPDATE reviews AS r SET
+      r.content = ?
+      WHERE r.reviews_id = ?
+  `;
 
+  return await pool.query(sql, [content, reviews_id]);
 };
 
 const createReview = async (review, createdBy) => {
@@ -74,7 +77,7 @@ export default {
   getAllReviews,
   getReviewsForBook,
   getReviewById,
-  updateReview,
+  updateReviewSQL,
   createReview,
   deleteReview
 }

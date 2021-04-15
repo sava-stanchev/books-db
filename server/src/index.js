@@ -27,6 +27,7 @@ import {
 } from './common/user-role.js'
 import banGuard from './middlewares/ban-guard.js';
 import pool from './data/pool.js';
+import reviewService from './services/review-service.js';
 
 const config = dotenv.config().parsed;
 
@@ -122,9 +123,7 @@ app.get('/books/:id', authMiddleware, loggedUserGuard, async (req, res) => {
 
 // update any book as admin
 app.put('/admin/books/:id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), validateBody('book', bookUpdateValidator), async (req, res) => {
-    const {
-        id
-    } = req.params;
+    const { id } = req.params;
     const updateData = req.body;
     const updatedBook = await booksService.updateBook(+id, updateData);
 
@@ -149,9 +148,7 @@ app.delete('/admin/books/:id', authMiddleware, loggedUserGuard, roleAuth(userRol
 
 // borrow a book by id - working
 app.post('/books/:id', authMiddleware, loggedUserGuard, async (req, res) => {
-    const {
-        id
-    } = req.params;
+    const { id } = req.params;
     const theBook = await booksData.getBookById(+id);
     if (!theBook) {
         return res.status(404).json({
@@ -222,25 +219,29 @@ app.post('/reviews', authMiddleware, loggedUserGuard, async (req, res) => {
 });
 
 // update book review
-app.put('/books/:id/reviews/:reviewId', authMiddleware, loggedUserGuard, async (req, res) => {
-    const {
-        id
-    } = req.params;
-    const theBook = await booksData.getBookById(+id);
-    if (!theBook) {
-        return res.status(404).json({
-            msg: `Book with id ${id} was not found!`
+app.patch('/reviews/:reviewId', authMiddleware, loggedUserGuard, async (req, res) => {
+    const reviewId = req.params.reviewId;
+    const updateData = req.body;
+
+    const review = await reviewsData.getReviewById(+reviewId);
+
+    if (!review) {
+        res.status(404).send({
+            message: 'Review not found!'
         });
     }
-    const newText = req.body.text;
-    const findReviewId = +req.params.reviewId;
-    theBook.reviews.map(r => r.reviewId === findReviewId ? {
-        ...r,
-        text: newText
-    } : r);
-    res.json({
-        msg: 'Review successfully updated!'
-    });
+    
+    if  (review.users_id !== req.user.user_id) {
+        return res.status(403).json({ message: 'You are not authorized to update this review!' })
+    }
+
+    const reviewUpdated = await reviewService.updateReview(+reviewId, updateData);
+    
+    if (reviewUpdated) {
+        res.send({
+            message: 'Review updated!'
+        });
+    }
 });
 
 // delete book review - work
