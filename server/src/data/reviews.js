@@ -32,7 +32,6 @@ const getReviewById = async (id) => {
 };
 
 const updateReviewSQL = async (review) => {
-  console.log(review);
   const { reviews_id, content } = review;
 
   const sql = `
