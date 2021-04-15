@@ -63,15 +63,15 @@ const returnBook = async (id) => {
 
 const updateBookSQL = async (book) => {
   const {
-    booksId,
+    books_id,
     title,
     author,
     genre,
-    ageRecommendation,
+    age_recommendation,
     isbn,
-    publishingYear,
+    publishing_year,
     language,
-    printLength
+    print_length
   } = book;
 
   const sql = `
@@ -87,8 +87,8 @@ const updateBookSQL = async (book) => {
       WHERE b.books_id = ?
   `;
 
-  return await pool.query(sql, [title, author, genre, ageRecommendation,
-    isbn, publishingYear, language, printLength, booksId
+  return await pool.query(sql, [title, author, genre, age_recommendation,
+    isbn, publishing_year, language, print_length, books_id
   ]);
 }
 
@@ -97,16 +97,16 @@ const createBook = async (book, user) => {
     title,
     author,
     genre,
-    ageRecommendation,
+    age_recommendation,
     isbn,
-    publishingYear,
+    publishing_year,
     language,
-    printLength,
+    print_length,
   } = book;
   const {
-    userId,
-    userName,
-    isAdmin,
+    user_id,
+    user_name,
+    is_admin,
   } = user;
 
   const sqlNewBook = `
@@ -115,7 +115,7 @@ const createBook = async (book, user) => {
 `;
   const result = await pool.query(sqlNewBook,
     // eslint-disable-next-line max-len
-    [title, author, +genre, ageRecommendation, isbn, publishingYear, +language, printLength, userId]);
+    [title, author, +genre, age_recommendation, isbn, publishing_year, +language, print_length, user_id]);
 
   const sql = `SELECT * FROM books AS b
               WHERE b.books_id = ?
