@@ -42,7 +42,9 @@ app.use(express.json());
 passport.use(jwtStrategy);
 app.use(passport.initialize());
 
-// register user - work
+/**register user
+ * 
+ */
 app.post('/users', loggedUserGuard, async (req, res) => {
     const user = req.body;
     try {
@@ -61,7 +63,9 @@ app.post('/users', loggedUserGuard, async (req, res) => {
     }
 });
 
-// login  - work
+/**login user
+ * 
+ */
 app.post('/login', async (req, res) => {
     try {
         const user = await usersData.validateUser(req.body);
@@ -86,7 +90,9 @@ app.post('/login', async (req, res) => {
     }
 });
 
-// logout - work
+/**logout user
+ * 
+ */
 app.delete('/logout', authMiddleware, async (req, res) => {
     try {
         await logoutUser(req.headers.authorization.replace('Bearer ', ''));
@@ -101,7 +107,9 @@ app.delete('/logout', authMiddleware, async (req, res) => {
     }
 });
 
-// retrieve all books - work
+/**retrieve
+ * 
+ */
 app.get('/books', authMiddleware, loggedUserGuard, async (req, res) => {
     const { title, sort } = req.query;
     try {

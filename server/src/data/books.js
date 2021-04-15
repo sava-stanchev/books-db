@@ -102,7 +102,6 @@ const createBook = async (book, user) => {
     language,
     print_length
   } = book;
-  console.log(book);
   const {
     user_id,
     user_name,
