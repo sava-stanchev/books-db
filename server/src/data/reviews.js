@@ -33,8 +33,18 @@ const getReviewById = async (id) => {
   return result[0];
 };
 
+const getReviewByIdForUser = async (id) => {
+  const sql = `
+    SELECT content, date_created FROM reviews AS r
+    WHERE r.reviews_id = ?
+  `;
+
+  const result = await pool.query(sql, [id]);
+  return result[0];
+};
+
 const updateReviewSQL = async (review) => {
-  const { reviewsId, content } = review;
+  const { reviews_id, content } = review;
 
   const sql = `
       UPDATE reviews AS r SET
@@ -42,7 +52,7 @@ const updateReviewSQL = async (review) => {
       WHERE r.reviews_id = ?
   `;
 
-  return await pool.query(sql, [content, reviewsId]);
+  return await pool.query(sql, [content, reviews_id]);
 };
 
 const createReview = async (bookId, content, userId) => {
@@ -52,7 +62,7 @@ const createReview = async (bookId, content, userId) => {
   VALUES (?, ?, ? , ?, ?)
   `;
   const result = await pool.query(sqlNewReview, [userId, bookId, new Date(), 0, content]);
-  const sql = `SELECT * FROM reviews AS r
+  const sql = `SELECT content, date_created FROM reviews AS r
               WHERE r.reviews_id = ?
 `;
   const createdReview = (await pool.query(sql, [result.insertId]))[0];
@@ -81,4 +91,5 @@ export default {
   createReview,
   deleteReview,
   userReviewByBookId,
+  getReviewByIdForUser,
 }

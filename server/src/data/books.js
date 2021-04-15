@@ -43,6 +43,15 @@ const getBookById = async (id) => {
   return result;
 };
 
+const getBookByIdForUser = async (id) => {
+  const sql = `
+  SELECT title, author, genre, age_recommendation, isbn, publishing_year, language, print_length FROM books AS b
+  WHERE b.is_deleted != 1 AND b.books_id = ?
+`;
+  const result = await pool.query(sql, [id]);
+  return result;
+};
+
 const borrowBook = async (id) => {
   const sql = `
   UPDATE books SET books.is_borrowed = 1
@@ -157,4 +166,5 @@ export default {
   deleteBook,
   returnBook,
   isBookBorrowedAndReturned,
+  getBookByIdForUser,
 }
