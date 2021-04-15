@@ -266,7 +266,21 @@ app.delete('/reviews/:reviews_id', authMiddleware, loggedUserGuard, async (req, 
 
 // delete any review from admin - work
 app.delete('/admin/reviews/:reviews_id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
-    console.log('++++++++++');
+    const review = await reviewsData.getReviewById(req.params.reviews_id);
+    if (!review || review.is_deleted === 1) {
+        res.status(400).json({
+            message: 'Review not found!'
+        });
+    }
+    await reviewsData.deleteReview(req.params.reviews_id);
+
+    res.status(200).json({
+        message: `Review deleted`,
+    });
+});
+
+// update any review from admin
+app.put('/admin/reviews/:reviews_id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async(req, res) => {
     const review = await reviewsData.getReviewById(req.params.reviews_id);
     if (!review || review.is_deleted === 1) {
         res.status(400).json({
