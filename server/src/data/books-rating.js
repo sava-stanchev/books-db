@@ -1,4 +1,4 @@
-import pool from "./pool.js";
+import pool from './pool.js';
 
 const getBookRatingByUser = async (bookId, userId) => {
     const sql = `
@@ -8,7 +8,7 @@ const getBookRatingByUser = async (bookId, userId) => {
   
     const result = await pool.query(sql, [bookId, userId]);
     return result[0];
-}
+};
 
 const setRatingToBook = async (userId, bookId, rating) => {
     const newRatingSql = `
@@ -26,17 +26,17 @@ const setRatingToBook = async (userId, bookId, rating) => {
   
     return newRating;
 };
-  
-const updateBookRating = async (book_ratings_id, rating) => {
+
+const updateBookRating = async (bookRatingsId, rating) => {
     const sql = `
         UPDATE books_ratings AS br 
         SET br.ratings_id = ?
         WHERE br.book_ratings_id = ?
     `;
-    const result = await pool.query(sql, [rating, book_ratings_id]);
+    const result = await pool.query(sql, [rating, bookRatingsId]);
     return result;
-}
-  
+};
+
 export default {
     getBookRatingByUser,
     setRatingToBook,

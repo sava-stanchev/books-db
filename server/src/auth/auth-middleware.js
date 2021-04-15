@@ -9,12 +9,12 @@ const roleMiddleware = roleName => {
         } else {
             res.status(403).send({
                 message: 'Resource is forbidden.'
-            })
+            });
         }
     };
 };
 
 export {
     authMiddleware,
-    roleMiddleware
+    roleMiddleware,
 };

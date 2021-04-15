@@ -1,5 +1,5 @@
-import pool from "./pool.js";
-import booksData from '../data/books.js'
+import pool from './pool.js';
+import booksData from '../data/books.js';
 
 const addReview = async (req) => {
   console.log(req);
@@ -29,12 +29,12 @@ const getReviewById = async (id) => {
     WHERE r.reviews_id = ?
   `;
 
-  const result = await pool.query(sql, [id]);  
+  const result = await pool.query(sql, [id]);
   return result[0];
 };
 
 const updateReviewSQL = async (review) => {
-  const { reviews_id, content } = review;
+  const { reviewsId, content } = review;
 
   const sql = `
       UPDATE reviews AS r SET
@@ -42,7 +42,7 @@ const updateReviewSQL = async (review) => {
       WHERE r.reviews_id = ?
   `;
 
-  return await pool.query(sql, [content, reviews_id]);
+  return await pool.query(sql, [content, reviewsId]);
 };
 
 const createReview = async (bookId, content, userId) => {
@@ -61,7 +61,7 @@ const createReview = async (bookId, content, userId) => {
 
 const deleteReview = async (id) => {
   await pool.query(`UPDATE reviews AS r SET r.is_deleted = 1 WHERE r.reviews_id = ?`, [id]);
-}
+};
 
 const userReviewByBookId = async (userId, bookId) => {
   const sql = `
@@ -70,7 +70,7 @@ const userReviewByBookId = async (userId, bookId) => {
   `;
   const result = await pool.query(sql, [userId, bookId]);
   return result;
-}
+};
 
 export default {
   addReview,
@@ -80,5 +80,5 @@ export default {
   updateReviewSQL,
   createReview,
   deleteReview,
-  userReviewByBookId
+  userReviewByBookId,
 }

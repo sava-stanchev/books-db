@@ -10,7 +10,7 @@ export default {
   },
   book: {
     title: 'Expected string with length [1 - 256]',
-    author:'Expected string with length [1 - 256]',
+    author: 'Expected string with length [1 - 256]',
     genre: 'Expected string with length [1 - 40]',
     age: 'Expected number bigger than 1',
     isbn: 'Expected string with length 10',
@@ -22,5 +22,5 @@ export default {
   },
   review: {
     text: 'Expected string with length [10 - 300]',
-  }
+  },
 };

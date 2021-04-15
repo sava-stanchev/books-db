@@ -1,4 +1,4 @@
-import pool from "./pool.js";
+import pool from './pool.js';
 
 const getReviewLikeByUser = async (reviewId, userId) => {
   const sql = `
