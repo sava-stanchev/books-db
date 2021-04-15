@@ -123,7 +123,9 @@ app.get('/books/:id', authMiddleware, loggedUserGuard, async (req, res) => {
 
 // update any book as admin
 app.put('/admin/books/:id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), validateBody('book', bookUpdateValidator), async (req, res) => {
-    const { id } = req.params;
+    const {
+        id
+    } = req.params;
     const updateData = req.body;
     const updatedBook = await booksService.updateBook(+id, updateData);
 
@@ -148,7 +150,9 @@ app.delete('/admin/books/:id', authMiddleware, loggedUserGuard, roleAuth(userRol
 
 // borrow a book by id - working
 app.post('/books/:id', authMiddleware, loggedUserGuard, async (req, res) => {
-    const { id } = req.params;
+    const {
+        id
+    } = req.params;
     const theBook = await booksData.getBookById(+id);
     if (!theBook) {
         return res.status(404).json({
@@ -202,20 +206,31 @@ app.get('/books/:id/reviews', authMiddleware, loggedUserGuard, async (req, res) 
     }
 });
 
-// create book review - works to change
-app.post('/reviews', authMiddleware, loggedUserGuard, async (req, res) => {
-    const a = req.body.books_id;
-    const book = await booksData.getBookById(+req.body.books_id);
-    if (!book[0]) {
-        res.status(404).json({
-            msg: `Book was not found!`
+// create book review - works
+app.post('/books/:books_id/reviews', authMiddleware, loggedUserGuard, async (req, res) => {
+    const bookId = +req.params.books_id;
+    const userId = +req.user.user_id;
+    const book = await booksData.getBookById(+bookId);
+    try {
+        if (!book[0]) {
+            return res.status(404).json({
+                msg: `Book was not found!`
+            });
+        }
+        const check = (await reviewsData.userReviewByBookId(userId, bookId))[0];
+        if (check) {
+            return res.status(200).json({
+                message: 'Review already exist!'
+            });
+        }
+        const review = await reviewsData.createReview(bookId, req.body.content, userId);
+
+        return res.status(200).json(review);
+    } catch (error) {
+        return res.status(400).json({
+            error: error.message
         });
     }
-
-    const review = await reviewsData.createReview(req.body);
-
-    res.status(200).json(review);
-
 });
 
 // update book review
@@ -230,13 +245,15 @@ app.patch('/reviews/:reviewId', authMiddleware, loggedUserGuard, async (req, res
             message: 'Review not found!'
         });
     }
-    
-    if  (review.users_id !== req.user.user_id) {
-        return res.status(403).json({ message: 'You are not authorized to update this review!' })
+
+    if (review.users_id !== req.user.user_id) {
+        return res.status(403).json({
+            message: 'You are not authorized to update this review!'
+        })
     }
 
     const reviewUpdated = await reviewService.updateReview(+reviewId, updateData);
-    
+
     if (reviewUpdated) {
         res.send({
             message: 'Review updated!'
@@ -281,7 +298,7 @@ app.delete('/admin/reviews/:reviews_id', authMiddleware, loggedUserGuard, roleAu
 });
 
 // update any review from admin
-app.put('/admin/reviews/:reviews_id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async(req, res) => {
+app.put('/admin/reviews/:reviews_id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
     const review = await reviewsData.getReviewById(req.params.reviews_id);
     if (!review || review.is_deleted === 1) {
         res.status(400).json({
@@ -317,13 +334,13 @@ app.delete('/admin/users/:id', authMiddleware, loggedUserGuard, roleAuth(userRol
         const user = await usersData.getUserById(req.params.id);
 
         if (!user || user.is_deleted) {
-            res.status(400).json({
+            return res.status(400).json({
                 message: 'User not found or already was deleted!'
             });
         }
 
         await usersData.deleteUser(user.users_id);
-        res.status(200).json({
+        return res.status(200).json({
             message: 'User was successful deleted!'
         });
     } catch (error) {

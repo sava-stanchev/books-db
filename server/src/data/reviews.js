@@ -43,33 +43,31 @@ const updateReviewSQL = async (review) => {
   return await pool.query(sql, [content, reviews_id]);
 };
 
-const createReview = async (review, createdBy) => {
-  const {
-    users_id,
-    books_id,
-    date_created,
-    is_deleted,
-    content
-  } = review;
+const createReview = async (bookId, content, userId) => {
   
   const sqlNewReview = `
   INSERT INTO reviews (users_id, books_id, date_created, is_deleted, content)
   VALUES (?, ?, ? , ?, ?)
   `;
-  const result = await pool.query(sqlNewReview, [users_id, books_id, date_created, is_deleted, content]);
+  const result = await pool.query(sqlNewReview, [userId, bookId, new Date(), 0, content]);
   const sql = `SELECT * FROM reviews AS r
               WHERE r.reviews_id = ?
 `;
   const createdReview = (await pool.query(sql, [result.insertId]))[0];
-
-  return {
-    success: true,
-    response: createdReview
-  };
+  return createdReview;
 };
 
 const deleteReview = async (id) => {
   await pool.query(`UPDATE reviews AS r SET r.is_deleted = 1 WHERE r.reviews_id = ?`, [id]);
+}
+
+const userReviewByBookId = async (userId, bookId) => {
+  const sql = `
+  SELECT * FROM reviews AS r
+  WHERE r.users_id = ? AND r.books_id = ?
+  `;
+  const result = await pool.query(sql, [userId, bookId]);
+  return result;
 }
 
 export default {
@@ -79,5 +77,6 @@ export default {
   getReviewById,
   updateReviewSQL,
   createReview,
-  deleteReview
+  deleteReview,
+  userReviewByBookId
 }

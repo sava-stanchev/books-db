@@ -34,10 +34,12 @@ const sortBooksByYear = async (sort) => {
 };
 
 const getBookById = async (id) => {
-  return await pool.query(`
-    SELECT * FROM books b
-    WHERE b.is_deleted != 1 AND b.books_id = '${id}'
-  `);
+  const sql = `
+  SELECT * FROM books AS b
+  WHERE b.is_deleted != 1 AND b.books_id = ?
+`;
+  const result = await pool.query(sql, [id]);
+  return result;
 };
 
 const borrowBook = async (id) => {
@@ -85,7 +87,8 @@ const updateBookSQL = async (book) => {
   `;
 
   return await pool.query(sql, [title, author, genre, age_recommendation,
-    isbn, publishing_year, language, print_length, books_id]);
+    isbn, publishing_year, language, print_length, books_id
+  ]);
 }
 
 const createBook = async (book, user) => {
@@ -100,7 +103,11 @@ const createBook = async (book, user) => {
     print_length
   } = book;
   console.log(book);
-  const {user_id, user_name, is_admin} = user;
+  const {
+    user_id,
+    user_name,
+    is_admin
+  } = user;
 
   const sqlNewBook = `
       INSERT INTO books (title, author, genre, age_recommendation, isbn, publishing_year, language, print_length, created_by, is_deleted, is_borrowed, book_count, reading_count )
