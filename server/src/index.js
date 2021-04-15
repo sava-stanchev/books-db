@@ -107,7 +107,7 @@ app.delete('/logout', authMiddleware, async (req, res) => {
     }
 });
 
-/**retrieve
+/**retrieve all books
  * 
  */
 app.get('/books', authMiddleware, loggedUserGuard, async (req, res) => {
@@ -131,7 +131,9 @@ app.get('/books', authMiddleware, loggedUserGuard, async (req, res) => {
     }
 });
 
-// create new book - in admin  - work to check validator
+/**create new book from admin
+ * 
+ */
 app.post('/admin/books', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), validateBody('book', bookCreateValidator), async (req, res) => {
     try {
         const book = await booksData.createBook(req.body, req.user);
@@ -143,7 +145,9 @@ app.post('/admin/books', authMiddleware, loggedUserGuard, roleAuth(userRole.Admi
     }
 });
 
-// view individual book by id - work
+/**book by id
+ * 
+ */
 app.get('/books/:id', authMiddleware, loggedUserGuard, async (req, res) => {
     try {
         res.json(await booksData.getBookById(+req.params.id));
@@ -154,7 +158,9 @@ app.get('/books/:id', authMiddleware, loggedUserGuard, async (req, res) => {
     }   
 });
 
-// update any book as admin
+/**update any book from admin
+ * 
+ */
 app.put('/admin/books/:id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), validateBody('book', bookUpdateValidator), async (req, res) => {
     const { id } = req.params;
     const updateData = req.body;
@@ -178,7 +184,9 @@ app.put('/admin/books/:id', authMiddleware, loggedUserGuard, roleAuth(userRole.A
     }
 });
 
-// delete any book as admin
+/**delete any book from admin
+ * 
+ */
 app.delete('/admin/books/:id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
     try {
         await booksData.deleteBook(+req.params.id);
@@ -192,7 +200,9 @@ app.delete('/admin/books/:id', authMiddleware, loggedUserGuard, roleAuth(userRol
     }
 });
 
-// borrow a book by id - working
+/**borrow a book by id
+ * 
+ */
 app.post('/books/:id', authMiddleware, loggedUserGuard, async (req, res) => {
     const { id } = req.params;
     try {
@@ -220,7 +230,9 @@ app.post('/books/:id', authMiddleware, loggedUserGuard, async (req, res) => {
     }
 });
 
-// return a book by id - work
+/**return a book by id
+ * 
+ */
 app.patch('/books/:id', authMiddleware, loggedUserGuard, async (req, res) => {
     try {
         const book = await booksData.returnBook(+req.params.id);
@@ -240,7 +252,9 @@ app.patch('/books/:id', authMiddleware, loggedUserGuard, async (req, res) => {
     }
 });
 
-// read all reviews for a book - working
+/**read all reviews for a book
+ * 
+ */
 app.get('/books/:id/reviews', authMiddleware, loggedUserGuard, async (req, res) => {
     const { id } = req.params;
 
@@ -267,7 +281,9 @@ app.get('/books/:id/reviews', authMiddleware, loggedUserGuard, async (req, res) 
     }
 });
 
-// create book review - works
+/**create book review
+ * 
+ */
 app.post('/books/:books_id/reviews', authMiddleware, loggedUserGuard, async (req, res) => {
     const bookId = +req.params.books_id;
     const userId = +req.user.user_id;
@@ -295,7 +311,9 @@ app.post('/books/:books_id/reviews', authMiddleware, loggedUserGuard, async (req
     }
 });
 
-// update book review
+/**update book review
+ * 
+ */
 app.patch('/reviews/:reviewId', authMiddleware, loggedUserGuard, async (req, res) => {
     const reviewId = req.params.reviewId;
     const updateData = req.body;
@@ -329,7 +347,9 @@ app.patch('/reviews/:reviewId', authMiddleware, loggedUserGuard, async (req, res
     }
 });
 
-// delete book review - work
+/**delete book review from user
+ * 
+ */
 app.delete('/reviews/:reviews_id', authMiddleware, loggedUserGuard, async (req, res) => {
     try {
         const review = await reviewsData.getReviewById(req.params.reviews_id);
@@ -355,7 +375,9 @@ app.delete('/reviews/:reviews_id', authMiddleware, loggedUserGuard, async (req, 
     }
 });
 
-// delete any review from admin - work
+/**delete any review from admin
+ * 
+ */
 app.delete('/admin/reviews/:reviews_id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
     try {
         const review = await reviewsData.getReviewById(req.params.reviews_id);
@@ -376,7 +398,9 @@ app.delete('/admin/reviews/:reviews_id', authMiddleware, loggedUserGuard, roleAu
     }
 });
 
-// update any review from admin - work
+/**update any review form admin
+ * 
+ */
 app.patch('/admin/reviews/:reviews_id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
     try {
         const reviewId = req.params.reviews_id;
@@ -410,7 +434,9 @@ app.patch('/admin/reviews/:reviews_id', authMiddleware, loggedUserGuard, roleAut
 
 
 
-// ban user 
+/**ban user from admin
+ * 
+ */
 app.post('/admin/users/:id/ban', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
     try {
         await usersData.banUser(+req.params.id);
@@ -424,7 +450,9 @@ app.post('/admin/users/:id/ban', authMiddleware, loggedUserGuard, roleAuth(userR
     }
 });
 
-// delete user - work
+/**delete user from admin
+ * 
+ */
 app.delete('/admin/users/:id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
     try {
         const user = await usersData.getUserById(req.params.id);
@@ -446,7 +474,9 @@ app.delete('/admin/users/:id', authMiddleware, loggedUserGuard, roleAuth(userRol
     }
 });
 
-// return user - work
+/**return user from admin
+ * 
+ */
 app.put('/admin/users/:id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
     try {
         const user = await usersData.getUserById(req.params.id);
@@ -467,7 +497,9 @@ app.put('/admin/users/:id', authMiddleware, loggedUserGuard, roleAuth(userRole.A
     }
 })
 
-// get all users - work
+/**get all users from admin
+ * 
+ */
 app.get('/admin/users', authMiddleware, loggedUserGuard, async (req, res) => {
     try {
         const users = await usersData.getAllUsers();
@@ -479,7 +511,9 @@ app.get('/admin/users', authMiddleware, loggedUserGuard, async (req, res) => {
     }
 })
 
-// read reviews as admin
+/**read all review from admin
+ * 
+ */
 app.get('/admin/reviews', authMiddleware, loggedUserGuard, async (req, res) => {
     try {
         const reviews = await reviewsData.getAllReviews();
