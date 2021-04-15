@@ -8,7 +8,8 @@ const getReviewLikeByUser = async (reviewId, userId) => {
 
   const result = await pool.query(sql, [reviewId, userId]);
   return result[0];
-}
+};
+
 const setLikeToReview = async (userId, reviewId, reaction) => {
   const newLikeSql = `
   INSERT INTO review_likes (users_id, reviews_id, reactions_id, is_deleted)
@@ -26,19 +27,18 @@ const setLikeToReview = async (userId, reviewId, reaction) => {
   return newLike;
 };
 
-const updateReviewLike = async (review_likes_id, reaction) => {
-
+const updateReviewLike = async (reviewLikesId, reaction) => {
   const sql = `
   UPDATE review_likes AS r 
   SET r.reactions_id = ?
   WHERE r.review_likes_id = ?
   `;
-  const result = await pool.query(sql, [reaction, review_likes_id]);
+  const result = await pool.query(sql, [reaction, reviewLikesId]);
   return result;
-}
+};
 
 export default {
   getReviewLikeByUser,
   setLikeToReview,
-  updateReviewLike
+  updateReviewLike,
 }
