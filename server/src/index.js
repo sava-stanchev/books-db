@@ -28,6 +28,8 @@ import {
 import banGuard from './middlewares/ban-guard.js';
 import pool from './data/pool.js';
 import reviewService from './services/review-service.js';
+import reviewsLikeData from './data/reviewsLike.js';
+
 
 const config = dotenv.config().parsed;
 
@@ -111,7 +113,10 @@ app.delete('/logout', authMiddleware, async (req, res) => {
  * 
  */
 app.get('/books', authMiddleware, loggedUserGuard, async (req, res) => {
-    const { title, sort } = req.query;
+    const {
+        title,
+        sort
+    } = req.query;
     try {
         if (sort) {
             const theBooksSortedByYear = await booksData.sortBooksByYear(sort);
@@ -155,16 +160,18 @@ app.get('/books/:id', authMiddleware, loggedUserGuard, async (req, res) => {
         return res.status(400).json({
             error: error.message
         });
-    }   
+    }
 });
 
 /**update any book from admin
  * 
  */
 app.put('/admin/books/:id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), validateBody('book', bookUpdateValidator), async (req, res) => {
-    const { id } = req.params;
+    const {
+        id
+    } = req.params;
     const updateData = req.body;
-    
+
     try {
         const updatedBook = await booksService.updateBook(+id, updateData);
 
@@ -204,7 +211,9 @@ app.delete('/admin/books/:id', authMiddleware, loggedUserGuard, roleAuth(userRol
  * 
  */
 app.post('/books/:id', authMiddleware, loggedUserGuard, async (req, res) => {
-    const { id } = req.params;
+    const {
+        id
+    } = req.params;
     try {
         const theBook = await booksData.getBookById(+id);
         if (!theBook) {
@@ -256,7 +265,9 @@ app.patch('/books/:id', authMiddleware, loggedUserGuard, async (req, res) => {
  * 
  */
 app.get('/books/:id/reviews', authMiddleware, loggedUserGuard, async (req, res) => {
-    const { id } = req.params;
+    const {
+        id
+    } = req.params;
 
     try {
         const theBook = await booksData.getBookById(+id);
@@ -294,7 +305,7 @@ app.post('/books/:books_id/reviews', authMiddleware, loggedUserGuard, async (req
                 msg: `Book was not found!`
             });
         }
-        
+
         const check = (await reviewsData.userReviewByBookId(userId, bookId))[0];
         if (check) {
             return res.status(200).json({
@@ -427,8 +438,41 @@ app.patch('/admin/reviews/:reviews_id', authMiddleware, loggedUserGuard, roleAut
 });
 
 // rate book
+app.put('/books/:books_id/rating')
 
-// like reviews - SPH
+/**like review
+ * 
+ */
+app.put('/reviews/:reviews_id/review_likes', authMiddleware, loggedUserGuard, async (req, res) => {
+    try {
+        const reviewId = req.params.reviews_id;
+        const reaction = req.body.reaction;
+        const userId = req.user.user_id;
+        const review = await reviewsData.getReviewById(reviewId);
+        if (!review) {
+            return res.status(404).json({
+                massage: 'Review not found!'
+            })
+        }
+
+        const checkForLike = await reviewsLikeData.getReviewLikeByUser(reviewId, userId);
+        if (checkForLike) {
+            const newLike = await reviewsLikeData.updateReviewLike(checkForLike.review_likes_id, reaction);
+            return res.status(200).json({
+                message: 'Like is updated!'
+            });
+
+        }
+        const newLike = await reviewsLikeData.setLikeToReview(userId, reviewId, reaction);
+        return res.status(200).json({
+            message: 'Like is given!'
+        });
+
+    } catch (error) {
+        return res.status(400).json({ error: error.message});
+
+    }
+})
 
 // read any book admin 
 
