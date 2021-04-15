@@ -140,7 +140,6 @@ const isBookBorrowedAndReturned = async (bookId, userId) => {
   `;
 
   const result = await pool.query(sql, [userId, bookId]);
-  console.log(result);
   return result[0];
 }
 

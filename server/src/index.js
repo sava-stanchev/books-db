@@ -239,7 +239,7 @@ app.post('/books/:id', authMiddleware, loggedUserGuard, banGuard, async (req, re
 /**return a book by id
  * 
  */ //да се провери да ли е всета от този потребител и да върна книгата
-app.patch('/books/:id', authMiddleware, loggedUserGuard, async (req, res) => {
+app.patch('/books/:id', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
     try {
         const book = await booksData.returnBook(+req.params.id);
         if (!book) {
@@ -292,7 +292,7 @@ app.get('/books/:id/reviews', authMiddleware, loggedUserGuard, async (req, res) 
 /**create book review
  * 
  */
-app.post('/books/:books_id/reviews', authMiddleware, loggedUserGuard, async (req, res) => {
+app.post('/books/:books_id/reviews', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
     const bookId = +req.params.books_id;
     const userId = +req.user.user_id;
     const book = await booksData.getBookById(+bookId);
@@ -322,7 +322,7 @@ app.post('/books/:books_id/reviews', authMiddleware, loggedUserGuard, async (req
 /**update book review
  * 
  */
-app.patch('/reviews/:reviewId', authMiddleware, loggedUserGuard, async (req, res) => {
+app.patch('/reviews/:reviewId', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
     const reviewId = req.params.reviewId;
     const updateData = req.body;
 
@@ -358,7 +358,7 @@ app.patch('/reviews/:reviewId', authMiddleware, loggedUserGuard, async (req, res
 /**delete book review from user
  * 
  */
-app.delete('/reviews/:reviews_id', authMiddleware, loggedUserGuard, async (req, res) => {
+app.delete('/reviews/:reviews_id', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
     try {
         const review = await reviewsData.getReviewById(req.params.reviews_id);
         if (!review || review.is_deleted === 1) {
@@ -435,7 +435,7 @@ app.patch('/admin/reviews/:reviews_id', authMiddleware, loggedUserGuard, roleAut
 });
 
 // rate a book borrow return return book data
-app.put('/books/:id/rating', authMiddleware, loggedUserGuard, async (req, res) => {
+app.put('/books/:id/rating', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
     try {
         const bookId = req.params.id;
         const rating = req.body.rating;
@@ -478,7 +478,7 @@ app.put('/books/:id/rating', authMiddleware, loggedUserGuard, async (req, res) =
 /**like review
  * 
  */
-app.put('/reviews/:reviews_id/review_likes', authMiddleware, loggedUserGuard, async (req, res) => {
+app.put('/reviews/:reviews_id/review_likes', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
     try {
         const reviewId = req.params.reviews_id;
         const reaction = req.body.reaction;
@@ -580,7 +580,7 @@ app.put('/admin/users/:id', authMiddleware, loggedUserGuard, roleAuth(userRole.A
 /**get all users from admin
  * 
  */
-app.get('/admin/users', authMiddleware, loggedUserGuard, async (req, res) => {
+app.get('/admin/users', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
     try {
         const users = await usersData.getAllUsers();
         res.json(users);
@@ -594,7 +594,7 @@ app.get('/admin/users', authMiddleware, loggedUserGuard, async (req, res) => {
 /**read all review from admin
  * 
  */
-app.get('/admin/reviews', authMiddleware, loggedUserGuard, async (req, res) => {
+app.get('/admin/reviews', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
     try {
         const reviews = await reviewsData.getAllReviews();
         res.send(reviews)
