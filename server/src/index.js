@@ -441,23 +441,27 @@ app.put('/books/:id/rating', authMiddleware, loggedUserGuard, async (req, res) =
         const rating = req.body.rating;
         const userId = req.user.user_id;
         const book = await booksData.getBookById(bookId);
+
         if (!book) {
             return res.status(404).json({
                 massage: 'Book not found!'
             })
         }
+
         const isBookBorrowedAndReturned = await booksData.isBookBorrowedAndReturned(bookId, userId);
         
         if(!isBookBorrowedAndReturned) {
-            return res.status(403).json({ message: 'To re'})
+            return res.status(403).json({ 
+                message: 'If you want to rate a book, you need to read it and return it first!'
+            });
         }
+
         const checkForRating = await booksRatingData.getBookRatingByUser(bookId, userId);
         if (checkForRating) {
             await booksRatingData.updateBookRating(checkForRating.book_ratings_id, rating);
             return res.status(200).json({
                 message: 'Rating is updated!'
             });
-
         }
         await booksRatingData.setRatingToBook(userId, bookId, rating);
         return res.status(200).json({
