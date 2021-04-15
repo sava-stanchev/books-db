@@ -177,4 +177,5 @@ export default {
   returnBook,
   isBookBorrowedAndReturned,
   getBookByIdForUser,
+  isBookBorrowed,
 }

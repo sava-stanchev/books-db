@@ -240,7 +240,7 @@ app.post('/books/:id', authMiddleware, loggedUserGuard, banGuard, async (req, re
 
 /** return a book by id
  *
- */ // да се провери да ли е взета от този потребител и да върна книгата
+ */
 app.patch('/books/:id', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
   try {
     const isBookBorrowed = await booksData.isBookBorrowed(+req.params.id, req.user.user_id);
@@ -256,7 +256,7 @@ app.patch('/books/:id', authMiddleware, loggedUserGuard, banGuard, async (req, r
       });
     }
 
-    return res.status(200).json(book);
+    return res.status(200).json(booksData.getBookByIdForUser(+req.params.id));
   } catch (error) {
     return res.status(400).json({
       error: error.message,
