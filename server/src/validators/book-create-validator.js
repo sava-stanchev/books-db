@@ -8,5 +8,5 @@ export default {
   isbn: (value) => typeof value === 'string' && value.length === book.ISBN_LENGTH,
   publishing_year: (value) => typeof +value === 'number', //isNan
   language: (value) => typeof +value === 'number',
-  print_length: (value) => typeof +value === 'number' //&& +value > +(book.PRINTLENGTH_MIN_LENGTH)
-  }
+  print_length: (value) => typeof +value === 'number' && +value > book.PRINTLENGTH_MIN_LENGTH,
+}
