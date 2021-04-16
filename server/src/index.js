@@ -114,10 +114,7 @@ app.delete('/logout', authMiddleware, async (req, res) => {
  *
  */
 app.get('/books', authMiddleware, loggedUserGuard, async (req, res) => {
-  const {
-    search,
-    sort,
-  } = req.query;
+  const { search, sort } = req.query;
   try {
     if (sort) {
       const theBooksSortedByYear = await booksData.sortBooksByYear(sort);
@@ -128,7 +125,7 @@ app.get('/books', authMiddleware, loggedUserGuard, async (req, res) => {
       return res.json(theBooksFoundByTitle);
     }
 
-    const theBooks = await booksData.getAllBooks();
+    const theBooks = await booksData.getAllBooks(req.query);
     res.json(theBooks);
   } catch (error) {
     return res.status(400).json({

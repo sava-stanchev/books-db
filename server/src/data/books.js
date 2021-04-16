@@ -1,10 +1,22 @@
 import pool from './pool.js';
 
 
-const getAllBooks = async () => {
+const getAllBooks = async ({ page = 0, pageSize = 5 }) => {
+  if (page < 0) {
+    page = 0;
+  }
+
+  if (pageSize < 0) {
+    pageSize = 5;
+  }
+  if (pageSize > 20) {
+    pageSize = 20;
+  }
+
   return await pool.query(`
     SELECT * FROM books b
     WHERE b.is_deleted != 1
+    LIMIT ${page * pageSize}, ${pageSize}
   `);
 };
 
