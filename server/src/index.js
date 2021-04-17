@@ -29,6 +29,7 @@ import banGuard from './middlewares/ban-guard.js';
 import reviewService from './services/review-service.js';
 import reviewsLikeData from './data/reviewsLike.js';
 import booksRatingData from './data/books-rating.js';
+import userService from './services/user-service.js';
 
 
 const config = dotenv.config().parsed;
@@ -46,8 +47,10 @@ app.use(passport.initialize());
 
 /** Register */
 app.post('/users', validateBody('user', userCreateValidator), async (req, res) => {
-  const user = req.body;
+  const userData = req.body;
+  
   try {
+    const newUser = await userService.createUser(userData);
     user.password = await bcrypt.hash(user.password, 10);
 
     const newUser = await usersData.createUser(user);
@@ -62,6 +65,22 @@ app.post('/users', validateBody('user', userCreateValidator), async (req, res) =
     });
   }
 });
+// const updatedBook = await booksService.updateBook(+id, updateData);
+
+//     if (!updatedBook) {
+//       res.status(404).send({
+//         message: 'Book not found!',
+//       });
+//     } else {
+//       res.send({
+//         message: 'Book updated!',
+//       });
+//     }
+
+
+
+
+
 
 /** Login */
 app.post('/login', async (req, res) => {

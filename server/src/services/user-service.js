@@ -1,4 +1,11 @@
 import booksData from '../data/books.js';
+import usersData from '../data/users.js';
+
+const createUsers = async (userData) => {
+  
+  if (getUserByName())
+
+};
 
 const updateBook = async (id, bookData) => {
     const book = await booksData.getBookById(id);

@@ -8,20 +8,14 @@ const getAllUsers = async () => {
     `);
 };
 
+const getUserByName = async (userName) => {
+  const result = await pool.query(
+    `SELECT * FROM users AS u WHERE u.user_name = ?`
+    , [userName]);
+    return result;
+}
+
 const createUser = async (user) => {
-    const userExist = await pool.query(
-      `SELECT * FROM users AS u WHERE u.user_name = ?`
-      , [user.user_name]);
-
-  if (userExist[0]) {
-    return {
-      error: true,
-      response: {
-        error: 'username should be unique!',
-      },
-    };
-  }
-
   const sqlNewUser = `
     INSERT INTO users (user_name, password, first_name, last_name, user_age, e_mail, is_admin, is_deleted, is_banned, gender) 
     VALUES (?, ?, ?, ?, ?, ?, 0, 0, 0, ?)
@@ -34,11 +28,7 @@ const createUser = async (user) => {
     `;
 
   const createdUser = (await pool.query(sql, [result.insertId]))[0];
-
-  return {
-    success: true,
-    response: createdUser,
-  };
+  return createdUser;
 };
 
 const validateUser = async ({ userName, password }) => {
@@ -84,6 +74,7 @@ const returnUser = async (id) => {
 export default {
   createUser,
   getAllUsers,
+  getUserByName,
   validateUser,
   banUser,
   liftBan,
