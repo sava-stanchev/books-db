@@ -17,10 +17,11 @@ const getUserByName = async (userName) => {
 
 const createUser = async (user) => {
   const sqlNewUser = `
-    INSERT INTO users (user_name, password, first_name, last_name, user_age, e_mail, is_admin, is_deleted, is_banned, gender) 
-    VALUES (?, ?, ?, ?, ?, ?, 0, 0, 0, ?)
+    INSERT INTO users (user_name, password, first_name, last_name, e_mail, is_admin, is_deleted, ban_date, user_age, gender) 
+    VALUES (?, ?, ?, ?, ?, 0, 0, DEFAULT, DEFAULT, DEFAULT)
     `;
-  const result = await pool.query(sqlNewUser, [user.user_name, user.password, user.first_name, user.last_name, user.user_age, user.e_mail, user.gender]);
+  const result = await pool.query(sqlNewUser,
+    [user.user_name, user.password, user.first_name, user.last_name, user.e_mail, user.user_age, user.gender]);
 
   const sql = `SELECT u.user_name, u.first_name, u.last_name, e_mail
                 FROM users AS u

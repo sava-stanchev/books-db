@@ -48,39 +48,18 @@ app.use(passport.initialize());
 /** Register */
 app.post('/users', validateBody('user', userCreateValidator), async (req, res) => {
   const userData = req.body;
-  
   try {
     const newUser = await userService.createUser(userData);
-    user.password = await bcrypt.hash(user.password, 10);
-
-    const newUser = await usersData.createUser(user);
-    if (newUser.error) {
-      return res.status(400).json(newUser.response);
+    if (!newUser) {
+      return res.status(400).json({ message: 'Username exist!'});
     }
-
-    res.json(newUser.response);
+    return res.status(200).send(newUser);
   } catch (error) {
     res.status(400).json({
       error: error.message,
     });
   }
 });
-// const updatedBook = await booksService.updateBook(+id, updateData);
-
-//     if (!updatedBook) {
-//       res.status(404).send({
-//         message: 'Book not found!',
-//       });
-//     } else {
-//       res.send({
-//         message: 'Book updated!',
-//       });
-//     }
-
-
-
-
-
 
 /** Login */
 app.post('/login', async (req, res) => {

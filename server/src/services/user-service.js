@@ -1,24 +1,17 @@
-import booksData from '../data/books.js';
 import usersData from '../data/users.js';
+import bcrypt from 'bcrypt';
 
-const createUsers = async (userData) => {
-  
-  if (getUserByName())
+const createUser = async (userData) => {
+  const isUserNameExist = await usersData.getUserByName(userData.user_name);
+  if (isUserNameExist[0]) {
+    return null;
+  }
 
-};
-
-const updateBook = async (id, bookData) => {
-    const book = await booksData.getBookById(id);
-    if (!book) {
-      return null;
-    }
-  
-    const updated = { ...book[0], ...bookData };
-    const _ = await booksData.updateBookSQL(updated);
-  
-    return updated;
+  userData.password = await bcrypt.hash(userData.password, 10);
+  const newUser = await usersData.createUser(userData);
+  return newUser;
 };
 
 export default {
-    updateBook
+  createUser,
 }
