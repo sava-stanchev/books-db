@@ -11,26 +11,18 @@ import validateBody from './middlewares/validate-body.js';
 import transformBody from './middlewares/transform-body.js';
 import dotenv from 'dotenv';
 import createToken from './auth/create-token.js';
-import bcrypt from 'bcrypt';
-import usersData, {
-  logoutUser,
-} from './data/users.js';
-import {
-  authMiddleware, roleMiddleware,
-} from './auth/auth-middleware.js';
+import usersData from './data/users.js';
+import { authMiddleware, roleMiddleware } from './auth/auth-middleware.js';
 import passport from 'passport';
 import jwtStrategy from './auth/strategy.js';
 import loggedUserGuard from './middlewares/loggedUserGuard.js';
 import roleAuth from './middlewares/role-auth.js';
-import {
-  userRole,
-} from './common/user-role.js';
+import { userRole } from './common/user-role.js';
 import banGuard from './middlewares/ban-guard.js';
 import reviewService from './services/review-service.js';
 import reviewsLikeData from './data/reviewsLike.js';
 import booksRatingData from './data/books-rating.js';
 import userService from './services/user-service.js';
-
 
 const config = dotenv.config().parsed;
 
@@ -89,7 +81,7 @@ app.post('/login', async (req, res) => {
 /** Logout */
 app.delete('/logout', authMiddleware, async (req, res) => {
   try {
-    await logoutUser(req.headers.authorization.replace('Bearer ', ''));
+    await usersData.logoutUser(req.headers.authorization.replace('Bearer ', ''));
 
     res.json({
       message: 'Successfully logged out!',
@@ -101,7 +93,7 @@ app.delete('/logout', authMiddleware, async (req, res) => {
   }
 });
 
-/** Retrieve all books */
+/** Retrieve all books (with pagination, filtering, sorting) */
 app.get('/books', authMiddleware, loggedUserGuard, async (req, res) => {
   const { search, sort } = req.query;
   try {
@@ -136,9 +128,7 @@ app.get('/books/:id', authMiddleware, loggedUserGuard, async (req, res) => {
 
 /** Borrow a book */
 app.post('/books/:id', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
-  const {
-    id,
-  } = req.params;
+  const { id } = req.params;
   try {
     const theBook = await booksData.getBookById(+id);
     if (!theBook) {
@@ -188,9 +178,7 @@ app.patch('/books/:id', authMiddleware, loggedUserGuard, banGuard, async (req, r
 
 /** Read book reviews */
 app.get('/books/:id/reviews', authMiddleware, loggedUserGuard, async (req, res) => {
-  const {
-    id,
-  } = req.params;
+  const { id } = req.params;
 
   try {
     const theBook = await booksData.getBookById(+id);
@@ -292,7 +280,7 @@ app.delete('/reviews/:reviews_id', authMiddleware, loggedUserGuard, banGuard, as
     await reviewsData.deleteReview(req.params.reviews_id);
 
     res.status(200).json({
-      message: `Review deleted`, // return deleted review
+      message: `Review deleted`,
     });
   } catch (error) {
     return res.status(400).json({
@@ -397,9 +385,7 @@ app.post('/admin/books', authMiddleware, loggedUserGuard, roleAuth(userRole.Admi
 
 /** Update any book (as admin) */
  app.put('/admin/books/:id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), validateBody('book', bookUpdateValidator), async (req, res) => {
-  const {
-    id,
-  } = req.params;
+  const { id } = req.params;
   const updateData = req.body;
 
   try {
@@ -435,11 +421,23 @@ app.delete('/admin/books/:id', authMiddleware, loggedUserGuard, roleAuth(userRol
   }
 });
 
+/** Read all reviews (as admin) */
+app.get('/admin/reviews', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
+  try {
+    const review = await reviewsData.getAllReviews();
+    res.send(review);
+  } catch (error) {
+    return res.status(400).json({
+      error: error.message,
+    });
+  }
+});
+
 /** Read any review (as admin) */
  app.get('/admin/reviews/:reviews_id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
   const reviewId = req.params.reviews_id;
   try {
-    const review = await reviewsData.getReviewById(reviewId);
+    const review = await reviewsData.getAnyReviewById(+reviewId);
     res.send(review);
   } catch (error) {
     return res.status(400).json({
@@ -463,9 +461,7 @@ app.delete('/admin/books/:id', authMiddleware, loggedUserGuard, roleAuth(userRol
     const reviewUpdated = await reviewService.updateReview(+reviewId, updateData);
 
     if (reviewUpdated) {
-      return res.status(200).json({
-        message: 'Review updated!',
-      });
+      return res.status(200).send(await reviewsData.getReviewById(+reviewId));
     }
   } catch (error) {
     return res.status(500).json({
@@ -522,7 +518,7 @@ app.delete('/admin/users/:id', authMiddleware, loggedUserGuard, roleAuth(userRol
 
     await usersData.deleteUser(user.users_id);
     return res.status(200).json({
-      message: 'User was successful deleted!', // return user data
+      message: 'User was successful deleted!',
     });
   } catch (error) {
     return res.status(400).json({
@@ -554,9 +550,7 @@ app.put('/admin/users/:id', authMiddleware, loggedUserGuard, roleAuth(userRole.A
     }
 
     await usersData.returnUser(user.users_id);
-    res.status(200).json({
-      message: 'User was successful returned!',
-    });
+    res.status(200).send(await usersData.getUserById(req.params.id));
   } catch (error) {
     return res.status(400).json({
       error: error.message,

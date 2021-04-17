@@ -19,21 +19,22 @@ const createUser = async (user) => {
   const sqlNewUser = `
     INSERT INTO users (user_name, password, first_name, last_name, e_mail, is_admin, is_deleted, ban_date, user_age, gender) 
     VALUES (?, ?, ?, ?, ?, 0, 0, DEFAULT, DEFAULT, DEFAULT)
-    `;
+  `;
   const result = await pool.query(sqlNewUser,
     [user.user_name, user.password, user.first_name, user.last_name, user.e_mail, user.user_age, user.gender]);
 
-  const sql = `SELECT u.user_name, u.first_name, u.last_name, e_mail
-                FROM users AS u
-                WHERE u.users_id = ?
-    `;
+  const sql = `
+    SELECT u.user_name, u.first_name, u.last_name, u.e_mail, u.user_age, u.gender
+    FROM users AS u
+    WHERE u.users_id = ?
+  `;
 
   const createdUser = (await pool.query(sql, [result.insertId]))[0];
   return createdUser;
 };
 
-const validateUser = async ({ userName, password }) => {
-  const userData = await pool.query('SELECT * FROM users u WHERE u.user_name = ?', [userName]);
+const validateUser = async ({ user_name, password }) => {
+  const userData = await pool.query('SELECT * FROM users u WHERE u.user_name = ?', [user_name]);
 
   if (userData.length === 0) {
     throw new Error('Username does not exist!');
@@ -60,7 +61,7 @@ const liftBan = async (id) => {
 
 const getUserById = async (id) => (await pool.query('SELECT * FROM users AS u WHERE u.users_id = ?', [id]))[0];
 
-export const logoutUser = async (token) => {
+const logoutUser = async (token) => {
   return await pool.query('INSERT INTO tokens (token) VALUES (?)', [token]);
 };
 
@@ -82,4 +83,5 @@ export default {
   getUserById,
   deleteUser,
   returnUser,
+  logoutUser
 };

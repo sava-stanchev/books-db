@@ -1,10 +1,4 @@
 import pool from './pool.js';
-import booksData from '../data/books.js';
-
-const addReview = async (req) => {
-  console.log(req);
-  const book = await booksData.getBookById();
-};
 
 const getAllReviews = async () => {
   return await pool.query(`
@@ -15,9 +9,9 @@ const getAllReviews = async () => {
 const getReviewsForBook = async (id) => {
   const sql = `
   SELECT content FROM books AS b
-    JOIN reviews AS r
-      ON b.books_id = r.books_id
-      WHERE b.is_deleted != 1 AND b.books_id = ?
+  JOIN reviews AS r
+    ON b.books_id = r.books_id
+    WHERE b.is_deleted != 1 AND b.books_id = ?
   `;
   const result = await pool.query(sql, [id]);
   return result[0];
@@ -82,8 +76,16 @@ const userReviewByBookId = async (userId, bookId) => {
   return result;
 };
 
+const getAnyReviewById = async (id) => {
+  const sql = `
+    SELECT * FROM reviews AS r
+    WHERE r.reviews_id = ?
+  `;
+  const result = await pool.query(sql, [id]);
+  return result;  
+}
+
 export default {
-  addReview,
   getAllReviews,
   getReviewsForBook,
   getReviewById,
@@ -92,4 +94,5 @@ export default {
   deleteReview,
   userReviewByBookId,
   getReviewByIdForUser,
+  getAnyReviewById,
 }
