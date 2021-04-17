@@ -26,7 +26,6 @@ import {
   userRole,
 } from './common/user-role.js';
 import banGuard from './middlewares/ban-guard.js';
-import pool from './data/pool.js';
 import reviewService from './services/review-service.js';
 import reviewsLikeData from './data/reviewsLike.js';
 import booksRatingData from './data/books-rating.js';
@@ -45,9 +44,7 @@ app.use(express.json());
 passport.use(jwtStrategy);
 app.use(passport.initialize());
 
-/** register user
- *
- */
+/** Register */
 app.post('/users', validateBody('user', userCreateValidator), async (req, res) => {
   const user = req.body;
   try {
@@ -66,9 +63,7 @@ app.post('/users', validateBody('user', userCreateValidator), async (req, res) =
   }
 });
 
-/** login user
- *
- */
+/** Login */
 app.post('/login', async (req, res) => {
   try {
     const user = await usersData.validateUser(req.body);
@@ -93,9 +88,7 @@ app.post('/login', async (req, res) => {
   }
 });
 
-/** logout user
- *
- */
+/** Logout */
 app.delete('/logout', authMiddleware, async (req, res) => {
   try {
     await logoutUser(req.headers.authorization.replace('Bearer ', ''));
@@ -110,9 +103,7 @@ app.delete('/logout', authMiddleware, async (req, res) => {
   }
 });
 
-/** retrieve all books
- *
- */
+/** Retrieve all books */
 app.get('/books', authMiddleware, loggedUserGuard, async (req, res) => {
   const { search, sort } = req.query;
   try {
@@ -134,23 +125,7 @@ app.get('/books', authMiddleware, loggedUserGuard, async (req, res) => {
   }
 });
 
-/** create new book from admin
- *
- */
-app.post('/admin/books', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), validateBody('book', bookCreateValidator), async (req, res) => {
-  try {
-    const book = await booksData.createBook(req.body, req.user);
-    res.json(book);
-  } catch (error) {
-    return res.status(400).json({
-      error: error.message,
-    });
-  }
-});
-
-/** book by id
- *
- */
+/** Retrieve one book */
 app.get('/books/:id', authMiddleware, loggedUserGuard, async (req, res) => {
   try {
     res.json(await booksData.getBookById(+req.params.id));
@@ -161,53 +136,7 @@ app.get('/books/:id', authMiddleware, loggedUserGuard, async (req, res) => {
   }
 });
 
-/** update any book from admin
- *
- */
-app.put('/admin/books/:id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), validateBody('book', bookUpdateValidator), async (req, res) => {
-  const {
-    id,
-  } = req.params;
-  const updateData = req.body;
-
-  try {
-    const updatedBook = await booksService.updateBook(+id, updateData);
-
-    if (!updatedBook) {
-      res.status(404).send({
-        message: 'Book not found!',
-      });
-    } else {
-      res.send({
-        message: 'Book updated!',
-      });
-    }
-  } catch (error) {
-    return res.status(400).json({
-      error: error.message,
-    });
-  }
-});
-
-/** delete any book from admin
- *
- */
-app.delete('/admin/books/:id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
-  try {
-    await booksData.deleteBook(+req.params.id);
-    res.json({
-      message: `Book deleted`,
-    });
-  } catch (error) {
-    return res.status(400).json({
-      error: error.message,
-    });
-  }
-});
-
-/** borrow a book by id
- *
- */
+/** Borrow a book */
 app.post('/books/:id', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
   const {
     id,
@@ -235,9 +164,7 @@ app.post('/books/:id', authMiddleware, loggedUserGuard, banGuard, async (req, re
   }
 });
 
-/** return a book by id
- *
- */
+/** Return a book */
 app.patch('/books/:id', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
   try {
     const isBookBorrowed = await booksData.isBookBorrowed(+req.params.id, req.user.user_id);
@@ -261,9 +188,7 @@ app.patch('/books/:id', authMiddleware, loggedUserGuard, banGuard, async (req, r
   }
 });
 
-/** read all reviews for a book
- *
- */
+/** Read book reviews */
 app.get('/books/:id/reviews', authMiddleware, loggedUserGuard, async (req, res) => {
   const {
     id,
@@ -292,9 +217,7 @@ app.get('/books/:id/reviews', authMiddleware, loggedUserGuard, async (req, res) 
   }
 });
 
-/** create book review
- *
- */
+/** Create book review */
 app.post('/books/:books_id/reviews', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
   const bookId = +req.params.books_id;
   const userId = +req.user.user_id;
@@ -322,9 +245,7 @@ app.post('/books/:books_id/reviews', authMiddleware, loggedUserGuard, banGuard, 
   }
 });
 
-/** update book review
- *
- */
+/** Update book review */
 app.patch('/reviews/:reviewId', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
   const reviewId = req.params.reviewId;
   const updateData = req.body;
@@ -356,9 +277,7 @@ app.patch('/reviews/:reviewId', authMiddleware, loggedUserGuard, banGuard, async
   }
 });
 
-/** delete book review from user
- *
- */
+/** Delete book review */
 app.delete('/reviews/:reviews_id', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
   try {
     const review = await reviewsData.getReviewById(req.params.reviews_id);
@@ -384,58 +303,7 @@ app.delete('/reviews/:reviews_id', authMiddleware, loggedUserGuard, banGuard, as
   }
 });
 
-/** delete any review from admin
- *
- */
-app.delete('/admin/reviews/:reviews_id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
-  try {
-    const review = await reviewsData.getReviewById(req.params.reviews_id);
-    if (!review || review.is_deleted === 1) {
-      res.status(400).json({
-        message: 'Review not found!',
-      });
-    }
-    await reviewsData.deleteReview(req.params.reviews_id);
-
-    res.status(200).json({
-      message: `Review deleted`,
-    });
-  } catch (error) {
-    return res.status(400).json({
-      error: error.message,
-    });
-  }
-});
-
-/** update any review form admin
- *
- */
-app.patch('/admin/reviews/:reviews_id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
-  try {
-    const reviewId = req.params.reviews_id;
-    const updateData = req.body;
-    const review = await reviewsData.getReviewById(+reviewId);
-
-    if (!review) {
-      return res.status(404).send({
-        message: 'Review not found!',
-      });
-    }
-    const reviewUpdated = await reviewService.updateReview(+reviewId, updateData);
-
-    if (reviewUpdated) {
-      return res.status(200).json({
-        message: 'Review updated!',
-      });
-    }
-  } catch (error) {
-    return res.status(500).json({
-      message: error.message,
-    });
-  }
-});
-
-// rate a book borrow return return book data
+/** Rate book */
 app.put('/books/:id/rating', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
   try {
     const bookId = req.params.id;
@@ -475,9 +343,7 @@ app.put('/books/:id/rating', authMiddleware, loggedUserGuard, banGuard, async (r
   }
 });
 
-/** like review
- *
- */
+/** Like reviews */
 app.put('/reviews/:reviews_id/review_likes', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
   try {
     const reviewId = req.params.reviews_id;
@@ -492,12 +358,12 @@ app.put('/reviews/:reviews_id/review_likes', authMiddleware, loggedUserGuard, ba
 
     const checkForLike = await reviewsLikeData.getReviewLikeByUser(reviewId, userId);
     if (checkForLike) {
-      const newLike = await reviewsLikeData.updateReviewLike(checkForLike.review_likes_id, reaction);
+      await reviewsLikeData.updateReviewLike(checkForLike.review_likes_id, reaction);
       return res.status(200).json({
         message: 'Like is updated!',
       });
     }
-    const newLike = await reviewsLikeData.setLikeToReview(userId, reviewId, reaction);
+    await reviewsLikeData.setLikeToReview(userId, reviewId, reaction);
     return res.status(200).json({
       message: 'Like is given!',
     });
@@ -508,10 +374,20 @@ app.put('/reviews/:reviews_id/review_likes', authMiddleware, loggedUserGuard, ba
   }
 });
 
-/** read any book by admin
- *
- */
-app.get('/admin/books/:id', authMiddleware, loggedUserGuard, roleMiddleware(userRole.Admin), async (req, res) => {
+/** Create any book (as admin) */
+app.post('/admin/books', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), validateBody('book', bookCreateValidator), async (req, res) => {
+  try {
+    const book = await booksData.createBook(req.body, req.user);
+    res.json(book);
+  } catch (error) {
+    return res.status(400).json({
+      error: error.message,
+    });
+  }
+});
+
+/** Read any book (as admin) */
+ app.get('/admin/books/:id', authMiddleware, loggedUserGuard, roleMiddleware(userRole.Admin), async (req, res) => {
   try {
     res.json(await booksData.getAnyBookById(+req.params.id));
   } catch (error) {
@@ -521,10 +397,107 @@ app.get('/admin/books/:id', authMiddleware, loggedUserGuard, roleMiddleware(user
   }
 });
 
+/** Update any book (as admin) */
+ app.put('/admin/books/:id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), validateBody('book', bookUpdateValidator), async (req, res) => {
+  const {
+    id,
+  } = req.params;
+  const updateData = req.body;
 
-/** ban user from admin
- *
- */
+  try {
+    const updatedBook = await booksService.updateBook(+id, updateData);
+
+    if (!updatedBook) {
+      res.status(404).send({
+        message: 'Book not found!',
+      });
+    } else {
+      res.send({
+        message: 'Book updated!',
+      });
+    }
+  } catch (error) {
+    return res.status(400).json({
+      error: error.message,
+    });
+  }
+});
+
+/** Delete any book (as admin) */
+app.delete('/admin/books/:id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
+  try {
+    await booksData.deleteBook(+req.params.id);
+    res.json({
+      message: `Book deleted`,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      error: error.message,
+    });
+  }
+});
+
+/** Read any review (as admin) */
+ app.get('/admin/reviews/:reviews_id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
+  const reviewId = req.params.reviews_id;
+  try {
+    const review = await reviewsData.getReviewById(reviewId);
+    res.send(review);
+  } catch (error) {
+    return res.status(400).json({
+      error: error.message,
+    });
+  }
+});
+
+/** Update any review (as admin) */
+ app.patch('/admin/reviews/:reviews_id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
+  try {
+    const reviewId = req.params.reviews_id;
+    const updateData = req.body;
+    const review = await reviewsData.getReviewById(+reviewId);
+
+    if (!review) {
+      return res.status(404).send({
+        message: 'Review not found!',
+      });
+    }
+    const reviewUpdated = await reviewService.updateReview(+reviewId, updateData);
+
+    if (reviewUpdated) {
+      return res.status(200).json({
+        message: 'Review updated!',
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+});
+
+/** Delete any review (as admin) */
+ app.delete('/admin/reviews/:reviews_id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
+  try {
+    const review = await reviewsData.getReviewById(req.params.reviews_id);
+    if (!review || review.is_deleted === 1) {
+      res.status(400).json({
+        message: 'Review not found!',
+      });
+    }
+    await reviewsData.deleteReview(req.params.reviews_id);
+
+    res.status(200).json({
+      message: `Review deleted`,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      error: error.message,
+    });
+  }
+});
+
+/** Ban users (as admin) */
 app.post('/admin/users/:id/ban', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
   try {
     await usersData.banUser(+req.params.id);
@@ -538,9 +511,7 @@ app.post('/admin/users/:id/ban', authMiddleware, loggedUserGuard, roleAuth(userR
   }
 });
 
-/** delete user from admin
- *
- */
+/** Delete users (as admin) */
 app.delete('/admin/users/:id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
   try {
     const user = await usersData.getUserById(req.params.id);
@@ -562,9 +533,19 @@ app.delete('/admin/users/:id', authMiddleware, loggedUserGuard, roleAuth(userRol
   }
 });
 
-/** return user from admin
- *
- */
+/** Get all users (as admin) */
+app.get('/admin/users', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
+  try {
+    const users = await usersData.getAllUsers();
+    res.json(users);
+  } catch (error) {
+    return res.status(400).json({
+      error: error.message,
+    });
+  }
+});
+
+/** Return a user (as admin) */
 app.put('/admin/users/:id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
   try {
     const user = await usersData.getUserById(req.params.id);
@@ -578,34 +559,6 @@ app.put('/admin/users/:id', authMiddleware, loggedUserGuard, roleAuth(userRole.A
     res.status(200).json({
       message: 'User was successful returned!',
     });
-  } catch (error) {
-    return res.status(400).json({
-      error: error.message,
-    });
-  }
-});
-
-/** get all users from admin
- *
- */
-app.get('/admin/users', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
-  try {
-    const users = await usersData.getAllUsers();
-    res.json(users);
-  } catch (error) {
-    return res.status(400).json({
-      error: error.message,
-    });
-  }
-});
-
-/** read all review from admin
- *
- */
-app.get('/admin/reviews', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
-  try {
-    const reviews = await reviewsData.getAllReviews();
-    res.send(reviews);
   } catch (error) {
     return res.status(400).json({
       error: error.message,
