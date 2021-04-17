@@ -11,7 +11,7 @@ const getAllUsers = async () => {
 const createUser = async (user) => {
     const userExist = await pool.query(
       `SELECT * FROM users AS u WHERE u.user_name = ?`
-      , [user.userName]);
+      , [user.user_name]);
 
   if (userExist[0]) {
     return {
@@ -24,9 +24,9 @@ const createUser = async (user) => {
 
   const sqlNewUser = `
     INSERT INTO users (user_name, password, first_name, last_name, user_age, e_mail, is_admin, is_deleted, is_banned, gender) 
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    VALUES (?, ?, ?, ?, ?, ?, 0, 0, 0, ?)
     `;
-  const result = await pool.query(sqlNewUser, [user.userName, user.password, user.firstName, user.lastName, user.userAge, user.e_mail, user.is_admin, user.is_deleted, user.is_banned, user.gender]);
+  const result = await pool.query(sqlNewUser, [user.user_name, user.password, user.first_name, user.last_name, user.user_age, user.e_mail, user.gender]);
 
   const sql = `SELECT u.user_name, u.first_name, u.last_name, e_mail
                 FROM users AS u

@@ -48,7 +48,7 @@ app.use(passport.initialize());
 /** register user
  *
  */
-app.post('/users', loggedUserGuard, async (req, res) => {
+app.post('/users', validateBody('user', userCreateValidator), async (req, res) => {
   const user = req.body;
   try {
     user.password = await bcrypt.hash(user.password, 10);
