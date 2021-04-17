@@ -5,7 +5,7 @@ export const book = {
   AUTHOR_MAX_LENGTH: 100,
   AGE_MIN: 1,
   ISBN_LENGTH: 10,
-  PRINTLENGTH_MIN_LENGTH: 1
+  PRINTLENGTH_MIN_LENGTH: 1,
 };
 
 export const user = {
@@ -22,5 +22,5 @@ export const user = {
 
 export const review = {
   TEXT_MIN_LENGTH: 10,
-  TEXT_MAX_LENGTH: 300
+  TEXT_MAX_LENGTH: 300,
 };
