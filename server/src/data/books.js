@@ -9,6 +9,7 @@ const getAllBooks = async ({ page = 0, pageSize = 5 }) => {
   if (pageSize < 0) {
     pageSize = 5;
   }
+
   if (pageSize > 20) {
     pageSize = 20;
   }
@@ -177,6 +178,15 @@ const isBookBorrowed = async (bookId, userId) => {
   return result[0];
 };
 
+const getAnyBookById = async (id) => {
+  const sql = `
+  SELECT * FROM books AS b
+  WHERE AND b.books_id = ?
+`;
+  const result = await pool.query(sql, [id]);
+  return result;
+};
+
 export default {
   getAllBooks,
   searchBooksByTitle,
@@ -190,4 +200,5 @@ export default {
   isBookBorrowedAndReturned,
   getBookByIdForUser,
   isBookBorrowed,
+  getAnyBookById,
 }

@@ -16,7 +16,7 @@ import usersData, {
   logoutUser,
 } from './data/users.js';
 import {
-  authMiddleware,
+  authMiddleware, roleMiddleware,
 } from './auth/auth-middleware.js';
 import passport from 'passport';
 import jwtStrategy from './auth/strategy.js';
@@ -508,7 +508,18 @@ app.put('/reviews/:reviews_id/review_likes', authMiddleware, loggedUserGuard, ba
   }
 });
 
-// read any book admin
+/** read any book by admin
+ *
+ */
+app.get('/admin/books/:id', authMiddleware, loggedUserGuard, roleMiddleware(userRole.Admin), async (req, res) => {
+  try {
+    res.json(await booksData.getAnyBookById(+req.params.id));
+  } catch (error) {
+    return res.status(404).json({
+      error: error.message,
+    });
+  }
+});
 
 
 /** ban user from admin
