@@ -5,7 +5,7 @@ export default {
     first_name: `Expected string with length [2 - 20]`,
     last_name: `Expected string with length [2 - 20]`,
     user_age: `Expected number bigger than 1`,
-    gender: `Expected string with length [1 - 30]`,
+    gender: `Expected number`,
     e_mail: `Expected valid e-mail`,
   },
   book: {

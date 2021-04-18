@@ -12,7 +12,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"user_name\": \"Bibi\",\r\n    \"password\": \"123456789\",\r\n    \"first_name\": \"Bibi\",\r\n    \"last_name\": \"Dimitrova\",\r\n    \"user_age\": \"20\",\r\n    \"e_mail\": \"email@email.com\"\r\n}",
+					"raw": "{\r\n    \"user_name\": \"Bibi\",\r\n    \"password\": \"123456789\",\r\n    \"first_name\": \"Bibi\",\r\n    \"last_name\": \"Dimitrova\",\r\n    \"user_age\": \"20\",\r\n    \"gender\": \"2\",\r\n    \"e_mail\": \"email@email.com\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -251,7 +251,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"users_id\": \"1\",\r\n    \"books_id\": \"2\",\r\n    \"date_created\": \"2021-04-17\",\r\n    \"is_deleted\": \"0\",\r\n    \"content\": \"Some new review!\"\r\n}",
+					"raw": "{\r\n    \"content\": \"Some new review!\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
