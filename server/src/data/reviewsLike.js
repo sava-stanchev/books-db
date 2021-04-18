@@ -37,8 +37,23 @@ const updateReviewLike = async (reviewLikesId, reaction) => {
   return result;
 };
 
+const reviewLikesByBookAndUser = async (reviewId) => {
+  const sql = `
+  SELECT b.title, r.content, u.user_name, re.reaction
+  FROM review_likes AS rl
+  JOIN reviews AS r ON rl.reviews_id = r.reviews_id
+  JOIN users AS u ON rl.users_id = u.users_id
+  JOIN reactions AS re ON rl.reactions_id = re.reactions_id
+  JOIN books AS b ON r.books_id = b.books_id
+  WHERE rl.reviews_id = ?
+  `;
+  const result = await pool.query(sql, [reviewId]);
+  return result;
+}
+
 export default {
   getReviewLikeByUser,
   setLikeToReview,
   updateReviewLike,
+  reviewLikesByBookAndUser,
 }

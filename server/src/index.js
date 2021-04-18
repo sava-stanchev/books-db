@@ -320,13 +320,12 @@ app.put('/books/:id/rating', authMiddleware, loggedUserGuard, banGuard, async (r
     }
 
     const checkForRating = await booksRatingData.getBookRatingByUser(bookId, userId);
-    const bookInfo = await booksData.getBookByIdForUser(bookId);
     if (checkForRating) {
       await booksRatingData.updateBookRating(checkForRating.book_ratings_id, rating);
-      return res.status(200).send(bookInfo);
+      return res.status(200).send(await booksData.bookAverageRating(bookId));
     }
     await booksRatingData.setRatingToBook(userId, bookId, rating);
-    return res.status(200).send(bookInfo);
+    return res.status(200).send(await booksData.bookAverageRating(bookId));
   } catch (error) {
     return res.status(500).json({
       message: error.message,
@@ -348,13 +347,12 @@ app.put('/reviews/:reviews_id/review_likes', authMiddleware, loggedUserGuard, ba
     }
 
     const checkForLike = await reviewsLikeData.getReviewLikeByUser(reviewId, userId);
-    const reviewInfo = await reviewsData.getReviewByIdForUser(reviewId);
     if (checkForLike) {
       await reviewsLikeData.updateReviewLike(checkForLike.review_likes_id, reaction);
-      return res.status(200).send(reviewInfo);
+      return res.status(200).send(await reviewsLikeData.reviewLikesByBookAndUser(reviewId));
     }
     await reviewsLikeData.setLikeToReview(userId, reviewId, reaction);
-    return res.status(200).send(reviewInfo);
+    return res.status(200).send(await reviewsLikeData.reviewLikesByBookAndUser(reviewId));
   } catch (error) {
     return res.status(400).json({
       error: error.message,

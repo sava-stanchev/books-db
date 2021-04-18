@@ -203,10 +203,14 @@ const getAnyBookById = async (id) => {
 
 const bookAverageRating = async (id) => {
   const sql = `
-  SELECT b.books_id, b.title, br.books_id, r.ratings_id FROM books AS b
-  JOIN books_ratings AS br ON b.books_id = br.books_id
+  SELECT br.books_id, b.title, ROUND(AVG(r.rating)) AS avg_rating
+  FROM books_ratings AS br
+  JOIN books AS b ON br.books_id = b.books_id
   JOIN ratings AS r ON br.ratings_id = r.ratings_id
+  WHERE br.books_id = ?
   `;
+  const result = await pool.query(sql, [id]);
+  return result[0];
 }
 
 export default {
@@ -225,4 +229,5 @@ export default {
   getAnyBookById,
   setReturnRecords,
   setBorrowRecords,
+  bookAverageRating,
 }
