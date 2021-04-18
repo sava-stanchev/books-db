@@ -7,5 +7,5 @@ export default {
     last_name: (value) => typeof value === 'string' && value.length > user.LASTNAME_MIN_LENGTH && value.length < user.LASTNAME_MAX_LENGTH,
     user_age: (value) => typeof value === 'undefined' || typeof +value === 'number' && +value > user.AGE_MIN,
     e_mail: (value) => typeof value === 'string' && value.length > 6 && value.includes('@'),
-    gender: (value) => typeof value === 'undefined' || typeof value === 'string' && value.length > 1 && value.length < 20,  
+    gender: (value) => typeof value === 'undefined' || typeof +value === 'number'
 }

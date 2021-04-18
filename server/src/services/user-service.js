@@ -8,6 +8,12 @@ const createUser = async (userData) => {
   }
 
   userData.password = await bcrypt.hash(userData.password, 10);
+  if (typeof userData.user_age === 'undefined') {
+    userData.user_age = 'DEFAULT';
+  }
+  if (typeof userData.gender === 'undefined') {
+    userData.gender = 'DEFAULT';
+  }
   const newUser = await usersData.createUser(userData);
   return newUser;
 };
