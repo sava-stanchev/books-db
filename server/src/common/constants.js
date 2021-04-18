@@ -21,6 +21,6 @@ export const user = {
 };
 
 export const review = {
-  TEXT_MIN_LENGTH: 10,
-  TEXT_MAX_LENGTH: 300,
+  CONTENT_MIN_LENGTH: 10,
+  CONTENT_MAX_LENGTH: 300,
 };

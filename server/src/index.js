@@ -23,6 +23,7 @@ import reviewService from './services/review-service.js';
 import reviewsLikeData from './data/reviewsLike.js';
 import booksRatingData from './data/books-rating.js';
 import userService from './services/user-service.js';
+import reviewCreateValidator from './validators/review-create-validation.js';
 
 const config = dotenv.config().parsed;
 
@@ -139,12 +140,14 @@ app.post('/books/:id', authMiddleware, loggedUserGuard, banGuard, async (req, re
 
     const bookBorrowed = await booksData.borrowBook(+id);
     if (!bookBorrowed) {
-      res.json({
+      return res.json({
         msg: `Book has already been borrowed!`,
       });
-    } else {
-      res.status(200).send(await booksData.getBookByIdForUser(+id));
     }
+
+    const setRecord = await booksData.setBorrowRecords(id, req.user.user_id);
+
+    return res.status(200).send(await booksData.getBookByIdForUser(+id));
   } catch (error) {
     return res.status(400).json({
       error: error.message,
@@ -168,7 +171,14 @@ app.patch('/books/:id', authMiddleware, loggedUserGuard, banGuard, async (req, r
       });
     }
 
-    return res.status(200).json(booksData.getBookByIdForUser(+req.params.id));
+    const setRecord = await booksData.setReturnRecords(+isBookBorrowed.records_id);
+    if (!setRecord) {
+      return res.json({
+        msg: `Something went wrong!`
+      })
+    }
+
+    return res.status(200).json(await booksData.getBookByIdForUser(+req.params.id));
   } catch (error) {
     return res.status(400).json({
       error: error.message,
@@ -189,13 +199,13 @@ app.get('/books/:id/reviews', authMiddleware, loggedUserGuard, async (req, res) 
     }
 
     const theReviews = await reviewsData.getReviewsForBook(+id);
-    if (theReviews.length > 0) {
-      res.send(theReviews);
-    } else {
+    if (!theReviews) {
       return res.json({
         msg: 'Book has no reviews yet!',
-      });
+      });  
     }
+
+    return res.send(theReviews);
   } catch (error) {
     return res.status(400).json({
       error: error.message,
@@ -204,7 +214,7 @@ app.get('/books/:id/reviews', authMiddleware, loggedUserGuard, async (req, res) 
 });
 
 /** Create book review */
-app.post('/books/:books_id/reviews', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
+app.post('/books/:books_id/reviews', transformBody(reviewCreateValidator), validateBody('review', reviewCreateValidator), authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
   const bookId = +req.params.books_id;
   const userId = +req.user.user_id;
   const book = await booksData.getBookById(+bookId);
@@ -216,7 +226,7 @@ app.post('/books/:books_id/reviews', authMiddleware, loggedUserGuard, banGuard, 
     }
 
     const check = (await reviewsData.userReviewByBookId(userId, bookId))[0];
-    if (check) {
+    if (!check) {
       return res.status(200).json({
         message: 'Review already exist!',
       });
@@ -361,7 +371,7 @@ app.put('/reviews/:reviews_id/review_likes', authMiddleware, loggedUserGuard, ba
 });
 
 /** Create any book (as admin) */
-app.post('/admin/books', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), validateBody('book', bookCreateValidator), async (req, res) => {
+app.post('/admin/books', transformBody(bookCreateValidator), validateBody('book', bookCreateValidator), authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), validateBody('book', bookCreateValidator), async (req, res) => {
   try {
     const book = await booksData.createBook(req.body, req.user);
     res.json(book);

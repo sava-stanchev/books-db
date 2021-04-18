@@ -61,7 +61,7 @@ const getBookByIdForUser = async (id) => {
   WHERE b.is_deleted != 1 AND b.books_id = ?
 `;
   const result = await pool.query(sql, [id]);
-  return result;
+  return result[0];
 };
 
 const borrowBook = async (id) => {
@@ -73,14 +73,36 @@ const borrowBook = async (id) => {
   return await pool.query(sql, [id]);
 };
 
-const returnBook = async (id) => {
+const returnBook = async (bookId) => {
   const sql = `
   UPDATE books SET books.is_borrowed = 0
   WHERE books.books_id = ?
   AND books.is_borrowed = 1
   `;
-  return await pool.query(sql, [id]);
+  const varsss = await pool.query(sql, [bookId]);
+  console.log(varsss);
+  return varsss;
 };
+
+const setReturnRecords = async (recordsId) => {
+  const sql = `
+  UPDATE records AS r SET date_returned = NOW()
+  WHERE r.records_id = ?
+  `;
+
+  return await pool.query(sql, [recordsId]);
+};
+
+const setBorrowRecords = async (bookId, userId) => {
+  const sql = `
+  INSERT INTO records (users_id, books_id, date_borrowed, date_to_return)
+  VALUES (?, ?, NOW(), NOW() + INTERVAL 20 DAY)
+  `;
+
+  const result = await pool.query(sql, [userId, bookId]);
+  console.log(result.insertId);
+  return result;
+}
 
 const updateBookSQL = async (book) => {
   const {
@@ -163,7 +185,7 @@ const isBookBorrowedAndReturned = async (bookId, userId) => {
 const isBookBorrowed = async (bookId, userId) => {
   const sql = `
     SELECT * FROM records AS r
-    WHERE r.users_id = ? AND r.books_id =?
+    WHERE r.users_id = ? AND r.books_id = ? AND r.date_returned IS NULL
   `;
 
   const result = await pool.query(sql, [userId, bookId]);
@@ -193,4 +215,6 @@ export default {
   getBookByIdForUser,
   isBookBorrowed,
   getAnyBookById,
+  setReturnRecords,
+  setBorrowRecords,
 }
