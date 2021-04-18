@@ -278,7 +278,7 @@ app.delete('/reviews/:reviews_id', authMiddleware, loggedUserGuard, banGuard, as
   try {
     const review = await reviewsData.getReviewById(req.params.reviews_id);
     if (!review || review.is_deleted === 1) {
-      res.status(400).json({
+      return res.status(400).json({
         message: 'Review not found!',
       });
     }
@@ -289,9 +289,7 @@ app.delete('/reviews/:reviews_id', authMiddleware, loggedUserGuard, banGuard, as
     }
     await reviewsData.deleteReview(req.params.reviews_id);
 
-    res.status(200).json({
-      message: `Review deleted`,
-    });
+    res.status(200).send( await reviewsData.getReviewByIdForUser(+req.params.reviews_id));
   } catch (error) {
     return res.status(400).json({
       error: error.message,
@@ -322,16 +320,13 @@ app.put('/books/:id/rating', authMiddleware, loggedUserGuard, banGuard, async (r
     }
 
     const checkForRating = await booksRatingData.getBookRatingByUser(bookId, userId);
+    const bookInfo = await booksData.getBookByIdForUser(bookId);
     if (checkForRating) {
       await booksRatingData.updateBookRating(checkForRating.book_ratings_id, rating);
-      return res.status(200).json({
-        message: 'Rating is updated!',
-      });
+      return res.status(200).send(bookInfo);
     }
     await booksRatingData.setRatingToBook(userId, bookId, rating);
-    return res.status(200).json({
-      message: 'Rating is given!',
-    });
+    return res.status(200).send(bookInfo);
   } catch (error) {
     return res.status(500).json({
       message: error.message,
@@ -353,16 +348,13 @@ app.put('/reviews/:reviews_id/review_likes', authMiddleware, loggedUserGuard, ba
     }
 
     const checkForLike = await reviewsLikeData.getReviewLikeByUser(reviewId, userId);
+    const reviewInfo = await reviewsData.getReviewByIdForUser(reviewId);
     if (checkForLike) {
       await reviewsLikeData.updateReviewLike(checkForLike.review_likes_id, reaction);
-      return res.status(200).json({
-        message: 'Like is updated!',
-      });
+      return res.status(200).send(reviewInfo);
     }
     await reviewsLikeData.setLikeToReview(userId, reviewId, reaction);
-    return res.status(200).json({
-      message: 'Like is given!',
-    });
+    return res.status(200).send(reviewInfo);
   } catch (error) {
     return res.status(400).json({
       error: error.message,
@@ -505,9 +497,7 @@ app.get('/admin/reviews', authMiddleware, loggedUserGuard, roleAuth(userRole.Adm
 app.post('/admin/users/:id/ban', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
   try {
     await usersData.banUser(+req.params.id);
-    res.json({
-      message: `User (${req.params.id}) banned!`,
-    });
+    return res.send(await usersData.getUserById(req.params.id));
   } catch (error) {
     return res.status(400).json({
       error: error.message,

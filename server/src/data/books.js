@@ -201,6 +201,14 @@ const getAnyBookById = async (id) => {
   return result;
 };
 
+const bookAverageRating = async (id) => {
+  const sql = `
+  SELECT b.books_id, b.title, br.books_id, r.ratings_id FROM books AS b
+  JOIN books_ratings AS br ON b.books_id = br.books_id
+  JOIN ratings AS r ON br.ratings_id = r.ratings_id
+  `;
+}
+
 export default {
   getAllBooks,
   searchBooksByTitle,
