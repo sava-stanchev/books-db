@@ -10,10 +10,10 @@ const getAllUsers = async () => {
 
 const getUserByName = async (userName) => {
   const result = await pool.query(
-    `SELECT * FROM users AS u WHERE u.user_name = ?`
-    , [userName]);
-    return result;
-}
+      `SELECT * FROM users AS u WHERE u.user_name = ?`
+      , [userName]);
+  return result;
+};
 
 const createUser = async (user) => {
   const sqlNewUser = `
@@ -21,7 +21,7 @@ const createUser = async (user) => {
     VALUES (?, ?, ?, ?, ?, 0, 0, DEFAULT, ?, ?)
   `;
   const result = await pool.query(sqlNewUser,
-    [user.user_name, user.password, user.first_name, user.last_name, user.e_mail, user.user_age, user.gender]);
+      [user.user_name, user.password, user.first_name, user.last_name, user.e_mail, user.user_age, user.gender]);
 
   const sql = `
     SELECT u.user_name, u.first_name, u.last_name, u.e_mail, u.user_age, u.gender
@@ -33,7 +33,7 @@ const createUser = async (user) => {
   return createdUser;
 };
 
-const validateUser = async ({ user_name, password }) => {
+const validateUser = async ({user_name, password}) => {
   const userData = await pool.query('SELECT * FROM users u WHERE u.user_name = ?', [user_name]);
 
   if (userData.length === 0) {
@@ -83,5 +83,5 @@ export default {
   getUserById,
   deleteUser,
   returnUser,
-  logoutUser
+  logoutUser,
 };

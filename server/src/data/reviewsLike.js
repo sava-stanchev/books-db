@@ -49,11 +49,11 @@ const reviewLikesByBookAndUser = async (reviewId) => {
   `;
   const result = await pool.query(sql, [reviewId]);
   return result;
-}
+};
 
 export default {
   getReviewLikeByUser,
   setLikeToReview,
   updateReviewLike,
   reviewLikesByBookAndUser,
-}
+};

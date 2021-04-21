@@ -7,7 +7,7 @@ export default async (req, res, next) => {
     const banDate = new Date(user.banDate);
 
     if (banDate.valueOf() > Date.now()) {
-      return res.status(403).json({ error: `You're banned! `});
+      return res.status(403).json({error: `You're banned! `});
     }
 
     await usersData.liftBan(user.user_id);

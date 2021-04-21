@@ -1,6 +1,6 @@
 import pool from './pool.js';
 
-const getAllBooks = async ({ page = 0, pageSize = 5 }) => {
+const getAllBooks = async ({page = 0, pageSize = 5}) => {
   if (page < 0) {
     page = 0;
   }
@@ -102,7 +102,7 @@ const setBorrowRecords = async (bookId, userId) => {
   const result = await pool.query(sql, [userId, bookId]);
   console.log(result.insertId);
   return result;
-}
+};
 
 const updateBookSQL = async (book) => {
   const {
@@ -114,7 +114,7 @@ const updateBookSQL = async (book) => {
     isbn,
     publishing_year,
     language,
-    print_length
+    print_length,
   } = book;
 
   const sql = `
@@ -132,7 +132,7 @@ const updateBookSQL = async (book) => {
 
   return await pool.query(sql, [title, author, genre, age_recommendation,
     isbn, publishing_year, language, print_length, books_id]);
-}
+};
 
 const createBook = async (book, user) => {
   const {
@@ -145,15 +145,14 @@ const createBook = async (book, user) => {
     language,
     print_length,
   } = book;
-  const { user_id } = user;
+  const {user_id} = user;
 
   const sqlNewBook = `
       INSERT INTO books (title, author, genre, age_recommendation, isbn, publishing_year, language, print_length, created_by, is_deleted, is_borrowed, book_count, reading_count )
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 0, 1, 0)
   `;
   const result = await pool.query(sqlNewBook,
-    // eslint-disable-next-line max-len
-    [title, author, +genre, age_recommendation, isbn, publishing_year, +language, print_length, user_id]);
+      [title, author, +genre, age_recommendation, isbn, publishing_year, +language, print_length, user_id]);
 
   const sql = `SELECT * FROM books AS b WHERE b.books_id = ?`;
   const createdBook = (await pool.query(sql, [result.insertId]))[0];
@@ -211,7 +210,7 @@ const bookAverageRating = async (id) => {
   `;
   const result = await pool.query(sql, [id]);
   return result[0];
-}
+};
 
 export default {
   getAllBooks,
@@ -230,4 +229,4 @@ export default {
   setReturnRecords,
   setBorrowRecords,
   bookAverageRating,
-}
+};

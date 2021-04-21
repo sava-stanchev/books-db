@@ -1,4 +1,4 @@
-import { book } from '../common/constants.js';
+import {book} from '../common/constants.js';
 
 export default {
   title: (value) => typeof value === 'undefined' || typeof value === 'string' && value.length > book.TITLE_MIN_LENGTH && value.length < book.TITLE_MAX_LENGTH,
@@ -11,4 +11,4 @@ export default {
   print_length: (value) => typeof value === 'undefined' || typeof +value === 'number' && +value > book.PRINTLENGTH_MIN_LENGTH,
   is_deleted: (value) => typeof value === 'undefined' || typeof value === 'boolean',
   is_borrowed: (value) => typeof value === 'undefined' || typeof value === 'boolean',
-}
+};

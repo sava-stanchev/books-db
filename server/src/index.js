@@ -12,12 +12,12 @@ import transformBody from './middlewares/transform-body.js';
 import dotenv from 'dotenv';
 import createToken from './auth/create-token.js';
 import usersData from './data/users.js';
-import { authMiddleware, roleMiddleware } from './auth/auth-middleware.js';
+import {authMiddleware, roleMiddleware} from './auth/auth-middleware.js';
 import passport from 'passport';
 import jwtStrategy from './auth/strategy.js';
 import loggedUserGuard from './middlewares/loggedUserGuard.js';
 import roleAuth from './middlewares/role-auth.js';
-import { userRole } from './common/user-role.js';
+import {userRole} from './common/user-role.js';
 import banGuard from './middlewares/ban-guard.js';
 import reviewService from './services/review-service.js';
 import reviewsLikeData from './data/reviewsLike.js';
@@ -44,7 +44,7 @@ app.post('/users', validateBody('user', userCreateValidator), async (req, res) =
   try {
     const newUser = await userService.createUser(userData);
     if (!newUser) {
-      return res.status(400).json({ message: 'Username exist!'});
+      return res.status(400).json({message: 'Username exist!'});
     }
     return res.status(200).send(newUser);
   } catch (error) {
@@ -96,7 +96,7 @@ app.delete('/logout', authMiddleware, async (req, res) => {
 
 /** Retrieve all books (with pagination, filtering, sorting) */
 app.get('/books', authMiddleware, loggedUserGuard, async (req, res) => {
-  const { search, sort } = req.query;
+  const {search, sort} = req.query;
   try {
     if (sort) {
       const theBooksSortedByYear = await booksData.sortBooksByYear(sort);
@@ -129,7 +129,7 @@ app.get('/books/:id', authMiddleware, loggedUserGuard, async (req, res) => {
 
 /** Borrow a book */
 app.post('/books/:id', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
-  const { id } = req.params;
+  const {id} = req.params;
   try {
     const theBook = await booksData.getBookById(+id);
     if (!theBook) {
@@ -161,7 +161,7 @@ app.patch('/books/:id', authMiddleware, loggedUserGuard, banGuard, async (req, r
     const isBookBorrowed = await booksData.isBookBorrowed(+req.params.id, req.user.user_id);
     if (!isBookBorrowed) {
       return res.status(404).json({
-        message: 'Book not borrowed!'
+        message: 'Book not borrowed!',
       });
     }
     const book = await booksData.returnBook(+req.params.id);
@@ -174,8 +174,8 @@ app.patch('/books/:id', authMiddleware, loggedUserGuard, banGuard, async (req, r
     const setRecord = await booksData.setReturnRecords(+isBookBorrowed.records_id);
     if (!setRecord) {
       return res.json({
-        msg: `Something went wrong!`
-      })
+        msg: `Something went wrong!`,
+      });
     }
 
     return res.status(200).json(await booksData.getBookByIdForUser(+req.params.id));
@@ -188,7 +188,7 @@ app.patch('/books/:id', authMiddleware, loggedUserGuard, banGuard, async (req, r
 
 /** Read book reviews */
 app.get('/books/:id/reviews', authMiddleware, loggedUserGuard, async (req, res) => {
-  const { id } = req.params;
+  const {id} = req.params;
 
   try {
     const theBook = await booksData.getBookById(+id);
@@ -202,7 +202,7 @@ app.get('/books/:id/reviews', authMiddleware, loggedUserGuard, async (req, res) 
     if (!theReviews) {
       return res.json({
         msg: 'Book has no reviews yet!',
-      });  
+      });
     }
 
     return res.send(theReviews);
@@ -373,7 +373,7 @@ app.post('/admin/books', transformBody(bookCreateValidator), validateBody('book'
 });
 
 /** Read any book (as admin) */
- app.get('/admin/books/:id', authMiddleware, loggedUserGuard, roleMiddleware(userRole.Admin), async (req, res) => {
+app.get('/admin/books/:id', authMiddleware, loggedUserGuard, roleMiddleware(userRole.Admin), async (req, res) => {
   try {
     res.json(await booksData.getAnyBookById(+req.params.id));
   } catch (error) {
@@ -384,8 +384,8 @@ app.post('/admin/books', transformBody(bookCreateValidator), validateBody('book'
 });
 
 /** Update any book (as admin) */
- app.put('/admin/books/:id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), validateBody('book', bookUpdateValidator), async (req, res) => {
-  const { id } = req.params;
+app.put('/admin/books/:id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), validateBody('book', bookUpdateValidator), async (req, res) => {
+  const {id} = req.params;
   const updateData = req.body;
 
   try {
@@ -434,7 +434,7 @@ app.get('/admin/reviews', authMiddleware, loggedUserGuard, roleAuth(userRole.Adm
 });
 
 /** Read any review (as admin) */
- app.get('/admin/reviews/:reviews_id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
+app.get('/admin/reviews/:reviews_id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
   const reviewId = req.params.reviews_id;
   try {
     const review = await reviewsData.getAnyReviewById(+reviewId);
@@ -447,7 +447,7 @@ app.get('/admin/reviews', authMiddleware, loggedUserGuard, roleAuth(userRole.Adm
 });
 
 /** Update any review (as admin) */
- app.patch('/admin/reviews/:reviews_id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
+app.patch('/admin/reviews/:reviews_id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
   try {
     const reviewId = req.params.reviews_id;
     const updateData = req.body;
@@ -471,7 +471,7 @@ app.get('/admin/reviews', authMiddleware, loggedUserGuard, roleAuth(userRole.Adm
 });
 
 /** Delete any review (as admin) */
- app.delete('/admin/reviews/:reviews_id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
+app.delete('/admin/reviews/:reviews_id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
   try {
     const review = await reviewsData.getReviewById(req.params.reviews_id);
     if (!review || review.is_deleted === 1) {

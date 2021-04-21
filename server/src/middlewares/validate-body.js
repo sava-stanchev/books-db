@@ -3,7 +3,7 @@ import errorStrings from '../common/error-strings.js';
 export default (resource, validator) => async (req, res, next) => {
   const errors = {};
 
-  Object.keys(validator).forEach(key => {
+  Object.keys(validator).forEach((key) => {
     if (!validator[key](req.body[key])) {
       errors[key] = errorStrings[resource][key];
     }
@@ -11,7 +11,7 @@ export default (resource, validator) => async (req, res, next) => {
 
   if (Object.keys(errors).length > 0) {
     return res.status(400).json({
-      errors
+      errors,
     });
   }
 
