@@ -6,14 +6,18 @@ const Books = () => {
 
   return(
     <div className="App">
-      {books.map((book) => (
-        <div>
-          Title: {book.title}, Author: {book.author}, Genre: {book.genre}, 
-          Age Recommendation {book.age_recommendation}, ISBN: {book.isbn},
-          Publishing Year: {book.publishing_year}, Language: {book.language},
-          Print Length: {book.print_length}
+      <div id="books">
+        <div className="content">
+          {books.map((book) => (
+            <div id='BookContainer' className='mouse_over'>
+              <img src={book.poster} />
+              <h2>{book.title}</h2>
+              <h3>{book.publishing_year}</h3>
+              <button type="button" className="book-details-link" data-book-id={book.id}>View Details</button>
+            </div>
+          ))}
         </div>
-      ))}
+      </div>
     </div>
   )
 };
