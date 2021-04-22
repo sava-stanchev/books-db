@@ -20,7 +20,7 @@ const Login = () => {
           </Form>
         </Col>
         <Col>
-          <div>
+          <div className="Image">
             <Image src="./img/login-img.jpg" thumbnail style={{border:"none"}} />
           </div>
         </Col>
