@@ -1,6 +1,14 @@
 import {Col, Container, Row, Form, Button} from "react-bootstrap";
+import {useHistory} from "react-router-dom";
 
 const RegistrationForm = () => {
+  const history = useHistory();
+
+  const routeChange = () =>{ 
+    let path = `/login`; 
+    history.push(path);
+  }
+
   return( 
     <Container>
       <Row>
@@ -51,7 +59,7 @@ const RegistrationForm = () => {
                 </Form.Control>
               </Form.Group>
             </Form.Row>
-            <Button variant="primary" type="submit">
+            <Button variant="primary" type="submit" onClick={routeChange}>
               Submit
             </Button>
           </Form>
