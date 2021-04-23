@@ -34,7 +34,7 @@ function App() {
             <Register />
           </Route>
         </Switch>
-    </Router>
+      </Router>
     </div>
   );
 }

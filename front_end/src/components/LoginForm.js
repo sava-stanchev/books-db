@@ -1,18 +1,18 @@
-import { Col, Container, Row, Form, Button, Image } from "react-bootstrap";
-import "../App.css";
+import {Col, Container, Row, Form, Button} from "react-bootstrap";
 
 const LoginForm = () => {
-    return <Container>
-        <Row>
-            <Col>
-                <h1>Login</h1>
-            </Col>
-        </Row>
-        <br/>
+  return( 
+    <Container>
+      <Row>
+        <Col>
+          <h1>Login</h1>
+        </Col>
+      </Row>
+      <br/>
 
-        <Row>
-            <Col>
-            <Form>
+      <Row>
+        <Col>
+          <Form>
             <Form.Group>
               <Form.Label>Username</Form.Label>
               <Form.Control type="text" placeholder="Enter username" />
@@ -26,11 +26,10 @@ const LoginForm = () => {
               Submit
             </Button>
           </Form>
-            </Col>
-        
-        </Row>
-
-    </Container>;
+        </Col>
+      </Row>
+    </Container>
+  )
 };
 
 export default LoginForm;
