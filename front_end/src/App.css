@@ -74,8 +74,7 @@
   text-align: center;
 }
 
-#books .content>div h2,
-#books .content>div h3 {
+#books .content>div h2 {
   font-size: 1.2em;
   line-height: 1.5;
 }
@@ -93,7 +92,6 @@
   filter: brightness(40%) blur(5px);
 }
 
-#books .content>div:hover h3,
 #books .content>div:hover h2 {
   width: calc(100% - 70px);
   display: block;
@@ -107,10 +105,7 @@
   visibility: visible;
 }
 
-#books .content>div:hover h3 {top: 50%;font-size: 1.2em;color: #5fbfff;}
-
-#books .content>div h2,
-#books .content>div h3 {
+#books .content>div h2 {
   transition: all 1s;
   display: none;
   top: -50%;

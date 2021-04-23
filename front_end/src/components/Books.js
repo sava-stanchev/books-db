@@ -11,8 +11,13 @@ const Books = () => {
           {books.map((book) => (
             <div id='BookContainer' className='mouse_over'>
               <img src={book.poster} />
-              <h2>{book.title}</h2>
-              <h3>{book.publishing_year}</h3>
+              <h2>
+                {book.title}
+                <br/>
+                {book.author}
+                <br/>
+                ({book.publishing_year})
+              </h2>
               <button type="button" className="book-details-link" data-book-id={book.id}>View Details</button>
             </div>
           ))}
