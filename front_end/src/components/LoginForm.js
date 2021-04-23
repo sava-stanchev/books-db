@@ -13,14 +13,17 @@ const LoginForm = () => {
       <Row>
         <Col>
           <Form>
-            <Form.Group>
-              <Form.Label>Username</Form.Label>
-              <Form.Control type="text" placeholder="Enter username" />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Password</Form.Label>
-              <Form.Control type="password" placeholder="Enter password" />
-            </Form.Group>
+            
+            <Form.Row>
+              <Form.Group as={Col}>
+                <Form.Label>Username</Form.Label>
+                <Form.Control type="text" placeholder="Enter username" />
+              </Form.Group>
+              <Form.Group as={Col}>
+                <Form.Label>Password</Form.Label>
+                <Form.Control type="password" placeholder="Enter password" />
+              </Form.Group>
+            </Form.Row>
             <br/>
             <Button variant="primary" type="submit">
               Submit

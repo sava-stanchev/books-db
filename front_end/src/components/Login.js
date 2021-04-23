@@ -2,9 +2,9 @@ import {Jumbotron} from "react-bootstrap";
 import LoginForm from './LoginForm';
 
 const Login = () => {
-  
+
   return(
-    <div className="registration-page-bg-info">
+    <div className="login-page-bg-info">
       <Jumbotron className="form-box">
         <LoginForm />
       </Jumbotron>

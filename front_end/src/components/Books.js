@@ -18,7 +18,7 @@ const Books = () => {
                 <br/>
                 ({book.publishing_year})
               </h2>
-              <button type="button" className="book-details-link" data-book-id={book.id}>View Details</button>
+              <button type="button" className="book-details-link" data-book-id={book.books_id}>View Details</button>
             </div>
           ))}
         </div>
