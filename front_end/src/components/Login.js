@@ -5,7 +5,7 @@ const Login = () => {
     <div className="App">
       <Row className="landing">
         <Col>
-          <Form style={{width:"70%", marginLeft:"10%", marginTop:"30%"}}>
+          <Form style={{width:"70%", marginLeft:"10%", marginTop:"27%"}}>
             <Form.Group controlId="formBasicUsername">
               <Form.Label>Username</Form.Label>
               <Form.Control placeholder="Enter username" />
