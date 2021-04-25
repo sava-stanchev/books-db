@@ -1,26 +1,40 @@
 import './App.css';
-import {Navbar, Nav} from 'react-bootstrap';
+import NavBar from "./components/Navbar";
+import Books from "./components/Books";
+import About from './components/About';
+import Reviews from './components/Reviews';
+import Login from './components/Login';
+import Register from './components/Register';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 
 function App() {
   return (
     <div className="App">
-      <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-        <Navbar.Brand href="#home">Library</Navbar.Brand>
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="mr-auto">
-            <Nav.Link href="#books">Books</Nav.Link>
-            <Nav.Link href="#reviews">Reviews</Nav.Link>
-            <Nav.Link href="#about">About</Nav.Link>
-          </Nav>
-          <Nav>
-            <Nav.Link href="#login">Login</Nav.Link>
-            <Nav.Link eventKey={2} href="#register">
-              Register
-            </Nav.Link>
-          </Nav>
-        </Navbar.Collapse>
-      </Navbar>
+      <Router>
+      <NavBar />
+        <Switch>
+          <Route path="/books" component={Books}>
+            <Books />
+          </Route>
+          <Route path="/reviews" component={Reviews}>
+            <Reviews />
+          </Route>
+          <Route path="/about" component={About}>
+            <About />
+          </Route>
+          <Route path="/login" component={Login}>
+            <Login />
+          </Route>
+          <Route path="/register" component={Register}>
+            <Register />
+          </Route>
+        </Switch>
+      </Router>
     </div>
   );
 }
