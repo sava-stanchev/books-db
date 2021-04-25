@@ -156,3 +156,14 @@
 .form-box {
   box-shadow: 0px 0px 15px -5px black;
 }
+
+#reviews {
+  margin: 20px;
+  padding: 20px;
+  display: inline-block;
+  box-shadow: 0px 0px 15px -5px black;
+  background-color: #E9ECEF;
+  color: black;
+  font-size: 1.2em;
+  line-height: 1;
+}

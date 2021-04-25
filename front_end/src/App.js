@@ -2,7 +2,7 @@ import './App.css';
 import NavBar from "./components/Navbar";
 import Books from "./components/Books";
 import About from './components/About';
-import Reviews from './components/Reviews';
+import ReviewsForApp from './components/ReviewsForApp';
 import Login from './components/Login';
 import Register from './components/Register';
 import {
@@ -21,8 +21,8 @@ function App() {
           <Route path="/books" component={Books}>
             <Books />
           </Route>
-          <Route path="/reviews" component={Reviews}>
-            <Reviews />
+          <Route path="/reviews" component={ReviewsForApp}>
+            <ReviewsForApp />
           </Route>
           <Route path="/about" component={About}>
             <About />
