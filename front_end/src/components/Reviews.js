@@ -46,8 +46,6 @@ Reviews.propTypes = {
   reviews_id: PropTypes.number.isRequired,
   content: PropTypes.string.isRequired,
   date_created: PropTypes.string.isRequired,
-  removeReview: PropTypes.func.isRequired,
-  updateReview: PropTypes.func.isRequired,
 }
 
 export default Reviews;
