@@ -5,7 +5,7 @@ const RegistrationForm = () => {
   const history = useHistory();
 
   const routeChange = () =>{ 
-    let path = `/login`; 
+    const path = `/login`; 
     history.push(path);
   }
 

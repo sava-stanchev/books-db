@@ -95,7 +95,7 @@ app.delete('/logout', authMiddleware, async (req, res) => {
 });
 
 /** Retrieve all books (with pagination, filtering, sorting) */
-app.get('/books', authMiddleware, loggedUserGuard, async (req, res) => {
+app.get('/books', async (req, res) => {
   const {search, sort} = req.query;
   try {
     if (sort) {

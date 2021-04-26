@@ -5,7 +5,7 @@ const LoginForm = () => {
   const history = useHistory();
 
   const routeChange = () =>{ 
-    let path = `/books`; 
+    const path = `/books`; 
     history.push(path);
   }
 
@@ -21,7 +21,6 @@ const LoginForm = () => {
       <Row>
         <Col>
           <Form>
-            
             <Form.Row>
               <Form.Group as={Col}>
                 <Form.Label>Username</Form.Label>

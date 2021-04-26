@@ -2,6 +2,8 @@ import interestingTimesPoster from '../posters/interesting-times.jpg';
 import mortPoster from '../posters/mort.jpg';
 import winnetouPoster from '../posters/winnetou.jpg';
 
+
+
 const books = [
   {
     title: 'Interesting times',

@@ -1,6 +1,6 @@
 import pool from './pool.js';
 
-const getAllBooks = async ({page = 0, pageSize = 5}) => {
+const getAllBooks = async ({page = 0, pageSize = 10}) => {
   if (page < 0) {
     page = 0;
   }
