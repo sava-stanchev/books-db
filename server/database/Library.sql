@@ -39,6 +39,7 @@ CREATE TABLE `books` (
   `book_count` int(11) NOT NULL,
   `reading_count` int(11) NOT NULL,
   `created_by` int(11) NOT NULL,
+  `posters` varchar(255) NOT NULL DEFAULT '/static/media/default.63084d6c.jpg',
   PRIMARY KEY (`books_id`),
   KEY `fk_books_generes_genre_id_idx` (`genre`),
   KEY `fk_books_languages_languages_id_idx` (`language`),
@@ -55,7 +56,7 @@ CREATE TABLE `books` (
 
 LOCK TABLES `books` WRITE;
 /*!40000 ALTER TABLE `books` DISABLE KEYS */;
-INSERT INTO `books` VALUES (1,'Patilansko carstvo','Just a new author!',1,1,NULL,1945,1,100,0,0,1,0,1),(2,'Vinetu','KArl Main',1,4,NULL,1945,3,99,1,0,1,0,1),(3,'Mort','Terry Pratchett',2,12,'0575041714',NULL,3,304,0,0,1,0,1),(4,'Interesting Times','Terry Pratchett',2,12,'0575058005',1995,3,236,0,0,1,0,1),(5,'Winnetou','Karl May',1,8,'0000000000',1893,19,486,0,1,1,0,1),(6,'Mort 2','Terry Pratchett',1,12,'0575041714',NULL,40,304,1,0,1,0,1),(7,'Mort 45','Terry Pratchett',1,12,'0575041714',NULL,40,304,0,0,1,0,1),(8,'Cose bose','Terry Pratchett',1,12,'0575041714',NULL,40,304,0,0,1,0,1),(9,'Mort6000','Terry Pratchett',5,12,'0575041714',1987,10,304,0,0,1,0,1),(10,'New book','Terry Pratchett',5,12,'0575041714',1987,10,304,0,0,1,0,1),(11,'New book 2','Terry Pratchett',5,12,'0575041714',1987,10,304,0,0,1,0,1),(12,'New book 3','Terry Pratchett',5,12,'0575041714',1987,10,304,0,0,1,0,1);
+INSERT INTO `books` VALUES (1,'Patilansko Tsarstvo','Ran Bosilek',1,1,NULL,1927,1,100,0,0,1,0,1,'/static/media/patilansko-carstvo.2694d0f8.jpg'),(2,'Winnetou','Karl May',1,4,NULL,1892,3,99,0,0,1,0,1,'/static/media/winnetou.9939d470.jpg'),(3,'Mort','Terry Pratchett',2,12,'0575041714',1987,3,304,0,0,1,0,1,'/static/media/mort.3e742beb.jpg'),(4,'Interesting Times','Terry Pratchett',2,12,'0575058005',1995,3,236,0,0,1,0,1,'/static/media/interesting-times.59f214a7.jpg'),(5,'The 48 Laws Of Power','Robert Greene',1,8,'0000000000',1998,19,486,0,1,1,0,1,'/static/media/the-48-laws-of-power.6c98274c.jpg'),(6,'Mort 2','Terry Pratchett',1,12,'0575041714',NULL,40,304,1,0,1,0,1,'/static/media/default.63084d6c.jpg'),(7,'Mort 45','Terry Pratchett',1,12,'0575041714',NULL,40,304,0,0,1,0,1,'/static/media/default.63084d6c.jpg'),(8,'Cose bose','Terry Pratchett',1,12,'0575041714',NULL,40,304,0,0,1,0,1,'/static/media/default.63084d6c.jpg'),(9,'Mort6000','Terry Pratchett',5,12,'0575041714',1987,10,304,0,0,1,0,1,'/static/media/default.63084d6c.jpg'),(10,'New book','Terry Pratchett',5,12,'0575041714',1987,10,304,0,0,1,0,1,'/static/media/default.63084d6c.jpg'),(11,'New book 2','Terry Pratchett',5,12,'0575041714',1987,10,304,0,0,1,0,1,'/static/media/default.63084d6c.jpg'),(12,'New book 3','Terry Pratchett',5,12,'0575041714',1987,10,304,0,0,1,0,1,'/static/media/default.63084d6c.jpg');
 /*!40000 ALTER TABLE `books` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -378,4 +379,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-04-18 11:00:05
+-- Dump completed on 2021-04-26 20:45:07
