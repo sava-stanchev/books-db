@@ -117,7 +117,7 @@ app.get('/books', async (req, res) => {
 });
 
 /** Retrieve one book */
-app.get('/books/:id', authMiddleware, loggedUserGuard, async (req, res) => {
+app.get('/books/:id', async (req, res) => {
   try {
     res.json(await booksData.getBookById(+req.params.id));
   } catch (error) {

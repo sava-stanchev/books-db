@@ -5,10 +5,12 @@ import About from './components/About';
 import ReviewsForApp from './components/ReviewsForApp';
 import Login from './components/Login';
 import Register from './components/Register';
+import SingleBook from './components/SingleBook';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
+  Redirect,
 } from "react-router-dom";
 
 function App() {
@@ -17,21 +19,13 @@ function App() {
       <Router>
       <NavBar />
         <Switch>
-          <Route path="/books" component={Books}>
-            <Books />
-          </Route>
-          <Route path="/reviews" component={ReviewsForApp}>
-            <ReviewsForApp />
-          </Route>
-          <Route path="/about" component={About}>
-            <About />
-          </Route>
-          <Route path="/login" component={Login}>
-            <Login />
-          </Route>
-          <Route path="/register" component={Register}>
-            <Register />
-          </Route>
+          <Redirect path="/" exact to="/home" />
+          <Route path="/books" exact component={Books}/>
+          <Route path="/books/:id" component={SingleBook}/>
+          <Route path="/reviews" component={ReviewsForApp}/>
+          <Route path="/about" component={About}/>
+          <Route path="/login" component={Login}/>       
+          <Route path="/register" component={Register}/>
         </Switch>
       </Router>
     </div>

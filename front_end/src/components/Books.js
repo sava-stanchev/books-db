@@ -1,4 +1,5 @@
 import {useEffect, useState} from 'react';
+import {useHistory} from "react-router-dom";
 
 const Books = () => {
   const [books, setBooks] = useState([]);
@@ -31,6 +32,8 @@ const Books = () => {
     }
   }
 
+  const history = useHistory();
+
   return(
     <div id="books">
       {showLoader()}
@@ -46,7 +49,7 @@ const Books = () => {
               <br/>
               {book.publishing_year}
             </h2>
-            <button type="button" className="book-details-link" data-book-id={book.books_id}>View Details</button>
+            <button type="button" className="book-details-link" onClick = {() => history.push(`/books/${book.books_id}`)}>View Details</button>
           </div>
         ))}
       </div>
