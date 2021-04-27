@@ -422,7 +422,7 @@ app.delete('/admin/books/:id', authMiddleware, loggedUserGuard, roleAuth(userRol
 });
 
 /** Read all reviews (as admin) */
-app.get('/admin/reviews', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
+app.get('/reviews', async (req, res) => {
   try {
     const review = await reviewsData.getAllReviews();
     res.send(review);

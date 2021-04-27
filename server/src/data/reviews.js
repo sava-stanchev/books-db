@@ -2,7 +2,11 @@ import pool from './pool.js';
 
 const getAllReviews = async () => {
   return await pool.query(`
-    SELECT * FROM reviews
+    SELECT r.reviews_id, r.content, r.date_created, b.title, u.user_name
+    FROM reviews AS r
+    JOIN users AS u ON r.users_id = u.users_id
+    JOIN books AS b ON r.books_id = b.books_id
+    WHERE r.is_deleted != 1
   `);
 };
 
