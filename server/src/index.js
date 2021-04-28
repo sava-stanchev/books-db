@@ -12,7 +12,7 @@ import transformBody from './middlewares/transform-body.js';
 import dotenv from 'dotenv';
 import createToken from './auth/create-token.js';
 import usersData from './data/users.js';
-import gendersData from './data/genders.js';
+import dropDownData from './data/dropDownData.js';
 import {authMiddleware, roleMiddleware} from './auth/auth-middleware.js';
 import passport from 'passport';
 import jwtStrategy from './auth/strategy.js';
@@ -560,8 +560,44 @@ app.put('/admin/users/:id', authMiddleware, loggedUserGuard, roleAuth(userRole.A
 /** Get all genders */
 app.get('/genders', async (req, res) => {
   try {
-    const genders = await gendersData.getAllGenders();
+    const genders = await dropDownData.getAllGenders();
     res.json(genders);
+  } catch (error) {
+    return res.status(400).json({
+      error: error.message,
+    });
+  }
+});
+
+/** Get all languages */
+app.get('/languages', async (req, res) => {
+  try {
+    const languages = await dropDownData.languages();
+    res.json(languages);
+  } catch (error) {
+    return res.status(400).json({
+      error: error.message,
+    });
+  }
+});
+
+/** Get all genders */
+app.get('/genres', async (req, res) => {
+  try {
+    const genres = await dropDownData.getAllGenres();
+    res.json(genres);
+  } catch (error) {
+    return res.status(400).json({
+      error: error.message,
+    });
+  }
+});
+
+/** Get all reactions */
+app.get('/reactions', async (req, res) => {
+  try {
+    const reactions = await dropDownData.getAllReactions();
+    res.json(reactions);
   } catch (error) {
     return res.status(400).json({
       error: error.message,
