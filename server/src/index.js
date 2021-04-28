@@ -572,7 +572,7 @@ app.get('/genders', async (req, res) => {
 /** Get all languages */
 app.get('/languages', async (req, res) => {
   try {
-    const languages = await dropDownData.languages();
+    const languages = await dropDownData.getAllLanguages();
     res.json(languages);
   } catch (error) {
     return res.status(400).json({
