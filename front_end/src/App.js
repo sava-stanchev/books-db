@@ -2,7 +2,6 @@ import './App.css';
 import NavBar from "./components/Navbar";
 import Books from "./components/Books";
 import About from './components/About';
-import ReviewsForApp from './components/ReviewsForApp';
 import Login from './components/Login';
 import Register from './components/Register';
 import SingleBook from './components/SingleBook';
@@ -12,6 +11,7 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
+import Reviews from './components/Reviews';
 
 function App() {
   return (
@@ -22,7 +22,7 @@ function App() {
           <Redirect path="/" exact to="/home" />
           <Route path="/books" exact component={Books}/>
           <Route path="/books/:id" component={SingleBook}/>
-          <Route path="/reviews" component={ReviewsForApp}/>
+          <Route path="/reviews" component={Reviews}/>
           <Route path="/about" component={About}/>
           <Route path="/login" component={Login}/>       
           <Route path="/register" component={Register}/>
