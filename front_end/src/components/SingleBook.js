@@ -1,46 +1,33 @@
 import {useEffect, useState} from 'react';
-// import {useHistory} from "react-router-dom";
 
 const SingleBook = props => {
-  const [bookData, setBookData] = useState([]);
-  // const [loading, setLoading] = useState(false);
-  // const [error, setError] = useState(null);
+  const [bookData, setBookData] = useState(null);
+  const [error, setError] = useState(null);
   const {id} = props.match.params;
-  console.log(id);
 
   useEffect(() => {
-<<<<<<< HEAD
-      fetch(`http://localhost:5555/books/${id}`,
-      { method: 'GET',
-      })
+    fetch(`http://localhost:5555/books/${id}`, { 
+      method: 'GET',
+    })
       .then((response) => response.json())
-      .then((data) => setBook(data));
-      .then((data) => setBookData(data))
-     // .catch((error) => setError(error.message))
-     // .finally(() => setLoading(false));
+      .then((data) => setBookData(data[0]))
+      .catch((error) => setError(error.message))
   }, [id]);
 
-  // const showError = () => {
-  //   if (error) {
-  //     return <h4><i>An error has occured: </i>{error}</h4>
-  //   }
-  // }
+  const showError = () => {
+    if (error) {
+      return <h4><i>An error has occured: </i>{error}</h4>
+    }
+  }
 
-  // const Loader = () => <div className="Loader"></div>;
-
-  // const showLoader = () => {
-  //   if (loading) {
-  //     return <Loader />
-  //   }
-  // }
-
-  // const history = useHistory();
- 
-  console.log(bookData[0]);
+  if  (bookData === null) {
+    return <div className="Loader"></div>;
+  }
 
   return(
     <div>
-      <h1>hi</h1>
+      {showError()}
+      <h1>{bookData.title}</h1>
     </div>
   )
   //   <div className="App">
@@ -66,7 +53,7 @@ const SingleBook = props => {
       
   //   </div>
   // )
->>>>>>> 8a19ade45d8f2176f6e3baa93e34a2e116443762
+
 };
 
 export default SingleBook;
