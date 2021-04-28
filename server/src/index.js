@@ -12,6 +12,7 @@ import transformBody from './middlewares/transform-body.js';
 import dotenv from 'dotenv';
 import createToken from './auth/create-token.js';
 import usersData from './data/users.js';
+import gendersData from './data/genders.js';
 import {authMiddleware, roleMiddleware} from './auth/auth-middleware.js';
 import passport from 'passport';
 import jwtStrategy from './auth/strategy.js';
@@ -555,5 +556,18 @@ app.put('/admin/users/:id', authMiddleware, loggedUserGuard, roleAuth(userRole.A
     });
   }
 });
+
+/** Get all genders */
+app.get('/genders', async (req, res) => {
+  try {
+    const genders = await gendersData.getAllGenders();
+    res.json(genders);
+  } catch (error) {
+    return res.status(400).json({
+      error: error.message,
+    });
+  }
+});
+
 
 app.listen(PORT, () => console.log(`Listening on ${PORT}...`));

@@ -1,13 +1,14 @@
 import {Col, Container, Row, Form, Button} from "react-bootstrap";
 import {useHistory} from "react-router-dom";
 
-const RegistrationForm = () => {
+const RegistrationForm = ({ genders }) => {
   const history = useHistory();
 
   const routeChange = () =>{ 
     const path = `/login`; 
     history.push(path);
   }
+  console.log(genders);
 
   return( 
     <Container>
@@ -54,8 +55,7 @@ const RegistrationForm = () => {
                 <Form.Label>Gender</Form.Label>
                 <Form.Control as="select" defaultValue="Choose...">
                   <option>Choose...</option>
-                  <option>Male</option>
-                  <option>Female</option>
+                  {genders.map((g) => <option>{g.gender}</option>)}
                 </Form.Control>
               </Form.Group>
             </Form.Row>

@@ -2,20 +2,19 @@ import {useEffect, useState} from 'react';
 // import {useHistory} from "react-router-dom";
 
 const SingleBook = props => {
-  const [bookData, setBookData] = useState([]);
+  const [bookData, setBook] = useState([]);
   // const [loading, setLoading] = useState(false);
   // const [error, setError] = useState(null);
   const {id} = props.match.params;
   console.log(id);
 
   useEffect(() => {
-<<<<<<< HEAD
+
       fetch(`http://localhost:5555/books/${id}`,
       { method: 'GET',
       })
       .then((response) => response.json())
       .then((data) => setBook(data));
-      .then((data) => setBookData(data))
      // .catch((error) => setError(error.message))
      // .finally(() => setLoading(false));
   }, [id]);
@@ -66,7 +65,7 @@ const SingleBook = props => {
       
   //   </div>
   // )
->>>>>>> 8a19ade45d8f2176f6e3baa93e34a2e116443762
+
 };
 
 export default SingleBook;
