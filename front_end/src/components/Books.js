@@ -34,26 +34,42 @@ const Books = () => {
 
   const history = useHistory();
 
- 
-
   return(
-    <div id="books">
-      {showLoader()}
-      {showError()}
-      <div className="content">
-        {books.map((book) => (
-          <div id='BookContainer' className='mouse_over'>
-            <img src={book.posters} alt={book.title}/>
-            <h2>
-              {book.title}
-              <br/>
-              {book.author}
-              <br/>
-              {book.publishing_year}
-            </h2>
-            <button type="button" className="book-details-link" onClick = {() => history.push(`/books/${book.books_id}`)}>View Details</button>
-          </div>
-        ))}
+    <div>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+      <div className="boxContainer">
+        <table className = "elementsContainer">
+          <tbody><tr>
+            <td>
+              <input type="text" placeholder="Search"
+              className="search"/>
+            </td>
+            <td>
+              <a href="#">
+                <i className="material-icons">search</i>
+              </a>
+            </td>
+          </tr></tbody>
+        </table>
+      </div>
+      <div id="books">
+        {showLoader()}
+        {showError()}
+        <div className="content">
+          {books.map((book) => (
+            <div id='BookContainer' className='mouse_over'>
+              <img src={book.posters} alt={book.title}/>
+              <h2>
+                {book.title}
+                <br/>
+                {book.author}
+                <br/>
+                {book.publishing_year}
+              </h2>
+              <button type="button" className="book-details-link" onClick = {() => history.push(`/books/${book.books_id}`)}>View Details</button>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   )
