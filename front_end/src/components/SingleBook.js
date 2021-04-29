@@ -1,4 +1,5 @@
 import {useEffect, useState} from 'react';
+import StarRating from './StarRating';
 
 const SingleBook = props => {
   const [bookData, setBookData] = useState(null);
@@ -49,7 +50,7 @@ const SingleBook = props => {
             <p>Age Recommendation: {bookData.age_recommendation}</p>
             <p>Print Length: {bookData.print_length}</p>
             <p>ISBN: {bookData.isbn}</p>
-            {/* <p>Book Rating: {bookRating}</p> */}
+            <p>Book Rating: <StarRating /></p>
           </div>
         </div>
       </div>
