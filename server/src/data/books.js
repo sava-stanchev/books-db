@@ -48,8 +48,13 @@ const sortBooksByYear = async (sort) => {
 
 const getBookById = async (id) => {
   const sql = `
-  SELECT * FROM books AS b
-  WHERE b.is_deleted != 1 AND b.books_id = ?
+  SELECT b.books_id, b.title, b.author, b.age_recommendation, b.isbn, b.publishing_year, b.print_length, b.posters, l.language, g.genre
+  FROM books AS b
+  JOIN languages AS l
+  ON b.language = l.languages_id
+  JOIN genres AS g
+  ON b.genre = g.genres_id
+  WHERE b.is_deleted != 1 and b.books_id = ?
 `;
   const result = await pool.query(sql, [id]);
   return result;

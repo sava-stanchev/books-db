@@ -1,5 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Reggae+One&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=RocknRoll+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rye&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cardo:wght@700&display=swap');
 
 .App {
   text-align: center;
@@ -7,8 +7,8 @@
 }
 
 .navbar {
-  font-family: 'RocknRoll One', sans-serif;
-  font-size: 18px;
+  font-family: 'Cardo', serif;
+  font-size: 21px;
   line-height: 1.5;
   box-sizing: border-box;
   margin: 0;
@@ -30,8 +30,8 @@
 }
 
 .navbar-brand {
-  font-family: 'Reggae One', cursive;
-  font-size: 1.8rem;
+  font-family: 'Rye', cursive;
+  font-size: 1.5rem;
   color: #5fbfff !important;
   text-decoration: none !important;
 }
@@ -57,6 +57,23 @@
   border: none;
   padding: .5em 2em;
   margin: 1em 0;
+}
+
+#reviews .review-details-link:hover {
+  cursor: pointer;
+  background: rgb(108, 70, 158);
+}
+
+#reviews .review-details-link {
+  position: relative;
+  visibility: visible;
+  top: -21%;
+  background: #58f;
+  border-radius: .3em;
+  color: white;
+  border: none;
+  padding: .5em 2em;
+  margin: 1em 0;  
 }
 
 #books .content {
@@ -121,7 +138,7 @@
   display: grid;
   grid-template-areas: "img info";
   padding: 1em;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: #E9ECEF;
   border: 1px solid #333;
   border-radius: .3em;
   box-shadow: 0 0 17px 2px #333;
@@ -130,6 +147,8 @@
 #book #book-detailed img {
   grid-area: img;
   margin: 1em;
+  width: 100%;
+  max-width: 300px;
 }
 
 #book #book-detailed #book-info {
@@ -181,8 +200,8 @@
   height: 64px;
   margin: 8px;
   border-radius: 50%;
-  border: 6px solid aqua;
-  border-color: aqua transparent aqua transparent;
+  border: 6px solid #58f;
+  border-color: #58f transparent #58f transparent;
   animation: Loader 1.2s linear infinite;
 }
 

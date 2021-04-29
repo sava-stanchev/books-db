@@ -2,6 +2,7 @@ import {useEffect, useState} from 'react';
 
 const SingleBook = props => {
   const [bookData, setBookData] = useState(null);
+  // const [bookRating, setBookRating] = useState(null);
   const [error, setError] = useState(null);
   const {id} = props.match.params;
 
@@ -14,6 +15,15 @@ const SingleBook = props => {
       .catch((error) => setError(error.message))
   }, [id]);
 
+  // useEffect(() => {
+  //   fetch(`http://localhost:5555/books/${id}/rating`, { 
+  //     method: 'PUT',
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => setBookRating(data[0]))
+  //     .catch((error) => setError(error.message))
+  // }, [id])
+
   const showError = () => {
     if (error) {
       return <h4><i>An error has occured: </i>{error}</h4>
@@ -25,35 +35,26 @@ const SingleBook = props => {
   }
 
   return(
-    <div>
+    <div id="book">
       {showError()}
-      <h1>{bookData.title}</h1>
+      <div className="content">
+        <div id="book-detailed">
+          <img src={bookData.posters} alt={bookData.title}/>
+          <div id="book-info">
+            <p>Title: {bookData.title}</p>
+            <p>Author: {bookData.author}</p>
+            <p>Year: {bookData.publishing_year}</p>
+            <p>Genre: {bookData.genre}</p>
+            <p>Language: {bookData.language}</p>
+            <p>Age Recommendation: {bookData.age_recommendation}</p>
+            <p>Print Length: {bookData.print_length}</p>
+            <p>ISBN: {bookData.isbn}</p>
+            {/* <p>Book Rating: {bookRating}</p> */}
+          </div>
+        </div>
+      </div>
     </div>
   )
-  //   <div className="App">
-      
-  //       <div id="book">
-  //         <h1>Title: {book.title}, Author: {book.author}</h1>
-  //         <div className="content-detailed">
-  //           <div className="book-detailed">
-  //             <div className="book-image-detailed">
-  //               <img src="${book.images.original.url}"/>
-  //             </div>
-  //             <div className="book-info">
-  //               <p>Publishing Year: {book.publishing_year}</p>
-  //               <p>Genre: {book.genre}</p>
-  //               <p>Age Recommendation: {book.age_recommendation}</p>
-  //               <p>ISBN: {book.isbn}</p>
-  //               <p>Language: {book.language}</p>
-  //               <p>Print Length: {book.print_length}</p>
-  //             </div>
-  //           </div>
-  //         </div>
-  //       </div>
-      
-  //   </div>
-  // )
-
 };
 
 export default SingleBook;

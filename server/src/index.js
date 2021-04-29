@@ -435,7 +435,7 @@ app.get('/reviews', async (req, res) => {
 });
 
 /** Read any review (as admin) */
-app.get('/admin/reviews/:reviews_id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
+app.get('/reviews/:reviews_id', async (req, res) => {
   const reviewId = req.params.reviews_id;
   try {
     const review = await reviewsData.getAnyReviewById(+reviewId);
