@@ -108,7 +108,7 @@ app.get('/books', async (req, res) => {
       return res.json(theBooksFoundByTitle);
     }
 
-    const theBooks = await booksData.getAllBooks(req.query);
+    const theBooks = await booksData.getAllBooks();
     res.json(theBooks);
   } catch (error) {
     return res.status(400).json({

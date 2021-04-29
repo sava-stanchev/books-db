@@ -1,10 +1,15 @@
 import {useEffect, useState} from 'react';
 import {useHistory} from "react-router-dom";
+import ReactPaginate from "react-paginate";
 
 const Books = () => {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [pageNumber, setPageNumber] = useState(0);
+
+  const booksPerPage = 8;
+  const pagesVisited = pageNumber * booksPerPage;
 
   useEffect(() => {
     setLoading(true);
@@ -34,6 +39,29 @@ const Books = () => {
 
   const history = useHistory();
 
+  const displayBooks = books
+  .slice(pagesVisited, pagesVisited + booksPerPage)
+  .map((book) => {
+    return (
+      <div id='BookContainer' className='mouse_over'>
+      <img src={book.posters} alt={book.title}/>
+      <h2>
+        {book.title}
+        <br/>
+        {book.author}
+        <br/>
+        {book.publishing_year}
+      </h2>
+      <button type="button" className="book-details-link" onClick = {() => history.push(`/books/${book.books_id}`)}>View Details</button>
+    </div>
+    );
+  });
+
+  const pageCount = Math.ceil(books.length / booksPerPage);
+  const changePage = ({selected}) => {
+    setPageNumber(selected);
+  };
+
   return(
     <div>
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
@@ -56,21 +84,20 @@ const Books = () => {
         {showLoader()}
         {showError()}
         <div className="content">
-          {books.map((book) => (
-            <div id='BookContainer' className='mouse_over'>
-              <img src={book.posters} alt={book.title}/>
-              <h2>
-                {book.title}
-                <br/>
-                {book.author}
-                <br/>
-                {book.publishing_year}
-              </h2>
-              <button type="button" className="book-details-link" onClick = {() => history.push(`/books/${book.books_id}`)}>View Details</button>
-            </div>
-          ))}
+          {displayBooks}
         </div>
       </div>
+      <ReactPaginate
+        previousLabel={"Prev"}
+        nextLabel={"Next"}
+        pageCount={pageCount}
+        onPageChange={changePage}
+        containerClassName={"paginationBttns"}
+        previousLinkClassName={"previousBttn"}
+        nextLinkClassName={"nextBttn"}
+        disabledClassName={"paginationDisabled"}
+        activeClassName={"paginationActive"}
+      />
     </div>
   )
 };

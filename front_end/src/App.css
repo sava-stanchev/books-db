@@ -251,3 +251,30 @@
   font-size: 26;
   color: #58f;
 }
+
+.paginationBttns {
+  width: 50%;
+  height: 40px;
+  list-style: none;
+  display: flex;
+  justify-content: center;
+}
+
+.paginationBttns a {
+  padding: 10px;
+  margin: 8px;
+  border-radius: 5px;
+  border: 2px solid #5588FF;
+  color: #58f !important;
+  cursor: pointer;
+}
+
+.paginationBttns a:hover {
+  color: white !important;
+  background-color: #58f;
+}
+
+.paginationActive a {
+  color: white !important;
+  background-color: #58f;
+}
