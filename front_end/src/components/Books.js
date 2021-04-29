@@ -43,7 +43,7 @@ const Books = () => {
       <div className="content">
         {books.map((book) => (
           <div id='BookContainer' className='mouse_over'>
-            <img src={book.posters} />
+            <img src={book.posters} alt={book.title}/>
             <h2>
               {book.title}
               <br/>

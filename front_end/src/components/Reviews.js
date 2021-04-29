@@ -8,14 +8,19 @@ const Reviews = () => {
   const [reviews, setReviews] = useState([]);
   // const [updateMode, setModeUpdate] = useState(false);
   // const [viewContent, setViewContent] = useState(content);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
+    setLoading(true);
 
     fetch(`http://localhost:5555/reviews`, {
       method: "GET",
     })
       .then((response) => response.json())
       .then((data) => setReviews(data))
+      .catch((error) => setError(error.message))
+      .finally(() => setLoading(false));
   }, []);
 
   // const toggleUpdateMode = () => {
@@ -27,11 +32,27 @@ const Reviews = () => {
   //   toggleUpdateMode();
   // }
 
+  const showError = () => {
+    if (error) {
+      return <h4><i>An error has occured: </i>{error}</h4>
+    }
+  }
+
+  const Loader = () => <div className="Loader"></div>;
+
+  const showLoader = () => {
+    if (loading) {
+      return <Loader />
+    }
+  }
+
   const history = useHistory();
 
   console.log(reviews);
   return(
     <div>
+      {showLoader()}
+      {showError()}
       {/* {updateMode ? (
         <input
           value={viewContent}
@@ -45,10 +66,10 @@ const Reviews = () => {
         <div id="reviews">
           <div className="content">
             <p>{review.content}</p>
-            <p>{review.date_created}</p>
+            <p>{new Date(review.date_created).toLocaleDateString("en-US")}</p>
             <p>{review.user_name}</p>
             <p>{review.title}</p>
-            <button type="button" className="books-details-link" onClick = {() => history.push(`/reviews/${review.reviews_id}`)}>View Details</button>
+            <button type="button" className="review-details-link" onClick = {() => history.push(`/reviews/${review.reviews_id}`)}>View Details</button>
           </div>
         </div>
       ))}

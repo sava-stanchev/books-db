@@ -81,8 +81,11 @@ const userReviewByBookId = async (userId, bookId) => {
 
 const getAnyReviewById = async (id) => {
   const sql = `
-    SELECT * FROM reviews AS r
-    WHERE r.reviews_id = ?
+  SELECT r.reviews_id, r.content, r.date_created, b.title, u.user_name
+  FROM reviews AS r
+  JOIN users AS u ON r.users_id = u.users_id
+  JOIN books AS b ON r.books_id = b.books_id
+  WHERE r.is_deleted != 1 AND r.reviews_id = ?
   `;
   const result = await pool.query(sql, [id]);
   return result;

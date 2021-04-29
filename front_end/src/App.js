@@ -5,29 +5,26 @@ import About from './components/About';
 import Login from './components/Login';
 import Register from './components/Register';
 import SingleBook from './components/SingleBook';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-} from "react-router-dom";
+import {BrowserRouter, Switch, Route, Redirect} from "react-router-dom";
 import Reviews from './components/Reviews';
+import SingleReview from './components/SingleReview';
 
 function App() {
   return (
     <div className="App">
-      <Router>
+      <BrowserRouter>
       <NavBar />
         <Switch>
           <Redirect path="/" exact to="/home" />
           <Route path="/books" exact component={Books}/>
           <Route path="/books/:id" component={SingleBook}/>
-          <Route path="/reviews" component={Reviews}/>
+          <Route path="/reviews" exact component={Reviews}/>
+          <Route path="/reviews/:reviews_id" component={SingleReview}/>
           <Route path="/about" component={About}/>
           <Route path="/login" component={Login}/>       
           <Route path="/register" component={Register}/>
         </Switch>
-      </Router>
+      </BrowserRouter>
     </div>
   );
 }
