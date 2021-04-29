@@ -82,7 +82,8 @@
   display: grid;
   gap: 3em;
   grid-template-columns: repeat(4, 1fr);  
-  grid-template-rows: auto;  
+  grid-template-rows: auto;
+  grid-row-gap: 1em;  
 }
 
 #books .content>div {
@@ -117,8 +118,7 @@
   color: #5fbfff;
 }
 
-#books .content>div:hover .book-details-link,
-#books .content>div:hover .favorite {
+#books .content>div:hover .book-details-link {
   visibility: visible;
 }
 
@@ -253,7 +253,7 @@
 }
 
 .paginationBttns {
-  width: 50%;
+  width: 80%;
   height: 40px;
   list-style: none;
   display: flex;
@@ -264,7 +264,8 @@
   padding: 10px;
   margin: 8px;
   border-radius: 5px;
-  border: 2px solid #5588FF;
+  border: 3px solid #5588FF;
+  font-family: 'Cardo', serif;
   color: #58f !important;
   cursor: pointer;
 }
