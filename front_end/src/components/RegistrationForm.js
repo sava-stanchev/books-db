@@ -1,14 +1,7 @@
 import {Col, Container, Row, Form, Button} from "react-bootstrap";
-import {useHistory} from "react-router-dom";
 
-const RegistrationForm = ({ genders, updateUser, user }) => {
-  const history = useHistory();
-
-  const routeChange = () =>{ 
-    const path = `/login`; 
-    history.push(path);
-  };
-
+const RegistrationForm = ({ genders, updateUser, user, register }) => {
+  
   return( 
     <Container>
       <Row>
@@ -24,8 +17,8 @@ const RegistrationForm = ({ genders, updateUser, user }) => {
             <Form.Row>
               <Form.Group as={Col}>
                 <Form.Label>Username</Form.Label>
-                <Form.Control type="text" placeholder="Enter username" name="userName" value={user.userName} 
-                onChange={e => updateUser('userName', e.target.value)}/>
+                <Form.Control type="text" placeholder="Enter username" name="user_name" value={user.user_name} 
+                onChange={e => updateUser('user_name', e.target.value)}/>
               </Form.Group>
               <Form.Group as={Col}>
                 <Form.Label>Password</Form.Label>
@@ -36,13 +29,13 @@ const RegistrationForm = ({ genders, updateUser, user }) => {
             <Form.Row>
               <Form.Group as={Col}>
                 <Form.Label>First Name</Form.Label>
-                <Form.Control type="text" placeholder="Enter first name" name="firstName" value={user.firstName} 
-                onChange={e => updateUser('firstName', e.target.value)}/>
+                <Form.Control type="text" placeholder="Enter first name" name="first_name" value={user.first_name} 
+                onChange={e => updateUser('first_name', e.target.value)}/>
               </Form.Group>
               <Form.Group as={Col}>
                 <Form.Label>Last Name</Form.Label>
-                <Form.Control type="text" placeholder="Enter last name" name="lastName" value={user.lastName} 
-                onChange={e => updateUser('lastName', e.target.value)}/>
+                <Form.Control type="text" placeholder="Enter last name" name="last_name" value={user.last_name} 
+                onChange={e => updateUser('last_name', e.target.value)}/>
               </Form.Group>
             </Form.Row>
               <Form.Group as={Col}>
@@ -53,19 +46,20 @@ const RegistrationForm = ({ genders, updateUser, user }) => {
             <Form.Row>
               <Form.Group as={Col}>
                 <Form.Label>Age</Form.Label>
-                <Form.Control type="number" placeholder="Enter age" name="userAge" value={user.userAge} 
-                onChange={e => updateUser('userAge', e.target.value)}/>
+                <Form.Control type="number" placeholder="Enter age" name="user_age" value={user.user_age} 
+                onChange={e => updateUser('user_age', e.target.value)}/>
               </Form.Group>
               <Form.Group as={Col}>
                 <Form.Label>Gender</Form.Label>
-                <Form.Control as="select" defaultValue="Choose..." name="gender" value={user.gender} 
-                onChange={e => updateUser('gender', e.target.value)}>
+                <Form.Control as="select" defaultValue="Choose..." name="gender"
+                value={user.gender ? genders.filter(g => g.genders_id === user.gender)[0].gender:''}
+                onChange={e => updateUser('gender', genders.filter(g => g.gender === e.target.value)[0].genders_id)}>
                   <option>Choose...</option>
                   {genders.map((g) => <option>{g.gender}</option>)}
                 </Form.Control>
               </Form.Group>
             </Form.Row>
-            <Button variant="primary" type="submit" onClick={routeChange}>
+            <Button variant="primary" onClick={() => register()}>
               Submit
             </Button>
           </Form>
