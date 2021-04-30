@@ -7,10 +7,25 @@ const Register = () => {
   const [genders, setGenders] = useState(null);
   // const [loading, setLoading] = useState(false);
   // const [error, setError] = useState(null);
+  const [user, setUser] = useState({
+    userName: '',
+    password: '',
+    firstName: '',
+    lastName: '',
+    userAge: '',
+    e_mail: '',
+    gender: '',
+  });
+
+  const updateUser = (prop, value) => {
+    setUser({
+      ...user,
+      [prop]: value,
+    });
+  }
   
 
   useEffect(() => {
-
       fetch(`http://localhost:5555/genders`,
       { method: 'GET',
       })
@@ -25,7 +40,7 @@ const Register = () => {
   return(
     <div className="registration-page-bg-info">
       <Jumbotron className="form-box">
-        <RegistrationForm genders = {genders}/>
+        <RegistrationForm genders = {genders} updateUser={updateUser} user={user}/>
       </Jumbotron>
     </div>
   )

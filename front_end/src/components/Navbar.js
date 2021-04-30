@@ -1,9 +1,12 @@
+import { useContext } from 'react';
 import {Navbar, Nav} from 'react-bootstrap';
 import {
   Link
 } from 'react-router-dom';
+import AuthContext from '../providers/authContext';
 
 const NavBar = () => {
+  const auth = useContext(AuthContext);
   return(
     <div className="App">
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
@@ -24,14 +27,23 @@ const NavBar = () => {
             </Link>
           </Nav>
           <Nav>
-            <Link to="/login">
-              <Nav.Link href="#login">Login</Nav.Link>
-            </Link>
-            <Link to="/register">
-              <Nav.Link eventKey={2} href="#register">
-                Register
-              </Nav.Link>
-            </Link>
+            {auth.isLoggedIn
+              ?
+              <Link to="/home">
+                <Nav.Link href="#logout">Logout</Nav.Link>
+              </Link>
+              :
+              <>
+                <Link to="/login">
+                  <Nav.Link href="#login">Login</Nav.Link>
+                </Link>
+                <Link to="/register">
+                  <Nav.Link eventKey={2} href="#register">
+                    Register
+                  </Nav.Link>
+                </Link>
+              </>
+            }            
           </Nav>
         </Navbar.Collapse>
       </Navbar>
