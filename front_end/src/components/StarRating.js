@@ -27,6 +27,8 @@ const StarRating = () => {
           </label>
         )
       })}
+      <p>{rating}</p>
+      <p> Average rating: ({})</p>
     </div>
   )
 }

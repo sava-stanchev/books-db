@@ -26,8 +26,8 @@ const App = () => {
           <NavBar />
             <Switch>
               <Redirect path="/" exact to="/home" />
-              {/* <Route path="/books" exact component={Books}/> */}
-              <GuardedRout path="/books" exact component={Books} isLoggedIn={authValue.isLoggedIn}/>
+              <Route path="/books" exact component={Books}/>
+              {/* <GuardedRout path="/books" exact component={Books} isLoggedIn={authValue.isLoggedIn}/> */}
               <Route path="/books/:id" component={SingleBook}/>
               <Route path="/reviews" exact component={Reviews}/>
               <Route path="/reviews/:reviews_id" component={SingleReview}/>
