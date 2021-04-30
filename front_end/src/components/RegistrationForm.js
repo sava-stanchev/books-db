@@ -7,8 +7,7 @@ const RegistrationForm = ({ genders, updateUser, user }) => {
   const routeChange = () =>{ 
     const path = `/login`; 
     history.push(path);
-  }
-  console.log(genders);
+  };
 
   return( 
     <Container>
@@ -43,7 +42,7 @@ const RegistrationForm = ({ genders, updateUser, user }) => {
               <Form.Group as={Col}>
                 <Form.Label>Last Name</Form.Label>
                 <Form.Control type="text" placeholder="Enter last name" name="lastName" value={user.lastName} 
-                onChange={e => updateUser('lastname', e.target.value)}/>
+                onChange={e => updateUser('lastName', e.target.value)}/>
               </Form.Group>
             </Form.Row>
               <Form.Group as={Col}>
