@@ -9,14 +9,14 @@ import {BrowserRouter, Switch, Route, Redirect} from "react-router-dom";
 import Reviews from './components/Reviews';
 import SingleReview from './components/SingleReview';
 import { useState } from 'react';
-import AuthContext from './providers/authContext';
-import GuardedRout from './hof/GuardedRoute';
+import AuthContext, { getUser } from './providers/authContext';
+import GuardedRoute from './hof/GuardedRoute';
 
 const App = () => {
 
   const [authValue, setAuthValue] = useState({
-    user: null,
-    isLoggedIn: false,
+    user: getUser(),
+    isLoggedIn: Boolean(getUser()),
   })
 
   return (
@@ -26,11 +26,11 @@ const App = () => {
           <NavBar />
             <Switch>
               <Redirect path="/" exact to="/home" />
-              <Route path="/books" exact component={Books}/>
-              {/* <GuardedRout path="/books" exact component={Books} isLoggedIn={authValue.isLoggedIn}/> */}
-              <Route path="/books/:id" component={SingleBook}/>
-              <Route path="/reviews" exact component={Reviews}/>
-              <Route path="/reviews/:reviews_id" component={SingleReview}/>
+              {/* <Route path="/books" exact component={Books}/> */}
+              <GuardedRoute path="/books" exact component={Books} isLoggedIn={authValue.isLoggedIn}/>
+              <GuardedRoute path="/books/:id" component={SingleBook} isLoggedIn={authValue.isLoggedIn}/>
+              <GuardedRoute path="/reviews" exact component={Reviews} isLoggedIn={authValue.isLoggedIn}/>
+              <GuardedRoute path="/reviews/:reviews_id" component={SingleReview} isLoggedIn={authValue.isLoggedIn}/>
               <Route path="/about" component={About}/>
               <Route path="/login" component={Login}/>       
               <Route path="/register" component={Register}/>

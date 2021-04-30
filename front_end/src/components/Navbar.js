@@ -7,6 +7,14 @@ import AuthContext from '../providers/authContext';
 
 const NavBar = () => {
   const auth = useContext(AuthContext);
+  const logout = () => {
+    localStorage.removeItem('token');
+    auth.setAuthState({
+      user: null,
+      isLoggedIn: false,
+    });
+  };
+
   return(
     <div className="App">
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
@@ -30,7 +38,7 @@ const NavBar = () => {
             {auth.isLoggedIn
               ?
               <Link to="/home">
-                <Nav.Link href="#logout">Logout</Nav.Link>
+                <Nav.Link href="#logout" onClick={()=> logout()}>Logout</Nav.Link>
               </Link>
               :
               <>

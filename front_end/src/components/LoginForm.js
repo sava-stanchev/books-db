@@ -1,13 +1,6 @@
 import {Col, Container, Row, Form, Button} from "react-bootstrap";
-import {useHistory} from "react-router-dom";
 
-const LoginForm = () => {
-  const history = useHistory();
-
-  const routeChange = () =>{ 
-    const path = `/books`; 
-    history.push(path);
-  }
+const LoginForm = ({ user, updateUser, login }) => {
 
   return( 
     <Container>
@@ -24,15 +17,17 @@ const LoginForm = () => {
             <Form.Row>
               <Form.Group as={Col}>
                 <Form.Label>Username</Form.Label>
-                <Form.Control type="text" placeholder="Enter username" />
+                <Form.Control type="text" placeholder="Enter username" name="user_name" value={ user.user_name} 
+                onChange={e => updateUser('user_name', e.target.value)}/>
               </Form.Group>
               <Form.Group as={Col}>
                 <Form.Label>Password</Form.Label>
-                <Form.Control type="password" placeholder="Enter password" />
+                <Form.Control type="password" placeholder="Enter password" name="password" value={user.password} 
+                onChange={e => updateUser('password', e.target.value)}/>
               </Form.Group>
             </Form.Row>
             <br/>
-            <Button variant="primary" type="submit" onClick={routeChange}>
+            <Button variant="primary" onClick={() => login()}>
               Submit
             </Button>
           </Form>

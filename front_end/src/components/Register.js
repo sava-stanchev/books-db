@@ -16,7 +16,8 @@ const Register = () => {
     e_mail: '',
     gender: '',
   });
-console.log(user);
+
+  console.log(user);
   const updateUser = (prop, value) => {
     setUser({
       ...user,

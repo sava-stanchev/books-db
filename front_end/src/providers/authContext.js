@@ -1,4 +1,5 @@
 import { createContext } from 'react';
+import decode from 'jwt-decode';
 
 const AuthContext = createContext({
   isLoggedIn: false,
@@ -6,4 +7,11 @@ const AuthContext = createContext({
   setAuthState: () => {},
 });
 
+export const getUser = () => {
+  try {
+    return decode(localStorage.getItem('token') || '');
+  } catch (error) {
+    return null;
+  }
+}
 export default AuthContext;
