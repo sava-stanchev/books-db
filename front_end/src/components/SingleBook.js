@@ -50,7 +50,7 @@ const SingleBook = props => {
             <p>Age Recommendation: {bookData.age_recommendation}</p>
             <p>Print Length: {bookData.print_length}</p>
             <p>ISBN: {bookData.isbn}</p>
-            <p>Book Rating: <StarRating /></p>
+            <p>Book Rating: <StarRating bookData={bookData}/></p>
           </div>
         </div>
       </div>

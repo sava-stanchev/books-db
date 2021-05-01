@@ -299,6 +299,20 @@ app.delete('/reviews/:reviews_id', authMiddleware, loggedUserGuard, banGuard, as
   }
 });
 
+/** Get user rating for book */
+app.get('/books/:id/rating', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
+  try {
+    const bookId = req.params.id;
+    const userId = req.user.user_id;
+    const rating = await booksRatingData.getBookRatingByUser(bookId, userId);
+    return rating ? rating : null;
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+});
+
 /** Rate book */
 app.put('/books/:id/rating', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
   try {
