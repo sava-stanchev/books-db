@@ -404,9 +404,10 @@ app.put('/reviews/:reviews_id/review_likes', authMiddleware, loggedUserGuard, ba
 });
 
 /** Create any book (as admin) */
-app.post('/books/create', transformBody(bookCreateValidator), validateBody('book', bookCreateValidator), authMiddleware, loggedUserGuard, validateBody('book', bookCreateValidator), async (req, res) => {
+app.post('/books/create', transformBody(bookCreateValidator), validateBody('book', bookCreateValidator), authMiddleware, loggedUserGuard, async (req, res) => {
   try {
     const book = await booksData.createBook(req.body, req.user);
+    console.log(book);
     res.json(book);
   } catch (error) {
     return res.status(400).json({
@@ -623,7 +624,7 @@ app.get('/languages', async (req, res) => {
   }
 });
 
-/** Get all genders */
+/** Get all genres */
 app.get('/genres', async (req, res) => {
   try {
     const genres = await dropDownData.getAllGenres();
@@ -646,6 +647,5 @@ app.get('/reactions', async (req, res) => {
     });
   }
 });
-
 
 app.listen(PORT, () => console.log(`Listening on ${PORT}...`));

@@ -6,7 +6,7 @@ const AddBookForm = ({ genres, languages, book, updateBook, addBook }) => {
     <Container>
       <Row>
         <Col>
-          <h1>AddBook</h1>
+          <h1>Create!</h1>
         </Col>
       </Row>
       <br/>
@@ -28,12 +28,12 @@ const AddBookForm = ({ genres, languages, book, updateBook, addBook }) => {
             </Form.Row>
             <Form.Row>
               <Form.Group as={Col}>
-                <Form.Label>Age recommendation</Form.Label>
-                <Form.Control type="text" placeholder="Enter age" name="age_recommendation" value={book.age_recommendation} 
+                <Form.Label>Age Recommendation</Form.Label>
+                <Form.Control type="text" placeholder="Enter age recommendation" name="age_recommendation" value={book.age_recommendation} 
                 onChange={e => updateBook('age_recommendation', e.target.value)}/>
               </Form.Group>
               <Form.Group as={Col}>
-                <Form.Label>isbn</Form.Label>
+                <Form.Label>ISBN</Form.Label>
                 <Form.Control type="text" placeholder="Enter ISBN" name="isbn" value={book.isbn} 
                 onChange={e => updateBook('isbn', e.target.value)}/>
               </Form.Group>
@@ -41,11 +41,11 @@ const AddBookForm = ({ genres, languages, book, updateBook, addBook }) => {
             <Form.Row>
               <Form.Group as={Col}>
                 <Form.Label>Publishing Year</Form.Label>
-                <Form.Control type="text" placeholder="Enter pub year" name="publishing_year" value={book.publishing_year} 
+                <Form.Control type="text" placeholder="Enter publishing year" name="publishing_year" value={book.publishing_year} 
                 onChange={e => updateBook('publishing_year', e.target.value)}/>
               </Form.Group>
               <Form.Group as={Col}>
-                <Form.Label>Print length</Form.Label>
+                <Form.Label>Print Length</Form.Label>
                 <Form.Control type="text" placeholder="Enter print length" name="print length" value={book.print_length} 
                 onChange={e => updateBook('print_length', e.target.value)}/>
               </Form.Group>
@@ -63,10 +63,10 @@ const AddBookForm = ({ genres, languages, book, updateBook, addBook }) => {
               <Form.Group as={Col}>
                 <Form.Label>Genre</Form.Label> 
                 <Form.Control as="select" defaultValue="Choose..." name="gender"
-                value={user.gender ? genders.filter(g => g.genders_id === user.gender)[0].gender:''}
-                onChange={e => updateUser('gender', genders.filter(g => g.gender === e.target.value)[0].genders_id)}>
+                value={book.genre ? genres.filter(g => g.genres_id === book.genre)[0].genre:''}
+                onChange={e => updateBook('genre', genres.filter(g => g.genre === e.target.value)[0].genres_id)}>
                   <option>Choose...</option>
-                  {genders.map((g) => <option>{g.gender}</option>)}
+                  {genres.map((g) => <option>{g.genre}</option>)}
                 </Form.Control>
               </Form.Group>
             </Form.Row>
@@ -80,4 +80,4 @@ const AddBookForm = ({ genres, languages, book, updateBook, addBook }) => {
   )
 };
 
-export default RegistrationForm;
+export default AddBookForm;

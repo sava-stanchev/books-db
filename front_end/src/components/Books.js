@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react';
 import {useHistory} from "react-router-dom";
 import ReactPaginate from "react-paginate";
-import {Col, Container, Row, Form, Button} from "react-bootstrap";
+import {Col, Row, Button} from "react-bootstrap";
 
 const Books = () => {
   
@@ -15,7 +15,6 @@ const Books = () => {
 
   useEffect(() => {
     setLoading(true);
-    console.log(`bearer ${localStorage.getItem('token')}` );
     fetch(`http://localhost:5555/books`, {
       method: "GET",
       headers: {

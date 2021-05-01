@@ -56,10 +56,11 @@ const AddBook = () => {
   };
   
   const addBook = () => {
-    fetch('http://localhost:5555/books', {
+    fetch('http://localhost:5555/books/create', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
+        'authorization': `bearer ${localStorage.getItem('token')}`
       },
       body: JSON.stringify(book),
     })
@@ -74,7 +75,9 @@ const AddBook = () => {
     .then(()=>routeChange());
   };
 
-  if(genres === null || languages === null) return <div>Loading...</div>
+  if (genres === null || languages === null) {
+    return <div>Loading...</div>
+  }
 
   return(
     <div className="registration-page-bg-info">
