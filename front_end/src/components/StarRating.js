@@ -8,15 +8,22 @@ const StarRating = ({bookData: book}) => {
   
   // get book rating from user
   useEffect(() =>{
-  // console.log('from star rating ')
-  // console.log(book);
+  //console.log('from star rating ')
+  //console.log(book);
   fetch(`http://localhost:5555/books/${book.books_id}/rating`, {
     method: 'GET',
+    headers: {
+      'content-type': 'application/json',
+      'authorization': `bearer ${localStorage.getItem('token')}`
+    },
   })
   .then((res) => res.json())
-  .then((data) => setRating(data))
+  .then((data) => setRating(data.rating))
   .catch(console.error());
-}, []);
+}, [book.books_id]);
+
+
+console.log(averageRating);
 
 //update book rating from user
 // useEffect(() =>{
@@ -33,16 +40,22 @@ const StarRating = ({bookData: book}) => {
 // }, [rating]);
 
 // get average rating for book
-  // useEffect(() =>{
-  //   fetch(`http://localhost:5555/books/${book.books_id}/rating`, {
-  //     method: 'PATCH',
-  //   })
-  //   .then(res => res.json())
-  //   .then(data => setAverageRating(data))
-  //   .catch(console.error());
-  // }, [rating]);
+  useEffect(() =>{
+    fetch(`http://localhost:5555/books/${book.books_id}/rating`, {
+      method: 'PATCH',
+      headers: {
+        'content-type': 'application/json',
+        'authorization': `bearer ${localStorage.getItem('token')}`
+      },
+    })
+    .then(res => res.json())
+    .then(data => setAverageRating(data))
+    .catch(console.error());
+  }, [rating]);
 
-  
+  // if  (averageRating === null) {
+  //   return <div className="Loader"></div>;
+  // }  
 
   return (
     <div>

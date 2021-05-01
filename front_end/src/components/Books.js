@@ -14,9 +14,13 @@ const Books = () => {
 
   useEffect(() => {
     setLoading(true);
-
+    console.log(`bearer ${localStorage.getItem('token')}` );
     fetch(`http://localhost:5555/books`, {
       method: "GET",
+      headers: {
+        'content-type': 'application/json',
+        'authorization': `bearer ${localStorage.getItem('token')}`
+      },    
     })
       .then((response) => response.json())
       .then((data) => setBooks(data))

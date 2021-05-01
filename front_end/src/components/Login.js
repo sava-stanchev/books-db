@@ -4,7 +4,6 @@ import { useContext, useState } from 'react';
 import {useHistory} from "react-router-dom";
 import AuthContext from '../providers/authContext';
 import decode from 'jwt-decode';
-import { propTypes } from 'react-bootstrap/esm/Image';
 
 const Login = () => {
   const history = useHistory();

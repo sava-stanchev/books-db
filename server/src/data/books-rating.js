@@ -2,7 +2,10 @@ import pool from './pool.js';
 
 const getBookRatingByUser = async (bookId, userId) => {
   const sql = `
-        SELECT * FROM books_ratings AS br
+        SELECT br.book_ratings_id, br.users_id, br.books_id, r.rating
+        FROM books_ratings AS br
+        JOIN ratings AS r
+        ON br.ratings_id = r.ratings_id
         WHERE br.books_id = ? AND br.users_id = ?
     `;
 

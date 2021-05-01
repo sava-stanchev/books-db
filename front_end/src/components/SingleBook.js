@@ -10,6 +10,10 @@ const SingleBook = props => {
   useEffect(() => {
     fetch(`http://localhost:5555/books/${id}`, { 
       method: 'GET',
+      headers: {
+        'content-type': 'application/json',
+        'authorization': `bearer ${localStorage.getItem('token')}`
+      },
     })
       .then((response) => response.json())
       .then((data) => setBookData(data[0]))
@@ -34,6 +38,7 @@ const SingleBook = props => {
   if  (bookData === null) {
     return <div className="Loader"></div>;
   }
+  
 
   return(
     <div id="book">

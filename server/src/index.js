@@ -119,7 +119,7 @@ app.get('/books', authMiddleware, loggedUserGuard, banGuard, async (req, res) =>
 });
 
 /** Retrieve one book */
-app.get('/books/:id', async (req, res) => {
+app.get('/books/:id', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
   try {
     res.json(await booksData.getBookById(+req.params.id));
   } catch (error) {
@@ -302,8 +302,8 @@ app.delete('/reviews/:reviews_id', authMiddleware, loggedUserGuard, banGuard, as
 /** Get user rating for book */
 app.get('/books/:id/rating', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
   console.log('---------------');
-  console.log(req.user);
-  console.log(req.params);
+  // console.log(req.user.user_id);
+  // console.log(req.params.id);
   try {
     const bookId = req.params.id;
     const userId = req.user.user_id;
@@ -317,7 +317,30 @@ app.get('/books/:id/rating', authMiddleware, loggedUserGuard, banGuard, async (r
 });
 
 /** Rate book */
-app.put('/books/:id/rating', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
+app.patch('/books/:id/rating', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
+  console.log('++++++++++++++');
+  try {
+    const bookId = req.params.id;
+    const rating = req.body.rating;
+    const userId = req.user.user_id;
+    const book = await booksData.getBookById(bookId);
+
+    if (!book) {
+      return res.status(404).json({
+        massage: 'Book not found!',
+      });
+    }
+    const checkForRating = await booksRatingData.getBookRatingByUser(bookId, userId);
+    return res.status(200).send(await booksData.bookAverageRating(bookId));
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+});
+
+/** Rate book */
+app.delete('/books/:id/rating', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
   console.log('++++++++++++++');
   try {
     const bookId = req.params.id;
