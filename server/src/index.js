@@ -362,7 +362,7 @@ app.put('/reviews/:reviews_id/review_likes', authMiddleware, loggedUserGuard, ba
 });
 
 /** Create any book (as admin) */
-app.post('/admin/books', transformBody(bookCreateValidator), validateBody('book', bookCreateValidator), authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), validateBody('book', bookCreateValidator), async (req, res) => {
+app.post('/books', transformBody(bookCreateValidator), validateBody('book', bookCreateValidator), authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), validateBody('book', bookCreateValidator), async (req, res) => {
   try {
     const book = await booksData.createBook(req.body, req.user);
     res.json(book);
@@ -374,7 +374,7 @@ app.post('/admin/books', transformBody(bookCreateValidator), validateBody('book'
 });
 
 /** Read any book (as admin) */
-app.get('/admin/books/:id', authMiddleware, loggedUserGuard, roleMiddleware(userRole.Admin), async (req, res) => {
+app.get('/books/:id', authMiddleware, loggedUserGuard, roleMiddleware(userRole.Admin), async (req, res) => {
   try {
     res.json(await booksData.getAnyBookById(+req.params.id));
   } catch (error) {
@@ -385,7 +385,7 @@ app.get('/admin/books/:id', authMiddleware, loggedUserGuard, roleMiddleware(user
 });
 
 /** Update any book (as admin) */
-app.put('/admin/books/:id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), validateBody('book', bookUpdateValidator), async (req, res) => {
+app.put('/books/:id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), validateBody('book', bookUpdateValidator), async (req, res) => {
   const {id} = req.params;
   const updateData = req.body;
 
@@ -409,7 +409,7 @@ app.put('/admin/books/:id', authMiddleware, loggedUserGuard, roleAuth(userRole.A
 });
 
 /** Delete any book (as admin) */
-app.delete('/admin/books/:id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
+app.delete('/books/:id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
   try {
     await booksData.deleteBook(+req.params.id);
     res.json({
