@@ -56,7 +56,8 @@ useEffect(() =>{
               onClick={() => setRating(ratingValue)}
             />
             <FaStar 
-              className="star" 
+              className="star"
+              size={25}
               color={ratingValue <= (hover || rating) ? "#58f" : "#343A40"}
               onMouseEnter={() => setHover(ratingValue)}
               onMouseLeave={() => setHover(null)}
@@ -64,8 +65,8 @@ useEffect(() =>{
           </label>
         )
       })}
-      <p>{rating}</p>
-      <p> Average rating: ({averageRating})</p>
+      <p>You rated this book: {rating}</p>
+      <p>Average rating: ({averageRating})</p>
     </div>
   )
 }
