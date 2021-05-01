@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react';
 import {useHistory} from "react-router-dom";
 import ReactPaginate from "react-paginate";
+import {Col, Container, Row, Form, Button} from "react-bootstrap";
 
 const Books = () => {
   
@@ -70,24 +71,32 @@ const Books = () => {
   return(
     <div>
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
-      
-
-      <button>Create book</button>
-      <div className="boxContainer">
-        <table className = "elementsContainer">
-          <tbody><tr>
-            <td>
-              <input type="text" placeholder="Search"
-              className="search"/>
-            </td>
-            <td>
-              <a href="#">
-                <i className="material-icons">search</i>
-              </a>
-            </td>
-          </tr></tbody>
-        </table>
-      </div>
+      <Row>
+        <Col>
+          <div className="btnContainer">
+            <Button variant="primary" onClick={() => history.push(`/books/create`)}>
+              Create a book
+            </Button>
+          </div>
+        </Col>
+        <Col>
+        <div className="boxContainer">
+          <table className = "elementsContainer">
+            <tbody><tr>
+              <td>
+                <input type="text" placeholder="Search"
+                className="search"/>
+              </td>
+              <td>
+                <a href="#">
+                  <i className="material-icons">search</i>
+                </a>
+              </td>
+            </tr></tbody>
+          </table>
+        </div>
+        </Col>
+      </Row>
       <div id="books">
         {showLoader()}
         {showError()}

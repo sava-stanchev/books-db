@@ -404,7 +404,7 @@ app.put('/reviews/:reviews_id/review_likes', authMiddleware, loggedUserGuard, ba
 });
 
 /** Create any book (as admin) */
-app.post('/books', transformBody(bookCreateValidator), validateBody('book', bookCreateValidator), authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), validateBody('book', bookCreateValidator), async (req, res) => {
+app.post('/books/create', transformBody(bookCreateValidator), validateBody('book', bookCreateValidator), authMiddleware, loggedUserGuard, validateBody('book', bookCreateValidator), async (req, res) => {
   try {
     const book = await booksData.createBook(req.body, req.user);
     res.json(book);
