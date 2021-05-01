@@ -97,7 +97,7 @@ app.delete('/logout', authMiddleware, async (req, res) => {
 });
 
 /** Retrieve all books (with pagination, filtering, sorting) */
-app.get('/books', async (req, res) => {
+app.get('/books', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
   const {search, sort} = req.query;
   try {
     if (sort) {
@@ -301,6 +301,9 @@ app.delete('/reviews/:reviews_id', authMiddleware, loggedUserGuard, banGuard, as
 
 /** Get user rating for book */
 app.get('/books/:id/rating', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
+  console.log('---------------');
+  console.log(req.user);
+  console.log(req.params);
   try {
     const bookId = req.params.id;
     const userId = req.user.user_id;
@@ -315,6 +318,7 @@ app.get('/books/:id/rating', authMiddleware, loggedUserGuard, banGuard, async (r
 
 /** Rate book */
 app.put('/books/:id/rating', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
+  console.log('++++++++++++++');
   try {
     const bookId = req.params.id;
     const rating = req.body.rating;

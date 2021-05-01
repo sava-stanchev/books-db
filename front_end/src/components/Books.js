@@ -66,9 +66,9 @@ const Books = () => {
   return(
     <div>
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
-      {
-        
-      }<button>Create book</button>
+      
+
+      <button>Create book</button>
       <div className="boxContainer">
         <table className = "elementsContainer">
           <tbody><tr>
