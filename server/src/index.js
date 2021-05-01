@@ -83,6 +83,7 @@ app.post('/login', async (req, res) => {
 /** Logout */
 app.delete('/logout', authMiddleware, async (req, res) => {
   try {
+    console.log('------------------------');
     await usersData.logoutUser(req.headers.authorization.replace('Bearer ', ''));
 
     res.json({

@@ -34,7 +34,6 @@ const Register = () => {
     gender: '',
   });
   
-  console.log(user);
   const updateUser = (prop, value) => {
     setUser({
       ...user,
