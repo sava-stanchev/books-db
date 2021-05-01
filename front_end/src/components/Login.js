@@ -47,6 +47,14 @@ const Login = () => {
         console.warn(error);
       }
     })
+    .then(
+      fetch('http://localhost:5555/addToken', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify(user),
+    }))
     .then(() =>routeChange())
     .catch(console.warn);    
   }

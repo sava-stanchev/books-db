@@ -6,4 +6,14 @@ export const tokenExists = async (token) => {
   return result && result.length > 0;
 };
 
+export const addToken = async (token) => {
+  const newToken = `INSERT INTO tokens (token)
+  VALUES (?)`;
+
+  const result = await pool.query(newToke, [token]);
+};
+
+export const deleteToken = async (token) => {
+
+};
 // deleteToken - todo
