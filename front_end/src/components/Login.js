@@ -14,7 +14,6 @@ const Login = () => {
     password: '',
   });
 
-  console.log(user);
   const updateUser = (prop, value) => {
     setUser({
       ...user,
@@ -27,7 +26,6 @@ const Login = () => {
     const path = `/books`; 
     history.push(path);
   };
-  console.log(history);
 
   const login = () => {
     fetch('http://localhost:5555/login', {

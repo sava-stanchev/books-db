@@ -6,4 +6,8 @@ export const tokenExists = async (token) => {
   return result && result.length > 0;
 };
 
+
+export const deleteToken = async (token) => {
+
+};
 // deleteToken - todo
