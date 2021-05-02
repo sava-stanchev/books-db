@@ -22,6 +22,20 @@ const SingleBook = props => {
       .catch((error) => setError(error.message))
   }, [id]);
 
+//borrow
+  // useEffect(() => {
+  //   fetch(`http://localhost:5555/books/${id}`, { 
+  //     method: 'POST',
+  //     headers: {
+  //       'content-type': 'application/json',
+  //       'authorization': `bearer ${localStorage.getItem('token')}`
+  //     },
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => setBookData(data[0]))
+  //     .catch((error) => setError(error.message))
+  // }, [id]);
+
   // useEffect(() => {
   //   fetch(`http://localhost:5555/books/${id}/rating`, { 
   //     method: 'PUT',
@@ -67,8 +81,14 @@ const SingleBook = props => {
             </Col>
             <Col>
               <br/>
+              <p>Borrow the book?</p>
+              <Button variant="primary">
+                Borrow!
+              </Button>
+              <br/>
+              <br/>
               <p>Would you like to leave a review?</p>
-              <Button variant="primary" onClick={() => history.push(`/books/:books_id/create-review`)}>
+              <Button variant="primary" onClick={() => history.push(`/books/:id/create-review`)}>
                 Create a review
               </Button>
             </Col>
