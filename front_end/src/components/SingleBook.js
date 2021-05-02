@@ -50,6 +50,25 @@ const SingleBook = props => {
   //     .catch((error) => setError(error.message))
   // }, [id])
 
+  // update
+  // useEffect(() => {
+  //   fetch(`http://localhost:5555/books/${id}`, {
+  //     method: 'PUT',
+  //     headers: {
+  //       'content-type': 'application/json',
+  //       'authorization': `bearer ${localStorage.getItem('token')}`
+  //     },
+  //   })
+  //   .then((res) => res.json())
+  //   .then((res) => {
+  //     try {
+  //       console.log({res});
+  //     } catch (error) {
+  //       console.warn(error);
+  //     }
+  //   })
+  // }, [id]);
+
   // delete
   // useEffect(() => {
   //   fetch(`http://localhost:5555/books/${id}`, {
