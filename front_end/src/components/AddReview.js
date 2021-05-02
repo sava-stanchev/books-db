@@ -17,7 +17,8 @@ const AddReview = () => {
     content: '',
   });
   
-  console.log(review);
+  const bookId = history.location.pathname.split('/')[2];
+
   const updateReview = (prop, value) => {
     setReview({
       ...review,
@@ -26,7 +27,7 @@ const AddReview = () => {
   };
 
   const addReview = () => {
-    fetch('http://localhost:5555/books/:id/create-review', {
+    fetch(`http://localhost:5555/books/${bookId}/create-review`, {
       method: 'POST',
       headers: {
         'content-type': 'application/json',

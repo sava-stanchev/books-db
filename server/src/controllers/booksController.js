@@ -160,7 +160,7 @@ booksController
         }
 
         const check = (await reviewsData.userReviewByBookId(userId, bookId))[0];
-        if (!check) {
+        if (check) {
           return res.status(200).json({
             message: 'Review already exist!',
           });

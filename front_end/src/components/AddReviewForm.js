@@ -1,7 +1,7 @@
 import {Col, Container, Row, Form, Button} from "react-bootstrap";
 
 const AddReviewForm = ({ review, updateReview, addReview }) => {
-  
+  console.log(review);
   return( 
     <Container>
       <Row>

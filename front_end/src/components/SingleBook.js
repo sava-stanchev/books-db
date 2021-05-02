@@ -9,6 +9,7 @@ const SingleBook = props => {
   const [error, setError] = useState(null);
   const {id} = props.match.params;
   //const [borrow, setBorrow] = useState(null);
+  //const [hasReview, setHasReview] = useState(null);
 
   useEffect(() => {
     fetch(`http://localhost:5555/books/${id}`, { 
@@ -27,6 +28,11 @@ const SingleBook = props => {
     setBookData({...bookData, 'is_borrowed': 1});
   }
 
+  const updateDeleteBook = () => {
+    setBookData({...bookData, 'is_deleted': 1});
+  }
+  // console.log(bookData);
+
   // borrow
   // useEffect(() => {
   //   fetch(`http://localhost:5555/books/${id}`, { 
@@ -41,6 +47,7 @@ const SingleBook = props => {
   //     .catch((error) => setError(error.message))
   // }, [bookData]);
 
+  // rating
   // useEffect(() => {
   //   fetch(`http://localhost:5555/books/${id}/rating`, { 
   //     method: 'PUT',
@@ -69,8 +76,12 @@ const SingleBook = props => {
   //   })
   // }, [id]);
 
+
+
+  console.log(bookData);
   // delete
   // useEffect(() => {
+  //   if (bookData.is_deleted === 1) { 
   //   fetch(`http://localhost:5555/books/${id}`, {
   //     method: 'DELETE',
   //     headers: {
@@ -79,14 +90,9 @@ const SingleBook = props => {
   //     },
   //   })
   //   .then((res) => res.json())
-  //   .then((res) => {
-  //     try {
-  //       console.log({res});
-  //     } catch (error) {
-  //       console.warn(error);
-  //     }
-  //   })
-  // }, [id]);
+  //   .catch((error) => setError(error.message))
+  //  }
+  // }, [bookData]);
 
   const showError = () => {
     if (error) {
@@ -95,10 +101,14 @@ const SingleBook = props => {
   }
 
   const history = useHistory();
-  
+
   if  (bookData === null) {
     return <div className="Loader"></div>;
   }
+
+  // if  (bookData.is_deleted === null) {
+  //   return <div className="Loader"></div>;
+  // }
 
   return(
     <div id="book">
@@ -137,9 +147,10 @@ const SingleBook = props => {
               <br/>
               <br/>
               <p>Would you like to leave a review?</p>
-              <Button variant="primary" onClick={() => history.push(`/books/:id/create-review`)}>
+              <Button variant="primary" onClick={() => history.push(`/books/${bookData.books_id}/create-review`)}>
                 Create Review
               </Button>
+              <br/>
               <br/>
               <p>__________________________</p>
               <br/>
@@ -148,7 +159,7 @@ const SingleBook = props => {
               </Button>
               <br/>
               <br/>
-              <Button variant="danger">
+              <Button variant="danger" onClick={() => updateDeleteBook()}>
                 Delete Book
               </Button>
             </Col>
