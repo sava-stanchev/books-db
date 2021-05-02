@@ -1,12 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
-import booksData from './data/books.js';
-import booksService from './services/books-service.js';
 import reviewsData from './data/reviews.js';
 import userCreateValidator from './validators/user-create-validator.js';
-import bookCreateValidator from './validators/book-create-validator.js';
-import bookUpdateValidator from './validators/book-update-validator.js';
 import validateBody from './middlewares/validate-body.js';
 import transformBody from './middlewares/transform-body.js';
 import dotenv from 'dotenv';
@@ -25,6 +21,7 @@ import reviewsLikeData from './data/reviewsLike.js';
 import booksRatingData from './data/books-rating.js';
 import userService from './services/user-service.js';
 import reviewCreateValidator from './validators/review-create-validation.js';
+import booksController from './controllers/booksController.js';
 
 const config = dotenv.config().parsed;
 
@@ -38,6 +35,8 @@ app.use(express.json());
 
 passport.use(jwtStrategy);
 app.use(passport.initialize());
+
+app.use('/books', booksController);
 
 /** Register */
 app.post('/users', validateBody('user', userCreateValidator), async (req, res) => {
@@ -89,158 +88,6 @@ app.delete('/logout', authMiddleware, async (req, res) => {
     res.json({
       message: 'Successfully logged out!',
     });
-  } catch (error) {
-    return res.status(400).json({
-      error: error.message,
-    });
-  }
-});
-
-/** Retrieve all books (with pagination, filtering, sorting) */
-app.get('/books', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
-  const {search, sort} = req.query;
-  try {
-    if (sort) {
-      const theBooksSortedByYear = await booksData.sortBooksByYear(sort);
-      return res.json(theBooksSortedByYear);
-    }
-    if (search) {
-      const theBooksFoundByTitle = await booksData.searchBooksByTitle(search);
-      return res.json(theBooksFoundByTitle);
-    }
-
-    const theBooks = await booksData.getAllBooks();
-    res.json(theBooks);
-  } catch (error) {
-    return res.status(400).json({
-      error: error.message,
-    });
-  }
-});
-
-/** Retrieve one book */
-app.get('/books/:id', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
-  console.log('77777');
-  try {
-    res.json(await booksData.getBookById(+req.params.id));
-  } catch (error) {
-    return res.status(404).json({
-      error: error.message,
-    });
-  }
-});
-
-/** Borrow a book */
-app.post('/books/:id', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
-  console.log('66666');
-  const {id} = req.params;
-  try {
-    const theBook = await booksData.getBookById(+id);
-    if (!theBook) {
-      return res.status(404).json({
-        msg: `Book with id ${id} was not found!`,
-      });
-    }
-
-    const bookBorrowed = await booksData.borrowBook(+id);
-    if (!bookBorrowed) {
-      return res.json({
-        msg: `Book has already been borrowed!`,
-      });
-    }
-
-    const setRecord = await booksData.setBorrowRecords(id, req.user.user_id);
-
-    return res.status(200).send(await booksData.getBookByIdForUser(+id));
-  } catch (error) {
-    return res.status(400).json({
-      error: error.message,
-    });
-  }
-});
-
-/** Return a book */
-app.patch('/books/:id', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
-  console.log('55');
-  try {
-    const isBookBorrowed = await booksData.isBookBorrowed(+req.params.id, req.user.user_id);
-    if (!isBookBorrowed) {
-      return res.status(404).json({
-        message: 'Book not borrowed!',
-      });
-    }
-    const book = await booksData.returnBook(+req.params.id);
-    if (!book) {
-      return res.json({
-        msg: `Book has already been returned!`,
-      });
-    }
-
-    const setRecord = await booksData.setReturnRecords(+isBookBorrowed.records_id);
-    if (!setRecord) {
-      return res.json({
-        msg: `Something went wrong!`,
-      });
-    }
-
-    return res.status(200).json(await booksData.getBookByIdForUser(+req.params.id));
-  } catch (error) {
-    return res.status(400).json({
-      error: error.message,
-    });
-  }
-});
-
-/** Read book reviews */
-app.get('/books/:id/reviews', authMiddleware, loggedUserGuard, async (req, res) => {
-  console.log('44444444');
-  const {id} = req.params;
-
-  try {
-    const theBook = await booksData.getBookById(+id);
-    if (!theBook) {
-      return res.status(404).json({
-        msg: `Book with id ${id} was not found!`,
-      });
-    }
-
-    const theReviews = await reviewsData.getReviewsForBook(+id);
-    if (!theReviews) {
-      return res.json({
-        msg: 'Book has no reviews yet!',
-      });
-    }
-
-    return res.send(theReviews);
-  } catch (error) {
-    return res.status(400).json({
-      error: error.message,
-    });
-  }
-});
-
-/** Create book review */
-app.post('/books/:id/create-review', transformBody(reviewCreateValidator), validateBody('review', reviewCreateValidator), authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
-  console.log('33333333333333');
-  const bookId = +req.params.id;
-  const userId = +req.user.user_id;
-  const book = await booksData.getBookById(+bookId);
-  try {
-    if (!book[0]) {
-      return res.status(404).json({
-        msg: `Book was not found!`,
-      });
-    }
-
-    const check = (await reviewsData.userReviewByBookId(userId, bookId))[0];
-    if (!check) {
-      return res.status(200).json({
-        message: 'Review already exist!',
-      });
-    }
-    const review = await reviewsData.createReview(bookId, req.body.content, userId);
-
-    return res.status(200).json(review);
   } catch (error) {
     return res.status(400).json({
       error: error.message,
@@ -304,82 +151,7 @@ app.delete('/reviews/:reviews_id', authMiddleware, loggedUserGuard, banGuard, as
   }
 });
 
-/** Get user rating for book */
-app.get('/books/:id/rating', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
-  console.log('22222222222');
-  // console.log(req.user.user_id);
-  // console.log(req.params.id);
-  try {
-    const bookId = req.params.id;
-    const userId = req.user.user_id;
-    const rating = await booksRatingData.getBookRatingByUser(bookId, userId);
-    return rating ? rating : null;
-  } catch (error) {
-    return res.status(500).json({
-      message: error.message,
-    });
-  }
-});
 
-/** Rate book */
-app.patch('/books/:id/rating', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
-  console.log('++++++++++++++');
-  try {
-    const bookId = req.params.id;
-    const rating = req.body.rating;
-    const userId = req.user.user_id;
-    const book = await booksData.getBookById(bookId);
-
-    if (!book) {
-      return res.status(404).json({
-        massage: 'Book not found!',
-      });
-    }
-    const checkForRating = await booksRatingData.getBookRatingByUser(bookId, userId);
-    return res.status(200).send(await booksData.bookAverageRating(bookId));
-  } catch (error) {
-    return res.status(500).json({
-      message: error.message,
-    });
-  }
-});
-
-/** Rate book */
-app.delete('/books/:id/rating', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
-  console.log('++++++++++++++');
-  try {
-    const bookId = req.params.id;
-    const rating = req.body.rating;
-    const userId = req.user.user_id;
-    const book = await booksData.getBookById(bookId);
-
-    if (!book) {
-      return res.status(404).json({
-        massage: 'Book not found!',
-      });
-    }
-
-    const isBookBorrowedAndReturned = await booksData.isBookBorrowedAndReturned(bookId, userId);
-
-    if (!isBookBorrowedAndReturned) {
-      return res.status(403).json({
-        message: 'If you want to rate a book, you need to read it and return it first!',
-      });
-    }
-
-    const checkForRating = await booksRatingData.getBookRatingByUser(bookId, userId);
-    if (checkForRating) {
-      await booksRatingData.updateBookRating(checkForRating.book_ratings_id, rating);
-      return res.status(200).send(await booksData.bookAverageRating(bookId));
-    }
-    await booksRatingData.setRatingToBook(userId, bookId, rating);
-    return res.status(200).send(await booksData.bookAverageRating(bookId));
-  } catch (error) {
-    return res.status(500).json({
-      message: error.message,
-    });
-  }
-});
 
 /** Like reviews */
 app.put('/reviews/:reviews_id/review_likes', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
@@ -401,70 +173,6 @@ app.put('/reviews/:reviews_id/review_likes', authMiddleware, loggedUserGuard, ba
     }
     await reviewsLikeData.setLikeToReview(userId, reviewId, reaction);
     return res.status(200).send(await reviewsLikeData.reviewLikesByBookAndUser(reviewId));
-  } catch (error) {
-    return res.status(400).json({
-      error: error.message,
-    });
-  }
-});
-
-/** Create any book (as admin) */
-app.put('/books/create', authMiddleware, loggedUserGuard, transformBody(bookCreateValidator), validateBody('book', bookCreateValidator), async (req, res) => {
-  try {
-    const book = await booksData.createBook(req.body, req.user);
-    console.log(book);
-    res.json(book);
-  } catch (error) {
-    return res.status(400).json({
-      error: error.message,
-    });
-  }
-});
-
-/** Read any book (as admin) */
-app.get('/books/:id', authMiddleware, loggedUserGuard, roleMiddleware(userRole.Admin), async (req, res) => {
-  console.log('11');
-  try {
-    res.json(await booksData.getAnyBookById(+req.params.id));
-  } catch (error) {
-    return res.status(404).json({
-      error: error.message,
-    });
-  }
-});
-
-/** Update any book (as admin) */
-app.put('/books/:id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), validateBody('book', bookUpdateValidator), async (req, res) => {
-  const {id} = req.params;
-  const updateData = req.body;
-
-  try {
-    const updatedBook = await booksService.updateBook(+id, updateData);
-
-    if (!updatedBook) {
-      res.status(404).send({
-        message: 'Book not found!',
-      });
-    } else {
-      res.send({
-        message: 'Book updated!',
-      });
-    }
-  } catch (error) {
-    return res.status(400).json({
-      error: error.message,
-    });
-  }
-});
-
-/** Delete any book (as admin) */
-app.delete('/books/:id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
-  console.log('8888');
-  try {
-    await booksData.deleteBook(+req.params.id);
-    res.json({
-      message: `Book deleted`,
-    });
   } catch (error) {
     return res.status(400).json({
       error: error.message,
