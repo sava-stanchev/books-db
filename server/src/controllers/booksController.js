@@ -13,6 +13,7 @@ import loggedUserGuard from '../middlewares/loggedUserGuard.js';
 import validateBody from '../middlewares/validate-body.js';
 import roleAuth from '../middlewares/role-auth.js';
 
+
 const booksController = express.Router();
 
 booksController
@@ -57,9 +58,8 @@ booksController
     /** Borrow a book */
     .post('/:id', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
       console.log('66666');
-      const {
-        id
-      } = req.params;
+      const {id} = req.params;
+      const userId = req.user.user_id;
       try {
         const theBook = await booksData.getBookById(+id);
         if (!theBook) {
@@ -68,14 +68,14 @@ booksController
           });
         }
 
-        const bookBorrowed = await booksData.borrowBook(+id);
-        if (!bookBorrowed) {
+        const bookBorrowed = await booksData.isBookBorrowed(+id, userId);
+        if (bookBorrowed) {
           return res.json({
             msg: `Book has already been borrowed!`,
           });
         }
 
-        const setRecord = await booksData.setBorrowRecords(id, req.user.user_id);
+        const setRecord = await booksData.setBorrowRecords(id, userId);
 
         return res.status(200).send(await booksData.getBookByIdForUser(+id));
       } catch (error) {

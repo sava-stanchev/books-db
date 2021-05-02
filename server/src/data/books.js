@@ -34,7 +34,7 @@ const sortBooksByYear = async (sort) => {
 };
 
 const getBookById = async (id) => {
-  console.log('------------------');
+  console.log('-------4-----------');
   const sql = `
   SELECT b.books_id, b.title, b.author, b.age_recommendation, b.isbn, b.publishing_year, b.print_length, b.posters, l.language, g.genre
   FROM books AS b
@@ -175,12 +175,14 @@ const isBookBorrowedAndReturned = async (bookId, userId) => {
 };
 
 const isBookBorrowed = async (bookId, userId) => {
+  console.log('***************');
   const sql = `
     SELECT * FROM records AS r
     WHERE r.users_id = ? AND r.books_id = ? AND r.date_returned IS NULL
   `;
 
   const result = await pool.query(sql, [userId, bookId]);
+  console.log(result);
   return result[0];
 };
 

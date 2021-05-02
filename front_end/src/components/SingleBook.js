@@ -5,9 +5,10 @@ import {Button, Col, Row} from "react-bootstrap";
 
 const SingleBook = props => {
   const [bookData, setBookData] = useState(null);
-  // const [bookRating, setBookRating] = useState(null);
+  //const [bookRating, setBookRating] = useState(null);
   const [error, setError] = useState(null);
   const {id} = props.match.params;
+  //const [borrow, setBorrow] = useState(null);
 
   useEffect(() => {
     fetch(`http://localhost:5555/books/${id}`, { 
@@ -22,7 +23,11 @@ const SingleBook = props => {
       .catch((error) => setError(error.message))
   }, [id]);
 
-//borrow
+  const updateBorrowed = () => {
+    setBookData({...bookData, 'is_borrowed': 1});
+  }
+
+  //borrow
   // useEffect(() => {
   //   fetch(`http://localhost:5555/books/${id}`, { 
   //     method: 'POST',
@@ -34,7 +39,7 @@ const SingleBook = props => {
   //     .then((response) => response.json())
   //     .then((data) => setBookData(data[0]))
   //     .catch((error) => setError(error.message))
-  // }, [id]);
+  // }, [bookData]);
 
   // useEffect(() => {
   //   fetch(`http://localhost:5555/books/${id}/rating`, { 
@@ -81,10 +86,16 @@ const SingleBook = props => {
             </Col>
             <Col>
               <br/>
-              <p>Borrow the book?</p>
-              <Button variant="primary">
-                Borrow!
-              </Button>
+              {bookData.is_borrowed
+                ?<p>Book is already borrowed!</p>
+                :
+                <>
+                  <p>Borrow the book?</p>
+                  <Button variant="primary" onClick={() => updateBorrowed()}>
+                    Borrow!
+                  </Button>
+                </>
+              }
               <br/>
               <br/>
               <p>Would you like to leave a review?</p>
