@@ -27,7 +27,7 @@ const SingleBook = props => {
     setBookData({...bookData, 'is_borrowed': 1});
   }
 
-  //borrow
+  // borrow
   // useEffect(() => {
   //   fetch(`http://localhost:5555/books/${id}`, { 
   //     method: 'POST',
@@ -49,6 +49,25 @@ const SingleBook = props => {
   //     .then((data) => setBookRating(data[0]))
   //     .catch((error) => setError(error.message))
   // }, [id])
+
+  // delete
+  // useEffect(() => {
+  //   fetch(`http://localhost:5555/books/${id}`, {
+  //     method: 'DELETE',
+  //     headers: {
+  //       'content-type': 'application/json',
+  //       'authorization': `bearer ${localStorage.getItem('token')}`
+  //     },
+  //   })
+  //   .then((res) => res.json())
+  //   .then((res) => {
+  //     try {
+  //       console.log({res});
+  //     } catch (error) {
+  //       console.warn(error);
+  //     }
+  //   })
+  // }, [id]);
 
   const showError = () => {
     if (error) {
@@ -90,7 +109,7 @@ const SingleBook = props => {
                 ?<p>Book is already borrowed!</p>
                 :
                 <>
-                  <p>Borrow the book?</p>
+                  <p>Would you like to borrow the book?</p>
                   <Button variant="primary" onClick={() => updateBorrowed()}>
                     Borrow!
                   </Button>
@@ -100,7 +119,18 @@ const SingleBook = props => {
               <br/>
               <p>Would you like to leave a review?</p>
               <Button variant="primary" onClick={() => history.push(`/books/:id/create-review`)}>
-                Create a review
+                Create Review
+              </Button>
+              <br/>
+              <p>__________________________</p>
+              <br/>
+              <Button variant="warning">
+                Update Book
+              </Button>
+              <br/>
+              <br/>
+              <Button variant="danger">
+                Delete Book
               </Button>
             </Col>
           </Row>

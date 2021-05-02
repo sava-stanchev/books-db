@@ -15,9 +15,9 @@ const AddReview = () => {
 
   const [review, setReview] = useState({
     content: '',
-    date_created: '',
   });
   
+  console.log(review);
   const updateReview = (prop, value) => {
     setReview({
       ...review,
@@ -46,7 +46,7 @@ const AddReview = () => {
   };
 
   return(
-    <div className="registration-page-bg-info">
+    <div className="login-page-bg-info">
       <Jumbotron className="form-box">
         <AddReviewForm updateReview={updateReview} review={review} addReview={addReview}/>
       </Jumbotron>

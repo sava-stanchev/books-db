@@ -151,8 +151,6 @@ app.delete('/reviews/:reviews_id', authMiddleware, loggedUserGuard, banGuard, as
   }
 });
 
-
-
 /** Like reviews */
 app.put('/reviews/:reviews_id/review_likes', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
   try {

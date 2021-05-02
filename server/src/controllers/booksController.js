@@ -12,8 +12,9 @@ import banGuard from '../middlewares/ban-guard.js';
 import loggedUserGuard from '../middlewares/loggedUserGuard.js';
 import validateBody from '../middlewares/validate-body.js';
 import roleAuth from '../middlewares/role-auth.js';
+import reviewsData from '../data/reviews.js';
 
-
+// eslint-disable-next-line new-cap
 const booksController = express.Router();
 
 booksController
