@@ -23,7 +23,7 @@ const StarRating = ({bookData: book}) => {
 }, [book.books_id]);
 
 
-console.log(averageRating);
+// console.log(averageRating);
 
 //update book rating from user
 // useEffect(() =>{
@@ -40,18 +40,18 @@ console.log(averageRating);
 // }, [rating]);
 
 // get average rating for book
-  useEffect(() =>{
-    fetch(`http://localhost:5555/books/${book.books_id}/rating`, {
-      method: 'PATCH',
-      headers: {
-        'content-type': 'application/json',
-        'authorization': `bearer ${localStorage.getItem('token')}`
-      },
-    })
-    .then(res => res.json())
-    .then(data => setAverageRating(data))
-    .catch(console.error());
-  }, [rating]);
+  // useEffect(() =>{
+  //   fetch(`http://localhost:5555/books/${book.books_id}/rating`, {
+  //     method: 'PATCH',
+  //     headers: {
+  //       'content-type': 'application/json',
+  //       'authorization': `bearer ${localStorage.getItem('token')}`
+  //     },
+  //   })
+  //   .then(res => res.json())
+  //   .then(data => setAverageRating(data))
+  //   .catch(console.error());
+  // }, [rating]);
 
   // if  (averageRating === null) {
   //   return <div className="Loader"></div>;

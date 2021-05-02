@@ -216,8 +216,8 @@ app.get('/books/:id/reviews', authMiddleware, loggedUserGuard, async (req, res) 
 });
 
 /** Create book review */
-app.post('/books/:books_id/reviews', transformBody(reviewCreateValidator), validateBody('review', reviewCreateValidator), authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
-  const bookId = +req.params.books_id;
+app.post('/books/:id/create-review', transformBody(reviewCreateValidator), validateBody('review', reviewCreateValidator), authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
+  const bookId = +req.params.id;
   const userId = +req.user.user_id;
   const book = await booksData.getBookById(+bookId);
   try {

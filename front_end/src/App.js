@@ -12,6 +12,7 @@ import { useState } from 'react';
 import AuthContext, { getUser } from './providers/authContext';
 import GuardedRoute from './hof/GuardedRoute';
 import AddBook from './components/AddBook';
+import AddReview from './components/AddReview';
 
 const App = () => {
 
@@ -27,10 +28,10 @@ const App = () => {
           <NavBar />
             <Switch>
               <Redirect path="/" exact to="/home" />
-              {/* <Route path="/books" exact component={Books}/> */}
               <GuardedRoute path="/books" exact component={Books} isLoggedIn={authValue.isLoggedIn}/>
               <GuardedRoute path="/books/create" component={AddBook} isLoggedIn={authValue.isLoggedIn}/>
               <GuardedRoute path="/books/:id" component={SingleBook} isLoggedIn={authValue.isLoggedIn}/>
+              <GuardedRoute path="/books/:id/create-review" component={AddReview} isLoggedIn={authValue.isLoggedIn}/>
               <GuardedRoute path="/reviews" exact component={Reviews} isLoggedIn={authValue.isLoggedIn}/>
               <GuardedRoute path="/reviews/:reviews_id" component={SingleReview} isLoggedIn={authValue.isLoggedIn}/>
               <Route path="/about" component={About}/>
