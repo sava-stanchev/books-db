@@ -120,6 +120,7 @@ app.get('/books', authMiddleware, loggedUserGuard, banGuard, async (req, res) =>
 
 /** Retrieve one book */
 app.get('/books/:id', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
+  console.log('77777');
   try {
     res.json(await booksData.getBookById(+req.params.id));
   } catch (error) {
@@ -131,6 +132,7 @@ app.get('/books/:id', authMiddleware, loggedUserGuard, banGuard, async (req, res
 
 /** Borrow a book */
 app.post('/books/:id', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
+  console.log('66666');
   const {id} = req.params;
   try {
     const theBook = await booksData.getBookById(+id);
@@ -159,6 +161,7 @@ app.post('/books/:id', authMiddleware, loggedUserGuard, banGuard, async (req, re
 
 /** Return a book */
 app.patch('/books/:id', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
+  console.log('55');
   try {
     const isBookBorrowed = await booksData.isBookBorrowed(+req.params.id, req.user.user_id);
     if (!isBookBorrowed) {
@@ -190,6 +193,7 @@ app.patch('/books/:id', authMiddleware, loggedUserGuard, banGuard, async (req, r
 
 /** Read book reviews */
 app.get('/books/:id/reviews', authMiddleware, loggedUserGuard, async (req, res) => {
+  console.log('44444444');
   const {id} = req.params;
 
   try {
@@ -217,6 +221,7 @@ app.get('/books/:id/reviews', authMiddleware, loggedUserGuard, async (req, res) 
 
 /** Create book review */
 app.post('/books/:id/create-review', transformBody(reviewCreateValidator), validateBody('review', reviewCreateValidator), authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
+  console.log('33333333333333');
   const bookId = +req.params.id;
   const userId = +req.user.user_id;
   const book = await booksData.getBookById(+bookId);
@@ -301,7 +306,7 @@ app.delete('/reviews/:reviews_id', authMiddleware, loggedUserGuard, banGuard, as
 
 /** Get user rating for book */
 app.get('/books/:id/rating', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
-  console.log('---------------');
+  console.log('22222222222');
   // console.log(req.user.user_id);
   // console.log(req.params.id);
   try {
@@ -404,7 +409,7 @@ app.put('/reviews/:reviews_id/review_likes', authMiddleware, loggedUserGuard, ba
 });
 
 /** Create any book (as admin) */
-app.post('/books/create', transformBody(bookCreateValidator), validateBody('book', bookCreateValidator), authMiddleware, loggedUserGuard, async (req, res) => {
+app.put('/books/create', authMiddleware, loggedUserGuard, transformBody(bookCreateValidator), validateBody('book', bookCreateValidator), async (req, res) => {
   try {
     const book = await booksData.createBook(req.body, req.user);
     console.log(book);
@@ -418,6 +423,7 @@ app.post('/books/create', transformBody(bookCreateValidator), validateBody('book
 
 /** Read any book (as admin) */
 app.get('/books/:id', authMiddleware, loggedUserGuard, roleMiddleware(userRole.Admin), async (req, res) => {
+  console.log('11');
   try {
     res.json(await booksData.getAnyBookById(+req.params.id));
   } catch (error) {
@@ -453,6 +459,7 @@ app.put('/books/:id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin),
 
 /** Delete any book (as admin) */
 app.delete('/books/:id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
+  console.log('8888');
   try {
     await booksData.deleteBook(+req.params.id);
     res.json({

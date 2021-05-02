@@ -29,11 +29,11 @@ const App = () => {
             <Switch>
               <Redirect path="/" exact to="/home" />
               <GuardedRoute path="/books" exact component={Books} isLoggedIn={authValue.isLoggedIn}/>
-              <GuardedRoute path="/books/create" component={AddBook} isLoggedIn={authValue.isLoggedIn}/>
-              <GuardedRoute path="/books/:id" component={SingleBook} isLoggedIn={authValue.isLoggedIn}/>
-              <GuardedRoute path="/books/:id/create-review" component={AddReview} isLoggedIn={authValue.isLoggedIn}/>
+              <GuardedRoute path="/books/create" exact component={AddBook} isLoggedIn={authValue.isLoggedIn}/>
+              <GuardedRoute path="/books/:id" exact component={SingleBook} isLoggedIn={authValue.isLoggedIn}/>
+              <GuardedRoute path="/books/:id/create-review" exact component={AddReview} isLoggedIn={authValue.isLoggedIn}/>
               <GuardedRoute path="/reviews" exact component={Reviews} isLoggedIn={authValue.isLoggedIn}/>
-              <GuardedRoute path="/reviews/:reviews_id" component={SingleReview} isLoggedIn={authValue.isLoggedIn}/>
+              <GuardedRoute path="/reviews/:reviews_id" exact component={SingleReview} isLoggedIn={authValue.isLoggedIn}/>
               <Route path="/about" component={About}/>
               <Route path="/login" component={Login}/>       
               <Route path="/register" component={Register}/>

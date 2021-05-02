@@ -34,6 +34,7 @@ const sortBooksByYear = async (sort) => {
 };
 
 const getBookById = async (id) => {
+  console.log('------------------');
   const sql = `
   SELECT b.books_id, b.title, b.author, b.age_recommendation, b.isbn, b.publishing_year, b.print_length, b.posters, l.language, g.genre
   FROM books AS b
@@ -92,7 +93,6 @@ const setBorrowRecords = async (bookId, userId) => {
   `;
 
   const result = await pool.query(sql, [userId, bookId]);
-  console.log(result.insertId);
   return result;
 };
 
@@ -127,6 +127,7 @@ const updateBookSQL = async (book) => {
 };
 
 const createBook = async (book, user) => {
+  console.log('+++++++++++');
   const {
     title,
     author,

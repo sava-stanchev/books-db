@@ -57,7 +57,7 @@ const AddBook = () => {
   
   const addBook = () => {
     fetch('http://localhost:5555/books/create', {
-      method: 'POST',
+      method: 'PUT',
       headers: {
         'content-type': 'application/json',
         'authorization': `bearer ${localStorage.getItem('token')}`
