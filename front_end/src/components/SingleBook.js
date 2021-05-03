@@ -10,6 +10,8 @@ const SingleBook = props => {
   const {id} = props.match.params;
   //const [hasReview, setHasReview] = useState(null);
 
+  console.log(id);
+
   useEffect(() => {
     fetch(`http://localhost:5555/books/${id}`, { 
       method: 'GET',
@@ -22,6 +24,8 @@ const SingleBook = props => {
       .then((data) => setBookData(data[0]))
       .catch((error) => setError(error.message))
   }, [id]);
+
+  console.log(bookData);
 
   const borrowBook = () => {
     fetch(`http://localhost:5555/books/${id}`, { 
@@ -48,6 +52,8 @@ const SingleBook = props => {
     .then(() => history.go(0))
     .catch((error) => setError(error.message));
   };
+
+  
 
   // rating
   // useEffect(() => {

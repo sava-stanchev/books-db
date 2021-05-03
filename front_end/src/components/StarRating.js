@@ -2,35 +2,23 @@ import { useEffect, useState } from "react";
 import {FaStar} from "react-icons/fa";
 
 const StarRating = ({bookData: book}) => {
-  const [rating, setRating] = useState(null);
+  const [rating, setRating] = useState(book.rating);
   const [hover, setHover] = useState(null);
-  const [averageRating, setAverageRating] = useState(null);
+  const [averageRating, setAverageRating] = useState(book.average_rating);
   
-  // get book rating from user
-  useEffect(() =>{
-  //console.log('from star rating ')
-  //console.log(book);
-  fetch(`http://localhost:5555/books/${book.books_id}/rating`, {
-    method: 'GET',
-    headers: {
-      'content-type': 'application/json',
-      'authorization': `bearer ${localStorage.getItem('token')}`
-    },
-  })
-  .then((res) => res.json())
-  .then((data) => setRating(data.rating))
-  .catch(console.error());
-}, [book.books_id]);
+  
+ 
 
 
 // console.log(averageRating);
 
-//update book rating from user
+// update book rating from user
 // useEffect(() =>{
-//   fetch(`http://localhost:5555/books/${book.biioks_id}/rating`, {
-//     method: 'PUT',
+//   fetch(`http://localhost:5555/books/${book.books_id}/rating`, {
+//     method: 'PATCH',
 //     headers: {
 //       'content-type': 'application/json',
+//       'authorization': `bearer ${localStorage.getItem('token')}`
 //     },
 //     body: JSON.stringify(rating),
 //   })
@@ -39,19 +27,7 @@ const StarRating = ({bookData: book}) => {
 //   .catch(console.error());
 // }, [rating]);
 
-// get average rating for book
-  // useEffect(() =>{
-  //   fetch(`http://localhost:5555/books/${book.books_id}/rating`, {
-  //     method: 'PATCH',
-  //     headers: {
-  //       'content-type': 'application/json',
-  //       'authorization': `bearer ${localStorage.getItem('token')}`
-  //     },
-  //   })
-  //   .then(res => res.json())
-  //   .then(data => setAverageRating(data))
-  //   .catch(console.error());
-  // }, [rating]);
+console.log(rating);
 
   // if  (averageRating === null) {
   //   return <div className="Loader"></div>;
