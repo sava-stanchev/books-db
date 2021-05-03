@@ -281,7 +281,7 @@ booksController
     })
 
     /** Update any book (as admin) */
-    .put('/:id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), validateBody('book', bookUpdateValidator), async (req, res) => {
+    .put('/:id/update', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), validateBody('book', bookUpdateValidator), async (req, res) => {
       const {id} = req.params;
       const updateData = req.body;
 

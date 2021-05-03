@@ -1,12 +1,12 @@
 import {Col, Container, Row, Form, Button} from "react-bootstrap";
 
-const AddBookForm = ({ genres, languages, book, updateBook, addBook }) => {
+const UpdateBookForm = ({ genres, languages, book, updateBookProps, updateBook }) => {
   
   return( 
     <Container>
       <Row>
         <Col>
-          <h1>Create!</h1>
+          <h1>Update!</h1>
         </Col>
       </Row>
       <br/>
@@ -18,44 +18,44 @@ const AddBookForm = ({ genres, languages, book, updateBook, addBook }) => {
               <Form.Group as={Col}>
                 <Form.Label>Title</Form.Label>
                 <Form.Control type="text" placeholder="Enter title" name="title" value={book.title} 
-                onChange={e => updateBook('title', e.target.value)}/>
+                onChange={e => updateBookProps('title', e.target.value)}/>
               </Form.Group>
               <Form.Group as={Col}>
                 <Form.Label>Author</Form.Label>
                 <Form.Control type="text" placeholder="Enter author" name="author" value={book.author} 
-                onChange={e => updateBook('author', e.target.value)}/>
+                onChange={e => updateBookProps('author', e.target.value)}/>
               </Form.Group>
             </Form.Row>
             <Form.Row>
               <Form.Group as={Col}>
                 <Form.Label>Age Recommendation</Form.Label>
                 <Form.Control type="text" placeholder="Enter age recommendation" name="age_recommendation" value={book.age_recommendation} 
-                onChange={e => updateBook('age_recommendation', e.target.value)}/>
+                onChange={e => updateBookProps('age_recommendation', e.target.value)}/>
               </Form.Group>
               <Form.Group as={Col}>
                 <Form.Label>ISBN</Form.Label>
                 <Form.Control type="text" placeholder="Enter ISBN" name="isbn" value={book.isbn} 
-                onChange={e => updateBook('isbn', e.target.value)}/>
+                onChange={e => updateBookProps('isbn', e.target.value)}/>
               </Form.Group>
             </Form.Row>
             <Form.Row>
               <Form.Group as={Col}>
                 <Form.Label>Publishing Year</Form.Label>
                 <Form.Control type="text" placeholder="Enter publishing year" name="publishing_year" value={book.publishing_year} 
-                onChange={e => updateBook('publishing_year', e.target.value)}/>
+                onChange={e => updateBookProps('publishing_year', e.target.value)}/>
               </Form.Group>
               <Form.Group as={Col}>
                 <Form.Label>Print Length</Form.Label>
                 <Form.Control type="text" placeholder="Enter print length" name="print length" value={book.print_length} 
-                onChange={e => updateBook('print_length', e.target.value)}/>
+                onChange={e => updateBookProps('print_length', e.target.value)}/>
               </Form.Group>
             </Form.Row>
             <Form.Row>
               <Form.Group as={Col}>
                 <Form.Label>Language</Form.Label>
                 <Form.Control as="select" defaultValue="Choose..." name="language"
-                value={book.language ? languages.filter(l => l.languages_id === book.language)[0].language:''}
-                onChange={e => updateBook('language', languages.filter(l => l.language === e.target.value)[0].languages_id)}>
+                value={book.languages ? languages.filter(l => l.languages_id === book.language)[0].language:''}
+                onChange={e => updateBookProps('language', languages.filter(l => l.language === e.target.value)[0].languages_id)}>
                   <option>Choose...</option>
                   {languages.map((l) => <option>{l.language}</option>)}
                 </Form.Control>
@@ -63,14 +63,14 @@ const AddBookForm = ({ genres, languages, book, updateBook, addBook }) => {
               <Form.Group as={Col}>
                 <Form.Label>Genre</Form.Label> 
                 <Form.Control as="select" defaultValue="Choose..." name="genre"
-                value={book.genre ? genres.filter(g => g.genres_id === book.genre)[0].genre:''}
-                onChange={e => updateBook('genre', genres.filter(g => g.genre === e.target.value)[0].genres_id)}>
+                value={book.genres ? genres.filter(g => g.genres_id === book.genre)[0].genre:''}
+                onChange={e => updateBookProps('genre', genres.filter(g => g.genre === e.target.value)[0].genres_id)}>
                   <option>Choose...</option>
                   {genres.map((g) => <option>{g.genre}</option>)}
                 </Form.Control>
               </Form.Group>
             </Form.Row>
-            <Button variant="primary" onClick={() => addBook()}>
+            <Button variant="primary" onClick={() => updateBook()}>
               Submit
             </Button>
           </Form>
@@ -80,4 +80,4 @@ const AddBookForm = ({ genres, languages, book, updateBook, addBook }) => {
   )
 };
 
-export default AddBookForm;
+export default UpdateBookForm;

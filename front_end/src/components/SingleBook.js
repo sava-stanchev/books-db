@@ -2,6 +2,7 @@ import {useEffect, useState} from 'react';
 import StarRating from './StarRating';
 import {useHistory} from "react-router-dom";
 import {Button, Col, Row} from "react-bootstrap";
+import UpdateBook from './UpdateBook';
 
 const SingleBook = props => {
   const [bookData, setBookData] = useState(null);
@@ -91,6 +92,10 @@ const SingleBook = props => {
     .catch((error) => setError(error.message));
   };
 
+  const updateBook = () => {
+    return (<><UpdateBook bookData={bookData}/></>);
+  }
+
   const showError = () => {
     if (error) {
       return <h4><i>An error has occured: </i>{error}</h4>
@@ -153,7 +158,7 @@ const SingleBook = props => {
               <br/>
               <p>__________________________</p>
               <br/>
-              <Button variant="primary">
+              <Button variant="primary" onClick={() => history.push(`/books/${bookData.books_id}/update`)}>
                 Update Book
               </Button>
               <br/>

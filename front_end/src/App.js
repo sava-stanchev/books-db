@@ -13,6 +13,7 @@ import AuthContext, { getUser } from './providers/authContext';
 import GuardedRoute from './hof/GuardedRoute';
 import AddBook from './components/AddBook';
 import AddReview from './components/AddReview';
+import UpdateBook from './components/UpdateBook';
 
 const App = () => {
 
@@ -31,6 +32,7 @@ const App = () => {
               <GuardedRoute path="/books" exact component={Books} isLoggedIn={authValue.isLoggedIn}/>
               <GuardedRoute path="/books/create" exact component={AddBook} isLoggedIn={authValue.isLoggedIn}/>
               <GuardedRoute path="/books/:id" exact component={SingleBook} isLoggedIn={authValue.isLoggedIn}/>
+              <GuardedRoute path="/books/:id/update" exact component={UpdateBook} isLoggedIn={authValue.isLoggedIn}/>
               <GuardedRoute path="/books/:id/create-review" exact component={AddReview} isLoggedIn={authValue.isLoggedIn}/>
               <GuardedRoute path="/reviews" exact component={Reviews} isLoggedIn={authValue.isLoggedIn}/>
               <GuardedRoute path="/reviews/:reviews_id" exact component={SingleReview} isLoggedIn={authValue.isLoggedIn}/>
