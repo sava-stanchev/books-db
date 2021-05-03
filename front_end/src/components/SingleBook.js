@@ -32,7 +32,7 @@ const SingleBook = props => {
       },
     })
     .then((res) => res.json())
-    .then(() => history.push(`/books`))
+    .then(() => history.go(0))
     .catch((error) => setError(error.message));
   };
 
@@ -45,7 +45,7 @@ const SingleBook = props => {
       },
     })
     .then((res) => res.json())
-    .then(() => history.push(`/books`))
+    .then(() => history.go(0))
     .catch((error) => setError(error.message));
   };
 
@@ -131,9 +131,9 @@ const SingleBook = props => {
                 ? 
                 <>
                   <p>Book is already borrowed!</p>
-                    <Button variant="primary" onClick={() => returnBook()}>
-                      Return!
-                    </Button>
+                  <Button variant="primary" onClick={() => returnBook()}>
+                    Return!
+                  </Button>
                 </>
                 :
                 <>
