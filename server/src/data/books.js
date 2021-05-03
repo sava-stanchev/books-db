@@ -46,7 +46,7 @@ const getBookById = async (bookId) => {
   // const sql = `
   //     SELECT b.books_id, b.title, b.author, b.age_recommendation,
   //           b.isbn, b.publishing_year, b.print_length, b.posters,
-  //           l.language, g.genre, b.is_deleted, b.is_borrowed, r.rating, 
+  //           l.language, g.genre, b.is_deleted, b.is_borrowed, r.rating,
   //           br.users_id, (SELECT ROUND(AVG(r.rating))
   //                         FROM books AS b
   //                         JOIN books_ratings AS br

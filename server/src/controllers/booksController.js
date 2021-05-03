@@ -45,9 +45,7 @@ booksController
     .get('/:id', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
       const bookId = +req.params.id;
       try {
-        const a =await booksData.getBookById(bookId);
-        console.log(a);
-        res.json(a);
+        res.json(await booksData.getBookById(bookId));
       } catch (error) {
         return res.status(404).json({
           error: error.message,
@@ -57,8 +55,7 @@ booksController
 
     /** Borrow a book */
     .post('/:id', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
-      console.log('borrow book');
-      const {id: bookId} = req.params;
+      const bookId = req.params.id;
       const userId = req.user.user_id;
       try {
         const theBook = await booksData.getBookById(+bookId);
@@ -124,7 +121,6 @@ booksController
 
     /** Read book reviews */
     .get('/:id/reviews', authMiddleware, loggedUserGuard, async (req, res) => {
-      console.log('44444444');
       const {id} = req.params;
 
       try {
