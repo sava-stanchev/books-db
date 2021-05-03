@@ -46,8 +46,13 @@ booksController
 
     /** Retrieve one book */
     .get('/:id', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
+      console.log('one book');
+      const userId = req.user.user_id;
+      const bookId = +req.params.id;
       try {
-        res.json(await booksData.getBookById(+req.params.id));
+        const a =await booksData.getBookById(bookId);
+        console.log(a);
+        res.json(a);
       } catch (error) {
         return res.status(404).json({
           error: error.message,
@@ -57,27 +62,28 @@ booksController
 
     /** Borrow a book */
     .post('/:id', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
-      const {id} = req.params;
+      console.log('borrow book');
+      const {id: bookId} = req.params;
       const userId = req.user.user_id;
       try {
-        const theBook = await booksData.getBookById(+id);
+        const theBook = await booksData.getBookById(+bookId);
         if (!theBook) {
           return res.status(404).json({
-            msg: `Book with id ${id} was not found!`,
+            msg: `Book with id ${bookId} was not found!`,
           });
         }
 
-        const bookBorrowed = await booksData.isBookBorrowed(+id, userId);
+        const bookBorrowed = await booksData.isBookBorrowed(+bookId, userId);
         if (bookBorrowed) {
           return res.json({
             msg: `Book has already been borrowed!`,
           });
         }
 
-        const setRecord = await booksData.setBorrowRecords(id, userId);
-        const setIsBorrowed = await booksData.borrowBook(id);
+        const setRecord = await booksData.setBorrowRecords(bookId, userId);
+        const setIsBorrowed = await booksData.borrowBook(bookId);
 
-        return res.status(200).send(await booksData.getBookByIdForUser(+id));
+        return res.status(200).send(await booksData.getBookByIdForUser(+bookId));
       } catch (error) {
         return res.status(400).json({
           error: error.message,
@@ -87,6 +93,7 @@ booksController
 
     /** Return a book */
     .patch('/:id', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
+      console.log('return book');
       const bookId = req.params.id;
       const userId = req.user.user_id;
       try {
@@ -209,7 +216,9 @@ booksController
             massage: 'Book not found!',
           });
         }
-        const checkForRating = await booksRatingData.getBookRatingByUser(bookId, userId);
+        const setBookRating = await booksRatingData.setRatingToBook(userId, bookId, rating);
+        console.log(set);
+
         return res.status(200).send(await booksData.bookAverageRating(bookId));
       } catch (error) {
         return res.status(500).json({
