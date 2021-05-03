@@ -28,9 +28,6 @@ const SingleBook = props => {
     setBookData({...bookData, 'is_borrowed': 1});
   }
 
-  const updateDeleteBook = () => {
-    setBookData({...bookData, 'is_deleted': 1});
-  }
   // console.log(bookData);
 
   // borrow
@@ -76,23 +73,18 @@ const SingleBook = props => {
   //   })
   // }, [id]);
 
-
-
-  console.log(bookData);
-  // delete
-  // useEffect(() => {
-  //   if (bookData.is_deleted === 1) { 
-  //   fetch(`http://localhost:5555/books/${id}`, {
-  //     method: 'DELETE',
-  //     headers: {
-  //       'content-type': 'application/json',
-  //       'authorization': `bearer ${localStorage.getItem('token')}`
-  //     },
-  //   })
-  //   .then((res) => res.json())
-  //   .catch((error) => setError(error.message))
-  //  }
-  // }, [bookData]);
+  const deleteBook = () => {
+    fetch(`http://localhost:5555/books/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'content-type': 'application/json',
+        'authorization': `bearer ${localStorage.getItem('token')}`
+      },
+    })
+    .then((res) => res.json())
+    .catch((error) => setError(error.message))
+    .then(() => history.push(`/books`));
+  };
 
   const showError = () => {
     if (error) {
@@ -154,12 +146,12 @@ const SingleBook = props => {
               <br/>
               <p>__________________________</p>
               <br/>
-              <Button variant="warning">
+              <Button variant="primary">
                 Update Book
               </Button>
               <br/>
               <br/>
-              <Button variant="danger" onClick={() => updateDeleteBook()}>
+              <Button variant="danger" onClick={() => deleteBook()}>
                 Delete Book
               </Button>
             </Col>
