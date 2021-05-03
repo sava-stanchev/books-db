@@ -8,7 +8,6 @@ const SingleBook = props => {
   //const [bookRating, setBookRating] = useState(null);
   const [error, setError] = useState(null);
   const {id} = props.match.params;
-  //const [borrow, setBorrow] = useState(null);
   //const [hasReview, setHasReview] = useState(null);
 
   useEffect(() => {
@@ -24,25 +23,17 @@ const SingleBook = props => {
       .catch((error) => setError(error.message))
   }, [id]);
 
-  const updateBorrowed = () => {
-    setBookData({...bookData, 'is_borrowed': 1});
-  }
-
-  // console.log(bookData);
-
-  // borrow
-  // useEffect(() => {
-  //   fetch(`http://localhost:5555/books/${id}`, { 
-  //     method: 'POST',
-  //     headers: {
-  //       'content-type': 'application/json',
-  //       'authorization': `bearer ${localStorage.getItem('token')}`
-  //     },
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => setBookData(data[0]))
-  //     .catch((error) => setError(error.message))
-  // }, [bookData]);
+  const borrowBook = () => {
+    fetch(`http://localhost:5555/books/${id}`, { 
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'authorization': `bearer ${localStorage.getItem('token')}`
+      },
+    })
+    .then((res) => res.json())
+    .catch((error) => setError(error.message));
+  };
 
   // rating
   // useEffect(() => {
@@ -98,10 +89,6 @@ const SingleBook = props => {
     return <div className="Loader"></div>;
   }
 
-  // if  (bookData.is_deleted === null) {
-  //   return <div className="Loader"></div>;
-  // }
-
   return(
     <div id="book">
       {showError()}
@@ -126,16 +113,10 @@ const SingleBook = props => {
             </Col>
             <Col>
               <br/>
-              {bookData.is_borrowed
-                ?<p>Book is already borrowed!</p>
-                :
-                <>
-                  <p>Would you like to borrow the book?</p>
-                  <Button variant="primary" onClick={() => updateBorrowed()}>
-                    Borrow!
-                  </Button>
-                </>
-              }
+              <p>Would you like to borrow the book?</p>
+              <Button variant="primary" onClick={() => borrowBook()}>
+                Borrow!
+              </Button>
               <br/>
               <br/>
               <p>Would you like to leave a review?</p>
