@@ -21,10 +21,7 @@ booksController
 
     /** Retrieve all books (with pagination, filtering, sorting) */
     .get('/', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
-      const {
-        search,
-        sort,
-      } = req.query;
+      const {search, sort} = req.query;
       try {
         if (sort) {
           const theBooksSortedByYear = await booksData.sortBooksByYear(sort);
@@ -46,8 +43,6 @@ booksController
 
     /** Retrieve one book */
     .get('/:id', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
-      console.log('one book');
-      const userId = req.user.user_id;
       const bookId = +req.params.id;
       try {
         const a =await booksData.getBookById(bookId);
@@ -93,7 +88,6 @@ booksController
 
     /** Return a book */
     .patch('/:id', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
-      console.log('return book');
       const bookId = req.params.id;
       const userId = req.user.user_id;
       try {
@@ -118,7 +112,7 @@ booksController
           });
         }
 
-        const setIsBorrowed = await booksData.returnBook(bookId);
+        await booksData.returnBook(bookId);
 
         return res.status(200).json(await booksData.getBookByIdForUser(bookId));
       } catch (error) {

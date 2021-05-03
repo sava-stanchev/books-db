@@ -98,10 +98,6 @@ const SingleBook = props => {
     .catch((error) => setError(error.message));
   };
 
-  const updateBook = () => {
-    return (<><UpdateBook bookData={bookData}/></>);
-  }
-
   const showError = () => {
     if (error) {
       return <h4><i>An error has occured: </i>{error}</h4>
