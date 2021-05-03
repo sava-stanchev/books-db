@@ -32,6 +32,20 @@ const SingleBook = props => {
       },
     })
     .then((res) => res.json())
+    .then(() => history.push(`/books`))
+    .catch((error) => setError(error.message));
+  };
+
+  const returnBook = () => {
+    fetch(`http://localhost:5555/books/${id}`, { 
+      method: 'PATCH',
+      headers: {
+        'content-type': 'application/json',
+        'authorization': `bearer ${localStorage.getItem('token')}`
+      },
+    })
+    .then((res) => res.json())
+    .then(() => history.push(`/books`))
     .catch((error) => setError(error.message));
   };
 
@@ -73,8 +87,8 @@ const SingleBook = props => {
       },
     })
     .then((res) => res.json())
-    .catch((error) => setError(error.message))
-    .then(() => history.push(`/books`));
+    .then(() => history.push(`/books`))
+    .catch((error) => setError(error.message));
   };
 
   const showError = () => {
@@ -113,10 +127,22 @@ const SingleBook = props => {
             </Col>
             <Col>
               <br/>
-              <p>Would you like to borrow the book?</p>
-              <Button variant="primary" onClick={() => borrowBook()}>
-                Borrow!
-              </Button>
+              {bookData.is_borrowed
+                ? 
+                <>
+                  <p>Book is already borrowed!</p>
+                    <Button variant="primary" onClick={() => returnBook()}>
+                      Return!
+                    </Button>
+                </>
+                :
+                <>
+                  <p>Would you like to borrow the book?</p>
+                  <Button variant="primary" onClick={() => borrowBook()}>
+                    Borrow!
+                  </Button>
+                </>
+              }
               <br/>
               <br/>
               <p>Would you like to leave a review?</p>
