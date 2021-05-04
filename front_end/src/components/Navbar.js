@@ -1,8 +1,6 @@
-import { useContext } from 'react';
+import {useContext} from 'react';
 import {Navbar, Nav} from 'react-bootstrap';
-import {
-  Link
-} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import AuthContext from '../providers/authContext';
 
 const NavBar = () => {
@@ -29,9 +27,6 @@ const NavBar = () => {
             </Link>
             <Link to="/reviews">
               <Nav.Link href="#reviews">Reviews</Nav.Link>
-            </Link>
-            <Link to="/about">
-              <Nav.Link href="#about">About</Nav.Link>
             </Link>
           </Nav>
           <Nav>

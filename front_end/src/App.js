@@ -1,7 +1,6 @@
 import './App.css';
 import NavBar from "./components/Navbar";
 import Books from "./components/Books";
-import About from './components/About';
 import Login from './components/Login';
 import Register from './components/Register';
 import SingleBook from './components/SingleBook';
@@ -36,7 +35,6 @@ const App = () => {
               <GuardedRoute path="/books/:id/create-review" exact component={AddReview} isLoggedIn={authValue.isLoggedIn}/>
               <GuardedRoute path="/reviews" exact component={Reviews} isLoggedIn={authValue.isLoggedIn}/>
               <GuardedRoute path="/reviews/:reviews_id" exact component={SingleReview} isLoggedIn={authValue.isLoggedIn}/>
-              <Route path="/about" component={About}/>
               <Route path="/login" component={Login}/>       
               <Route path="/register" component={Register}/>
             </Switch>
