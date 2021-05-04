@@ -7,14 +7,6 @@ const getAllBooks = async () => {
   `);
 };
 
-const searchBooksByTitle = async (title) => {
-  return await pool.query(`
-    SELECT * FROM books b
-    WHERE b.is_deleted != 1 AND b.title
-    LIKE '%${pool.escape(title).replace(/'/g, '')}%'
-  `);
-};
-
 const sortBooksByYear = async (sort) => {
   if (sort === 'year_asc') {
     return await pool.query(`
@@ -229,7 +221,6 @@ const bookAverageRating = async (id) => {
 
 export default {
   getAllBooks,
-  searchBooksByTitle,
   sortBooksByYear,
   getBookById,
   borrowBook,

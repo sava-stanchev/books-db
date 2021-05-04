@@ -19,17 +19,13 @@ const booksController = express.Router();
 
 booksController
 
-    /** Retrieve all books (with pagination, filtering, sorting) */
+    /** Retrieve all books */
     .get('/', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
-      const {search, sort} = req.query;
+      const {sort} = req.query;
       try {
         if (sort) {
           const theBooksSortedByYear = await booksData.sortBooksByYear(sort);
           return res.json(theBooksSortedByYear);
-        }
-        if (search) {
-          const theBooksFoundByTitle = await booksData.searchBooksByTitle(search);
-          return res.json(theBooksFoundByTitle);
         }
 
         const theBooks = await booksData.getAllBooks();
@@ -148,7 +144,6 @@ booksController
 
     /** Create book review */
     .post('/:id/create-review', transformBody(reviewCreateValidator), validateBody('review', reviewCreateValidator), authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
-      console.log('33333333333333');
       const bookId = +req.params.id;
       const userId = +req.user.user_id;
       const book = await booksData.getBookById(+bookId);
@@ -269,7 +264,6 @@ booksController
 
     /** Read any book (as admin) */
     .get('/:id', authMiddleware, loggedUserGuard, roleMiddleware(userRole.Admin), async (req, res) => {
-      console.log('11');
       try {
         res.json(await booksData.getAnyBookById(+req.params.id));
       } catch (error) {
@@ -305,7 +299,6 @@ booksController
 
     /** Delete any book (as admin) */
     .delete('/:id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
-      console.log('8888');
       try {
         await booksData.deleteBook(+req.params.id);
         res.json({
@@ -319,4 +312,3 @@ booksController
     });
 
 export default booksController;
-
