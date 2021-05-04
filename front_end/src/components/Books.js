@@ -9,6 +9,8 @@ const Books = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [pageNumber, setPageNumber] = useState(0);
+  const [search, setSearch] = useState('');
+  const [filteredBooks, setFilteredBooks] = useState([]);
 
   const booksPerPage = 8;
   const pagesVisited = pageNumber * booksPerPage;
@@ -28,6 +30,16 @@ const Books = () => {
       .finally(() => setLoading(false));
   }, []);
 
+  useEffect(() => {
+    setFilteredBooks(
+      books.filter(book => {
+        return book.title.toLowerCase().includes(search.toLowerCase())
+      })
+    )
+  }, [search, books]);
+
+  const foundBooks = filteredBooks.slice();
+
   const showError = () => {
     if (error) {
       return <h4><i>An error has occured: </i>{error}</h4>
@@ -44,7 +56,7 @@ const Books = () => {
 
   const history = useHistory();
 
-  const displayBooks = books
+  const displayBooks = foundBooks
   .slice(pagesVisited, pagesVisited + booksPerPage)
   .map((book) => {
     return (
@@ -62,7 +74,7 @@ const Books = () => {
     );
   });
 
-  const pageCount = Math.ceil(books.length / booksPerPage);
+  const pageCount = Math.ceil(foundBooks.length / booksPerPage);
   const changePage = ({selected}) => {
     setPageNumber(selected);
   };
@@ -83,13 +95,12 @@ const Books = () => {
           <table className = "elementsContainer">
             <tbody><tr>
               <td>
-                <input type="text" placeholder="Search"
-                className="search"/>
+                <input type="text" placeholder="search by title" className="search" onChange={e => setSearch(e.target.value)}/>
               </td>
               <td>
-                <a href="#">
+                <>
                   <i className="material-icons">search</i>
-                </a>
+                </>
               </td>
             </tr></tbody>
           </table>

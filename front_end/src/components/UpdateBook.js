@@ -7,7 +7,7 @@ const UpdateBook = () => {
   
   const history = useHistory();
   const routeChange = () =>{ 
-    const path = `/${bookId}`; 
+    const path = `/books/${bookId}`; 
     history.push(path);
   };
 
@@ -65,7 +65,7 @@ const UpdateBook = () => {
 
   
   const updateBook = () => {
-    fetch(`http://localhost:5555/books/${history.location.pathname.split('/')[2]}/update`, {
+    fetch(`http://localhost:5555/books/${bookId}/update`, {
       method: 'PUT',
       headers: {
         'content-type': 'application/json',
