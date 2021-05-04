@@ -61,7 +61,7 @@ const Books = () => {
   .map((book) => {
     return (
       <div id='BookContainer' className='mouse_over'>
-      <img src={book.posters} alt={book.title}/>
+      <img src={book.posters} alt={book.title} style={{maxHeight: 350}}/>
       <h2>
         {book.title}
         <br/>
