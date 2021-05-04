@@ -62,12 +62,14 @@ const getBookById = async (bookId) => {
   return result;
 };
 
-const getBookByIdForUser = async (id) => {
+const getBookByIdForUpdate = async (id) => {
   const sql = `
-  SELECT title, author, genre, age_recommendation, isbn, publishing_year, language, print_length FROM books AS b
+  SELECT b.title, b.author,b.age_recommendation, b.genre, b.isbn, b.publishing_year, b.language, b.print_length
+  FROM books AS b
   WHERE b.is_deleted != 1 AND b.books_id = ?
 `;
   const result = await pool.query(sql, [id]);
+
   return result[0];
 };
 
@@ -141,7 +143,6 @@ const updateBookSQL = async (book) => {
 };
 
 const createBook = async (book, user) => {
-  console.log('+++++++++++');
   const {
     title,
     author,
@@ -229,10 +230,10 @@ export default {
   deleteBook,
   returnBook,
   isBookBorrowedAndReturned,
-  getBookByIdForUser,
   isBookBorrowed,
   getAnyBookById,
   setReturnRecords,
   setBorrowRecords,
   bookAverageRating,
+  getBookByIdForUpdate,
 };

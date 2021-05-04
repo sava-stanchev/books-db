@@ -54,7 +54,7 @@ const UpdateBookForm = ({ genres, languages, book, updateBookProps, updateBook }
               <Form.Group as={Col}>
                 <Form.Label>Language</Form.Label>
                 <Form.Control as="select" defaultValue="Choose..." name="language"
-                value={book.languages ? languages.filter(l => l.languages_id === book.language)[0].language:''}
+                value={book.languages ? languages.filter(l => l.languages_id === book.languages)[0].languages:''}
                 onChange={e => updateBookProps('language', languages.filter(l => l.language === e.target.value)[0].languages_id)}>
                   <option>{!book.language ? `Choose...` : book.language}</option>
                   {languages.map((l) => <option>{l.language}</option>)}

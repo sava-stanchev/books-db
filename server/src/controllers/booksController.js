@@ -71,7 +71,7 @@ booksController
         const setRecord = await booksData.setBorrowRecords(bookId, userId);
         const setIsBorrowed = await booksData.borrowBook(bookId);
 
-        return res.status(200).send(await booksData.getBookByIdForUser(+bookId));
+        return res.status(200).send(await booksData.getBookById(+bookId));
       } catch (error) {
         return res.status(400).json({
           error: error.message,
@@ -107,7 +107,7 @@ booksController
 
         await booksData.returnBook(bookId);
 
-        return res.status(200).json(await booksData.getBookByIdForUser(bookId));
+        return res.status(200).json(await booksData.getBookById(bookId));
       } catch (error) {
         return res.status(400).json({
           error: error.message,
