@@ -13,6 +13,7 @@ import GuardedRoute from './hof/GuardedRoute';
 import AddBook from './components/AddBook';
 import AddReview from './components/AddReview';
 import UpdateBook from './components/UpdateBook';
+import Users from './components/Users';
 
 const App = () => {
 
@@ -35,6 +36,7 @@ const App = () => {
               <GuardedRoute path="/books/:id/create-review" exact component={AddReview} isLoggedIn={authValue.isLoggedIn}/>
               <GuardedRoute path="/reviews" exact component={Reviews} isLoggedIn={authValue.isLoggedIn}/>
               <GuardedRoute path="/reviews/:reviews_id" exact component={SingleReview} isLoggedIn={authValue.isLoggedIn}/>
+              <GuardedRoute path="/users" exact component={Users} isLoggedIn={authValue.isLoggedIn}/>
               <Route path="/login" component={Login}/>       
               <Route path="/register" component={Register}/>
             </Switch>
