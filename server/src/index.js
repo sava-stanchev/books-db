@@ -295,7 +295,29 @@ app.get('/admin/users', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin
 });
 
 /** Return a user (as admin) */
-app.put('/admin/users/:id', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
+app.put('/admin/users/:id', authMiddleware, loggedUserGuard, async (req, res) => {
+  console.log('admin user by id');
+  try {
+    const user = await usersData.getUserById(req.params.id);
+    if (!user) {
+      res.status(400).json({
+        message: 'User not found!',
+      });
+    }
+
+    await usersData.returnUser(user.users_id);
+    res.status(200).send(await usersData.getUserById(req.params.id));
+  } catch (error) {
+    return res.status(400).json({
+      error: error.message,
+    });
+  }
+});
+
+/** Return a user */
+app.get('/users/:id', authMiddleware, loggedUserGuard, async (req, res) => {
+  console.log('index get user');
+  console.log(req.params.id);
   try {
     const user = await usersData.getUserById(req.params.id);
     if (!user) {

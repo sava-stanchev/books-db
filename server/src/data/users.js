@@ -59,7 +59,17 @@ const liftBan = async (id) => {
   await pool.query(`UPDATE users u SET u.ban_date = NULL WHERE u.users_id = ?`, [id]);
 };
 
-const getUserById = async (id) => (await pool.query('SELECT * FROM users AS u WHERE u.users_id = ?', [id]))[0];
+const getUserById = async (id) => {
+  console.log('get user by id');
+  const sql = `
+  SELECT u.users_id, u.user_name, u.first_name, u.last_name, u.user_age
+    , u.e_mail, u.is_admin, u.is_deleted, u.ban_date, g.gender FROM users AS u
+    JOIN genders AS g ON u.gender = g.genders_id
+    WHERE u.users_id = ?
+  `;
+  const result = await pool.query(sql, [id]);
+  return result[0];
+};
 
 const logoutUser = async (token) => {
   return await pool.query('INSERT INTO tokens (token) VALUES (?)', [token]);
