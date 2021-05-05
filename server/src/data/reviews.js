@@ -12,9 +12,11 @@ const getAllReviews = async () => {
 
 const getReviewsForBook = async (id) => {
   const sql = `
-  SELECT r.content, r.date_created FROM reviews AS r
+  SELECT r.content, r.date_created, u.user_name FROM reviews AS r
   JOIN books AS b
   ON b.books_id = r.books_id
+  JOIN users AS u
+  ON u.users_id = r.users_id
   WHERE b.is_deleted != 1 AND b.books_id = ?
   `;
   const result = await pool.query(sql, [id]);
