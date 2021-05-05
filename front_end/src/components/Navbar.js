@@ -29,18 +29,31 @@ console.log(auth);
               <Nav.Link href="#reviews">Reviews</Nav.Link>
             </Link>
             {
-            auth.isLoggedIn && auth.user.is_admin
+            auth.isLoggedIn
               ?
-              <Link to="/users">
-                <Nav.Link href="#users">Users</Nav.Link>
-              </Link>
+              auth.user.is_admin
+              ?
+              <>
+                <Link to="/users">
+                  <Nav.Link href="#users">Users</Nav.Link>
+                </Link>
+                <Nav  className="mr-auto">
+                  <p>Hi {auth.user.user_name}</p>
+                </Nav>
+              </>
               :
               <>
-              </>}
+                <Link to="/users/:id">
+                  <Nav.Link href="#user">User info</Nav.Link>
+                </Link>
+                <Nav  className="mr-auto">
+                  <p>Hi {auth.user.user_name}</p>
+                </Nav>
+              </>
+              :
+              <></>}
           </Nav>
-          <Nav  className="mr-auto">
-            <p>Hi {auth.user.user_name}</p>
-          </Nav>
+          
           <Nav>
             {auth.isLoggedIn
               ?
