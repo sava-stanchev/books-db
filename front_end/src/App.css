@@ -148,7 +148,7 @@
   grid-area: img;
   margin: 1em;
   width: 100%;
-  max-width: 350px;
+  max-width: 400px;
 }
 
 #book #book-detailed #book-info {
@@ -292,4 +292,31 @@ input[type="radio"] {
 .star {
   cursor: pointer;
   transition: color 200ms;
+}
+
+.review-list {
+  --spacer: 1rem;
+  background: white;
+}
+
+.review-header {
+  padding: var(--spacer);
+  background: linear-gradient(
+    90deg,
+    rgba(93, 12, 255, 1) 0%,
+    rgba(155, 0, 250, 1) 100%
+  );
+  color: white;
+}
+
+.list-title {
+  margin: 0;
+}
+
+.review-body {
+  padding: var(--spacer);
+}
+
+.review {
+  position: relative;
 }

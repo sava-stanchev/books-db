@@ -311,4 +311,15 @@ booksController
       }
     });
 
+// .get('/:id/reviews', async (req, res) => {
+//   try {
+//     const review = await reviewsData.getReviewsForBook(+req.params.id);
+//     res.send(review);
+//   } catch (error) {
+//     return res.status(400).json({
+//       error: error.message,
+//     });
+//   }
+// });
+
 export default booksController;

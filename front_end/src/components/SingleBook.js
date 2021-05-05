@@ -2,6 +2,7 @@ import {useEffect, useState} from 'react';
 import StarRating from './StarRating';
 import {useHistory} from "react-router-dom";
 import {Button, Col, Row} from "react-bootstrap";
+import SingleBookReviews from './SingleBookReviews';
 
 const SingleBook = props => {
   const [bookData, setBookData] = useState(null);
@@ -86,6 +87,22 @@ const SingleBook = props => {
   return(
     <div id="book">
       {showError()}
+      <Row>
+        <Col>
+          <div className="btnContainer">
+            <Button variant="primary" onClick={() => history.push(`/books/${bookData.books_id}/update`)}>
+              Update Book
+            </Button>
+          </div>
+        </Col>
+        <Col>
+          <div className="btnContainer">
+            <Button variant="danger" onClick={() => deleteBook()}>
+              Delete Book
+            </Button>
+          </div>
+        </Col>
+      </Row>
       <div className="content">
         <div id="book-detailed">
           <Row>
@@ -130,17 +147,8 @@ const SingleBook = props => {
                 Create Review
               </Button>
               <br/>
-              <br/>
               <p>__________________________</p>
-              <br/>
-              <Button variant="primary" onClick={() => history.push(`/books/${bookData.books_id}/update`)}>
-                Update Book
-              </Button>
-              <br/>
-              <br/>
-              <Button variant="danger" onClick={() => deleteBook()}>
-                Delete Book
-              </Button>
+              <SingleBookReviews id={id} />
             </Col>
           </Row>
         </div>
