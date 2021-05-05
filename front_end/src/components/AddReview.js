@@ -6,7 +6,7 @@ import AddReviewForm from './AddReviewForm';
 const AddReview = () => {
   const history = useHistory();
   const routeChange = () =>{ 
-    const path = `/reviews`; 
+    const path = `/books/${bookId}`; 
     history.push(path);
   };
 

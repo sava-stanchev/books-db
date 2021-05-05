@@ -37,8 +37,9 @@ const SingleBookReviews = ({id}) => {
             return (
               <>
                 <div className="review">
-                  <p>{review.content}</p>
-                  <p>{review.date_created}</p>
+                  <h6>{review.content}</h6>
+                  <p>by <i>{review.user_name}</i> on {new Date(review.date_created).toLocaleDateString("en-US")}</p>
+                  <p>------------------</p>
                 </div>
               </>
             )
