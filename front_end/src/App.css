@@ -315,6 +315,9 @@ input[type="radio"] {
 
 .review-body {
   padding: var(--spacer);
+  height: 300px;
+  max-height: 300px;
+  overflow-y: scroll;
 }
 
 .review {

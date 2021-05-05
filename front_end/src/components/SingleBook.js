@@ -87,22 +87,6 @@ const SingleBook = props => {
   return(
     <div id="book">
       {showError()}
-      <Row>
-        <Col>
-          <div className="btnContainer">
-            <Button variant="primary" onClick={() => history.push(`/books/${bookData.books_id}/update`)}>
-              Update Book
-            </Button>
-          </div>
-        </Col>
-        <Col>
-          <div className="btnContainer">
-            <Button variant="danger" onClick={() => deleteBook()}>
-              Delete Book
-            </Button>
-          </div>
-        </Col>
-      </Row>
       <div className="content">
         <div id="book-detailed">
           <Row>
@@ -120,6 +104,12 @@ const SingleBook = props => {
                 <p>Print Length: {bookData.print_length}</p>
                 <p>ISBN: {bookData.isbn}</p>
                 <p>Book Rating: <StarRating bookData={bookData}/></p>
+                <Button variant="primary" onClick={() => history.push(`/books/${bookData.books_id}/update`)}>
+                  Update Book
+                </Button>
+                <Button variant="danger" onClick={() => deleteBook()}>
+                  Delete Book
+                </Button>
               </div>
             </Col>
             <Col>

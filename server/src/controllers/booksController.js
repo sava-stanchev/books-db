@@ -117,16 +117,8 @@ booksController
 
     /** Read book reviews */
     .get('/:id/reviews', authMiddleware, loggedUserGuard, async (req, res) => {
-      const {id} = req.params;
-
       try {
-        const theBook = await booksData.getBookById(+id);
-        if (!theBook) {
-          return res.status(404).json({
-            msg: `Book with id ${id} was not found!`,
-          });
-        }
-
+        const {id} = req.params;
         const theReviews = await reviewsData.getReviewsForBook(+id);
         if (!theReviews) {
           return res.json({
