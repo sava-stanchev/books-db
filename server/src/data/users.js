@@ -60,7 +60,6 @@ const liftBan = async (id) => {
 };
 
 const getUserById = async (id) => {
-  console.log('get user by id');
   const sql = `
   SELECT u.users_id, u.user_name, u.first_name, u.last_name, u.user_age
     , u.e_mail, u.is_admin, u.is_deleted, u.ban_date, g.gender FROM users AS u

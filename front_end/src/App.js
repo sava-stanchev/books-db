@@ -5,8 +5,8 @@ import Login from './components/Login';
 import Register from './components/Register';
 import SingleBook from './components/SingleBook';
 import {BrowserRouter, Switch, Route, Redirect} from "react-router-dom";
-import Reviews from './components/Reviews';
-import SingleReview from './components/SingleReview';
+// import Reviews from './components/Reviews';
+// import SingleReview from './components/SingleReview';
 import { useState } from 'react';
 import AuthContext, { getUser } from './providers/authContext';
 import GuardedRoute from './hof/GuardedRoute';
@@ -15,6 +15,7 @@ import AddReview from './components/AddReview';
 import UpdateBook from './components/UpdateBook';
 import Users from './components/Users';
 import SingleUser from './components/SingleUser'
+import UpdateReview from './components/UpdateReview';
 
 const App = () => {
 
@@ -35,8 +36,9 @@ const App = () => {
               <GuardedRoute path="/books/:id" exact component={SingleBook} isLoggedIn={authValue.isLoggedIn}/>
               <GuardedRoute path="/books/:id/update" exact component={UpdateBook} isLoggedIn={authValue.isLoggedIn}/>
               <GuardedRoute path="/books/:id/create-review" exact component={AddReview} isLoggedIn={authValue.isLoggedIn}/>
-              <GuardedRoute path="/reviews" exact component={Reviews} isLoggedIn={authValue.isLoggedIn}/>
-              <GuardedRoute path="/reviews/:reviews_id" exact component={SingleReview} isLoggedIn={authValue.isLoggedIn}/>
+              <GuardedRoute path="/reviews/:reviewId/update" exact component={UpdateReview} isLoggedIn={authValue.isLoggedIn}/>
+              {/* <GuardedRoute path="/reviews" exact component={Reviews} isLoggedIn={authValue.isLoggedIn}/> */}
+              {/* <GuardedRoute path="/reviews/:reviews_id" exact component={SingleReview} isLoggedIn={authValue.isLoggedIn}/> */}
               <GuardedRoute path="/users" exact component={Users} isLoggedIn={authValue.isLoggedIn}/>
               <GuardedRoute path="/users/:id" exact component={SingleUser} isLoggedIn={authValue.isLoggedIn}/>
               <Route path="/login" component={Login}/>       

@@ -96,7 +96,7 @@ app.delete('/logout', authMiddleware, async (req, res) => {
 });
 
 /** Update book review */
-app.patch('/:id/reviews/:reviewId', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
+app.patch('/reviews/:reviewId/update', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
   const reviewId = req.params.reviewId;
   const updateData = req.body;
 

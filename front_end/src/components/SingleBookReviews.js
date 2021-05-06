@@ -5,6 +5,7 @@ import {Button} from "react-bootstrap";
 const SingleBookReviews = ({id}) => {
   const [reviewsData, setReviewsData] = useState([]);
   const [error, setError] = useState(null);
+
   useEffect(() => {
     fetch(`http://localhost:5555/books/${id}/reviews`, { 
       method: 'GET',
@@ -57,7 +58,7 @@ const SingleBookReviews = ({id}) => {
                   <h6>{review.content}</h6>
                   <p>by <i>{review.user_name}</i> on {new Date(review.date_created).toLocaleDateString("en-US")}</p>
                   <div>
-                    <Button variant="primary">
+                    <Button variant="primary" onClick={() => history.push(`/reviews/${review.reviews_id}/update`)}>
                       Update
                     </Button>
                     <Button variant="danger" onClick={() => deleteReview(review.reviews_id)}>

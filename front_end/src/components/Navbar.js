@@ -25,9 +25,9 @@ const NavBar = () => {
             <Link to="/books">
               <Nav.Link href="#books">Books</Nav.Link>
             </Link>
-            <Link to="/reviews">
+            {/* <Link to="/reviews">
               <Nav.Link href="#reviews">Reviews</Nav.Link>
-            </Link>
+            </Link> */}
             {auth.isLoggedIn
             ?
             <>
