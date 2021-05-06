@@ -6,14 +6,14 @@ import jwtDecode from 'jwt-decode';
 
 const SingleUser = () => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const userId = jwtDecode(localStorage.getItem('token')).users_id;
   console.log('userId');
   console.log(userId);
   
   useEffect(() => {
-    setLoading(true);
+    
     console.log('Hi');
     fetch(`http://localhost:5555/users/${userId}`, {
       method: 'GET',
@@ -23,21 +23,10 @@ const SingleUser = () => {
       },    
     })
     .then(res => res.json())
-    .then(data => console.log(data))
+    .then(data => setUser(data))
     .then(()=>setLoading(false))
     .catch((error) => setError(error.message))
   }, [userId]);
-
-  console.log(user);
-  
-  const Loader = () => <div className="Loader"></div>;
-  
-
-  const showLoader = () => {
-    if (loading) {
-      return <Loader />
-    }
-  }
 
   const showError = () => {
     if (error) {
@@ -46,13 +35,15 @@ const SingleUser = () => {
   }
 
   return(
+    loading?
+    <div className="Loader"></div>
+    :
     <>
       <div>
         {showError()}
-        {showLoader()}
       </div>
-      <p>Hi {user.user_name}</p>
-      {/* <Container>
+    
+    <Container>
       <Row>
         <Col>
           <h1>{user.user_name}`s info</h1>
@@ -91,7 +82,7 @@ const SingleUser = () => {
           </Form>
         </Col>
       </Row>
-    </Container> */}
+    </Container>
 
     </>
   )

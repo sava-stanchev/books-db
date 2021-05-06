@@ -6,9 +6,10 @@ import {Col, Row, Button, Table} from 'react-bootstrap';
 
 const Users = () => {
   const [users, setUsers] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  console.log(loading);
   useEffect(() => {
     setLoading(true);
     fetch('http://localhost:5555/users', {
@@ -20,31 +21,24 @@ const Users = () => {
     })
     .then(res => res.json())
     .then(data => setUsers(data))
-    .then(() => setLoading(false))
+    .then(()=> setLoading(false))
     .catch((error) => setError(error.message))
   }, []);
-
-  console.log(users);
-
-  const Loader = () => <div className="Loader"></div>;
-
-  const showLoader = () => {
-    if (loading) {
-      return <Loader />
-    }
-  }
 
   const showError = () => {
     if (error) {
       return <h4><i>An error has occured: </i>{error}</h4>
     }
   }
-
   return(
+    loading?
     <>
+    <p>Hi</p>
+    </>
+    :    
+    <p>
       <div>
         {showError()}
-        {showLoader()}
       </div>
       <Table>
         <thead>
@@ -88,8 +82,9 @@ const Users = () => {
       <div>
         <p> Users </p>
       </div>
-    </>
-  )
+    </p>
+
+)
 
 };
 
