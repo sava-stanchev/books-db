@@ -18,6 +18,19 @@ const SingleBookReviews = ({id}) => {
       .catch((error) => setError(error.message))
   }, [id]);
 
+  const deleteReview = (reviewId) => {
+    fetch(`http://localhost:5555/reviews/${reviewId}`, {
+      method: 'DELETE',
+      headers: {
+        'content-type': 'application/json',
+        'authorization': `bearer ${localStorage.getItem('token')}`
+      },
+    })
+    .then((res) => res.json())
+    .then(() => history.go(0))
+    .catch((error) => setError(error.message));
+  };
+
   const history = useHistory();
 
   const showError = () => {
@@ -47,7 +60,7 @@ const SingleBookReviews = ({id}) => {
                     <Button variant="primary">
                       Update
                     </Button>
-                    <Button variant="danger">
+                    <Button variant="danger" onClick={() => deleteReview(review.reviews_id)}>
                       Delete
                     </Button>
                   </div>
