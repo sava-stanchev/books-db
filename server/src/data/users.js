@@ -67,6 +67,8 @@ const getUserById = async (id) => {
     WHERE u.users_id = ?
   `;
   const result = await pool.query(sql, [id]);
+  console.log('userById');
+  console.log(result[0]);
   return result[0];
 };
 

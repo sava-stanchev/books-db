@@ -283,7 +283,8 @@ app.delete('/admin/users/:id', authMiddleware, loggedUserGuard, roleAuth(userRol
 });
 
 /** Get all users (as admin) */
-app.get('/admin/users', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
+app.get('/users', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
+  console.log('ger all users');
   try {
     const users = await usersData.getAllUsers();
     res.json(users);
@@ -314,7 +315,7 @@ app.put('/admin/users/:id', authMiddleware, loggedUserGuard, async (req, res) =>
   }
 });
 
-/** Return a user */
+/** get user by id */
 app.get('/users/:id', authMiddleware, loggedUserGuard, async (req, res) => {
   console.log('index get user');
   console.log(req.params.id);
@@ -326,8 +327,8 @@ app.get('/users/:id', authMiddleware, loggedUserGuard, async (req, res) => {
       });
     }
 
-    await usersData.returnUser(user.users_id);
-    res.status(200).send(await usersData.getUserById(req.params.id));
+    console.log(user);
+    res.status(200).send(user);
   } catch (error) {
     return res.status(400).json({
       error: error.message,

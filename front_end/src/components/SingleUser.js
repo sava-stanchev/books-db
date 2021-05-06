@@ -23,10 +23,12 @@ const SingleUser = () => {
       },    
     })
     .then(res => res.json())
-    .then(data => setUser(data))
+    .then(data => console.log(data))
     .then(()=>setLoading(false))
     .catch((error) => setError(error.message))
   }, [userId]);
+
+  console.log(user);
   
   const Loader = () => <div className="Loader"></div>;
   
