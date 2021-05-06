@@ -1,4 +1,6 @@
 import {useEffect, useState} from 'react';
+import {useHistory} from "react-router-dom";
+import {Button} from "react-bootstrap";
 
 const SingleBookReviews = ({id}) => {
   const [reviewsData, setReviewsData] = useState([]);
@@ -15,6 +17,8 @@ const SingleBookReviews = ({id}) => {
       .then((data) => setReviewsData(data))
       .catch((error) => setError(error.message))
   }, [id]);
+
+  const history = useHistory();
 
   const showError = () => {
     if (error) {
@@ -39,6 +43,14 @@ const SingleBookReviews = ({id}) => {
                 <div className="review">
                   <h6>{review.content}</h6>
                   <p>by <i>{review.user_name}</i> on {new Date(review.date_created).toLocaleDateString("en-US")}</p>
+                  <div>
+                    <Button variant="primary">
+                      Update
+                    </Button>
+                    <Button variant="danger">
+                      Delete
+                    </Button>
+                  </div>
                   <p>------------------</p>
                 </div>
               </>

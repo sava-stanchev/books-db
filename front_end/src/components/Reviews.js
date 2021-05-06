@@ -1,6 +1,4 @@
-// import PropTypes from 'prop-types';
 import {useEffect, useState} from 'react';
-// import {Button} from "react-bootstrap";
 import {useHistory} from "react-router-dom";
 
 const Reviews = () => {
