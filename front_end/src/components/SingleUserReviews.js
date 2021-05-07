@@ -3,7 +3,6 @@ import {useHistory} from "react-router-dom";
 import {Button} from "react-bootstrap";
 import {FaTrashAlt} from "react-icons/fa";
 import {FaEdit} from "react-icons/fa";
-import {FaThumbsUp} from "react-icons/fa";
 
 const SingleUserReviews = ({userId}) => {
   const [reviewsData, setReviewsData] = useState([]);
