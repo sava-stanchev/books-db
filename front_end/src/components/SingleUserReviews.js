@@ -48,32 +48,33 @@ const SingleUserReviews = ({userId}) => {
 
   return (
     <div className="review-list-profile-container">
-    <div className="review-list-profile">
-      <div className="review-header">
-        <h5 className="list-title">My Reviews:</h5>
-      </div>
-      <div className="review-body-profile">
-        <div className="reviews">
-          {reviewsData.map((review) => {
-            return (
-              <div className="review">
-                <h6>{review.content}</h6>
-                <p>by <i>{review.user_name}</i> on {new Date(review.date_created).toLocaleDateString("en-US")} for {review.title}</p>
-                <div>
-                  <Button variant="primary" onClick={() => history.push(`/reviews/${review.reviews_id}/update`)}>
-                    <FaEdit/>
-                  </Button>
-                  <Button variant="danger" onClick={() => deleteReview(review.reviews_id)}>
-                    <FaTrashAlt/>
-                  </Button>
+      {showError()}
+      <div className="review-list-profile">
+        <div className="review-header">
+          <h5 className="list-title">My Reviews:</h5>
+        </div>
+        <div className="review-body-profile">
+          <div className="reviews">
+            {reviewsData.map((review) => {
+              return (
+                <div className="review">
+                  <h6>{review.content}</h6>
+                  <p>by <i>{review.user_name}</i> on {new Date(review.date_created).toLocaleDateString("en-US")} for {review.title}</p>
+                  <div>
+                    <Button variant="primary" onClick={() => history.push(`/reviews/${review.reviews_id}/update`)}>
+                      <FaEdit/>
+                    </Button>
+                    <Button variant="danger" onClick={() => deleteReview(review.reviews_id)}>
+                      <FaTrashAlt/>
+                    </Button>
+                  </div>
+                  <p>------------------</p>
                 </div>
-                <p>------------------</p>
-              </div>
-            )
-          })}
+              )
+            })}
+          </div>
         </div>
       </div>
-    </div>
     </div>
   )
 }
