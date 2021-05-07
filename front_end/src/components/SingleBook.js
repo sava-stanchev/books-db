@@ -17,9 +17,9 @@ const SingleBook = props => {
         'authorization': `bearer ${localStorage.getItem('token')}`
       },
     })
-      .then((response) => response.json())
-      .then((data) => setBookData(data[0]))
-      .catch((error) => setError(error.message))
+    .then((response) => response.json())
+    .then((data) => setBookData(data[0]))
+    .catch((error) => setError(error.message))
   }, [id]);
 
   const borrowBook = () => {
