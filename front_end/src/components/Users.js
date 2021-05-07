@@ -3,7 +3,7 @@ import {useHistory} from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
 import {Col, Row, Button, Table} from 'react-bootstrap';
 
-
+// трябва да се виждат всички потребители
 const Users = () => {
   const [users, setUsers] = useState(null);
   const [loading, setLoading] = useState(true);

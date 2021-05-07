@@ -28,6 +28,14 @@ const sortBooksByYear = async (sort) => {
 const getBookById = async (bookId) => {
   const sql = `
     SELECT b.books_id, b.title, b.author, b.age_recommendation, b.isbn, b.publishing_year, b.print_length, b.posters, l.language, g.genre, b.is_deleted, b.is_borrowed
+    , (SELECT ROUND(AVG(r.rating), 2)
+        FROM books AS b
+        JOIN books_ratings AS br
+        ON b.books_id = br.books_id
+        JOIN ratings AS r
+        ON br.ratings_id = r.ratings_id
+        WHERE br.books_id = ?
+        ) AS average_rating
     FROM books AS b
     JOIN languages AS l
     ON b.language = l.languages_id
@@ -58,7 +66,7 @@ const getBookById = async (bookId) => {
   //     ON br.ratings_id = r.ratings_id
   //     WHERE b.is_deleted != 1 and b.books_id = ?
   // `;
-  const result = await pool.query(sql, [bookId]);
+  const result = await pool.query(sql, [bookId, bookId]);
   return result;
 };
 

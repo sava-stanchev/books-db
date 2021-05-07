@@ -171,13 +171,38 @@ booksController
         const bookId = req.params.id;
         const userId = req.user.user_id;
         const rating = await booksRatingData.getBookRatingByUser(bookId, userId);
-        return rating ? rating : null;
+        return rating?res.status(200).json(rating.rating):null;
       } catch (error) {
         return res.status(500).json({
           message: error.message,
         });
       }
     })
+
+    // /** Rate book */
+    // .patch('/:id/rating', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
+    //   console.log('++++++++++++++');
+    //   try {
+    //     const bookId = req.params.id;
+    //     const rating = req.body.rating;
+    //     const userId = req.user.user_id;
+    //     const book = await booksData.getBookById(bookId);
+
+    //     if (!book) {
+    //       return res.status(404).json({
+    //         massage: 'Book not found!',
+    //       });
+    //     }
+    //     const setBookRating = await booksRatingData.setRatingToBook(userId, bookId, rating);
+    //     console.log(set);
+
+    //     return res.status(200).send(await booksData.bookAverageRating(bookId));
+    //   } catch (error) {
+    //     return res.status(500).json({
+    //       message: error.message,
+    //     });
+    //   }
+    // })
 
     /** Rate book */
     .patch('/:id/rating', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
@@ -187,32 +212,8 @@ booksController
         const rating = req.body.rating;
         const userId = req.user.user_id;
         const book = await booksData.getBookById(bookId);
-
-        if (!book) {
-          return res.status(404).json({
-            massage: 'Book not found!',
-          });
-        }
-        const setBookRating = await booksRatingData.setRatingToBook(userId, bookId, rating);
-        console.log(set);
-
-        return res.status(200).send(await booksData.bookAverageRating(bookId));
-      } catch (error) {
-        return res.status(500).json({
-          message: error.message,
-        });
-      }
-    })
-
-    /** Rate book */
-    .delete('/:id/rating', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
-      console.log('++++++++++++++');
-      try {
-        const bookId = req.params.id;
-        const rating = req.body.rating;
-        const userId = req.user.user_id;
-        const book = await booksData.getBookById(bookId);
-
+        
+        console.log(book);
         if (!book) {
           return res.status(404).json({
             massage: 'Book not found!',
@@ -220,6 +221,7 @@ booksController
         }
 
         const isBookBorrowedAndReturned = await booksData.isBookBorrowedAndReturned(bookId, userId);
+        console.log(isBookBorrowedAndReturned);
 
         if (!isBookBorrowedAndReturned) {
           return res.status(403).json({
@@ -228,6 +230,8 @@ booksController
         }
 
         const checkForRating = await booksRatingData.getBookRatingByUser(bookId, userId);
+        console.log('checkForRating');
+        console.log(checkForRating);
         if (checkForRating) {
           await booksRatingData.updateBookRating(checkForRating.book_ratings_id, rating);
           return res.status(200).send(await booksData.bookAverageRating(bookId));
