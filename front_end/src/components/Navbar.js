@@ -31,8 +31,8 @@ const NavBar = () => {
             {auth.isLoggedIn
             ?
             <>
-              <Link to="/users/:id">
-                <Nav.Link href="#user">User info</Nav.Link>
+              <Link to="/profile">
+                <Nav.Link href="#user">User Info</Nav.Link>
               </Link>
             </>
             :<></>

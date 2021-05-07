@@ -1,6 +1,9 @@
 import {useEffect, useState} from 'react';
 import {useHistory} from "react-router-dom";
 import {Button} from "react-bootstrap";
+import {FaTrashAlt} from "react-icons/fa";
+import {FaEdit} from "react-icons/fa";
+import {FaThumbsUp} from "react-icons/fa";
 
 const SingleBookReviews = ({id}) => {
   const [reviewsData, setReviewsData] = useState([]);
@@ -58,11 +61,14 @@ const SingleBookReviews = ({id}) => {
                   <h6>{review.content}</h6>
                   <p>by <i>{review.user_name}</i> on {new Date(review.date_created).toLocaleDateString("en-US")}</p>
                   <div>
+                    <Button variant="success">
+                      <FaThumbsUp/>
+                    </Button>
                     <Button variant="primary" onClick={() => history.push(`/reviews/${review.reviews_id}/update`)}>
-                      Update
+                      <FaEdit/>
                     </Button>
                     <Button variant="danger" onClick={() => deleteReview(review.reviews_id)}>
-                      Delete
+                      <FaTrashAlt/>
                     </Button>
                   </div>
                   <p>------------------</p>

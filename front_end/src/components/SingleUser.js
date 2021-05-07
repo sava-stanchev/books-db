@@ -1,7 +1,6 @@
 import {useEffect, useState} from 'react';
-import {useHistory} from "react-router-dom";
-import ReactPaginate from "react-paginate";
-import {Col, Container, Row, Form, Button} from "react-bootstrap";
+import {Jumbotron} from "react-bootstrap";
+import {Col, Container, Row, Form} from "react-bootstrap";
 import jwtDecode from 'jwt-decode';
 
 const SingleUser = () => {
@@ -9,12 +8,8 @@ const SingleUser = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const userId = jwtDecode(localStorage.getItem('token')).users_id;
-  console.log('userId');
-  console.log(userId);
   
   useEffect(() => {
-    
-    console.log('Hi');
     fetch(`http://localhost:5555/users/${userId}`, {
       method: 'GET',
       headers: {
@@ -39,55 +34,56 @@ const SingleUser = () => {
     <div className="Loader"></div>
     :
     <>
-      <div>
-        {showError()}
-      </div>
-    
-    <Container>
-      <Row>
-        <Col>
-          <h1>{user.user_name}`s info</h1>
-        </Col>
-      </Row>
-      <br/>
+    {showError()}
+    <div className="user-page-bg-info">
+      <Jumbotron className="form-box-profile">
+        <Container>
+          <Row>
+            <Col>
+              <h1>{user.user_name}'s Info</h1>
+            </Col>
+          </Row>
+          <br/>
 
-      <Row>
-        <Col>
-          <Form>
-            <Form.Row>
-              <Form.Group as={Col}>
-                <Form.Label>Username: {user.user_name}</Form.Label>
-              </Form.Group>
-            </Form.Row>
-            <Form.Row>
-              <Form.Group as={Col}>
-                <Form.Label>First Name: {user.first_name}</Form.Label>
-              </Form.Group>
-              <Form.Group as={Col}>
-                <Form.Label>Last Name: {user.last_name}</Form.Label>
-              </Form.Group>
-            </Form.Row>
-              <Form.Group as={Col}>
-                <Form.Label>Email address: {user.e_mail}</Form.Label>
-              </Form.Group>
-            <Form.Row>
-              <Form.Group as={Col}>
-                <Form.Label>Age: {user.user_age}</Form.Label>
-              </Form.Group>
-              <Form.Group as={Col}>
-                <Form.Label>Gender: {user.gender}</Form.Label>
-              </Form.Group>
-            </Form.Row>
-            
-          </Form>
-        </Col>
-      </Row>
-    </Container>
-
+          <Row>
+            <Col>
+              <Form>
+                <Form.Row>
+                  <Form.Group as={Col}>
+                    <Form.Label><b>Username:</b> <i>{user.user_name}</i></Form.Label>
+                  </Form.Group>
+                </Form.Row>
+                <Form.Row>
+                  <Form.Group as={Col}>
+                    <Form.Label><b>First Name:</b> <i>{user.first_name}</i></Form.Label>
+                  </Form.Group>
+                </Form.Row>
+                <Form.Row>
+                  <Form.Group as={Col}>
+                    <Form.Label><b>Last Name:</b> <i>{user.last_name}</i></Form.Label>
+                  </Form.Group>
+                </Form.Row>
+                <Form.Row>
+                  <Form.Group as={Col}>
+                    <Form.Label><b>Email Address:</b> <i>{user.e_mail}</i></Form.Label>
+                  </Form.Group>
+                </Form.Row>
+                <Form.Row>
+                  <Form.Group as={Col}>
+                    <Form.Label><b>Age:</b> <i>{user.user_age}</i></Form.Label>
+                  </Form.Group>
+                  <Form.Group as={Col}>
+                    <Form.Label><b>Gender:</b> <i>{user.gender}</i></Form.Label>
+                  </Form.Group>
+                </Form.Row>
+              </Form>
+            </Col>
+          </Row>
+        </Container>
+      </Jumbotron>
+    </div>
     </>
   )
-
 };
-
 
 export default SingleUser;

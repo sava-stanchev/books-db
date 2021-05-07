@@ -40,7 +40,7 @@ const App = () => {
               {/* <GuardedRoute path="/reviews" exact component={Reviews} isLoggedIn={authValue.isLoggedIn}/> */}
               {/* <GuardedRoute path="/reviews/:reviews_id" exact component={SingleReview} isLoggedIn={authValue.isLoggedIn}/> */}
               <GuardedRoute path="/users" exact component={Users} isLoggedIn={authValue.isLoggedIn}/>
-              <GuardedRoute path="/users/:id" exact component={SingleUser} isLoggedIn={authValue.isLoggedIn}/>
+              <GuardedRoute path="/profile" exact component={SingleUser} isLoggedIn={authValue.isLoggedIn}/>
               <Route path="/login" component={Login}/>       
               <Route path="/register" component={Register}/>
             </Switch>

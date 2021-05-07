@@ -323,3 +323,21 @@ input[type="radio"] {
 .review {
   position: relative;
 }
+
+.user-page-bg-info {
+  height: 87vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-box-profile {
+  box-shadow: 0px 0px 15px -5px black;
+  background: linear-gradient(
+    90deg,
+    rgba(93, 12, 255, 1) 0%,
+    rgba(155, 0, 250, 1) 100%
+  );
+  color: white;
+  text-align: left;
+}
