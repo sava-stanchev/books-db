@@ -297,7 +297,6 @@ app.get('/users', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), asy
 
 /** Return a user (as admin) */
 app.put('/admin/users/:id', authMiddleware, loggedUserGuard, async (req, res) => {
-  console.log('admin user by id');
   try {
     const user = await usersData.getUserById(req.params.id);
     if (!user) {
@@ -317,8 +316,6 @@ app.put('/admin/users/:id', authMiddleware, loggedUserGuard, async (req, res) =>
 
 /** get user by id */
 app.get('/users/:id', authMiddleware, loggedUserGuard, async (req, res) => {
-  console.log('index get user');
-  console.log(req.params.id);
   try {
     const user = await usersData.getUserById(req.params.id);
     if (!user) {
@@ -377,6 +374,19 @@ app.get('/reactions', async (req, res) => {
   try {
     const reactions = await dropDownData.getAllReactions();
     res.json(reactions);
+  } catch (error) {
+    return res.status(400).json({
+      error: error.message,
+    });
+  }
+});
+
+/** Get reviews for a user */
+app.get('/profile/:userId/reviews', async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const review = await reviewsData.getAllReviewForUser(userId);
+    res.send(review);
   } catch (error) {
     return res.status(400).json({
       error: error.message,

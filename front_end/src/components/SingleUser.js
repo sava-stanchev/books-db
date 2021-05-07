@@ -2,6 +2,7 @@ import {useEffect, useState} from 'react';
 import {Jumbotron} from "react-bootstrap";
 import {Col, Container, Row, Form} from "react-bootstrap";
 import jwtDecode from 'jwt-decode';
+import SingleUserReviews from './SingleUserReviews';
 
 const SingleUser = () => {
   const [user, setUser] = useState(null);
@@ -35,6 +36,8 @@ const SingleUser = () => {
     :
     <>
     {showError()}
+    <Row>
+    <Col>
     <div className="user-page-bg-info">
       <Jumbotron className="form-box-profile">
         <Container>
@@ -82,6 +85,11 @@ const SingleUser = () => {
         </Container>
       </Jumbotron>
     </div>
+    </Col>
+    <Col>
+    <SingleUserReviews userId={userId} />
+    </Col>
+    </Row>
     </>
   )
 };
