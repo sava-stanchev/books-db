@@ -6,7 +6,6 @@ import SingleBookReviews from './SingleBookReviews';
 
 const SingleBook = props => {
   const [bookData, setBookData] = useState(null);
-  //const [bookRating, setBookRating] = useState(null);
   const [error, setError] = useState(null);
   const {id} = props.match.params;
 
@@ -32,7 +31,7 @@ const SingleBook = props => {
       },
     })
     .then((res) => res.json())
-    .then(() => history.go(0))
+    .then((data) => setBookData(data[0]))
     .catch((error) => setError(error.message));
   };
 
@@ -45,19 +44,9 @@ const SingleBook = props => {
       },
     })
     .then((res) => res.json())
-    .then(() => history.go(0))
+    .then((data) => setBookData(data[0]))
     .catch((error) => setError(error.message));
   };
-
-  // rating
-  // useEffect(() => {
-  //   fetch(`http://localhost:5555/books/${id}/rating`, { 
-  //     method: 'PUT',
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => setBookRating(data[0]))
-  //     .catch((error) => setError(error.message))
-  // }, [id])
 
   const deleteBook = () => {
     fetch(`http://localhost:5555/books/${id}`, {

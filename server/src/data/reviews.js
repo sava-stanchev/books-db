@@ -68,7 +68,6 @@ const updateReviewSQL = async (review) => {
 };
 
 const createReview = async (bookId, content, userId) => {
-  console.log('i tuk?');
   const sqlNewReview = `
   INSERT INTO reviews (users_id, books_id, date_created, is_deleted, content)
   VALUES (?, ?, ? , ?, ?)
@@ -86,7 +85,6 @@ const deleteReview = async (id) => {
 };
 
 const userReviewByBookId = async (userId, bookId) => {
-  console.log('tuk li sum??');
   const sql = `
   SELECT * FROM reviews AS r
   WHERE r.users_id = ? AND r.books_id = ?

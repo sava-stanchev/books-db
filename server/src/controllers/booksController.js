@@ -164,9 +164,6 @@ booksController
 
     /** Get user rating for book */
     .get('/:id/rating', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
-      console.log('22222222222');
-      // console.log(req.user.user_id);
-      // console.log(req.params.id);
       try {
         const bookId = req.params.id;
         const userId = req.user.user_id;
@@ -179,41 +176,14 @@ booksController
       }
     })
 
-    // /** Rate book */
-    // .patch('/:id/rating', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
-    //   console.log('++++++++++++++');
-    //   try {
-    //     const bookId = req.params.id;
-    //     const rating = req.body.rating;
-    //     const userId = req.user.user_id;
-    //     const book = await booksData.getBookById(bookId);
-
-    //     if (!book) {
-    //       return res.status(404).json({
-    //         massage: 'Book not found!',
-    //       });
-    //     }
-    //     const setBookRating = await booksRatingData.setRatingToBook(userId, bookId, rating);
-    //     console.log(set);
-
-    //     return res.status(200).send(await booksData.bookAverageRating(bookId));
-    //   } catch (error) {
-    //     return res.status(500).json({
-    //       message: error.message,
-    //     });
-    //   }
-    // })
-
     /** Rate book */
     .patch('/:id/rating', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
-      console.log('++++++++++++++');
       try {
         const bookId = req.params.id;
         const rating = req.body.rating;
         const userId = req.user.user_id;
         const book = await booksData.getBookById(bookId);
-        
-        console.log(book);
+
         if (!book) {
           return res.status(404).json({
             massage: 'Book not found!',
@@ -221,7 +191,6 @@ booksController
         }
 
         const isBookBorrowedAndReturned = await booksData.isBookBorrowedAndReturned(bookId, userId);
-        console.log(isBookBorrowedAndReturned);
 
         if (!isBookBorrowedAndReturned) {
           return res.status(403).json({
@@ -231,7 +200,6 @@ booksController
 
         const checkForRating = await booksRatingData.getBookRatingByUser(bookId, userId);
         console.log('checkForRating');
-        console.log(checkForRating);
         if (checkForRating) {
           await booksRatingData.updateBookRating(checkForRating.book_ratings_id, rating);
           return res.status(200).send(await booksData.bookAverageRating(bookId));
@@ -249,7 +217,6 @@ booksController
     .put('/create', authMiddleware, loggedUserGuard, transformBody(bookCreateValidator), validateBody('book', bookCreateValidator), async (req, res) => {
       try {
         const book = await booksData.createBook(req.body, req.user);
-        console.log(book);
         res.json(book);
       } catch (error) {
         return res.status(400).json({
