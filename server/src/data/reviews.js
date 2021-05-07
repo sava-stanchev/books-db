@@ -10,6 +10,18 @@ const getAllReviews = async () => {
   `);
 };
 
+const getAllReviewForUser = async (userId) => {
+  const sql = `
+  SELECT r.reviews_id, r.content, r.date_created, b.title, u.user_name
+  FROM reviews AS r
+  JOIN users AS u ON r.users_id = u.users_id
+  JOIN books AS b ON r.books_id = b.books_id
+  WHERE r.is_deleted != 1 and r.users_id = ?
+  `;
+  const result = await pool.query(sql, [userId]);
+  return result;
+};
+
 const getReviewsForBook = async (id) => {
   const sql = `
   SELECT r.content, r.date_created, u.user_name, r.reviews_id FROM reviews AS r
@@ -105,4 +117,5 @@ export default {
   userReviewByBookId,
   getReviewByIdForUser,
   getAnyReviewById,
+  getAllReviewForUser,
 };

@@ -12,7 +12,7 @@ const NavBar = () => {
       isLoggedIn: false,
     });
   };
-  // console.log(auth);
+
   return(
     <div className="App">
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
@@ -25,9 +25,6 @@ const NavBar = () => {
             <Link to="/books">
               <Nav.Link href="#books">Books</Nav.Link>
             </Link>
-            {/* <Link to="/reviews">
-              <Nav.Link href="#reviews">Reviews</Nav.Link>
-            </Link> */}
             {auth.isLoggedIn
             ?
             <>
@@ -49,9 +46,6 @@ const NavBar = () => {
               <></>
               }
           </Nav>
-          {/* <Nav  className="mr-auto">
-              <p>Hi {auth.user.user_name}</p>
-          </Nav> */}
           <Nav>
             {auth.isLoggedIn
               ?
