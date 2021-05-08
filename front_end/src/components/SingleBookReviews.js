@@ -8,6 +8,7 @@ import {FaThumbsUp} from "react-icons/fa";
 const SingleBookReviews = ({id}) => {
   const [reviewsData, setReviewsData] = useState([]);
   const [error, setError] = useState(null);
+  console.log(reviewsData);
 
   useEffect(() => {
     fetch(`http://localhost:5555/books/${id}/reviews`, { 
@@ -20,7 +21,7 @@ const SingleBookReviews = ({id}) => {
       .then((response) => response.json())
       .then((data) => setReviewsData(data))
       .catch((error) => setError(error.message))
-  }, [id]);
+  }, []);
 
   const deleteReview = (reviewId) => {
     fetch(`http://localhost:5555/reviews/${reviewId}`, {
@@ -31,7 +32,7 @@ const SingleBookReviews = ({id}) => {
       },
     })
     .then((res) => res.json())
-    .then(() => history.go(0))
+    .then(data => setReviewsData(reviewsData.filter(r => r.reviews_id !== data.reviews_id)))
     .catch((error) => setError(error.message));
   };
 

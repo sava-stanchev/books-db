@@ -1,10 +1,12 @@
-import {useEffect, useState} from 'react';
+import {useEffect, useState, useContext} from 'react';
 import StarRating from './StarRating';
 import {useHistory} from "react-router-dom";
 import {Button, Col, Row} from "react-bootstrap";
 import SingleBookReviews from './SingleBookReviews';
+import AuthContext from '../providers/authContext';
 
 const SingleBook = props => {
+  const auth = useContext(AuthContext);
   const [bookData, setBookData] = useState(null);
   const [error, setError] = useState(null);
   const {id} = props.match.params;
@@ -93,12 +95,17 @@ const SingleBook = props => {
                 <p>Print Length: {bookData.print_length}</p>
                 <p>ISBN: {bookData.isbn}</p>
                 <p>Book Rating: <StarRating bookData={bookData}/></p>
-                <Button variant="primary" onClick={() => history.push(`/books/${bookData.books_id}/update`)}>
-                  Update Book
-                </Button>
-                <Button variant="danger" onClick={() => deleteBook()}>
-                  Delete Book
-                </Button>
+                {auth.user.is_admin?
+                  <>
+                    <Button variant="primary" onClick={() => history.push(`/books/${bookData.books_id}/update`)}>
+                      Update Book
+                    </Button>
+                    <Button variant="danger" onClick={() => deleteBook()}>
+                      Delete Book
+                    </Button>
+                  </>
+                  :<></>
+                } 
               </div>
             </Col>
             <Col>

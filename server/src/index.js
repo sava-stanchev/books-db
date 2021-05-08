@@ -144,6 +144,8 @@ app.patch('/reviews/:reviewId/update', authMiddleware, loggedUserGuard, banGuard
 app.delete('/reviews/:reviews_id', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
   try {
     const review = await reviewsData.getReviewById(req.params.reviews_id);
+    console.log('review');
+    console.log(review);
     if (!review || review.is_deleted === 1) {
       return res.status(400).json({
         message: 'Review not found!',
@@ -155,8 +157,9 @@ app.delete('/reviews/:reviews_id', authMiddleware, loggedUserGuard, banGuard, as
       });
     }
     await reviewsData.deleteReview(req.params.reviews_id);
+    console.log( await reviewsData.getReviewsForBook(review.books_id));
 
-    res.status(200).send( await reviewsData.getReviewByIdForUser(+req.params.reviews_id));
+    res.status(200).send(review);
   } catch (error) {
     return res.status(400).json({
       error: error.message,
