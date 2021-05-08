@@ -292,7 +292,7 @@ input[type="radio"] {
   display: flex;
   flex-direction: column;
   padding: 0.5px;
-  margin: 5px 0;
+  margin: 5px 13.5px;
   background: #dadcdd;
   border-radius: 10px;
   position: relative;
@@ -307,7 +307,7 @@ input[type="radio"] {
   max-width: 90%;
   display: flex;
   flex-direction: column;
-  margin: 5px 12px;
+  margin: 5px 13.5px;
   background-color: #dadcdd;
   border-radius: 5px;
   position: relative;
