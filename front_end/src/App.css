@@ -198,21 +198,23 @@
 .paginationBttns a {
   padding: 10px;
   margin: 8px;
-  border-radius: 5px;
-  border: 3px solid #5588FF;
+  border-radius: 35%;
+  border: 2.5px solid #007BFF;
   font-family: 'Cardo', serif;
-  color: #58f !important;
+  color: #007BFF !important;
   cursor: pointer;
+  font-size: large;
 }
 
 .paginationBttns a:hover {
   color: white !important;
-  background-color: #58f;
+  background-color: #007BFF;
+  text-decoration-line: none;
 }
 
 .paginationActive a {
   color: white !important;
-  background-color: #58f;
+  background-color: #007BFF;
 }
 
 input[type="radio"] {

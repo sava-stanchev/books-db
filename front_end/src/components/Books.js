@@ -115,8 +115,8 @@ const Books = () => {
           </div>
         </div>
       <ReactPaginate
-        previousLabel={"Prev"}
-        nextLabel={"Next"}
+        previousLabel={"<"}
+        nextLabel={">"}
         pageCount={pageCount}
         onPageChange={changePage}
         containerClassName={"paginationBttns"}

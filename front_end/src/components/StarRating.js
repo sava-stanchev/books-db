@@ -34,7 +34,7 @@ const StarRating = ({bookData: book}) => {
     .then(data => {
       if (data.message) {
         window.alert(data.message)
-      }else {
+      } else {
         setAverageRating(data.avg_rating)
       }
 
@@ -47,8 +47,6 @@ const StarRating = ({bookData: book}) => {
       return <h4><i>An error has occured: </i>{error}</h4>
     }
   }
-
-  const history = useHistory();
 
   if  (rating === null) {
     setRating(0);
