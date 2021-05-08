@@ -36,6 +36,7 @@ const updateBookRating = async (bookRatingsId, rating) => {
   `;
 
   const result = await pool.query(sql, [rating, bookRatingsId]);
+  console.log(result);
   return result;
 };
 

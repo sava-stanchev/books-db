@@ -193,6 +193,7 @@ booksController
         const isBookBorrowedAndReturned = await booksData.isBookBorrowedAndReturned(bookId, userId);
 
         if (!isBookBorrowedAndReturned) {
+          console.log(isBookBorrowedAndReturned);
           return res.status(403).json({
             message: 'If you want to rate a book, you need to read it and return it first!',
           });

@@ -1,9 +1,11 @@
-import {useEffect, useState} from 'react';
+import {useEffect, useState, useContext} from 'react';
 import {useHistory} from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import {Col, Row, Button} from "react-bootstrap";
+import AuthContext from '../providers/authContext';
 
 const Books = () => {
+  const auth = useContext(AuthContext);
   
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -84,11 +86,15 @@ const Books = () => {
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
       <Row>
         <Col>
-          <div className="btnContainer">
-            <Button variant="primary" onClick={() => history.push(`/books/create`)}>
-              Create a book
-            </Button>
-          </div>
+            {
+              auth.user.is_admin?
+              <div className="btnContainer">
+                <Button variant="primary" onClick={() => history.push(`/books/create`)}>
+                  Create a book
+                </Button>
+              </div>
+              :<></>
+            }
         </Col>
         <Col>
         <div className="boxContainer">
