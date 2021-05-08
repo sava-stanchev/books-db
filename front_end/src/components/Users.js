@@ -2,6 +2,8 @@ import {useEffect, useState} from 'react';
 import {useHistory} from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
 import {Col, Row, Button, Table} from 'react-bootstrap';
+import { BAN_DAYS, HOST } from '../common/constants.js';
+
 
 // трябва да се виждат всички потребители
 const Users = () => {
@@ -9,10 +11,9 @@ const Users = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  console.log(loading);
   useEffect(() => {
     setLoading(true);
-    fetch('http://localhost:5555/users', {
+    fetch(`${HOST}/users`, {
       method: 'GET',
       headers: {
         'content-type': 'application/json',
@@ -30,6 +31,32 @@ const Users = () => {
       return <h4><i>An error has occured: </i>{error}</h4>
     }
   }
+
+  const updateUser = (i, prop, value)=> {
+    console.log(users[i]);
+    //console.log(`${prop} ` + users[i][prop]);
+    const user = users[i];
+    users[i] = {...user, [prop]: value, }
+    console.log(JSON.stringify(users[i]));
+    
+    //console.log(users[i]);
+
+    fetch(`${HOST}/users/${users[i].users_id}/update`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'authorization': `bearer ${localStorage.getItem('token')}`
+      },
+      body: JSON.stringify(users[i])
+    })
+    .then(res => res.json())
+    .then(()=> setLoading(false))
+    .catch((error) => setError(error.message));
+    
+    setUsers([...users])
+
+  };
+
   return(
     loading?
     <>
@@ -51,11 +78,12 @@ const Users = () => {
             <th>Age</th>
             <th>Delete</th>
             <th>Is Banned</th>
+            <th>Edit</th>
           </tr>
         </thead>
         <tbody>
           {
-          users.map(u => {
+          users.map((u, i) => {
             return (
               <>
                 <tr>
@@ -64,12 +92,25 @@ const Users = () => {
                   <td>{u.first_name}</td>
                   <td>{u.last_name}</td>
                   <td>{u.e_mail}</td>
-                  <td>{u.user_age}</td>
-                  <td>{u.is_deleted}</td>
-                  <td>{u.ban_date?u.ban_date:
-                      <Button variant="primary" onClick={() => console.log('Hi')}>
+                  <td>{u.user_age ? u.user_age : <p>-</p>}
+                  </td>
+                  <td>{u.is_deleted
+                        ?<Button variant="warning" onClick={() =>updateUser(i, 'is_deleted', 0)}>
+                            Return user!
+                        </Button>
+                        :<Button variant="danger" onClick={() => updateUser(i, 'is_deleted', 1)}>
+                            Delete!
+                        </Button>}
+                  </td>
+                  <td>{u.ban_date? new Date(u.ban_date).toLocaleDateString():
+                      <Button variant="primary" onClick={() => updateUser(i, 'ban_date', new Date(new Date().getTime() + BAN_DAYS))}>
                         Ban user!
                       </Button>}
+                  </td>
+                  <td>
+                      <Button variant="primary" onClick={() => console.log('Edit')}>
+                        Edit!
+                      </Button>
                   </td>
                 </tr>
             </>
@@ -79,9 +120,6 @@ const Users = () => {
           
         </tbody>
       </Table>
-      <div>
-        <p> Users </p>
-      </div>
     </p>
 
 )

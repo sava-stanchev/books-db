@@ -2,6 +2,7 @@ import {Jumbotron} from 'react-bootstrap';
 import AddBookForm from './AddBookForm';
 import {useEffect, useState} from 'react';
 import {useHistory} from "react-router-dom";
+import { HOST } from '../common/constants.js'
 
 const AddBook = () => {
   const history = useHistory();
@@ -16,7 +17,7 @@ const AddBook = () => {
   const [error, setError] = useState(null);
   
   useEffect(() => {
-    fetch(`http://localhost:5555/genres`, {
+    fetch(`${HOST}/genres`, {
       method: 'GET',
     })
     .then((response) => response.json())
@@ -26,7 +27,7 @@ const AddBook = () => {
   }, []);
 
   useEffect(() => {
-    fetch(`http://localhost:5555/languages`, {
+    fetch(`${HOST}/languages`, {
       method: 'GET',
     })
     .then((response) => response.json())
@@ -56,7 +57,7 @@ const AddBook = () => {
   };
   
   const addBook = () => {
-    fetch('http://localhost:5555/books/create', {
+    fetch(`${HOST}/books/create`, {
       method: 'PUT',
       headers: {
         'content-type': 'application/json',

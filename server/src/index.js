@@ -203,11 +203,17 @@ app.get('/reviews', async (req, res) => {
   }
 });
 
-/** Ban users (as admin) */
-app.post('/admin/users/:id/ban', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
+/** update user info */
+app.post('/users/:id/update', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
+  console.log('Mara ba');
   try {
-    await usersData.banUser(+req.params.id);
-    return res.send(await usersData.getUserById(req.params.id));
+    const userId = req.params.id;
+    const userInfo = req.body;
+    console.log('req body');
+    console.log(userInfo);
+    const a = await userData.updateUser(userInfo);
+    // await usersData.banUser(+req.params.id);
+    // return res.send(await usersData.getUserById(req.params.id));
   } catch (error) {
     return res.status(400).json({
       error: error.message,

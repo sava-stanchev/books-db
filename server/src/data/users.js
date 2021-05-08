@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 const getAllUsers = async () => {
   return await pool.query(`
     SELECT * FROM users AS u
-    WHERE u.is_deleted != 1
+    
     `);
 };
 
@@ -55,6 +55,17 @@ const banUser = async (id) => {
   }
 };
 
+const updateUser = async (user) => {
+  console.log('ehoo');
+  const sql = `
+    UPDATE users AS u
+    SET u.user_name = ?, u.password = ?, u.first_name = ?, u.last_name =?, u.user_age = ?, u.e_mail = ?, is_admin = ?, u.is_deleted = ?, u.ban_date = ?, u.gender = ?
+    WHERE u.users_id = ?
+  `;
+  const result = await pool.query(sql, [user.user_name, user.password, user.first_name, user.last_name, user.user_age, user.e_mail, user.is_admin, user.is_deleted, user.ban_date, user.gender, user.users_id]);
+  console.log(result);
+};
+
 const liftBan = async (id) => {
   await pool.query(`UPDATE users u SET u.ban_date = NULL WHERE u.users_id = ?`, [id]);
 };
@@ -95,4 +106,5 @@ export default {
   deleteUser,
   returnUser,
   logoutUser,
+  updateUser,
 };
