@@ -59,76 +59,6 @@
   margin: 1em 0;
 }
 
-#reviews .review-details-link:hover {
-  cursor: pointer;
-  background: rgb(108, 70, 158);
-}
-
-#reviews .review-details-link {
-  position: relative;
-  visibility: visible;
-  top: -21%;
-  background: #58f;
-  border-radius: .3em;
-  color: white;
-  border: none;
-  padding: .5em 2em;
-  margin: 1em 0;  
-}
-
-#books .content {
-  max-width: 90%;
-  margin: 2em auto;
-  display: grid;
-  gap: 3em;
-  grid-template-columns: repeat(4, 1fr);  
-  grid-template-rows: auto;
-  grid-row-gap: 1em;  
-}
-
-#books .content>div {
-  position: relative;
-  margin: 0;
-  text-align: center;
-}
-
-#books .content>div h2 {
-  font-size: 1.2em;
-  line-height: 1.5;
-}
-
-#books .content>div img {
-  border-radius: .3em;
-  max-width: 90%;
-  box-shadow: 0 0 17px 2px #444;
-  border: 1px solid #444;
-  transition: all .5s;
-}
-
-#books .content>div:hover  {cursor: pointer;}
-#books .content>div:hover img {
-  filter: brightness(40%) blur(5px);
-}
-
-#books .content>div:hover h2 {
-  width: calc(100% - 70px);
-  display: block;
-  position: absolute;
-  top: 20%;
-  color: #5fbfff;
-}
-
-#books .content>div:hover .book-details-link {
-  visibility: visible;
-}
-
-#books .content>div h2 {
-  transition: all 1s;
-  display: none;
-  top: -50%;
-  left: 13%;
-}
-
 #book .content {
   max-width: 90%;
   margin: 2em auto;
@@ -355,4 +285,69 @@ input[type="radio"] {
   height: 390px;
   max-height: 390px;
   overflow-y: scroll;
+}
+
+.each-book {
+  max-width: 90%;
+  display: flex;
+  flex-direction: column;
+  padding: 0.5px;
+  margin: 5px 0;
+  background: #dadcdd;
+  border-radius: 10px;
+  position: relative;
+  -webkit-transition: background 0.5s;
+  -moz-transition:    background 0.5s;
+  -ms-transition:     background 0.5s;
+  -o-transition:      background 0.5s;
+  transition:         background 0.5s;
+}
+
+#books .content>div img {
+  max-width: 90%;
+  display: flex;
+  flex-direction: column;
+  margin: 5px 12px;
+  background-color: #dadcdd;
+  border-radius: 5px;
+  position: relative;
+}
+
+.each-book:hover {
+  max-width: 90%;
+  background: #75757E;
+  color: white;
+}
+
+.poster {
+  border-radius: 5px;
+}
+
+.title {
+  width: 100%;
+  text-align: center;
+  font-size: 17px;
+  padding: 2px 0;
+}
+
+#books .content {
+  max-width: 90%;
+  margin: 2em auto;
+  display: grid;
+  gap: 2em;
+  grid-template-columns: repeat(4, 1fr);  
+  grid-template-rows: auto;
+  grid-row-gap: 1em;
+}
+
+#books .content>div {
+  position: relative;
+  margin: 0;
+  text-align: center;
+}
+
+.btn-details:hover {
+  background-color: rgb(108, 70, 158) !important;
+  border-color: rgb(108, 70, 158) !important;
+  border-radius: 5px !important;
 }

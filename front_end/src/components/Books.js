@@ -62,17 +62,11 @@ const Books = () => {
   .slice(pagesVisited, pagesVisited + booksPerPage)
   .map((book) => {
     return (
-      <div id='BookContainer' className='mouse_over'>
-      <img src={book.posters} alt={book.title} style={{maxHeight: 350}}/>
-      <h2>
-        {book.title}
-        <br/>
-        {book.author}
-        <br/>
-        {book.publishing_year}
-      </h2>
-      <button type="button" className="book-details-link" onClick = {() => history.push(`/books/${book.books_id}`)}>View Details</button>
-    </div>
+      <div className="each-book">
+        <img className="poster" src={book.posters} alt={book.title} />
+        <b className="title">{book.title}</b>
+        <Button variant="primary" className="btn-details" onClick = {() => history.push(`/books/${book.books_id}`)}>View Details</Button>
+      </div>
     );
   });
 
@@ -113,13 +107,13 @@ const Books = () => {
         </div>
         </Col>
       </Row>
-      <div id="books">
-        {showLoader()}
-        {showError()}
-        <div className="content">
-          {displayBooks}
+        <div id="books">
+          {showLoader()}
+          {showError()}
+          <div className="content">
+            {displayBooks}
+          </div>
         </div>
-      </div>
       <ReactPaginate
         previousLabel={"Prev"}
         nextLabel={"Next"}
