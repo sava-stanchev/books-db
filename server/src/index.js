@@ -211,7 +211,9 @@ app.post('/users/:id/update', authMiddleware, loggedUserGuard, roleAuth(userRole
     const userInfo = req.body;
     console.log('req body');
     console.log(userInfo);
-    const a = await userData.updateUser(userInfo);
+    const a = await usersData.updateUser(userInfo);
+    //const a = await userData.updateUser(userInfo);
+    console.log(a);
     // await usersData.banUser(+req.params.id);
     // return res.send(await usersData.getUserById(req.params.id));
   } catch (error) {

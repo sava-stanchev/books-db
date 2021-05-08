@@ -33,12 +33,13 @@ const Users = () => {
   }
 
   const updateUser = (i, prop, value)=> {
+    console.log(i);
     console.log(users[i]);
     //console.log(`${prop} ` + users[i][prop]);
-    const user = users[i];
-    users[i] = {...user, [prop]: value, }
-    console.log(JSON.stringify(users[i]));
-    
+    //const user = users[i];
+    let user = {...users[i], [prop]: value}
+    console.log(user);
+      
     //console.log(users[i]);
 
     fetch(`${HOST}/users/${users[i].users_id}/update`, {
@@ -47,13 +48,15 @@ const Users = () => {
         'content-type': 'application/json',
         'authorization': `bearer ${localStorage.getItem('token')}`
       },
-      body: JSON.stringify(users[i])
+      body: JSON.stringify(user)
     })
     .then(res => res.json())
+    .then(data => users[i] = data)
     .then(()=> setLoading(false))
     .catch((error) => setError(error.message));
-    
-    setUsers([...users])
+    const updatedUsers = [...users, users[i]=user]
+    console.log(updatedUsers);
+    setUsers(updatedUsers);
 
   };
 
@@ -102,7 +105,15 @@ const Users = () => {
                             Delete!
                         </Button>}
                   </td>
-                  <td>{u.ban_date? new Date(u.ban_date).toLocaleDateString():
+                  <td>{u.ban_date
+                      ? 
+                      <>
+                        <>{new Date(u.ban_date).toLocaleDateString()}</><br/>
+                        <Button variant="primary" onClick={() => updateUser(i, 'ban_date', null)}>
+                          Unban user!
+                        </Button>
+                      </>
+                      :
                       <Button variant="primary" onClick={() => updateUser(i, 'ban_date', new Date(new Date().getTime() + BAN_DAYS))}>
                         Ban user!
                       </Button>}
