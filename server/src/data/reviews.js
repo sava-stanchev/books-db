@@ -90,8 +90,6 @@ const userReviewByBookId = async (userId, bookId) => {
   WHERE r.users_id = ? AND r.books_id = ?
   `;
   const result = await pool.query(sql, [userId, bookId]);
-  console.log('DDDDDDDDDDDD');
-  console.log(result);
   return result;
 };
 

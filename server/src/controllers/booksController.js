@@ -60,6 +60,7 @@ booksController
             msg: `Book with id ${bookId} was not found!`,
           });
         }
+        console.log('book controler');
 
         const bookBorrowed = await booksData.isBookBorrowed(+bookId, userId);
         if (bookBorrowed) {
@@ -98,6 +99,8 @@ booksController
         //     msg: `Book has already been returned!`,
         //   });
         // }
+
+        console.log('return');
         const setRecord = await booksData.setReturnRecords(+isBookBorrowed.records_id);
         if (!setRecord) {
           return res.json({

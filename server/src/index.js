@@ -110,7 +110,10 @@ app.patch('/reviews/:bookId', async (req, res) => {
     const bookId = req.params.bookId;
     const userId = req.body.userId;
     const review = await reviewsData.userReviewByBookId(userId, bookId);
-    return res.status(200).send(review[0]);
+    if (review[0]) {
+      return res.status(200).send(review[0]);
+    }
+    return null;
   } catch (error) {
     console.log(error);
   }
