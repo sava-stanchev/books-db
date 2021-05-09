@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import {FaStar} from "react-icons/fa";
+import { HOST } from '../common/constants.js'
 
 const StarRating = ({bookData: book}) => {
   const [rating, setRating] = useState(null);
