@@ -42,6 +42,7 @@ const getReviewById = async (id) => {
   `;
 
   const result = await pool.query(sql, [id]);
+  
   return result[0];
 };
 

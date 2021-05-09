@@ -119,6 +119,20 @@ app.patch('/reviews/:bookId', async (req, res) => {
   }
 });
 
+app.get('/reviews/:reviewId', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
+  try {
+    const reviewId = req.params.reviewId;
+    const userId = req.user.userId;
+    const review = await reviewsData.getReviewById(reviewId);
+    if (review) {
+      return res.status(200).send(review);
+    }
+    return null;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 /** Update book review */
 app.patch('/reviews/:reviewId/update', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
   const reviewId = req.params.reviewId;

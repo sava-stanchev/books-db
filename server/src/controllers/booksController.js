@@ -53,6 +53,7 @@ booksController
     .post('/:id', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
       const bookId = req.params.id;
       const userId = req.user.user_id;
+
       try {
         const theBook = await booksData.getBookById(+bookId);
         if (!theBook) {

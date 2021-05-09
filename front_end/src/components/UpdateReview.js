@@ -7,6 +7,10 @@ import { HOST } from '../common/constants.js';
 const UpdateReview = () => {
   const history = useHistory();
   const reviewId = history.location.pathname.split('/')[2];
+  console.log(reviewId);
+  
+  const [review, setReview] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetch(`${HOST}/reviews/${reviewId}`, {
@@ -17,15 +21,17 @@ const UpdateReview = () => {
       },
     })
     .then((res) => res.json())
-    .then((data) => setReview(data[0]));
+    .then((data) => setReview(data))
+    .catch((error) => setError(error.message));
   }, []);
 
-  const [review, setReview] = useState(null);
+  
 
   if  (review === null) {
     return <div className="Loader"></div>;
   }
 
+  console.log('Update review');
   const updateReviewProps = (prop, value) => {
     setReview({
       ...review,
@@ -46,12 +52,23 @@ const UpdateReview = () => {
     .then(() => history.goBack());
   };
 
+  const showError = () => {
+    if (error) {
+      return <h4><i>An error has occured: </i>{error}</h4>
+    }
+  }
+
   return(
+    <>
+    <div>
+      {showError()}
+    </div>
     <div className="login-page-bg-info">
       <Jumbotron className="form-box">
         <UpdateReviewForm updateReviewProps={updateReviewProps} review={review} updateReview={updateReview}/>
       </Jumbotron>
     </div>
+    </>
   )
 };
 
