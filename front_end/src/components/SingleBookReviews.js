@@ -4,6 +4,7 @@ import {Button} from "react-bootstrap";
 import {FaTrashAlt} from "react-icons/fa";
 import {FaEdit} from "react-icons/fa";
 import {FaThumbsUp} from "react-icons/fa";
+import {FaThumbsDown} from "react-icons/fa";
 import { HOST } from '../common/constants.js';
 
 const SingleBookReviews = ({id}) => {
@@ -63,6 +64,12 @@ const SingleBookReviews = ({id}) => {
                   <h6>{review.content}</h6>
                   <p>by <i>{review.user_name}</i> on {new Date(review.date_created).toLocaleDateString("en-US")}</p>
                   <div>
+                    <Button variant="warning" className="reviewBtns">
+                      <FaThumbsUp/>
+                    </Button>
+                    <Button variant="warning" className="reviewBtns">
+                      <FaThumbsDown/>
+                    </Button>
                     <Button variant="primary" className="reviewBtns" onClick={() => history.push(`/reviews/${review.reviews_id}/update`)}>
                       <FaEdit/>
                     </Button>
