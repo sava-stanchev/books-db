@@ -353,3 +353,7 @@ input[type="radio"] {
   border-color: rgb(108, 70, 158) !important;
   border-radius: 5px !important;
 }
+
+.reviewBtns {
+  padding: 5px 9px !important;
+}
