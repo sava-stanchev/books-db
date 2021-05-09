@@ -42,6 +42,12 @@ const SingleBookReviews = ({id}) => {
     .catch((error) => setError(error.message));
   };
 
+  const updateLike = (data) => {
+    data?console.log('I like that'):console.log('I not like that');
+    
+
+  }
+
   const history = useHistory();
 
   const showError = () => {
@@ -75,10 +81,10 @@ const SingleBookReviews = ({id}) => {
                       :                        
                           review.like === null?
                             <>
-                              <Button variant="warning" className="reviewBtns">
+                              <Button variant="warning" className="reviewBtns" onClick={() => updateLike(1)}>
                                 <FaThumbsUp/>
                               </Button>
-                              <Button variant="warning" className="reviewBtns">
+                              <Button variant="warning" className="reviewBtns" onClick={() => updateLike(0)}>
                                 <FaThumbsDown/>
                               </Button>
                             </>
@@ -86,14 +92,14 @@ const SingleBookReviews = ({id}) => {
                               review.like === 1?
                               <>
                                 <p>You liked this review. If changed yor opinion </p>
-                                <Button variant="warning" className="reviewBtns">
+                                <Button variant="warning" className="reviewBtns" onClick={() => updateLike(1)}>
                                   <FaThumbsDown/>
                                 </Button>
                               </>
                               :
                               <>
                                 <p>You disliked this review. If changed yor opinion </p>
-                                <Button variant="warning" className="reviewBtns">
+                                <Button variant="warning" className="reviewBtns" onClick={() => updateLike(0)}>
                                   <FaThumbsUp/>
                                 </Button>
                               </>                     
