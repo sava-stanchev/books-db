@@ -12,6 +12,7 @@ const SingleBookReviews = ({id}) => {
   const auth = useContext(AuthContext);
   const [reviewsData, setReviewsData] = useState([]);
   const [error, setError] = useState(null);
+  
   console.log(reviewsData);
 
   useEffect(() => {
@@ -27,6 +28,7 @@ const SingleBookReviews = ({id}) => {
       .catch((error) => setError(error.message))
   }, []);
 
+  
   const deleteReview = (reviewId) => {
     fetch(`${HOST}/reviews/${reviewId}`, {
       method: 'DELETE',
@@ -70,17 +72,34 @@ const SingleBookReviews = ({id}) => {
                       auth.user.users_id===review.users_id
                       ?
                       <></>
-                      :
-                      <>
-                        <Button variant="warning" className="reviewBtns">
-                          <FaThumbsUp/>
-                        </Button>
-                        <Button variant="warning" className="reviewBtns">
-                          <FaThumbsDown/>
-                        </Button>
-                      </>
-                      
+                      :                        
+                          review.like === null?
+                            <>
+                              <Button variant="warning" className="reviewBtns">
+                                <FaThumbsUp/>
+                              </Button>
+                              <Button variant="warning" className="reviewBtns">
+                                <FaThumbsDown/>
+                              </Button>
+                            </>
+                            :
+                              review.like === 1?
+                              <>
+                                <p>You liked this review. If changed yor opinion </p>
+                                <Button variant="warning" className="reviewBtns">
+                                  <FaThumbsDown/>
+                                </Button>
+                              </>
+                              :
+                              <>
+                                <p>You disliked this review. If changed yor opinion </p>
+                                <Button variant="warning" className="reviewBtns">
+                                  <FaThumbsUp/>
+                                </Button>
+                              </>                     
                     }
+                    <br/>
+                    <p>Total likes: {review.total_likes}</p><p>Total dislikes: {review.total_rows - review.total_likes}</p>
                     {
                       auth.user.users_id===review.users_id
                       ?

@@ -354,7 +354,7 @@ app.get('/genres', async (req, res) => {
   }
 });
 
-/** Get all reactions */
+/** Get reaction for review */
 app.get('/reactions', async (req, res) => {
   try {
     const reactions = await dropDownData.getAllReactions();
