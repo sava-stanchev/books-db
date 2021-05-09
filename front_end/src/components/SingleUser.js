@@ -3,6 +3,7 @@ import {Jumbotron} from "react-bootstrap";
 import {Col, Container, Row, Form} from "react-bootstrap";
 import jwtDecode from 'jwt-decode';
 import SingleUserReviews from './SingleUserReviews';
+import { HOST } from '../common/constants.js';
 
 const SingleUser = () => {
   const [user, setUser] = useState(null);
@@ -11,7 +12,7 @@ const SingleUser = () => {
   const userId = jwtDecode(localStorage.getItem('token')).users_id;
   
   useEffect(() => {
-    fetch(`http://localhost:5555/users/${userId}`, {
+    fetch(`${HOST}/users/${userId}`, {
       method: 'GET',
       headers: {
         'content-type': 'application/json',

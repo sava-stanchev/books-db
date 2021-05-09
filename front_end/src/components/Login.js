@@ -4,6 +4,7 @@ import { useContext, useState } from 'react';
 import {useHistory} from "react-router-dom";
 import AuthContext from '../providers/authContext';
 import decode from 'jwt-decode';
+import { HOST } from '../common/constants.js';
 
 const Login = () => {
   const history = useHistory();
@@ -27,7 +28,7 @@ const Login = () => {
   };
 
   const login = () => {
-    fetch('http://localhost:5555/login', {
+    fetch(`${HOST}/login`, {
       method: 'POST',
       headers: {
         'content-type': 'application/json',

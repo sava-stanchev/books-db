@@ -56,21 +56,18 @@ const banUser = async (id) => {
 };
 
 const updateUser = async (user) => {
-  console.log('ehoo');
   let ban_date = '';
   if (user.ban_date === null) {
     ban_date = null;
   } else {
     ban_date = user.ban_date.slice(0, 10);
   }
-  console.log(ban_date);
   const sql = `
     UPDATE users AS u
     SET u.user_name = ?, u.password = ?, u.first_name = ?, u.last_name =?, u.user_age = ?, u.e_mail = ?, is_admin = ?, u.is_deleted = ?, u.ban_date = ?, u.gender = ?
     WHERE u.users_id = ?
   `;
   const result = await pool.query(sql, [user.user_name, user.password, user.first_name, user.last_name, user.user_age, user.e_mail, user.is_admin, user.is_deleted, ban_date, user.gender, user.users_id]);
-  console.log(result);
   return await getUserById(user.users_id);
 };
 
@@ -86,8 +83,6 @@ const getUserById = async (id) => {
     WHERE u.users_id = ?
   `;
   const result = await pool.query(sql, [id]);
-  console.log('userById');
-  console.log(result[0]);
   return result[0];
 };
 

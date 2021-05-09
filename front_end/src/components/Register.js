@@ -2,6 +2,7 @@ import {Jumbotron} from "react-bootstrap";
 import RegistrationForm from './RegistrationForm';
 import {useEffect, useState} from 'react';
 import {useHistory} from "react-router-dom";
+import { HOST } from '../common/constants.js';
 
 const Register = () => {
   const history = useHistory();
@@ -15,7 +16,7 @@ const Register = () => {
   // const [error, setError] = useState(null);
   
   useEffect(() => {
-    fetch(`http://localhost:5555/genders`, {
+    fetch(`${HOST}/genders`, {
       method: 'GET',
     })
     .then((response) => response.json())
@@ -42,7 +43,7 @@ const Register = () => {
   };
   
   const register = () => {
-    fetch('http://localhost:5555/users', {
+    fetch(`${HOST}/users`, {
       method: 'POST',
       headers: {
         'content-type': 'application/json',

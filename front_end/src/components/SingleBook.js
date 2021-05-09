@@ -4,15 +4,33 @@ import {useHistory} from "react-router-dom";
 import {Button, Col, Row} from "react-bootstrap";
 import SingleBookReviews from './SingleBookReviews';
 import AuthContext from '../providers/authContext';
+import { HOST } from '../common/constants.js';
 
 const SingleBook = props => {
   const auth = useContext(AuthContext);
   const [bookData, setBookData] = useState(null);
   const [error, setError] = useState(null);
   const {id} = props.match.params;
+  const [review, setReview] = useState(null);
+  const userId = {'userId': auth.user.users_id};
+  
+  useEffect(() => {
+    fetch(`${HOST}/reviews/${id}`, { 
+      method: 'PATCH',
+      headers: {
+        'content-type': 'application/json',
+        'authorization': `bearer ${localStorage.getItem('token')}`
+      },
+      body:JSON.stringify(userId),
+    })
+    .then((response) => response.json())
+    .then((data) => setReview(data))
+    .catch((error) => setError(error.message))
+  }, []);
+  console.log(review);
 
   useEffect(() => {
-    fetch(`http://localhost:5555/books/${id}`, { 
+    fetch(`${HOST}/books/${id}`, { 
       method: 'GET',
       headers: {
         'content-type': 'application/json',
@@ -25,7 +43,7 @@ const SingleBook = props => {
   }, [id]);
 
   const borrowBook = () => {
-    fetch(`http://localhost:5555/books/${id}`, { 
+    fetch(`${HOST}/books/${id}`, { 
       method: 'POST',
       headers: {
         'content-type': 'application/json',
@@ -38,7 +56,7 @@ const SingleBook = props => {
   };
 
   const returnBook = () => {
-    fetch(`http://localhost:5555/books/${id}`, { 
+    fetch(`${HOST}/books/${id}`, { 
       method: 'PATCH',
       headers: {
         'content-type': 'application/json',
@@ -51,7 +69,7 @@ const SingleBook = props => {
   };
 
   const deleteBook = () => {
-    fetch(`http://localhost:5555/books/${id}`, {
+    fetch(`${HOST}/books/${id}`, {
       method: 'DELETE',
       headers: {
         'content-type': 'application/json',

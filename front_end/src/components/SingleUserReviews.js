@@ -3,13 +3,14 @@ import {useHistory} from "react-router-dom";
 import {Button} from "react-bootstrap";
 import {FaTrashAlt} from "react-icons/fa";
 import {FaEdit} from "react-icons/fa";
+import { HOST } from '../common/constants.js';
 
 const SingleUserReviews = ({userId}) => {
   const [reviewsData, setReviewsData] = useState([]);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch(`http://localhost:5555/profile/${userId}/reviews`, { 
+    fetch(`${HOST}/profile/${userId}/reviews`, { 
       method: 'GET',
       headers: {
         'content-type': 'application/json',
@@ -22,7 +23,7 @@ const SingleUserReviews = ({userId}) => {
   }, []);
 
   const deleteReview = (reviewId) => {
-    fetch(`http://localhost:5555/reviews/${reviewId}`, {
+    fetch(`${HOST}/reviews/${reviewId}`, {
       method: 'DELETE',
       headers: {
         'content-type': 'application/json',

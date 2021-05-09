@@ -90,14 +90,14 @@ booksController
             message: 'Book not borrowed!',
           });
         }
-        const isBookReturned = await booksData.isBookBorrowedAndReturned(bookId, userId);
+        // const isBookReturned = await booksData.isBookBorrowedAndReturned(bookId, userId);
+        // console.log(isBookReturned);
 
-        if (isBookReturned) {
-          return res.json({
-            msg: `Book has already been returned!`,
-          });
-        }
-
+        // if (isBookReturned) {
+        //   return res.json({
+        //     msg: `Book has already been returned!`,
+        //   });
+        // }
         const setRecord = await booksData.setReturnRecords(+isBookBorrowed.records_id);
         if (!setRecord) {
           return res.json({

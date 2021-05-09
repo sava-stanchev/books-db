@@ -3,6 +3,7 @@ import {useHistory} from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import {Col, Row, Button} from "react-bootstrap";
 import AuthContext from '../providers/authContext';
+import { HOST } from '../common/constants.js';
 
 const Books = () => {
   const auth = useContext(AuthContext);
@@ -19,7 +20,7 @@ const Books = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:5555/books`, {
+    fetch(`${HOST}/books`, {
       method: "GET",
       headers: {
         'content-type': 'application/json',

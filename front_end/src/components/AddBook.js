@@ -48,7 +48,6 @@ const AddBook = () => {
     print_length: '',
   });
   
-  console.log(book);
   const updateBook = (prop, value) => {
     setBook({
       ...book,
