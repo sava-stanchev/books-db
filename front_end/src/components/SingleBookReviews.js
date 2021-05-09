@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useEffect, useState, useContext} from 'react';
 import {useHistory} from "react-router-dom";
 import {Button} from "react-bootstrap";
 import {FaTrashAlt} from "react-icons/fa";
@@ -6,8 +6,10 @@ import {FaEdit} from "react-icons/fa";
 import {FaThumbsUp} from "react-icons/fa";
 import {FaThumbsDown} from "react-icons/fa";
 import { HOST } from '../common/constants.js';
+import AuthContext from '../providers/authContext';
 
 const SingleBookReviews = ({id}) => {
+  const auth = useContext(AuthContext);
   const [reviewsData, setReviewsData] = useState([]);
   const [error, setError] = useState(null);
   console.log(reviewsData);
@@ -64,18 +66,34 @@ const SingleBookReviews = ({id}) => {
                   <h6>{review.content}</h6>
                   <p>by <i>{review.user_name}</i> on {new Date(review.date_created).toLocaleDateString("en-US")}</p>
                   <div>
-                    <Button variant="warning" className="reviewBtns">
-                      <FaThumbsUp/>
-                    </Button>
-                    <Button variant="warning" className="reviewBtns">
-                      <FaThumbsDown/>
-                    </Button>
-                    <Button variant="primary" className="reviewBtns" onClick={() => history.push(`/reviews/${review.reviews_id}/update`)}>
-                      <FaEdit/>
-                    </Button>
-                    <Button variant="danger" className="reviewBtns" onClick={() => deleteReview(review.reviews_id)}>
-                      <FaTrashAlt/>
-                    </Button>
+                    {
+                      auth.user.users_id===review.users_id
+                      ?
+                      <></>
+                      :
+                      <>
+                        <Button variant="warning" className="reviewBtns">
+                          <FaThumbsUp/>
+                        </Button>
+                        <Button variant="warning" className="reviewBtns">
+                          <FaThumbsDown/>
+                        </Button>
+                      </>
+                      
+                    }
+                    {
+                      auth.user.users_id===review.users_id
+                      ?
+                      <>
+                        <Button variant="primary" className="reviewBtns" onClick={() => history.push(`/reviews/${review.reviews_id}/update`)}>
+                          <FaEdit/>
+                        </Button>
+                        <Button variant="danger" className="reviewBtns" onClick={() => deleteReview(review.reviews_id)}>
+                          <FaTrashAlt/>
+                        </Button>
+                      </>
+                      :<></>
+                    }
                   </div>
                   <p>------------------</p>
                 </div>

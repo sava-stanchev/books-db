@@ -27,8 +27,6 @@ const SingleBook = props => {
     .then((data) => setReview(data))
     .catch((error) => setError(error.message))
   }, [bookData]);
-  console.log('Review');
-  console.log(review);
 
   useEffect(() => {
     fetch(`${HOST}/books/${id}`, { 

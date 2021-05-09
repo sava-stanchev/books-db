@@ -24,7 +24,7 @@ const getAllReviewForUser = async (userId) => {
 
 const getReviewsForBook = async (id) => {
   const sql = `
-    SELECT r.content, r.date_created, u.user_name, r.reviews_id FROM reviews AS r
+    SELECT r.content, r.date_created, u.user_name, r.reviews_id, r.users_id FROM reviews AS r
     JOIN books AS b
     ON b.books_id = r.books_id
     JOIN users AS u
