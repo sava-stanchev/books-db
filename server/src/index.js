@@ -160,10 +160,6 @@ app.delete('/reviews/:reviews_id', authMiddleware, loggedUserGuard, banGuard, as
         message: 'You are not authorized to delete this review!',
       });
     }
-<<<<<<< HEAD
-    await reviewsData.deleteReview(req.params.reviews_id);
-=======
->>>>>>> 61170177b0b26a4c7575801b1ede822ab5b60401
 
     await reviewsData.deleteReview(req.params.reviews_id);
     res.status(200).send(review);
