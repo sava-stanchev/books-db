@@ -26,7 +26,8 @@ const SingleBook = props => {
     .then((response) => response.json())
     .then((data) => setReview(data))
     .catch((error) => setError(error.message))
-  }, []);
+  }, [bookData]);
+  console.log('Review');
   console.log(review);
 
   useEffect(() => {
@@ -146,10 +147,18 @@ const SingleBook = props => {
               }
               <br/>
               <br/>
-              <p>Would you like to leave a review?</p>
-              <Button variant="primary" onClick={() => history.push(`/books/${bookData.books_id}/create-review`)}>
-                Create Review
-              </Button>
+                {
+                  review
+                  ?
+                  <></>
+                  :
+                  <>
+                    <p>Would you like to leave a review?</p>
+                    <Button variant="primary" onClick={() => history.push(`/books/${bookData.books_id}/create-review`)}>
+                      Create Review
+                    </Button>
+                  </>
+                }
               <br/>
               <p>__________________________</p>
               <SingleBookReviews id={id} />
