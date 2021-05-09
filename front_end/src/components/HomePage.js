@@ -38,7 +38,7 @@ const HomePage = () => {
   const displayBooks = topBooks.map((book) => {
     return (
       <div className="image-container d-flex justify-content-start m-3">
-        <img src={book.posters} alt={book.title} style={{maxHeight: 300}}/>
+        <img src={book.posters} alt={book.title} style={{maxHeight: 320}}/>
         <div className="overlay d-flex align-items-center justify-content-center">
           {book.title}
         </div>
