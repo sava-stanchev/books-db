@@ -87,7 +87,7 @@ const deleteReview = async (id) => {
 const userReviewByBookId = async (userId, bookId) => {
   const sql = `
   SELECT * FROM reviews AS r
-  WHERE r.users_id = ? AND r.books_id = ?
+  WHERE r.users_id = ? AND r.books_id = ? AND r.is_deleted != 1
   `;
   const result = await pool.query(sql, [userId, bookId]);
   return result;

@@ -97,6 +97,7 @@ const SingleBook = props => {
       {showError()}
       <div className="content">
         <div id="book-detailed">
+        
           <Row>
             <Col>
               <img src={bookData.posters} alt={bookData.title}/>
