@@ -1,5 +1,6 @@
 import {useEffect, useState} from 'react';
 import {Button} from "react-bootstrap";
+import {useHistory} from "react-router-dom";
 
 const HomePage = () => {
   const [topBooks, setTopBooks] = useState([]);
@@ -35,10 +36,12 @@ const HomePage = () => {
     }
   }
 
+  const history = useHistory();
+  
   const displayBooks = topBooks.map((book) => {
     return (
       <div className="image-container d-flex justify-content-start m-3">
-        <img src={book.posters} alt={book.title} style={{maxHeight: 320}}/>
+        <img src={book.posters} alt={book.title} style={{maxHeight: 350}}/>
         <div className="overlay d-flex align-items-center justify-content-center">
           {book.title}
         </div>
@@ -49,9 +52,9 @@ const HomePage = () => {
   return(
     <div>
       <header className="w3-container w3-center">
-        <Button variant="primary">Enter The Library</Button>
+        <Button variant="primary" onClick = {() => history.push('/login')}>Enter The Library</Button>
       </header>
-      <span className="pageTitle">Top 10 Books in The Library</span>
+      <span className="pageTitle">Newest Books in The Library</span>
       {showLoader()}
       {showError()}
       <div className="container-fluid book-app">
