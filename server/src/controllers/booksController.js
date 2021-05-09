@@ -37,8 +37,8 @@ booksController
       }
     })
 
-    /** Retrieve all books */
-    .get('/random', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
+    /** Retrieve some random books */
+    .get('/random', async (req, res) => {
       try {
         const theBooks = await booksData.getRandomBooks();
         res.json(theBooks);
