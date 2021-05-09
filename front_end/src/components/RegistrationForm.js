@@ -1,4 +1,5 @@
 import {Col, Container, Row, Form, Button} from "react-bootstrap";
+import UploadFile from './UploadFile';
 
 const RegistrationForm = ({ genders, updateUser, user, register }) => {
   
@@ -59,6 +60,12 @@ const RegistrationForm = ({ genders, updateUser, user, register }) => {
                 </Form.Control>
               </Form.Group>
             </Form.Row>
+            <Form.Row>
+              <Form.Group as={Col}>
+                <Form.Label>Please select book cover!</Form.Label>
+                  <UploadFile />
+                </Form.Group> 
+              </Form.Row><br/>
             <Button variant="primary" onClick={() => register()}>
               Submit
             </Button>

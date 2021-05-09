@@ -2,13 +2,14 @@ import {Jumbotron} from 'react-bootstrap';
 import UpdateReviewForm from './UpdateReviewForm';
 import {useEffect, useState} from 'react';
 import {useHistory} from "react-router-dom";
+import { HOST } from '../common/constants.js';
 
 const UpdateReview = () => {
   const history = useHistory();
   const reviewId = history.location.pathname.split('/')[2];
 
   useEffect(() => {
-    fetch(`http://localhost:5555/reviews/${reviewId}`, {
+    fetch(`${HOST}/reviews/${reviewId}`, {
       method: 'GET',
       headers: {
         'content-type': 'application/json',
@@ -33,7 +34,7 @@ const UpdateReview = () => {
   };
 
   const updateReview = () => {
-    fetch(`http://localhost:5555/reviews/${reviewId}/update`, {
+    fetch(`${HOST}/reviews/${reviewId}/update`, {
       method: 'PATCH',
       headers: {
         'content-type': 'application/json',

@@ -96,9 +96,7 @@ const returnBook = async (bookId) => {
   WHERE books.books_id = ?
   AND books.is_borrowed = 1
   `;
-  const varsss = await pool.query(sql, [bookId]);
-  console.log(varsss);
-  return varsss;
+  return await pool.query(sql, [bookId]);
 };
 
 const setReturnRecords = async (recordsId) => {
@@ -106,7 +104,6 @@ const setReturnRecords = async (recordsId) => {
   UPDATE records AS r SET date_returned = NOW()
   WHERE r.records_id = ?
   `;
-
   return await pool.query(sql, [recordsId]);
 };
 

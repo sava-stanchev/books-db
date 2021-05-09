@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import {FaStar} from "react-icons/fa";
 import {useHistory} from "react-router-dom";
+import { HOST } from '../common/constants.js';
 
 const StarRating = ({bookData: book}) => {
   const [rating, setRating] = useState(null);
@@ -9,7 +10,7 @@ const StarRating = ({bookData: book}) => {
   const [averageRating, setAverageRating] = useState(book.average_rating);
 
   useEffect(() => {
-    fetch(`http://localhost:5555/books/${book.books_id}/rating`, {
+    fetch(`${HOST}/books/${book.books_id}/rating`, {
       method: 'GET',
       headers: {
         'content-type': 'application/json',
@@ -22,7 +23,7 @@ const StarRating = ({bookData: book}) => {
   }, [book.books_id, averageRating])
 
   const updateRating = (stars)=>{
-    fetch(`http://localhost:5555/books/${book.books_id}/rating`, {
+    fetch(`${HOST}/books/${book.books_id}/rating`, {
       method: 'PATCH',
       headers: {
         'content-type': 'application/json',

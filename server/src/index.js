@@ -95,7 +95,7 @@ app.delete('/logout', authMiddleware, async (req, res) => {
   }
 });
 
-/** Get reviews for a user */
+/** Get reviews from a user */
 app.get('/profile/:userId/reviews', async (req, res) => {
   try {
     const userId = req.params.userId;
@@ -105,6 +105,18 @@ app.get('/profile/:userId/reviews', async (req, res) => {
     return res.status(400).json({
       error: error.message,
     });
+  }
+});
+
+// get review by bookId and userId
+app.patch('/reviews/:bookId', async (req, res) => {
+  try {
+    const bookId = req.params.bookId;
+    const userId = req.body.userId;
+    const review = await reviewsData.userReviewByBookId(userId, bookId);
+    return res.status(200).send(review[0]);
+  } catch (error) {
+    console.log(error);
   }
 });
 
@@ -144,8 +156,6 @@ app.patch('/reviews/:reviewId/update', authMiddleware, loggedUserGuard, banGuard
 app.delete('/reviews/:reviews_id', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
   try {
     const review = await reviewsData.getReviewById(req.params.reviews_id);
-    console.log('review');
-    console.log(review);
     if (!review || review.is_deleted === 1) {
       return res.status(400).json({
         message: 'Review not found!',
@@ -157,7 +167,6 @@ app.delete('/reviews/:reviews_id', authMiddleware, loggedUserGuard, banGuard, as
       });
     }
     await reviewsData.deleteReview(req.params.reviews_id);
-    console.log( await reviewsData.getReviewsForBook(review.books_id));
 
     res.status(200).send(review);
   } catch (error) {

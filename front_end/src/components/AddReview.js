@@ -2,6 +2,8 @@ import {Jumbotron} from 'react-bootstrap';
 import {useEffect, useState} from 'react';
 import {useHistory} from "react-router-dom";
 import AddReviewForm from './AddReviewForm';
+import { HOST } from '../common/constants.js';
+
 
 const AddReview = () => {
   const history = useHistory();
@@ -27,7 +29,7 @@ const AddReview = () => {
   };
 
   const addReview = () => {
-    fetch(`http://localhost:5555/books/${bookId}/create-review`, {
+    fetch(`${HOST}/books/${bookId}/create-review`, {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
