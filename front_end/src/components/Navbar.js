@@ -32,7 +32,8 @@ const NavBar = () => {
                 <Nav.Link href="#user">User Info</Nav.Link>
               </Link>
             </>
-            :<></>
+            :
+            <></>
             }            
             {
             auth.isLoggedIn && auth.user.is_admin

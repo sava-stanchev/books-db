@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import {FaStar} from "react-icons/fa";
-import {useHistory} from "react-router-dom";
-import { HOST } from '../common/constants.js';
 
 const StarRating = ({bookData: book}) => {
   const [rating, setRating] = useState(null);
@@ -35,10 +33,9 @@ const StarRating = ({bookData: book}) => {
     .then(data => {
       if (data.message) {
         window.alert(data.message)
-      }else {
+      } else {
         setAverageRating(data.avg_rating)
       }
-
     })
     .catch((error) => setError(error.message))
   }
@@ -49,11 +46,10 @@ const StarRating = ({bookData: book}) => {
     }
   }
 
-  const history = useHistory();
-
   if  (rating === null) {
     setRating(0);
   }
+
   const stars = Math.round(averageRating);
 
   return (
@@ -81,10 +77,10 @@ const StarRating = ({bookData: book}) => {
         )
       })}
       {
-        rating?
+        rating ?
         <p>You rated this book: {rating}</p>
         :
-        <p>You still not rated this book: </p>
+        <p>You still haven't rated this book!</p>
       }
       <p>Average rating: ({averageRating})</p>
     </div>

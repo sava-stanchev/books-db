@@ -4,7 +4,6 @@ import helmet from 'helmet';
 import reviewsData from './data/reviews.js';
 import userCreateValidator from './validators/user-create-validator.js';
 import validateBody from './middlewares/validate-body.js';
-import transformBody from './middlewares/transform-body.js';
 import dotenv from 'dotenv';
 import createToken from './auth/create-token.js';
 import usersData from './data/users.js';
@@ -18,9 +17,7 @@ import {userRole} from './common/user-role.js';
 import banGuard from './middlewares/ban-guard.js';
 import reviewService from './services/review-service.js';
 import reviewsLikeData from './data/reviewsLike.js';
-import booksRatingData from './data/books-rating.js';
 import userService from './services/user-service.js';
-import reviewCreateValidator from './validators/review-create-validation.js';
 import booksController from './controllers/booksController.js';
 
 const config = dotenv.config().parsed;
@@ -82,7 +79,6 @@ app.post('/login', async (req, res) => {
 /** Logout */
 app.delete('/logout', authMiddleware, async (req, res) => {
   try {
-    console.log('------------------------');
     await usersData.logoutUser(req.headers.authorization.replace('Bearer ', ''));
 
     res.json({
@@ -124,10 +120,8 @@ app.patch('/reviews/:bookId', async (req, res) => {
 app.patch('/reviews/:reviewId/update', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
   const reviewId = req.params.reviewId;
   const updateData = req.body;
-
   try {
     const review = await reviewsData.getReviewById(+reviewId);
-
     if (!review) {
       res.status(404).send({
         message: 'Review not found!',
@@ -166,8 +160,12 @@ app.delete('/reviews/:reviews_id', authMiddleware, loggedUserGuard, banGuard, as
         message: 'You are not authorized to delete this review!',
       });
     }
+<<<<<<< HEAD
     await reviewsData.deleteReview(req.params.reviews_id);
+=======
+>>>>>>> 61170177b0b26a4c7575801b1ede822ab5b60401
 
+    await reviewsData.deleteReview(req.params.reviews_id);
     res.status(200).send(review);
   } catch (error) {
     return res.status(400).json({
@@ -224,7 +222,7 @@ app.post('/users/:id/update', authMiddleware, loggedUserGuard, roleAuth(userRole
     console.log('req body');
     console.log(userInfo);
     const a = await usersData.updateUser(userInfo);
-    //const a = await userData.updateUser(userInfo);
+    // const a = await userData.updateUser(userInfo);
     console.log(a);
     // await usersData.banUser(+req.params.id);
     // return res.send(await usersData.getUserById(req.params.id));
@@ -299,7 +297,6 @@ app.get('/users/:id', authMiddleware, loggedUserGuard, async (req, res) => {
       });
     }
 
-    console.log(user);
     res.status(200).send(user);
   } catch (error) {
     return res.status(400).json({

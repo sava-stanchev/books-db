@@ -12,11 +12,11 @@ const getAllReviews = async () => {
 
 const getAllReviewForUser = async (userId) => {
   const sql = `
-  SELECT r.reviews_id, r.content, r.date_created, b.title, u.user_name
-  FROM reviews AS r
-  JOIN users AS u ON r.users_id = u.users_id
-  JOIN books AS b ON r.books_id = b.books_id
-  WHERE r.is_deleted != 1 and r.users_id = ?
+    SELECT r.reviews_id, r.content, r.date_created, b.title, u.user_name
+    FROM reviews AS r
+    JOIN users AS u ON r.users_id = u.users_id
+    JOIN books AS b ON r.books_id = b.books_id
+    WHERE r.is_deleted != 1 and r.users_id = ?
   `;
   const result = await pool.query(sql, [userId]);
   return result;
@@ -24,12 +24,12 @@ const getAllReviewForUser = async (userId) => {
 
 const getReviewsForBook = async (id) => {
   const sql = `
-  SELECT r.content, r.date_created, u.user_name, r.reviews_id FROM reviews AS r
-  JOIN books AS b
-  ON b.books_id = r.books_id
-  JOIN users AS u
-  ON u.users_id = r.users_id
-  WHERE r.is_deleted != 1 AND b.books_id = ?
+    SELECT r.content, r.date_created, u.user_name, r.reviews_id FROM reviews AS r
+    JOIN books AS b
+    ON b.books_id = r.books_id
+    JOIN users AS u
+    ON u.users_id = r.users_id
+    WHERE r.is_deleted != 1 AND b.books_id = ?
   `;
   const result = await pool.query(sql, [id]);
   return result;
@@ -59,9 +59,9 @@ const updateReviewSQL = async (review) => {
   const {reviews_id, content} = review;
 
   const sql = `
-      UPDATE reviews AS r SET
-      r.content = ?
-      WHERE r.reviews_id = ?
+    UPDATE reviews AS r SET
+    r.content = ?
+    WHERE r.reviews_id = ?
   `;
 
   return await pool.query(sql, [content, reviews_id]);
