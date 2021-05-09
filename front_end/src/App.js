@@ -14,6 +14,7 @@ import UpdateBook from './components/UpdateBook';
 import Users from './components/Users';
 import SingleUser from './components/SingleUser'
 import UpdateReview from './components/UpdateReview';
+import HomePage from './components/HomePage';
 
 const App = () => {
 
@@ -29,6 +30,7 @@ const App = () => {
           <NavBar />
             <Switch>
               <Redirect path="/" exact to="/home" />
+              <Route path="/home" exact component={HomePage}/>
               <GuardedRoute path="/books" exact component={Books} isLoggedIn={authValue.isLoggedIn}/>
               <GuardedRoute path="/books/create" exact component={AddBook} isLoggedIn={authValue.isLoggedIn}/>
               <GuardedRoute path="/books/:id" exact component={SingleBook} isLoggedIn={authValue.isLoggedIn}/>

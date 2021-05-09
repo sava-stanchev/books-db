@@ -357,3 +357,57 @@ input[type="radio"] {
 .reviewBtns {
   padding: 5px 9px !important;
 }
+
+.book-app > .row {
+	overflow-x: auto;
+	flex-wrap: nowrap;
+}
+
+.image-container {
+	position: relative;
+	transition: transform 0.2s;
+}
+
+.image-container:hover {
+	cursor: pointer;
+	transform: scale(1.1);
+}
+
+.image-container:hover .overlay {
+	opacity: 1;
+}
+
+.overlay {
+	position: absolute;
+	background: rgba(0, 0, 0, 0.8);
+	width: 100%;
+	transition: 0.5s ease;
+	opacity: 0;
+	bottom: 0;
+	font-size: 20px;
+	padding: 20px;
+	text-align: center;
+  color: white;
+}
+
+.pageTitle {
+  text-transform: uppercase;
+  display: flex;
+  justify-content: center;
+  font-family: 'Cardo', serif;
+  font-size: 2vw;
+  padding: 4px;
+  border-radius: 50px;
+  color: black;
+}
+
+@media (max-width: 1000px) {
+  .pageTitle {
+    font-size: 6.4vw;
+  }
+}
+
+.w3-container {
+  padding: 165px 16px;
+  background-image: url("./libary-img/library-img.jpg");
+}
