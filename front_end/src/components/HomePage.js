@@ -9,7 +9,7 @@ const HomePage = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:5555/books`, {
+    fetch(`http://localhost:5555/books/random`, {
       method: "GET",
       headers: {
         'content-type': 'application/json',
@@ -37,7 +37,7 @@ const HomePage = () => {
   }
 
   const history = useHistory();
-  
+
   const displayBooks = topBooks.map((book) => {
     return (
       <div className="image-container d-flex justify-content-start m-3">
@@ -54,7 +54,7 @@ const HomePage = () => {
       <header className="w3-container w3-center">
         <Button variant="primary" onClick = {() => history.push('/login')}>Enter The Library</Button>
       </header>
-      <span className="pageTitle">Newest Books in The Library</span>
+      <span className="pageTitle">Some of our books:</span>
       {showLoader()}
       {showError()}
       <div className="container-fluid book-app">

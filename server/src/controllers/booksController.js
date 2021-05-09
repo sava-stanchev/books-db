@@ -37,6 +37,18 @@ booksController
       }
     })
 
+    /** Retrieve all books */
+    .get('/random', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
+      try {
+        const theBooks = await booksData.getRandomBooks();
+        res.json(theBooks);
+      } catch (error) {
+        return res.status(400).json({
+          error: error.message,
+        });
+      }
+    })
+
     /** Retrieve one book */
     .get('/:id', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
       const bookId = +req.params.id;

@@ -7,6 +7,15 @@ const getAllBooks = async () => {
   `);
 };
 
+const getRandomBooks = async () => {
+  return await pool.query(`
+    SELECT * FROM books b
+    WHERE b.is_deleted != 1
+    ORDER BY RAND ()
+    LIMIT 10 
+  `);
+};
+
 const sortBooksByYear = async (sort) => {
   if (sort === 'year_asc') {
     return await pool.query(`
@@ -241,4 +250,5 @@ export default {
   setBorrowRecords,
   bookAverageRating,
   getBookByIdForUpdate,
+  getRandomBooks,
 };
