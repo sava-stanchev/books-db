@@ -10,12 +10,14 @@ const getReviewLikeByUser = async (reviewId, userId) => {
   return result[0];
 };
 
-const setLikeToReview = async (userId, reviewId, reaction) => {
+const setLikeToReview = async (userId, reviewId) => {
   const newLikeSql = `
-  INSERT INTO review_likes (users_id, reviews_id, reactions_id, is_deleted)
-  VALUES (?, ?, ?, 0)
+  INSERT INTO review_likes (users_id, reviews_id, likes, dislike, is_deleted)
+  VALUES (?, ?, 1 , 0, 0)
   `;
-  const result = await pool.query(newLikeSql, [userId, reviewId, reaction]);
+  console.log('set');
+  const result = await pool.query(newLikeSql, [userId, reviewId]);
+  console.log(result);
 
   const sql = `
   SELECT * FROM review_likes AS r
@@ -27,13 +29,45 @@ const setLikeToReview = async (userId, reviewId, reaction) => {
   return newLike;
 };
 
-const updateReviewLike = async (reviewLikesId, reaction) => {
+const setDislikeToReview = async (userId, reviewId) => {
+  const newLikeSql = `
+  INSERT INTO review_likes (users_id, reviews_id, likes, dislike, is_deleted)
+  VALUES (?, ?, 0, 1, 0)
+  `;
+  const result = await pool.query(newLikeSql, [userId, reviewId]);
+
   const sql = `
-  UPDATE review_likes AS r 
-  SET r.reactions_id = ?
+  SELECT * FROM review_likes AS r
   WHERE r.review_likes_id = ?
   `;
-  const result = await pool.query(sql, [reaction, reviewLikesId]);
+
+  const newLike = (await pool.query(sql, result.insertId))[0];
+
+  return newLike;
+};
+
+
+const updateReviewLike = async (reviewLikesId) => {
+  const sql = `
+  UPDATE review_likes AS r 
+  SET r.likes = 1, r.dislike = 0
+  WHERE r.review_likes_id = ?
+  `;
+  const result = await pool.query(sql, [reviewLikesId]);
+  console.log('like');
+  console.log(result);
+  return result;
+};
+
+const updateReviewDislike = async (reviewLikesId) => {
+  const sql = `
+  UPDATE review_likes AS r 
+  SET r.likes = 0, r.dislike = 1
+  WHERE r.review_likes_id = ?
+  `;
+  const result = await pool.query(sql, [reviewLikesId]);
+  console.log('dislike');
+  console.log(result);
   return result;
 };
 
@@ -54,6 +88,8 @@ const reviewLikesByBookAndUser = async (reviewId) => {
 export default {
   getReviewLikeByUser,
   setLikeToReview,
+  setDislikeToReview,
   updateReviewLike,
+  updateReviewDislike,
   reviewLikesByBookAndUser,
 };

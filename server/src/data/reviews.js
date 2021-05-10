@@ -24,9 +24,9 @@ const getAllReviewForUser = async (userId) => {
 
 const getReviewsForBook = async (id) => {
   const sql = `
-  SELECT r.content, r.date_created, u.user_name, r.reviews_id, r.users_id, rl.like, 
-  (SELECT SUM(lr.like) FROM review_likes AS lr) AS total_likes,
-  (SELECT count(*) FROM review_likes AS lr) AS total_rows
+  SELECT r.content, r.date_created, u.user_name, r.reviews_id, r.users_id, rl.likes, rl.dislike, rl.review_likes_id,
+  (SELECT SUM(lr.likes) FROM review_likes AS lr) AS total_likes,
+  (SELECT SUM(lr.dislike) FROM review_likes AS lr) AS total_dislikes
   FROM reviews AS r
       JOIN books AS b
       ON b.books_id = r.books_id
@@ -109,6 +109,17 @@ const getAnyReviewById = async (id) => {
   `;
   const result = await pool.query(sql, [id]);
   return result;
+};
+
+const getTotalLikesDislikes = async (id) =>{
+  const sql =`
+  SELECT SUM(r.likes) AS total_likes, SUM(r.dislike) AS total_dislikes 
+  FROM review_likes AS r
+  WHERE r.reviews_id = ?  
+  `;
+  const total = await pool.query(sql, [id]);
+  console.log(total);
+  return total;
 };
 
 export default {

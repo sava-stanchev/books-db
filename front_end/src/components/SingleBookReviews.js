@@ -12,6 +12,9 @@ const SingleBookReviews = ({id}) => {
   const auth = useContext(AuthContext);
   const [reviewsData, setReviewsData] = useState([]);
   const [error, setError] = useState(null);
+  const [total, setTotalData] = useState(null);
+  
+
   
   console.log(reviewsData);
 
@@ -42,11 +45,51 @@ const SingleBookReviews = ({id}) => {
     .catch((error) => setError(error.message));
   };
 
-  const updateLike = (data) => {
-    data?console.log('I like that'):console.log('I not like that');
-    
+  const updateLike = (reviewLikesId, reviews_id) => {
+    const reviewsId = {reviews_id};
+    const bookId = {books_id: id};
+    fetch(`${HOST}/reviews/${reviewLikesId}/like`, {
+      method: 'PUT',
+      headers: {
+        'content-type': 'application/json',
+        'authorization': `bearer ${localStorage.getItem('token')}`
+      },
+      body: JSON.stringify([reviewsId, bookId])
+    })
+    .then((res) => res.json())
+    .then(data => setReviewsData(data))
+    .catch((error) => setError(error.message));
+  };
 
-  }
+  const updateDislike = (reviewLikesId, reviews_id) => {
+    const reviewsId = {reviews_id};
+    const bookId = {books_id: id};
+    fetch(`${HOST}/reviews/${reviewLikesId}/dislike`, {
+      method: 'PUT',
+      headers: {
+        'content-type': 'application/json',
+        'authorization': `bearer ${localStorage.getItem('token')}`
+      },
+      body: JSON.stringify([reviewsId, bookId])
+    })
+    .then((res) => res.json())
+    .then(data => setTotalData(data))
+    .catch((error) => setError(error.message));
+  };
+
+  useEffect((reviewId) =>{
+    console.log('total');
+    fetch(`${HOST}/reviews/${reviewId}/total`, {
+      method: 'GET',
+      headers: {
+        'content-type': 'application/json',
+        'authorization': `bearer ${localStorage.getItem('token')}`
+      },
+    })
+    .then((res) => res.json())
+    .then(data => setTotalData(data))
+    .catch((error) => setError(error.message));
+  }, []);
 
   const history = useHistory();
 
@@ -56,7 +99,7 @@ const SingleBookReviews = ({id}) => {
     }
   }
 
-  if  (reviewsData === null) {
+  if  (reviewsData === null ) { //|| total === null
     return <div className="Loader"></div>;
   }
 
@@ -79,33 +122,33 @@ const SingleBookReviews = ({id}) => {
                       ?
                       <></>
                       :                        
-                          review.like === null?
+                          review.review_likes_id === null?
                             <>
-                              <Button variant="warning" className="reviewBtns" onClick={() => updateLike(1)}>
+                              <Button variant="warning" className="reviewBtns" onClick={() => updateLike(review.review_likes_id, review.reviews_id)}>
                                 <FaThumbsUp/>
                               </Button>
-                              <Button variant="warning" className="reviewBtns" onClick={() => updateLike(0)}>
+                              <Button variant="warning" className="reviewBtns" onClick={() => updateDislike(review.review_likes_id, review.reviews_id)}>
                                 <FaThumbsDown/>
                               </Button>
                             </>
                             :
-                              review.like === 1?
+                              review.likes === 1?
                               <>
                                 <p>You liked this review. If changed yor opinion </p>
-                                <Button variant="warning" className="reviewBtns" onClick={() => updateLike(1)}>
+                                <Button variant="warning" className="reviewBtns" onClick={() => updateDislike(review.review_likes_id, review.reviews_id)}>
                                   <FaThumbsDown/>
                                 </Button>
                               </>
                               :
                               <>
                                 <p>You disliked this review. If changed yor opinion </p>
-                                <Button variant="warning" className="reviewBtns" onClick={() => updateLike(0)}>
+                                <Button variant="warning" className="reviewBtns" onClick={() => updateLike(review.review_likes_id, review.reviews_id)}>
                                   <FaThumbsUp/>
                                 </Button>
                               </>                     
                     }
                     <br/>
-                    <p>Total likes: {review.total_likes}</p><p>Total dislikes: {review.total_rows - review.total_likes}</p>
+                    <p>Total likes: {review.total_likes?review.total_likes:0}</p><p>Total dislikes: {review.total_dislikes?review.total_dislikes:0}</p>
                     {
                       auth.user.users_id===review.users_id
                       ?

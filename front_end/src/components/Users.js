@@ -32,17 +32,10 @@ const Users = () => {
     }
   }
 
-  const updateUser = (i, prop, value)=> {
-    console.log(i);
-    console.log(users[i]);
-    //console.log(`${prop} ` + users[i][prop]);
-    //const user = users[i];
+  const updateUser = (i, userId, prop, value)=> {
     let user = {...users[i], [prop]: value}
-    console.log(user);
-      
-    //console.log(users[i]);
 
-    fetch(`${HOST}/users/${users[i].users_id}/update`, {
+    fetch(`${HOST}/users/${userId}/update`, {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
@@ -54,8 +47,8 @@ const Users = () => {
     .then(data => users[i] = data)
     .then(()=> setLoading(false))
     .catch((error) => setError(error.message));
-    const updatedUsers = [...users, users[i]=user]
-    console.log(updatedUsers);
+    users[i]=user;
+    const updatedUsers = [...users];
     setUsers(updatedUsers);
 
   };
@@ -87,45 +80,47 @@ const Users = () => {
         <tbody>
           {
           users.map((u, i) => {
-            return (
-              <>
-                <tr>
-                  <td>{u.users_id}</td>
-                  <td>{u.user_name}</td>
-                  <td>{u.first_name}</td>
-                  <td>{u.last_name}</td>
-                  <td>{u.e_mail}</td>
-                  <td>{u.user_age ? u.user_age : <p>-</p>}
-                  </td>
-                  <td>{u.is_deleted
-                        ?<Button variant="warning" onClick={() =>updateUser(i, 'is_deleted', 0)}>
-                            Return user!
-                        </Button>
-                        :<Button variant="danger" onClick={() => updateUser(i, 'is_deleted', 1)}>
-                            Delete!
-                        </Button>}
-                  </td>
-                  <td>{u.ban_date
-                      ? 
-                      <>
-                        <>{new Date(u.ban_date).toLocaleDateString()}</><br/>
-                        <Button variant="primary" onClick={() => updateUser(i, 'ban_date', null)}>
-                          Unban user!
-                        </Button>
-                      </>
-                      :
-                      <Button variant="primary" onClick={() => updateUser(i, 'ban_date', new Date(new Date().getTime() + BAN_DAYS))}>
-                        Ban user!
-                      </Button>}
-                  </td>
-                  <td>
-                      <Button variant="primary" onClick={() => console.log('Edit')}>
-                        Edit!
-                      </Button>
-                  </td>
-                </tr>
-            </>
+            
+              return (
+                <>
+                    <tr>
+                      <td>{u.users_id}</td>
+                      <td>{u.user_name}</td>
+                      <td>{u.first_name}</td>
+                      <td>{u.last_name}</td>
+                      <td>{u.e_mail}</td>
+                      <td>{u.user_age ? u.user_age : <p>-</p>}
+                      </td>
+                      <td>{u.is_deleted
+                            ?<Button variant="warning" onClick={() =>updateUser(i, u.users_id, 'is_deleted', 0)}>
+                                Return user!
+                            </Button>
+                            :<Button variant="danger" onClick={() => updateUser(i, u.users_id, 'is_deleted', 1)}>
+                                Delete!
+                            </Button>}
+                      </td>
+                      <td>{u.ban_date
+                          ? 
+                          <>
+                            <>{new Date(u.ban_date).toLocaleDateString()}</><br/>
+                            <Button variant="primary" onClick={() => updateUser(i, u.users_id, 'ban_date', null)}>
+                              Unban user!
+                            </Button>
+                          </>
+                          :
+                          <Button variant="primary" onClick={() => updateUser(i, u.users_id, 'ban_date', new Date(new Date().getTime() + BAN_DAYS))}>
+                            Ban user!
+                          </Button>}
+                      </td>
+                      <td>
+                          <Button variant="primary" onClick={() => console.log('Edit')}>
+                            Edit!
+                          </Button>
+                      </td>
+                    </tr>
+              </>
             )
+            
           })
           }
           

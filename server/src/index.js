@@ -20,6 +20,7 @@ import reviewsLikeData from './data/reviewsLike.js';
 import userService from './services/user-service.js';
 import booksController from './controllers/booksController.js';
 
+
 const config = dotenv.config().parsed;
 
 const PORT = config.PORT;
@@ -187,26 +188,75 @@ app.delete('/reviews/:reviews_id', authMiddleware, loggedUserGuard, banGuard, as
   }
 });
 
-/** Like reviews */
-app.put('/reviews/:reviews_id/review_likes', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
+/** Like review */
+app.put('/reviews/:review_likes_id/like', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
   try {
-    const reviewId = req.params.reviews_id;
-    const reaction = req.body.reaction;
+    const reviewLikesId = req.params.review_likes_id;
+    const reviewsId = req.body[0].reviews_id;
     const userId = req.user.user_id;
-    const review = await reviewsData.getReviewById(reviewId);
+    const bookId = req.body[1].books_id;
+    const review = await reviewsData.getReviewById(reviewsId);
     if (!review) {
       return res.status(404).json({
         massage: 'Review not found!',
       });
-    }
+    };
 
-    const checkForLike = await reviewsLikeData.getReviewLikeByUser(reviewId, userId);
-    if (checkForLike) {
-      await reviewsLikeData.updateReviewLike(checkForLike.review_likes_id, reaction);
-      return res.status(200).send(await reviewsLikeData.reviewLikesByBookAndUser(reviewId));
-    }
-    await reviewsLikeData.setLikeToReview(userId, reviewId, reaction);
-    return res.status(200).send(await reviewsLikeData.reviewLikesByBookAndUser(reviewId));
+    if (reviewLikesId === 'null' || reviewLikesId === 'undefined') {
+      const like = await reviewsLikeData.setLikeToReview(userId, reviewsId);
+      return res.status(200).send(await reviewsData.getReviewsForBook(bookId));
+    };
+
+    const result = await reviewsLikeData.updateReviewLike(reviewLikesId);
+    return res.status(200).send(await reviewsData.getReviewsForBook(bookId));
+  } catch (error) {
+    return res.status(400).json({
+      error: error.message,
+    });
+  }
+});
+
+
+/** dislike review */
+app.put('/reviews/:review_likes_id/dislike', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
+  try {
+    const reviewLikesId = req.params.review_likes_id;
+    const reviewsId = req.body[0].reviews_id;
+    const userId = req.user.user_id;
+    const bookId = req.body[1].books_id;
+    const review = await reviewsData.getReviewById(reviewsId);
+    if (!review) {
+      return res.status(404).json({
+        massage: 'Review not found!',
+      });
+    };
+
+    if (reviewLikesId === 'null' || reviewLikesId === 'undefined') {
+      const dislike = await reviewsLikeData.setDislikeToReview(userId, reviewsId);
+      return res.status(200).send(await reviewsData.getReviewsForBook(bookId));
+    };
+
+    const result = await reviewsLikeData.updateReviewDislike(reviewLikesId);
+    return res.status(200).send(await reviewsData.getReviewsForBook(bookId));
+  } catch (error) {
+    return res.status(400).json({
+      error: error.message,
+    });
+  }
+});
+
+/** total likes dislikes  */
+app.put('/reviews/:review_id/total', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
+  try {
+    const reviewsId = req.body.reviews_id;
+    const userId = req.user.user_id;
+
+    if (!reviewId) {
+      return null;
+    };
+
+    const total = await reviewsLikeData.getTotalLikesDislikes(reviewsId);
+    return res.status(200).send(total);
   } catch (error) {
     return res.status(400).json({
       error: error.message,
