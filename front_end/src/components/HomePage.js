@@ -55,9 +55,9 @@ const HomePage = () => {
     <div>
       <header className="w3-container w3-center">
       {auth.isLoggedIn ?
-        <Button variant="primary" onClick = {() => history.push('/books')}>Enter The Library</Button>
+        <Button variant="primary" size="lg" onClick = {() => history.push('/books')}>Enter The Library</Button>
       :
-        <Button variant="primary" onClick = {() => history.push('/login')}>Enter The Library</Button>
+        <Button variant="primary" size="lg" onClick = {() => history.push('/login')}>Enter The Library</Button>
       }
       </header>
       <span className="pageTitle">Some of our books:</span>
