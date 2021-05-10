@@ -410,3 +410,13 @@ input[type="radio"] {
   padding: 165px 16px;
   background-image: url("./libary-img/library-img.jpg");
 }
+
+.book-cover-size {
+  max-height: 375px;
+}
+
+@media (min-width: 1680px) {
+  .book-cover-size {
+    max-height: 500px;
+  }
+}

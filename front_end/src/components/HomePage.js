@@ -1,15 +1,18 @@
-import {useEffect, useState} from 'react';
+import {useEffect, useState, useContext} from 'react';
 import {Button} from "react-bootstrap";
 import {useHistory} from "react-router-dom";
+import AuthContext from '../providers/authContext';
+import {HOST} from '../common/constants.js';
 
 const HomePage = () => {
+  const auth = useContext(AuthContext);
   const [topBooks, setTopBooks] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:5555/books/random`, {
+    fetch(`${HOST}/books/random`, {
       method: "GET",
       headers: {
         'content-type': 'application/json',
@@ -40,7 +43,7 @@ const HomePage = () => {
   const displayBooks = topBooks.map((book) => {
     return (
       <div className="image-container d-flex justify-content-start m-3">
-        <img src={book.posters} alt={book.title} style={{maxHeight: 350}}/>
+        <img className="book-cover-size" src={book.posters} alt={book.title} />
         <div className="overlay d-flex align-items-center justify-content-center">
           {book.title}
         </div>
@@ -51,7 +54,11 @@ const HomePage = () => {
   return(
     <div>
       <header className="w3-container w3-center">
+      {auth.isLoggedIn ?
+        <Button variant="primary" onClick = {() => history.push('/books')}>Enter The Library</Button>
+      :
         <Button variant="primary" onClick = {() => history.push('/login')}>Enter The Library</Button>
+      }
       </header>
       <span className="pageTitle">Some of our books:</span>
       {showLoader()}
