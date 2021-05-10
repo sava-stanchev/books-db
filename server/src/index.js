@@ -276,6 +276,29 @@ app.get('/reviews', async (req, res) => {
   }
 });
 
+/** Likes by review */
+app.get('/likes/:reviews_id', async (req, res) => {
+  console.log('Likes by review');
+  try {
+    const reviewId = req.params.reviews_id;
+    console.log('reviewId');
+    console.log(reviewId);
+    const reactions = await reviewsLikeData.reviewLikesByReview(reviewId);
+    console.log('reactions');
+    console.log(reactions);
+    if (reactions === 'undefined') {
+      return null;
+    }
+
+    console.log(reactions);
+    return res.send(reactions);
+  } catch (error) {
+    return res.status(400).json({
+      error: error.message,
+    });
+  }
+});
+
 /** update user info */
 app.post('/users/:id/update', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
   console.log('Mara ba');

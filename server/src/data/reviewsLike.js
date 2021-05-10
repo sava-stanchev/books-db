@@ -85,6 +85,19 @@ const reviewLikesByBookAndUser = async (reviewId) => {
   return result;
 };
 
+const reviewLikesByReview = async (reviewId) => {
+  console.log('Data likes');
+  const sql =`
+  SELECT * 
+  FROM review_likes
+  WHERE reviews_id = ?
+  `;
+
+  const result = await pool.query(sql, [reviewId]);
+  console.log(result[0]);
+  return result[0];
+};
+
 export default {
   getReviewLikeByUser,
   setLikeToReview,
@@ -92,4 +105,5 @@ export default {
   updateReviewLike,
   updateReviewDislike,
   reviewLikesByBookAndUser,
+  reviewLikesByReview,
 };

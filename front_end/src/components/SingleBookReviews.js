@@ -17,6 +17,7 @@ const SingleBookReviews = ({id}) => {
 
   
   console.log(reviewsData);
+  console.log(total);
 
   useEffect(() => {
     fetch(`${HOST}/books/${id}/reviews`, { 
@@ -78,7 +79,6 @@ const SingleBookReviews = ({id}) => {
   };
 
   useEffect((reviewId) =>{
-    console.log('total');
     fetch(`${HOST}/reviews/${reviewId}/total`, {
       method: 'GET',
       headers: {
@@ -89,7 +89,20 @@ const SingleBookReviews = ({id}) => {
     .then((res) => res.json())
     .then(data => setTotalData(data))
     .catch((error) => setError(error.message));
-  }, []);
+  }, [reviewsData]);
+
+  const reactionsByReview = (review) => {
+    fetch(`${HOST}/likes/${review.reviews_id}`, {
+      method: 'GET',
+      headers: {
+        'content-type': 'application/json',
+        'authorization': `bearer ${localStorage.getItem('token')}`
+      },
+    })
+    .then((res) => res.json())
+    .then(data => {return data})
+    .catch((error) => setError(error.message));
+  }
 
   const history = useHistory();
 
@@ -111,6 +124,8 @@ const SingleBookReviews = ({id}) => {
       <div className="review-body">
         <div className="reviews">
           {reviewsData.map((review) => {
+            const reaction = reactionsByReview(review);
+            console.log(reaction);
             return (
               <>
                 <div className="review">
