@@ -149,21 +149,20 @@ const SingleBookReviews = ({id}) => {
                             :
                               review.likes === 1?
                               <>
-                                <p>You liked this review. If changed yor opinion </p>
+                                <p style={{fontSize: 13}}>You liked this review. Did you change your mind?</p>
                                 <Button variant="warning" className="reviewBtns" onClick={() => updateDislike(review.review_likes_id, review.reviews_id)}>
                                   <FaThumbsDown/>
                                 </Button>
                               </>
                               :
                               <>
-                                <p>You disliked this review. If changed yor opinion </p>
+                                <p style={{fontSize: 13}}>You disliked this review. Did you change your mind?</p>
                                 <Button variant="warning" className="reviewBtns" onClick={() => updateLike(review.review_likes_id, review.reviews_id)}>
                                   <FaThumbsUp/>
                                 </Button>
                               </>                     
                     }
-                    <br/>
-                    <p>Total likes: {review.total_likes?review.total_likes:0}</p><p>Total dislikes: {review.total_dislikes?review.total_dislikes:0}</p>
+                    <p>Likes: {review.total_likes?review.total_likes:0} / Dislikes: {review.total_dislikes?review.total_dislikes:0}</p>
                     {
                       auth.user.users_id===review.users_id
                       ?
