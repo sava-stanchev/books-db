@@ -16,7 +16,7 @@ const UpdateReviewForm = ({ review, updateReviewProps, updateReview }) => {
           <Form>
             <Form.Group as={Col}>
               <Form.Label>Content</Form.Label>
-              <Form.Control type="text" placeholder="Enter content" name="content" value={review.content} 
+              <Form.Control className="input-field" type="text" as="textarea" placeholder="Enter content" name="content" value={review.content} 
               onChange={e => updateReviewProps('content', e.target.value)}/>
             </Form.Group>
             <Button variant="primary" onClick={() => updateReview()}>
