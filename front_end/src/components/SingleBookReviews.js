@@ -74,7 +74,7 @@ const SingleBookReviews = ({id}) => {
       body: JSON.stringify([reviewsId, bookId])
     })
     .then((res) => res.json())
-    .then(data => setTotalData(data))
+    .then(data => setReviewsData(data))
     .catch((error) => setError(error.message));
   };
 
