@@ -31,7 +31,7 @@ const SingleUserReviews = ({userId}) => {
       },
     })
     .then((res) => res.json())
-    .then(() => history.go(0))
+    .then(data => setReviewsData(reviewsData.filter(r => r.reviews_id !== data.reviews_id)))
     .catch((error) => setError(error.message));
   };
 
@@ -62,10 +62,10 @@ const SingleUserReviews = ({userId}) => {
                   <h6>{review.content}</h6>
                   <p>by <i>{review.user_name}</i> on {new Date(review.date_created).toLocaleDateString("en-US")} for {review.title}</p>
                   <div>
-                    <Button variant="primary" onClick={() => history.push(`/reviews/${review.reviews_id}/update`)}>
+                    <Button variant="primary" className="reviewBtns" onClick={() => history.push(`/reviews/${review.reviews_id}/update`)}>
                       <FaEdit/>
                     </Button>
-                    <Button variant="danger" onClick={() => deleteReview(review.reviews_id)}>
+                    <Button variant="danger" className="reviewBtns" onClick={() => deleteReview(review.reviews_id)}>
                       <FaTrashAlt/>
                     </Button>
                   </div>

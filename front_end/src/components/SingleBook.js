@@ -149,7 +149,10 @@ const SingleBook = props => {
                 {
                   review
                   ?
-                  <></>
+                  <>
+                  <br/>
+                  <p>You have already reviewed this book.</p>
+                  </>
                   :
                   <>
                     <p>Would you like to leave a review?</p>
@@ -158,7 +161,6 @@ const SingleBook = props => {
                     </Button>
                   </>
                 }
-              <br/>
               <p>__________________________</p>
               <SingleBookReviews id={id} />
             </Col>

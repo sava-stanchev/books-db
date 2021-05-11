@@ -420,3 +420,8 @@ input[type="radio"] {
     max-height: 500px;
   }
 }
+
+.input-field {
+  height: 100px !important;
+  width: 300px !important;
+}
