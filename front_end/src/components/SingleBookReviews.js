@@ -125,6 +125,7 @@ const SingleBookReviews = ({id}) => {
         <div className="reviews">
           {reviewsData.map((review) => {
             const reaction = reactionsByReview(review);
+            console.log('reactions');
             console.log(reaction);
             return (
               <>

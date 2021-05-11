@@ -87,6 +87,8 @@ const reviewLikesByBookAndUser = async (reviewId) => {
 
 const reviewLikesByReview = async (reviewId) => {
   console.log('Data likes');
+  console.log('review id');
+  console.log(reviewId);
   const sql =`
   SELECT * 
   FROM review_likes
@@ -94,7 +96,7 @@ const reviewLikesByReview = async (reviewId) => {
   `;
 
   const result = await pool.query(sql, [reviewId]);
-  console.log(result[0]);
+  console.log(result);
   return result[0];
 };
 
