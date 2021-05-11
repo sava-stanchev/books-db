@@ -149,14 +149,14 @@ const SingleBookReviews = ({id}) => {
                             :
                               review.likes === 1?
                               <>
-                                <p style={{fontSize: 13}}>You liked this review. Did you change your mind?</p>
+                                <p style={{fontSize: 14}}>You liked this review. <br/>Did you change your mind?</p>
                                 <Button variant="warning" className="reviewBtns" onClick={() => updateDislike(review.review_likes_id, review.reviews_id)}>
                                   <FaThumbsDown/>
                                 </Button>
                               </>
                               :
                               <>
-                                <p style={{fontSize: 13}}>You disliked this review. Did you change your mind?</p>
+                                <p style={{fontSize: 14}}>You disliked this review. <br/>Did you change your mind?</p>
                                 <Button variant="warning" className="reviewBtns" onClick={() => updateLike(review.review_likes_id, review.reviews_id)}>
                                   <FaThumbsUp/>
                                 </Button>
