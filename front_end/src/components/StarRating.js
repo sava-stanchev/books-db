@@ -22,6 +22,7 @@ const StarRating = ({bookData: book}) => {
   }, [book.books_id, averageRating, rating])
 
   const updateRating = (stars)=>{
+    console.log('start');
     fetch(`${HOST}/books/${book.books_id}/rating`, {
       method: 'PATCH',
       headers: {
@@ -32,6 +33,7 @@ const StarRating = ({bookData: book}) => {
     })
     .then(res => res.json())
     .then(data => {
+      console.log('end');
       if (data.message) {
         window.alert(data.message)
       } else {
