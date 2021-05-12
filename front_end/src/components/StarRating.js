@@ -19,7 +19,7 @@ const StarRating = ({bookData: book}) => {
     .then(res => res.json())
     .then(data => setRating(data))
     .catch((error) => setError(error.message))
-  }, [book.books_id, averageRating])
+  }, [book.books_id, averageRating, rating])
 
   const updateRating = (stars)=>{
     fetch(`${HOST}/books/${book.books_id}/rating`, {

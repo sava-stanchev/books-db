@@ -66,6 +66,8 @@ const UpdateBook = () => {
 
   
   const updateBook = () => {
+    console.log('Update book');
+    
     fetch(`${HOST}/books/${bookId}/update`, {
       method: 'PUT',
       headers: {

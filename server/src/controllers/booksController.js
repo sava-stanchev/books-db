@@ -13,6 +13,7 @@ import loggedUserGuard from '../middlewares/loggedUserGuard.js';
 import validateBody from '../middlewares/validate-body.js';
 import roleAuth from '../middlewares/role-auth.js';
 import reviewsData from '../data/reviews.js';
+import dropDownData from '../data/dropDownData.js';
 
 // eslint-disable-next-line new-cap
 const booksController = express.Router();
@@ -256,6 +257,12 @@ booksController
     .put('/:id/update', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), validateBody('book', bookUpdateValidator), async (req, res) => {
       const {id} = req.params;
       const updateData = req.body;
+      const languages = await dropDownData.getAllLanguages();
+      const genres = await dropDownData.getAllGenres();
+      updateData.language = languages.filter((l) => l.language === updateData.language)[0].languages_id;
+      updateData.genre = genres.filter((g) => g.genre === updateData.genre)[0].genres_id;
+
+
 
       try {
         const updatedBook = await booksService.updateBook(+id, updateData);
