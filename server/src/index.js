@@ -19,8 +19,6 @@ import reviewService from './services/review-service.js';
 import reviewsLikeData from './data/reviewsLike.js';
 import userService from './services/user-service.js';
 import booksController from './controllers/booksController.js';
-// import booksData from './data/books.js/';
-
 
 const config = dotenv.config().parsed;
 
