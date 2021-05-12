@@ -112,7 +112,7 @@ const SingleBookReviews = ({id}) => {
     }
   }
 
-  if  (reviewsData === null ) { //|| total === null
+  if  (reviewsData === null) { //|| total === null
     return <div className="Loader"></div>;
   }
 
