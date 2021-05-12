@@ -55,7 +55,7 @@ const UpdateBookForm = ({ genres, languages, book, updateBookProps, updateBook }
                 <Form.Label>Language</Form.Label>
                 <Form.Control as="select" defaultValue="Choose..." name="language"
                 value={book.languages ? languages.filter(l => l.languages_id === book.languages)[0].languages:''}
-                onChange={e => updateBookProps('language', languages.filter(l => l.language === e.target.value)[0].languages_id)}>
+                onChange={e => updateBookProps('language', languages.filter(l => l.language === e.target.value)[0].language)}>
                   <option>{!book.language ? `Choose...` : book.language}</option>
                   {languages.map((l) => <option>{l.language}</option>)}
                 </Form.Control>
@@ -64,7 +64,7 @@ const UpdateBookForm = ({ genres, languages, book, updateBookProps, updateBook }
                 <Form.Label>Genre</Form.Label> 
                 <Form.Control as="select" defaultValue="Choose..." name="genre"
                 value={book.genres ? genres.filter(g => g.genres_id === book.genre)[0].genre:''}
-                onChange={e => updateBookProps('genre', genres.filter(g => g.genre === e.target.value)[0].genres_id)}>
+                onChange={e => updateBookProps('genre', genres.filter(g => g.genre === e.target.value)[0].genre)}>
                   <option>{!book.genre ? `Choose...` : book.genre}</option>
                   {genres.map((g) => <option>{g.genre}</option>)}
                 </Form.Control>

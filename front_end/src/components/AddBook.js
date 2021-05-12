@@ -17,22 +17,25 @@ const AddBook = () => {
   const [error, setError] = useState(null);
   
   useEffect(() => {
+    setLoading(true);
     fetch(`${HOST}/genres`, {
       method: 'GET',
     })
     .then((response) => response.json())
-    .then((data) => setGenres(data));
-   // .catch((error) => setError(error.message))
-   // .finally(() => setLoading(false));
+    .then((data) => setGenres(data))
+    .then(setLoading(false))
+    .catch((error) => setError(error.message));
   }, []);
 
   useEffect(() => {
+    setLoading(true);
     fetch(`${HOST}/languages`, {
       method: 'GET',
     })
     .then((response) => response.json())
-    .then((data) => setLanguages(data));
-   // .catch((error) => setError(error.message))
+    .then((data) => setLanguages(data))
+    .then(setLoading(false))
+    .catch((error) => setError(error.message));
    // .finally(() => setLoading(false));
   }, []);
 
@@ -56,6 +59,7 @@ const AddBook = () => {
   };
   
   const addBook = () => {
+    setLoading(true);
     fetch(`${HOST}/books/create`, {
       method: 'PUT',
       headers: {
@@ -72,8 +76,13 @@ const AddBook = () => {
         console.warn(error);
       }
     })
-    .then(()=>routeChange());
+    .then(()=>routeChange())
+    .then(setLoading(false));
   };
+
+  if (loading) {
+    return <div>Loading...</div>
+  }
 
   if (genres === null || languages === null) {
     return <div>Loading...</div>

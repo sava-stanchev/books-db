@@ -1,7 +1,8 @@
 import {Col, Container, Row, Form, Button} from "react-bootstrap";
+import { USER_NAME_MAX_LENGTH, USER_NAME_MIN_LENGTH } from '../common/constants';
 
 const LoginForm = ({ user, updateUser, login }) => {
-
+  
   return( 
     <Container>
       <Row>

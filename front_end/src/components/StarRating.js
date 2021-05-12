@@ -19,7 +19,7 @@ const StarRating = ({bookData: book}) => {
     .then(res => res.json())
     .then(data => setRating(data))
     .catch((error) => setError(error.message))
-  }, [book.books_id, averageRating])
+  }, [book.books_id, averageRating, rating])
 
   const updateRating = (stars)=>{
     console.log('start');
@@ -85,7 +85,7 @@ const StarRating = ({bookData: book}) => {
         :
         <p>You still haven't rated this book!</p>
       }
-      <p>Average rating: ({averageRating})</p>
+      <p>Average rating: ({averageRating?averageRating:0})</p>
     </div>
   )
 }

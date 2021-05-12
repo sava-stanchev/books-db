@@ -74,7 +74,7 @@ const Users = () => {
             <th>Age</th>
             <th>Delete</th>
             <th>Is Banned</th>
-            <th>Edit</th>
+            {/* <th>Edit</th> */}
           </tr>
         </thead>
         <tbody>
@@ -112,11 +112,11 @@ const Users = () => {
                             Ban user!
                           </Button>}
                       </td>
-                      <td>
+                      {/* <td>
                           <Button variant="primary" onClick={() => console.log('Edit')}>
                             Edit!
                           </Button>
-                      </td>
+                      </td> */}
                     </tr>
               </>
             )
