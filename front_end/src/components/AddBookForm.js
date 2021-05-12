@@ -1,4 +1,5 @@
 import {Col, Container, Row, Form, Button} from "react-bootstrap";
+import UploadPoster from "./UploadFile";
 
 const AddBookForm = ({ genres, languages, book, updateBook, addBook }) => {
   
@@ -69,7 +70,9 @@ const AddBookForm = ({ genres, languages, book, updateBook, addBook }) => {
                   {genres.map((g) => <option>{g.genre}</option>)}
                 </Form.Control>
               </Form.Group>
+              
             </Form.Row>
+            <UploadPoster/>
             <Button variant="primary" onClick={() => addBook()}>
               Submit
             </Button>

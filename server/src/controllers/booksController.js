@@ -13,6 +13,25 @@ import loggedUserGuard from '../middlewares/loggedUserGuard.js';
 import validateBody from '../middlewares/validate-body.js';
 import roleAuth from '../middlewares/role-auth.js';
 import reviewsData from '../data/reviews.js';
+import multer from 'multer';
+
+const storage = multer.diskStorage({
+  destination(req, file, cb) {
+    cb(null, 'posters');
+  },
+  filename(req, file, cb) {
+    // for book upload / update
+    // 1 - check if req.user is admin
+    // 2 - if admin find the book by bookId
+    // 3 - if the book has a picture, return the picture name
+    // 4 - otherwise create a new picture name
+    const filename = path.extname(file.originalname);
+    console.log(filename);
+    cb(null, filename);
+  },
+});
+
+const upload = multer({storage});
 
 // eslint-disable-next-line new-cap
 const booksController = express.Router();
@@ -195,6 +214,7 @@ booksController
     /** Rate book */
     .patch('/:id/rating', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
       try {
+        console.log('na4alo');
         const bookId = req.params.id;
         const rating = req.body.rating;
         const userId = req.user.user_id;
@@ -220,7 +240,9 @@ booksController
           await booksRatingData.updateBookRating(checkForRating.book_ratings_id, rating);
           return res.status(200).send(await booksData.bookAverageRating(bookId));
         }
+        console.log('start');
         await booksRatingData.setRatingToBook(userId, bookId, rating);
+        console.log('end');
         return res.status(200).send(await booksData.bookAverageRating(bookId));
       } catch (error) {
         return res.status(500).json({
@@ -230,9 +252,12 @@ booksController
     })
 
     /** Create any book (as admin) */
-    .put('/create', authMiddleware, loggedUserGuard, transformBody(bookCreateValidator), validateBody('book', bookCreateValidator), async (req, res) => {
+    .put('/create', authMiddleware, loggedUserGuard, transformBody(bookCreateValidator), validateBody('book', bookCreateValidator), upload.single('posters'), async (req, res) => {
       try {
         const book = await booksData.createBook(req.body, req.user);
+        console.log(book);
+        const bookId = book.response.books_id;
+        const result = await booksData.updateCover(bookId, req.file.filename);
         res.json(book);
       } catch (error) {
         return res.status(400).json({
