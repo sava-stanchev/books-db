@@ -42,7 +42,7 @@ const Login = () => {
         localStorage.setItem('token', token);
         auth.setAuthState({user, isLoggedIn: true});
       } catch (error) {
-        console.warn(error);
+        window.alert('Invalid username or password!')
       }
     })
     .then(() =>routeChange())
