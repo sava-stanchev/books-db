@@ -85,7 +85,7 @@ const StarRating = ({bookData: book}) => {
         :
         <p>You still haven't rated this book!</p>
       }
-      <p>Average rating: ({averageRating})</p>
+      <p>Average rating: ({averageRating?averageRating:0})</p>
     </div>
   )
 }
