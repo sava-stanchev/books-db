@@ -234,10 +234,10 @@ const bookAverageRating = async (id) => {
   return result[0];
 };
 
-const updateCover = async (id, fileName) => {
+const uploadFile = async (bookId, fileName) => {
   const sql = `UPDATE books AS b SET b.posters = ? WHERE b.books_id = ?`;
-  const result = await pool.query(sql, [fileName, id]);
-
+  const result = await pool.query(sql, [fileName, bookId]);
+  console.log(result);
   return {
     success: result.affectedRows === 1,
     response: {},
@@ -261,5 +261,5 @@ export default {
   bookAverageRating,
   getBookByIdForUpdate,
   getRandomBooks,
-  updateCover,
+  uploadFile,
 };

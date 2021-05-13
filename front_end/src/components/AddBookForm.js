@@ -1,5 +1,4 @@
 import {Col, Container, Row, Form, Button} from "react-bootstrap";
-import UploadPoster from "./UploadFile";
 
 const AddBookForm = ({ genres, languages, book, updateBook, addBook }) => {
   
@@ -72,7 +71,6 @@ const AddBookForm = ({ genres, languages, book, updateBook, addBook }) => {
               </Form.Group>
               
             </Form.Row>
-            <UploadPoster/>
             <Button variant="primary" onClick={() => addBook()}>
               Submit
             </Button>

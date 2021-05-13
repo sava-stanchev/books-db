@@ -5,6 +5,7 @@ import {Button, Col, Row} from "react-bootstrap";
 import SingleBookReviews from './SingleBookReviews';
 import AuthContext from '../providers/authContext';
 import { HOST } from '../common/constants.js';
+import UploadPoster from "./UploadFile";
 
 const SingleBook = props => {
   const auth = useContext(AuthContext);
@@ -121,6 +122,7 @@ const SingleBook = props => {
                     <Button variant="danger" onClick={() => deleteBook()}>
                       Delete Book
                     </Button>
+                    <UploadPoster books_id={bookData.books_id}/>
                   </>
                   :<></>
                 } 

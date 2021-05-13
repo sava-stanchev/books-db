@@ -16,26 +16,9 @@ import reviewsData from '../data/reviews.js';
 import dropDownData from '../data/dropDownData.js';
 import multer from 'multer';
 
-const storage = multer.diskStorage({
-  destination(req, file, cb) {
-    cb(null, 'posters');
-  },
-  filename(req, file, cb) {
-    // for book upload / update
-    // 1 - check if req.user is admin
-    // 2 - if admin find the book by bookId
-    // 3 - if the book has a picture, return the picture name
-    // 4 - otherwise create a new picture name
-    const filename = path.extname(file.originalname);
-    console.log(filename);
-    cb(null, filename);
-  },
-});
-
-const upload = multer({storage});
-
 // eslint-disable-next-line new-cap
 const booksController = express.Router();
+const upload = multer();
 
 booksController
 
@@ -253,18 +236,25 @@ booksController
     })
 
     /** Create any book (as admin) */
-    .put('/create', authMiddleware, loggedUserGuard, transformBody(bookCreateValidator), validateBody('book', bookCreateValidator), upload.single('posters'), async (req, res) => {
+    .put('/create', authMiddleware, loggedUserGuard, transformBody(bookCreateValidator), validateBody('book', bookCreateValidator), async (req, res) => {
       try {
         const book = await booksData.createBook(req.body, req.user);
-        console.log(book);
-        const bookId = book.response.books_id;
-        const result = await booksData.updateCover(bookId, req.file.filename);
+        // console.log(book);
+        // const bookId = book.response.books_id;
+        // const result = await booksData.updateCover(bookId, req.file.filename);
         res.json(book);
       } catch (error) {
         return res.status(400).json({
           error: error.message,
         });
       }
+    })
+
+    /** Upload book cover */
+    .post('/:id/upload', authMiddleware, loggedUserGuard, roleMiddleware(userRole.Admin), upload.single('file'), async (req, res) => {
+      const bookId = req.params.id;
+      const fileName = '/posters/' + req.file.originalname;
+      const result = await booksData.uploadFile(bookId, fileName);
     })
 
     /** Read any book (as admin) */
@@ -286,8 +276,6 @@ booksController
       const genres = await dropDownData.getAllGenres();
       updateData.language = languages.filter((l) => l.language === updateData.language)[0].languages_id;
       updateData.genre = genres.filter((g) => g.genre === updateData.genre)[0].genres_id;
-
-
 
       try {
         const updatedBook = await booksService.updateBook(+id, updateData);
