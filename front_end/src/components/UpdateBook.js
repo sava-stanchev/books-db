@@ -5,7 +5,6 @@ import {useHistory} from "react-router-dom";
 import {HOST} from '../common/constants.js';
 
 const UpdateBook = () => {
-  
   const history = useHistory();
   const routeChange = () =>{ 
     const path = `/books/${bookId}`; 
@@ -13,10 +12,8 @@ const UpdateBook = () => {
   };
 
   const bookId = history.location.pathname.split('/')[2];
-
   const [genres, setGenres] = useState(null);
   const [languages, setLanguages] = useState(null);
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   
   useEffect(() => {
@@ -26,7 +23,6 @@ const UpdateBook = () => {
     .then((response) => response.json())
     .then((data) => setGenres(data))
     .catch((error) => setError(error.message))
-    .finally(() => setLoading(false));
   }, []);
 
   useEffect(() => {
@@ -36,7 +32,6 @@ const UpdateBook = () => {
     .then((response) => response.json())
     .then((data) => setLanguages(data))
     .catch((error) => setError(error.message))
-    .finally(() => setLoading(false));
   }, []);
 
   useEffect(() => {
@@ -49,7 +44,7 @@ const UpdateBook = () => {
     })
     .then((res) => res.json())
     .then((data) => setBook(data[0]));
-  }, []);
+  }, [bookId]);
 
   const [book, setBook] = useState(null);
 
@@ -88,8 +83,15 @@ const UpdateBook = () => {
     return <div>Loading...</div>
   }
 
+  const showError = () => {
+    if (error) {
+      return <h4><i>An error has occured: </i>{error}</h4>
+    }
+  }
+
   return(
     <div className="registration-page-bg-info">
+      {showError()}
       <Jumbotron className="form-box">
         <UpdateBookForm genres = {genres} languages={languages} updateBookProps={updateBookProps} book={book} updateBook={updateBook}/>
       </Jumbotron>
