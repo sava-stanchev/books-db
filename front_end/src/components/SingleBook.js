@@ -102,6 +102,7 @@ const SingleBook = props => {
           <Row>
             <Col>
               <img src={bookData.posters} alt={bookData.title}/>
+              <UploadPoster books_id={bookData.books_id}/>
             </Col>
             <Col>
               <div id="book-info">
@@ -122,7 +123,6 @@ const SingleBook = props => {
                     <Button variant="danger" onClick={() => deleteBook()}>
                       Delete Book
                     </Button>
-                    <UploadPoster books_id={bookData.books_id}/>
                   </>
                   :<></>
                 } 

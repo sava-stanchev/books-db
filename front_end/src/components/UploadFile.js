@@ -29,15 +29,14 @@ const UploadPoster = ({books_id}) => {
   return (
     <>
       <form action="#" method="post" enctype="multipart/form-data">
-        <div className="flex">
-        <label htmlFor="file">Update book cover:</label>
+        <div className="upload-container">
         <input type="file" id="file" onChange={event => {
           const file = event.target.files[0];
           setFile(file);
         }} />
       </div>
     </form>
-    <Button onClick={send}>Upload</Button>
+    <button onClick={send}>Update Cover</button>
     </>
   )
 }
