@@ -3,7 +3,7 @@ import {useHistory} from "react-router-dom";
 import {Button} from "react-bootstrap";
 import {FaTrashAlt} from "react-icons/fa";
 import {FaEdit} from "react-icons/fa";
-import { HOST } from '../common/constants.js';
+import {HOST} from '../common/constants.js';
 
 const SingleUserReviews = ({userId}) => {
   const [reviewsData, setReviewsData] = useState([]);
@@ -20,7 +20,7 @@ const SingleUserReviews = ({userId}) => {
       .then((response) => response.json())
       .then((data) => setReviewsData(data))
       .catch((error) => setError(error.message))
-  }, []);
+  }, [userId]);
 
   const deleteReview = (reviewId) => {
     fetch(`${HOST}/reviews/${reviewId}`, {

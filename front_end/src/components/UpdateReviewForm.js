@@ -1,6 +1,6 @@
 import {Col, Container, Row, Form, Button} from "react-bootstrap";
 
-const UpdateReviewForm = ({ review, updateReviewProps, updateReview }) => {
+const UpdateReviewForm = ({review, updateReviewProps, updateReview}) => {
   
   return( 
     <Container>

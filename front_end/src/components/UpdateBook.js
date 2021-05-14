@@ -2,7 +2,7 @@ import {Jumbotron} from 'react-bootstrap';
 import UpdateBookForm from './UpdateBookForm';
 import {useEffect, useState} from 'react';
 import {useHistory} from "react-router-dom";
-import { HOST } from '../common/constants.js';
+import {HOST} from '../common/constants.js';
 
 const UpdateBook = () => {
   
@@ -24,9 +24,9 @@ const UpdateBook = () => {
       method: 'GET',
     })
     .then((response) => response.json())
-    .then((data) => setGenres(data));
-   // .catch((error) => setError(error.message))
-   // .finally(() => setLoading(false));
+    .then((data) => setGenres(data))
+    .catch((error) => setError(error.message))
+    .finally(() => setLoading(false));
   }, []);
 
   useEffect(() => {
@@ -34,9 +34,9 @@ const UpdateBook = () => {
       method: 'GET',
     })
     .then((response) => response.json())
-    .then((data) => setLanguages(data));
-   // .catch((error) => setError(error.message))
-   // .finally(() => setLoading(false));
+    .then((data) => setLanguages(data))
+    .catch((error) => setError(error.message))
+    .finally(() => setLoading(false));
   }, []);
 
   useEffect(() => {
@@ -64,10 +64,7 @@ const UpdateBook = () => {
     });
   };
 
-  
   const updateBook = () => {
-    console.log('Update book');
-    
     fetch(`${HOST}/books/${bookId}/update`, {
       method: 'PUT',
       headers: {

@@ -1,5 +1,5 @@
 import {Jumbotron} from 'react-bootstrap';
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import {useHistory} from "react-router-dom";
 import AddReviewForm from './AddReviewForm';
 import { HOST } from '../common/constants.js';
@@ -11,9 +11,6 @@ const AddReview = () => {
     const path = `/books/${bookId}`; 
     history.push(path);
   };
-
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
 
   const [review, setReview] = useState({
     content: '',

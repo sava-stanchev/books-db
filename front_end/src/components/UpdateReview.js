@@ -7,8 +7,6 @@ import { HOST } from '../common/constants.js';
 const UpdateReview = () => {
   const history = useHistory();
   const reviewId = history.location.pathname.split('/')[2];
-  console.log(reviewId);
-  
   const [review, setReview] = useState(null);
   const [error, setError] = useState(null);
 
@@ -23,9 +21,7 @@ const UpdateReview = () => {
     .then((res) => res.json())
     .then((data) => setReview(data))
     .catch((error) => setError(error.message));
-  }, []);
-
-  
+  }, [reviewId]);
 
   if  (review === null) {
     return <div className="Loader"></div>;

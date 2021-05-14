@@ -48,7 +48,6 @@ const getReviewById = async (id) => {
   `;
 
   const result = await pool.query(sql, [id]);
-  
   return result[0];
 };
 
@@ -119,7 +118,7 @@ const getTotalLikesDislikes = async (id) =>{
   WHERE r.reviews_id = ?  
   `;
   const total = await pool.query(sql, [id]);
-  console.log(total);
+
   return total;
 };
 

@@ -8,7 +8,7 @@ import dotenv from 'dotenv';
 import createToken from './auth/create-token.js';
 import usersData from './data/users.js';
 import dropDownData from './data/dropDownData.js';
-import {authMiddleware, roleMiddleware} from './auth/auth-middleware.js';
+import {authMiddleware} from './auth/auth-middleware.js';
 import passport from 'passport';
 import jwtStrategy from './auth/strategy.js';
 import loggedUserGuard from './middlewares/loggedUserGuard.js';
@@ -302,17 +302,9 @@ app.get('/likes/:reviews_id', async (req, res) => {
 
 /** update user info */
 app.post('/users/:id/update', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
-  console.log('Mara ba');
   try {
-    const userId = req.params.id;
     const userInfo = req.body;
-    console.log('req body');
-    console.log(userInfo);
-    const a = await usersData.updateUser(userInfo);
-    // const a = await userData.updateUser(userInfo);
-    console.log(a);
-    // await usersData.banUser(+req.params.id);
-    // return res.send(await usersData.getUserById(req.params.id));
+    await usersData.updateUser(userInfo);
   } catch (error) {
     return res.status(400).json({
       error: error.message,
@@ -344,7 +336,6 @@ app.delete('/admin/users/:id', authMiddleware, loggedUserGuard, roleAuth(userRol
 
 /** Get all users (as admin) */
 app.get('/users', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
-  console.log('ger all users');
   try {
     const users = await usersData.getAllUsers();
     res.json(users);

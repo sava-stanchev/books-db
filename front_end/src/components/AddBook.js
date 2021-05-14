@@ -36,7 +36,6 @@ const AddBook = () => {
     .then((data) => setLanguages(data))
     .then(setLoading(false))
     .catch((error) => setError(error.message));
-   // .finally(() => setLoading(false));
   }, []);
 
   const [book, setBook] = useState({

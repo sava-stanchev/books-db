@@ -96,8 +96,8 @@ booksController
           });
         }
 
-        const setRecord = await booksData.setBorrowRecords(bookId, userId);
-        const setIsBorrowed = await booksData.borrowBook(bookId);
+        await booksData.setBorrowRecords(bookId, userId);
+        await booksData.borrowBook(bookId);
 
         return res.status(200).send(await booksData.getBookById(+bookId));
       } catch (error) {
@@ -118,16 +118,7 @@ booksController
             message: 'Book not borrowed!',
           });
         }
-        // const isBookReturned = await booksData.isBookBorrowedAndReturned(bookId, userId);
-        // console.log(isBookReturned);
 
-        // if (isBookReturned) {
-        //   return res.json({
-        //     msg: `Book has already been returned!`,
-        //   });
-        // }
-
-        console.log('return');
         const setRecord = await booksData.setReturnRecords(+isBookBorrowed.records_id);
         if (!setRecord) {
           return res.json({
@@ -229,7 +220,7 @@ booksController
         }
 
         const checkForRating = await booksRatingData.getBookRatingByUser(bookId, userId);
-        console.log('checkForRating');
+
         if (checkForRating) {
           await booksRatingData.updateBookRating(checkForRating.book_ratings_id, rating);
           return res.status(200).send(await booksData.bookAverageRating(bookId));
@@ -249,9 +240,6 @@ booksController
     .put('/create', authMiddleware, loggedUserGuard, transformBody(bookCreateValidator), validateBody('book', bookCreateValidator), async (req, res) => {
       try {
         const book = await booksData.createBook(req.body, req.user);
-        // console.log(book);
-        // const bookId = book.response.books_id;
-        // const result = await booksData.updateCover(bookId, req.file.filename);
         res.json(book);
       } catch (error) {
         return res.status(400).json({

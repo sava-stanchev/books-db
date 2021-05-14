@@ -13,9 +13,9 @@ const SingleBook = props => {
   const [error, setError] = useState(null);
   const {id} = props.match.params;
   const [review, setReview] = useState(null);
-  const userId = {'userId': auth.user.users_id};
   
   useEffect(() => {
+    const userId = {'userId': auth.user.users_id};
     fetch(`${HOST}/reviews/${id}`, { 
       method: 'PATCH',
       headers: {
@@ -27,7 +27,7 @@ const SingleBook = props => {
     .then((response) => response.json())
     .then((data) => setReview(data))
     .catch((error) => setError(error.message))
-  }, [bookData]);
+  }, [id, auth.user.users_id, bookData]);
 
   useEffect(() => {
     fetch(`${HOST}/books/${id}`, { 

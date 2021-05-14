@@ -32,7 +32,8 @@ const SingleUser = () => {
   }
 
   return(
-    loading ?
+    loading 
+    ?
       <div className="Loader"></div>
     :
     <>

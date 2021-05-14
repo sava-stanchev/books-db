@@ -15,9 +15,9 @@ const setLikeToReview = async (userId, reviewId) => {
   INSERT INTO review_likes (users_id, reviews_id, likes, dislike, is_deleted)
   VALUES (?, ?, 1 , 0, 0)
   `;
-  console.log('set');
+
   const result = await pool.query(newLikeSql, [userId, reviewId]);
-  console.log(result);
+
 
   const sql = `
   SELECT * FROM review_likes AS r
@@ -86,17 +86,13 @@ const reviewLikesByBookAndUser = async (reviewId) => {
 };
 
 const reviewLikesByReview = async (reviewId) => {
-  console.log('Data likes');
-  console.log('review id');
-  console.log(reviewId);
   const sql =`
-  SELECT * 
-  FROM review_likes
-  WHERE reviews_id = ?
+    SELECT * 
+    FROM review_likes
+    WHERE reviews_id = ?
   `;
 
   const result = await pool.query(sql, [reviewId]);
-  console.log(result);
   return result[0];
 };
 

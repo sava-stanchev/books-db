@@ -12,12 +12,6 @@ const SingleBookReviews = ({id}) => {
   const auth = useContext(AuthContext);
   const [reviewsData, setReviewsData] = useState([]);
   const [error, setError] = useState(null);
-  const [total, setTotalData] = useState(null);
-  
-
-  
-  console.log(reviewsData);
-  console.log(total);
 
   useEffect(() => {
     fetch(`${HOST}/books/${id}/reviews`, { 
@@ -30,7 +24,7 @@ const SingleBookReviews = ({id}) => {
       .then((response) => response.json())
       .then((data) => setReviewsData(data))
       .catch((error) => setError(error.message))
-  }, []);
+  }, [id]);
 
   
   const deleteReview = (reviewId) => {
@@ -78,32 +72,6 @@ const SingleBookReviews = ({id}) => {
     .catch((error) => setError(error.message));
   };
 
-  useEffect((reviewId) =>{
-    fetch(`${HOST}/reviews/${reviewId}/total`, {
-      method: 'GET',
-      headers: {
-        'content-type': 'application/json',
-        'authorization': `bearer ${localStorage.getItem('token')}`
-      },
-    })
-    .then((res) => res.json())
-    .then(data => setTotalData(data))
-    .catch((error) => setError(error.message));
-  }, [reviewsData]);
-
-  const reactionsByReview = (review) => {
-    fetch(`${HOST}/likes/${review.reviews_id}`, {
-      method: 'GET',
-      headers: {
-        'content-type': 'application/json',
-        'authorization': `bearer ${localStorage.getItem('token')}`
-      },
-    })
-    .then((res) => res.json())
-    .then(data => {return data})
-    .catch((error) => setError(error.message));
-  }
-
   const history = useHistory();
 
   const showError = () => {
@@ -112,7 +80,7 @@ const SingleBookReviews = ({id}) => {
     }
   }
 
-  if  (reviewsData === null) { //|| total === null
+  if  (reviewsData === null) {
     return <div className="Loader"></div>;
   }
 
@@ -124,9 +92,6 @@ const SingleBookReviews = ({id}) => {
       <div className="review-body">
         <div className="reviews">
           {reviewsData.map((review) => {
-            const reaction = reactionsByReview(review);
-            console.log('reactions');
-            console.log(reaction);
             return (
               <>
                 <div className="review">

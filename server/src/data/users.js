@@ -4,8 +4,7 @@ import bcrypt from 'bcrypt';
 const getAllUsers = async () => {
   return await pool.query(`
     SELECT * FROM users AS u
-    
-    `);
+  `);
 };
 
 const getUserByName = async (userName) => {
