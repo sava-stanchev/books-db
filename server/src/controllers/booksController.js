@@ -15,10 +15,21 @@ import roleAuth from '../middlewares/role-auth.js';
 import reviewsData from '../data/reviews.js';
 import dropDownData from '../data/dropDownData.js';
 import multer from 'multer';
+import path from 'path';
 
 // eslint-disable-next-line new-cap
 const booksController = express.Router();
-const upload = multer();
+const __dirname = path.join(path.dirname(decodeURI(new URL(import.meta.url).pathname))).replace(/^\\([A-Z]:\\)/, '$1');
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, path.join(__dirname, '/../../../front_end/public/posters'));
+    },
+    filename: (req, file, cb) => {
+      cb(null, file.originalname);
+    },
+  }),
+});
 
 booksController
 
@@ -198,7 +209,6 @@ booksController
     /** Rate book */
     .patch('/:id/rating', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
       try {
-        console.log('na4alo');
         const bookId = req.params.id;
         const rating = req.body.rating;
         const userId = req.user.user_id;
@@ -224,9 +234,9 @@ booksController
           await booksRatingData.updateBookRating(checkForRating.book_ratings_id, rating);
           return res.status(200).send(await booksData.bookAverageRating(bookId));
         }
-        console.log('start');
+
         await booksRatingData.setRatingToBook(userId, bookId, rating);
-        console.log('end');
+
         return res.status(200).send(await booksData.bookAverageRating(bookId));
       } catch (error) {
         return res.status(500).json({
@@ -254,7 +264,7 @@ booksController
     .post('/:id/upload', authMiddleware, loggedUserGuard, roleMiddleware(userRole.Admin), upload.single('file'), async (req, res) => {
       const bookId = req.params.id;
       const fileName = '/posters/' + req.file.originalname;
-      const result = await booksData.uploadFile(bookId, fileName);
+      await booksData.uploadFile(bookId, fileName);
     })
 
     /** Read any book (as admin) */

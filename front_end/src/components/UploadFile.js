@@ -1,6 +1,5 @@
 import {useState} from 'react';
 import {HOST} from '../common/constants.js';
-import Axios from 'axios';
 import {useHistory} from "react-router-dom";
 import {Button} from "react-bootstrap";
 
@@ -11,23 +10,28 @@ const UploadPoster = ({books_id}) => {
     const data = new FormData();
     data.append('file', file);
 
-    Axios.post(`${HOST}/books/${books_id}/upload`, data, {
+    fetch(`${HOST}/books/${books_id}/upload`, {
+      method: 'POST',
       headers: {
+  
         Authorization: `Bearer ${localStorage.getItem('token')}`
       },
-    })
+      body: data
+    }, )
     .then(res => console.log(res))
     .catch(err => console.log(err));
     
     history.go(0)
   };
+
   const history = useHistory();
+
   return (
     <>
-      <form action="#">
+      <form action="#" method="post" enctype="multipart/form-data">
         <div className="flex">
         <label htmlFor="file">Update book cover:</label>
-        <input type="file" id="file" accept=".jpg" onChange={event => {
+        <input type="file" id="file" onChange={event => {
           const file = event.target.files[0];
           setFile(file);
         }} />
