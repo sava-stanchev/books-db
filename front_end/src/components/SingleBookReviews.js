@@ -11,7 +11,6 @@ import AuthContext from '../providers/authContext';
 const SingleBookReviews = ({id}) => {
   const auth = useContext(AuthContext);
   const [reviewsData, setReviewsData] = useState([]);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetch(`${HOST}/books/${id}/reviews`, { 
@@ -22,8 +21,7 @@ const SingleBookReviews = ({id}) => {
       },
     })
       .then((response) => response.json())
-      .then((data) => setReviewsData(data))
-      .catch((error) => setError(error.message))
+      .then((data) => setReviewsData(data));
   }, [id]);
 
   
@@ -36,8 +34,7 @@ const SingleBookReviews = ({id}) => {
       },
     })
     .then((res) => res.json())
-    .then(data => setReviewsData(reviewsData.filter(r => r.reviews_id !== data.reviews_id)))
-    .catch((error) => setError(error.message));
+    .then(data => setReviewsData(reviewsData.filter(r => r.reviews_id !== data.reviews_id)));
   };
 
   const updateLike = (reviewLikesId, reviews_id) => {
@@ -52,8 +49,7 @@ const SingleBookReviews = ({id}) => {
       body: JSON.stringify([reviewsId, bookId])
     })
     .then((res) => res.json())
-    .then(data => setReviewsData(data))
-    .catch((error) => setError(error.message));
+    .then(data => setReviewsData(data));
   };
 
   const updateDislike = (reviewLikesId, reviews_id) => {
@@ -68,17 +64,10 @@ const SingleBookReviews = ({id}) => {
       body: JSON.stringify([reviewsId, bookId])
     })
     .then((res) => res.json())
-    .then(data => setReviewsData(data))
-    .catch((error) => setError(error.message));
+    .then(data => setReviewsData(data));
   };
 
   const history = useHistory();
-
-  const showError = () => {
-    if (error) {
-      return <h4><i>An error has occured: </i>{error}</h4>
-    }
-  }
 
   if  (reviewsData === null) {
     return <div className="Loader"></div>;

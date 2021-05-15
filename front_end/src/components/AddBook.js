@@ -87,8 +87,15 @@ const AddBook = () => {
     return <div>Loading...</div>
   }
 
+  const showError = () => {
+    if (error) {
+      return <h4><i>An error has occured: </i>{error}</h4>
+    }
+  }
+
   return(
     <div className="registration-page-bg-info">
+      {showError()}
       <Jumbotron className="form-box">
         <AddBookForm genres = {genres} languages={languages} updateBook={updateBook} book={book} addBook={addBook}/>
       </Jumbotron>
