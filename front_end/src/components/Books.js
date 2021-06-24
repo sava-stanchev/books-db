@@ -2,7 +2,7 @@ import {useEffect, useState, useContext} from 'react';
 import {useHistory} from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import {Col, Row, Button} from "react-bootstrap";
-import AuthContext from '../providers/authContext';
+import AuthContext from '../providers/auth-context';
 import { HOST } from '../common/constants.js';
 
 const Books = () => {

@@ -1,7 +1,7 @@
 import {useEffect, useState, useContext} from 'react';
 import {Button} from "react-bootstrap";
 import {useHistory} from "react-router-dom";
-import AuthContext from '../providers/authContext';
+import AuthContext from '../providers/auth-context';
 import {HOST} from '../common/constants.js';
 
 const HomePage = () => {

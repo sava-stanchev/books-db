@@ -6,7 +6,7 @@ import Register from './components/Register';
 import SingleBook from './components/SingleBook';
 import {BrowserRouter, Switch, Route, Redirect} from "react-router-dom";
 import {useState} from 'react';
-import AuthContext, {getUser} from './providers/authContext';
+import AuthContext, {getUser} from './providers/auth-context';
 import GuardedRoute from './hof/GuardedRoute';
 import AddBook from './components/AddBook';
 import AddReview from './components/AddReview';

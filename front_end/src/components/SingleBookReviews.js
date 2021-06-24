@@ -6,7 +6,7 @@ import {FaEdit} from "react-icons/fa";
 import {FaThumbsUp} from "react-icons/fa";
 import {FaThumbsDown} from "react-icons/fa";
 import { HOST } from '../common/constants.js';
-import AuthContext from '../providers/authContext';
+import AuthContext from '../providers/auth-context';
 
 const SingleBookReviews = ({id}) => {
   const auth = useContext(AuthContext);
