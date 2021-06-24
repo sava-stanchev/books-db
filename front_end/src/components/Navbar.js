@@ -1,74 +1,91 @@
-import {useContext} from 'react';
-import {Navbar, Nav} from 'react-bootstrap';
-import {Link} from 'react-router-dom';
+import {Link, useHistory} from 'react-router-dom';
 import AuthContext from '../providers/auth-context';
+import {useContext} from 'react';
+import {CgProfile} from 'react-icons/cg';
+import {GiEvilBook} from 'react-icons/gi';
+import ReactTooltip from 'react-tooltip';
+import {FiLogOut} from 'react-icons/fi';
+import {HOST} from '../common/constants';
 
 const NavBar = () => {
+  const history = useHistory();
   const auth = useContext(AuthContext);
   const logout = () => {
-    localStorage.removeItem('token');
-    auth.setAuthState({
-      user: null,
-      isLoggedIn: false,
-    });
+    fetch(`${HOST}/logout`, {
+      method: 'DELETE',
+      headers: {
+        'authorization': `bearer ${localStorage.getItem('token')}`,
+      },
+    })
+    .then(() => {
+      auth.setAuthState({
+        user: null,
+        isLoggedIn: false,
+      });
+      localStorage.removeItem('token');
+      history.push('/home');
+    })
+    .catch(() => history.push('/500'));
   };
 
   return(
-    <div className="App">
-      <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-        <Link to="/home">
-          <Navbar.Brand href="#home">LibraryApp</Navbar.Brand>
-        </Link>
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="mr-auto">
-            <Link to="/books">
-              <Nav.Link href="#books">Books</Nav.Link>
-            </Link>
-            {auth.isLoggedIn
-            ?
-            <>
-              <Link to="/profile">
-                <Nav.Link href="#user">User Info</Nav.Link>
-              </Link>
-            </>
-            :
-            <></>
-            }            
-            {
-            auth.isLoggedIn && auth.user.is_admin
-              ?
-              <>
+    <header className="main-header">
+      <Link to="/home">
+        <div className="brand-logo">
+          <GiEvilBook size={38}/>
+          <div href="#home" className="brand-logo-name">The Library</div>
+        </div>
+      </Link>
+      <nav className="main-nav">
+        <ul>
+        {
+          auth.isLoggedIn
+          ?
+            auth.user.role === 1
+              ?            
                 <Link to="/users">
-                  <Nav.Link href="#users">Users</Nav.Link>
+                  <li>Users</li>
                 </Link>
-              </>
-              :
-              <></>
-              }
-          </Nav>
-          <Nav>
-            {auth.isLoggedIn
-              ?
-              <Link to="/home">
-                <Nav.Link href="#logout" onClick={()=> logout()}>Logout</Nav.Link>
-              </Link>
-              :
-              <>
-                <Link to="/login">
-                  <Nav.Link href="#login">Login</Nav.Link>
-                </Link>
-                <Link to="/register">
-                  <Nav.Link eventKey={2} href="#register">
-                    Register
-                  </Nav.Link>
-                </Link>
-              </>
-            }            
-          </Nav>
-        </Navbar.Collapse>
-      </Navbar>
-    </div>
+              :  
+               <></> 
+          :
+            null
+        }
+        {
+          auth.isLoggedIn
+          ?
+          <>
+            <Link to="/books">
+              <li>Books</li>
+            </Link>
+            <li><button className="tooltip-icon-two" data-tip data-for="userTip"><CgProfile size={27}/></button></li>
+            <ReactTooltip id="userTip" place="bottom" effect="solid">
+              {auth.user.username}
+            </ReactTooltip>
+            <Link to="/home">
+              <li onClick={() => logout()}>
+                <button className="tooltip-icon-one" data-tip data-for="log-out">
+                  <FiLogOut size={27}/>
+                </button>
+              </li>
+              <ReactTooltip id="log-out" place="bottom" effect="solid">
+                Log out
+              </ReactTooltip>
+            </Link>
+          </>
+          :
+          <>
+            <Link to="/login">
+              <li>Login</li>
+            </Link>
+            <Link to="/register">
+              <li>Register</li>
+            </Link>
+          </>
+        }
+        </ul>
+      </nav>
+    </header>
   )
 };
 
