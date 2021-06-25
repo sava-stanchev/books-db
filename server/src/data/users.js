@@ -14,6 +14,16 @@ const getUserByName = async (userName) => {
   return result;
 };
 
+const getUserBy = async (column, value) => {
+  const sql = `
+    SELECT u.id, u.username, u.password, u.email, u.role_id FROM users AS u
+    WHERE u.${column} = ?
+    AND u.is_deleted = 0
+  `;
+  const result = await pool.query(sql, [value]);
+  return result[0];
+};
+
 const createUser = async (user) => {
   const sqlNewUser = `
     INSERT INTO users (user_name, password, first_name, last_name, e_mail, is_admin, is_deleted, ban_date, user_age, gender) 
