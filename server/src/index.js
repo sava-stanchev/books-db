@@ -5,19 +5,18 @@ import reviewsData from './data/reviews.js';
 import userCreateValidator from './validators/user-create-validator.js';
 import validateBody from './middlewares/validate-body.js';
 import dotenv from 'dotenv';
-import createToken from './auth/create-token.js';
 import usersData from './data/users.js';
 import dropDownData from './data/dropDownData.js';
 import {authMiddleware} from './auth/auth-middleware.js';
 import passport from 'passport';
 import jwtStrategy from './auth/strategy.js';
-import loggedUserGuard from './middlewares/loggedUserGuard.js';
+import loggedUserGuard from './middlewares/logged-user-guard.js';
 import roleAuth from './middlewares/role-auth.js';
 import {userRole} from './common/user-role.js';
 import banGuard from './middlewares/ban-guard.js';
 import reviewService from './services/review-service.js';
 import reviewsLikeData from './data/reviewsLike.js';
-import userService from './services/user-service.js';
+import userService from './services/users-service.js';
 import booksController from './controllers/booksController.js';
 import authController from './controllers/auth-controller.js';
 
@@ -50,46 +49,6 @@ app.post('/users', validateBody('user', userCreateValidator), async (req, res) =
     return res.status(200).send(newUser);
   } catch (error) {
     res.status(400).json({
-      error: error.message,
-    });
-  }
-});
-
-/** Login */
-app.post('/login', async (req, res) => {
-  try {
-    const user = await usersData.validateUser(req.body);
-    if (user) {
-      const token = createToken({
-        users_id: user.users_id,
-        user_name: user.user_name,
-        is_admin: user.is_admin,
-      });
-      res.json({
-        token,
-      });
-    } else {
-      res.status(401).json({
-        error: 'Invalid credentials!',
-      });
-    }
-  } catch (error) {
-    res.status(400).json({
-      error: error.message,
-    });
-  }
-});
-
-/** Logout */
-app.delete('/logout', authMiddleware, async (req, res) => {
-  try {
-    await usersData.logoutUser(req.headers.authorization.replace('Bearer ', ''));
-
-    res.json({
-      message: 'Successfully logged out!',
-    });
-  } catch (error) {
-    return res.status(400).json({
       error: error.message,
     });
   }

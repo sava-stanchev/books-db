@@ -9,7 +9,7 @@ import {userRole} from '../common/user-role.js';
 import booksRatingData from '../data/books-rating.js';
 import reviewCreateValidator from '../validators/review-create-validation.js';
 import banGuard from '../middlewares/ban-guard.js';
-import loggedUserGuard from '../middlewares/loggedUserGuard.js';
+import loggedUserGuard from '../middlewares/logged-user-guard.js';
 import validateBody from '../middlewares/validate-body.js';
 import roleAuth from '../middlewares/role-auth.js';
 import reviewsData from '../data/reviews.js';
@@ -17,7 +17,6 @@ import dropDownData from '../data/dropDownData.js';
 import multer from 'multer';
 import path from 'path';
 
-// eslint-disable-next-line new-cap
 const booksController = express.Router();
 const __dirname = path.join(path.dirname(decodeURI(new URL(import.meta.url).pathname))).replace(/^\\([A-Z]:\\)/, '$1');
 const upload = multer({

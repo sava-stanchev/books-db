@@ -1,6 +1,6 @@
 import express from 'express';
 import asyncHandler from 'express-async-handler';
-import usersService from '../service/users-service.js';
+import usersService from '../services/users-service.js';
 import tokensData from '../data/tokens.js';
 import usersData from '../data/users.js';
 import serviceErrors from '../common/service-errors.js';
