@@ -19,6 +19,7 @@ import reviewService from './services/review-service.js';
 import reviewsLikeData from './data/reviewsLike.js';
 import userService from './services/user-service.js';
 import booksController from './controllers/booksController.js';
+import authController from './controllers/auth-controller.js';
 
 const config = dotenv.config().parsed;
 
@@ -33,6 +34,7 @@ app.use(express.json());
 passport.use(jwtStrategy);
 app.use(passport.initialize());
 
+app.use('/', authController);
 app.use('/avatars', express.static('avatars'));
 
 app.use('/books', booksController);
