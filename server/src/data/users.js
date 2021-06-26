@@ -73,16 +73,8 @@ const getUserById = async (id) => {
   return result[0];
 };
 
-const logoutUser = async (token) => {
-  return await pool.query('INSERT INTO tokens (token) VALUES (?)', [token]);
-};
-
 const deleteUser = async (id) => {
   await pool.query(`UPDATE users AS u SET u.is_deleted = 1 WHERE u.users_id = ?`, [id]);
-};
-
-const returnUser = async (id) => {
-  await pool.query(`UPDATE users AS u SET u.is_deleted = 0 WHERE u.users_id = ?`, [id]);
 };
 
 export default {
@@ -92,8 +84,6 @@ export default {
   liftBan,
   getUserById,
   deleteUser,
-  returnUser,
-  logoutUser,
   updateUser,
   getUserBy,
 };
