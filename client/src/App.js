@@ -7,7 +7,6 @@ import SingleBook from './components/SingleBook';
 import {BrowserRouter, Switch, Route, Redirect} from "react-router-dom";
 import {useState} from 'react';
 import AuthContext, {getUser} from './providers/auth-context';
-import GuardedRoute from './hof/GuardedRoute';
 import AddBook from './components/AddBook';
 import AddReview from './components/AddReview';
 import UpdateBook from './components/UpdateBook';
@@ -15,9 +14,9 @@ import Users from './components/Users';
 import SingleUser from './components/SingleUser'
 import UpdateReview from './components/UpdateReview';
 import HomePage from './components/HomePage';
+import GuardedRoute from './providers/GuardedRoute';
 
 const App = () => {
-
   const [authValue, setAuthValue] = useState({
     user: getUser(),
     isLoggedIn: Boolean(getUser()),
@@ -30,15 +29,15 @@ const App = () => {
           <NavBar />
             <Switch>
               <Redirect path="/" exact to="/home" />
-              <Route path="/home" exact component={HomePage}/>
-              <GuardedRoute path="/books" exact component={Books} isLoggedIn={authValue.isLoggedIn}/>
-              <GuardedRoute path="/books/create" exact component={AddBook} isLoggedIn={authValue.isLoggedIn}/>
-              <GuardedRoute path="/books/:id" exact component={SingleBook} isLoggedIn={authValue.isLoggedIn}/>
-              <GuardedRoute path="/books/:id/update" exact component={UpdateBook} isLoggedIn={authValue.isLoggedIn}/>
-              <GuardedRoute path="/books/:id/create-review" exact component={AddReview} isLoggedIn={authValue.isLoggedIn}/>
-              <GuardedRoute path="/reviews/:reviewId/update" exact component={UpdateReview} isLoggedIn={authValue.isLoggedIn}/>
-              <GuardedRoute path="/users" exact component={Users} isLoggedIn={authValue.isLoggedIn}/>
-              <GuardedRoute path="/profile" exact component={SingleUser} isLoggedIn={authValue.isLoggedIn}/>
+              <Route exact path="/home" component={HomePage}/>
+              <GuardedRoute exact path="/books" component={Books} />
+              <GuardedRoute exact admin path="/books/create" component={AddBook} />
+              <GuardedRoute exact path="/books/:id" component={SingleBook} />
+              <GuardedRoute exact path="/books/:id/update" component={UpdateBook} />
+              <GuardedRoute exact path="/books/:id/create-review" component={AddReview} />
+              <GuardedRoute exact path="/reviews/:reviewId/update" component={UpdateReview} />
+              <GuardedRoute exact admin path="/users" component={Users} />
+              <GuardedRoute exact path="/profile" component={SingleUser} />
               <Route path="/login" component={Login}/>       
               <Route path="/register" component={Register}/>
             </Switch>
