@@ -1,5 +1,4 @@
 import pool from './pool.js';
-import bcrypt from 'bcrypt';
 
 const getAllUsers = async () => {
   return await pool.query(`
@@ -16,7 +15,7 @@ const getUserByName = async (userName) => {
 
 const getUserBy = async (column, value) => {
   const sql = `
-    SELECT u.id, u.username, u.password, u.email, u.role_id FROM users AS u
+    SELECT u.users_id, u.username, u.password, u.email, u.is_admin FROM users AS u
     WHERE u.${column} = ?
     AND u.is_deleted = 0
   `;
@@ -26,34 +25,20 @@ const getUserBy = async (column, value) => {
 
 const createUser = async (user) => {
   const sqlNewUser = `
-    INSERT INTO users (user_name, password, first_name, last_name, e_mail, is_admin, is_deleted, ban_date, user_age, gender) 
+    INSERT INTO users (username, password, first_name, last_name, email, is_admin, is_deleted, ban_date, user_age, gender) 
     VALUES (?, ?, ?, ?, ?, 0, 0, DEFAULT, ?, ?)
   `;
   const result = await pool.query(sqlNewUser,
-      [user.user_name, user.password, user.first_name, user.last_name, user.e_mail, user.user_age, user.gender]);
+      [user.username, user.password, user.first_name, user.last_name, user.email, user.user_age, user.gender]);
 
   const sql = `
-    SELECT u.user_name, u.first_name, u.last_name, u.e_mail, u.user_age, u.gender
+    SELECT u.username, u.first_name, u.last_name, u.email, u.user_age, u.gender
     FROM users AS u
     WHERE u.users_id = ?
   `;
 
   const createdUser = (await pool.query(sql, [result.insertId]))[0];
   return createdUser;
-};
-
-const validateUser = async ({user_name, password}) => {
-  const userData = await pool.query('SELECT * FROM users u WHERE u.user_name = ?', [user_name]);
-
-  if (userData.length === 0) {
-    throw new Error('Username does not exist!');
-  }
-
-  if (await bcrypt.compare(password, userData[0].password)) {
-    return userData[0];
-  }
-
-  return null;
 };
 
 const banUser = async (id) => {
@@ -73,10 +58,10 @@ const updateUser = async (user) => {
   }
   const sql = `
     UPDATE users AS u
-    SET u.user_name = ?, u.password = ?, u.first_name = ?, u.last_name =?, u.user_age = ?, u.e_mail = ?, is_admin = ?, u.is_deleted = ?, u.ban_date = ?, u.gender = ?
+    SET u.username = ?, u.password = ?, u.first_name = ?, u.last_name =?, u.user_age = ?, u.email = ?, is_admin = ?, u.is_deleted = ?, u.ban_date = ?, u.gender = ?
     WHERE u.users_id = ?
   `;
-  const result = await pool.query(sql, [user.user_name, user.password, user.first_name, user.last_name, user.user_age, user.e_mail, user.is_admin, user.is_deleted, ban_date, user.gender, user.users_id]);
+  await pool.query(sql, [user.username, user.password, user.first_name, user.last_name, user.user_age, user.email, user.is_admin, user.is_deleted, ban_date, user.gender, user.users_id]);
   return await getUserById(user.users_id);
 };
 
@@ -111,7 +96,6 @@ export default {
   createUser,
   getAllUsers,
   getUserByName,
-  validateUser,
   banUser,
   liftBan,
   getUserById,
@@ -119,4 +103,5 @@ export default {
   returnUser,
   logoutUser,
   updateUser,
+  getUserBy,
 };
