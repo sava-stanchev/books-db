@@ -6,13 +6,6 @@ const getAllUsers = async () => {
   `);
 };
 
-const getUserByName = async (userName) => {
-  const result = await pool.query(
-      `SELECT * FROM users AS u WHERE u.user_name = ?`
-      , [userName]);
-  return result;
-};
-
 const getUserBy = async (column, value) => {
   const sql = `
     SELECT u.users_id, u.username, u.password, u.email, u.is_admin FROM users AS u
@@ -58,7 +51,7 @@ const updateUser = async (user) => {
   }
   const sql = `
     UPDATE users AS u
-    SET u.username = ?, u.password = ?, u.first_name = ?, u.last_name =?, u.user_age = ?, u.email = ?, is_admin = ?, u.is_deleted = ?, u.ban_date = ?, u.gender = ?
+    SET u.username = ?, u.password = ?, u.first_name = ?, u.last_name = ?, u.user_age = ?, u.email = ?, is_admin = ?, u.is_deleted = ?, u.ban_date = ?, u.gender = ?
     WHERE u.users_id = ?
   `;
   await pool.query(sql, [user.username, user.password, user.first_name, user.last_name, user.user_age, user.email, user.is_admin, user.is_deleted, ban_date, user.gender, user.users_id]);
@@ -71,8 +64,8 @@ const liftBan = async (id) => {
 
 const getUserById = async (id) => {
   const sql = `
-  SELECT u.users_id, u.user_name, u.first_name, u.last_name, u.user_age
-    , u.e_mail, u.is_admin, u.is_deleted, u.ban_date, g.gender FROM users AS u
+    SELECT u.users_id, u.username, u.first_name, u.last_name, u.user_age,
+    u.email, u.is_admin, u.is_deleted, u.ban_date, g.gender FROM users AS u
     JOIN genders AS g ON u.gender = g.genders_id
     WHERE u.users_id = ?
   `;
@@ -95,7 +88,6 @@ const returnUser = async (id) => {
 export default {
   createUser,
   getAllUsers,
-  getUserByName,
   banUser,
   liftBan,
   getUserById,

@@ -41,7 +41,7 @@ const NavBar = () => {
         {
           auth.isLoggedIn
           ?
-            auth.user.role === 1
+            auth.user.is_admin === 1
               ?            
                 <Link to="/users">
                   <li>Users</li>

@@ -3,11 +3,11 @@ import {useHistory} from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import {Col, Row, Button} from "react-bootstrap";
 import AuthContext from '../providers/auth-context';
-import { HOST } from '../common/constants.js';
+import {HOST} from '../common/constants';
 
 const Books = () => {
   const auth = useContext(AuthContext);
-  
+  console.log(auth);
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);

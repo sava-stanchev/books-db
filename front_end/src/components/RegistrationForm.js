@@ -4,12 +4,12 @@ import {HOST} from '../common/constants.js';
 import {useHistory} from "react-router-dom";
 
 const initialState = {
-  user_name: '',
+  username: '',
   password: '',
   first_name: '',
   last_name: '',
   user_age: '',
-  e_mail: '',
+  email: '',
   gender: '',
 }
 
@@ -70,12 +70,12 @@ const RegistrationForm = ({genders}) => {
       setAgeError({...ageError, properAgeNumber});
     }
 
-    if (name === "e_mail") {
-      const properEmail = value.includes('@') && value.length > 7;
+    if (name === "email") {
+      const properEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(value);
       setEmailError({...emailError, properEmail});
     }
 
-    if (name === "user_name") {
+    if (name === "username") {
       const properLength = value.length >= 3 && value.length <= 20;
       setUsernameError({...usernameError, properLength});
     }
@@ -125,8 +125,8 @@ const RegistrationForm = ({genders}) => {
             <Form.Row>
               <Form.Group as={Col}>
                 <Form.Label>Username</Form.Label>
-                <Form.Control type="text" placeholder="Enter username" name="user_name" value={newUser.user_name} 
-                onChange={e => updateUser('user_name', e.target.value)}/>
+                <Form.Control type="text" placeholder="Enter username" name="username" value={newUser.username} 
+                onChange={e => updateUser('username', e.target.value)}/>
                 <li className={usernameError.properLength ? "text-success" : "text-danger"}>Between 3 and 20 chars</li>
               </Form.Group>
               <Form.Group as={Col}>
@@ -152,8 +152,8 @@ const RegistrationForm = ({genders}) => {
             </Form.Row>
               <Form.Group as={Col}>
                 <Form.Label>Email address</Form.Label>
-                <Form.Control type="email" placeholder="Enter email" name="e_mail" value={newUser.e_mail} 
-                onChange={e => updateUser('e_mail', e.target.value)}/>
+                <Form.Control type="email" placeholder="Enter email" name="email" value={newUser.email} 
+                onChange={e => updateUser('email', e.target.value)}/>
                 <li className={emailError.properEmail ? "text-success" : "text-danger"}>Valid email address</li>
               </Form.Group>
             <Form.Row>

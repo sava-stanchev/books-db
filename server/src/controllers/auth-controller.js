@@ -23,11 +23,11 @@ authController
       }
 
       const user = result.data;
-
+      console.log(user);
       const payload = {
-        id: user.id,
+        users_id: user.users_id,
         username: user.username,
-        role: user.role_id,
+        is_admin: user.is_admin,
       };
 
       const token = createToken(payload);

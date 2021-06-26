@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import reviewsData from './data/reviews.js';
-import userCreateValidator from './validators/user-create-validator.js';
+import userCreateValidator from './validators/create-user-validator.js';
 import validateBody from './middlewares/validate-body.js';
 import dotenv from 'dotenv';
 import usersData from './data/users.js';
@@ -16,9 +16,9 @@ import {userRole} from './common/user-role.js';
 import banGuard from './middlewares/ban-guard.js';
 import reviewService from './services/review-service.js';
 import reviewsLikeData from './data/reviewsLike.js';
-import userService from './services/users-service.js';
-import booksController from './controllers/booksController.js';
+import booksController from './controllers/books-controller.js';
 import authController from './controllers/auth-controller.js';
+import usersController from './controllers/users-controller.js';
 
 const config = dotenv.config().parsed;
 
@@ -35,24 +35,8 @@ app.use(passport.initialize());
 
 app.use('/', authController);
 app.use('/avatars', express.static('avatars'));
-
 app.use('/books', booksController);
-
-/** Register */
-app.post('/users', validateBody('user', userCreateValidator), async (req, res) => {
-  const userData = req.body;
-  try {
-    const newUser = await userService.createUser(userData);
-    if (!newUser) {
-      return res.status(400).json({message: 'Username exist!'});
-    }
-    return res.status(200).send(newUser);
-  } catch (error) {
-    res.status(400).json({
-      error: error.message,
-    });
-  }
-});
+app.use('/users', usersController);
 
 /** Get reviews from a user */
 app.get('/profile/:userId/reviews', async (req, res) => {

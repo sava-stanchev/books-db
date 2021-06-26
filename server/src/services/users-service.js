@@ -1,21 +1,28 @@
-import usersData from '../data/users.js';
 import bcrypt from 'bcrypt';
+import serviceErrors from '../common/service-errors.js';
 
-const createUser = async (userData) => {
-  const isUserNameExist = await usersData.getUserByName(userData.user_name);
-  if (isUserNameExist[0]) {
-    return null;
+const createUser = (usersData) => async (user) => {
+  const {username, email, password} = user;
+
+  const usernameExists = await usersData.getUserBy('username', username);
+  const emailExists = await usersData.getUserBy('email', email);
+
+  if (usernameExists || emailExists) {
+    return {
+      error: serviceErrors.DUPLICATE_RECORD,
+      data: null,
+    };
   }
 
-  userData.password = await bcrypt.hash(userData.password, 10);
-  if (typeof userData.user_age === 'undefined') {
-    userData.user_age = 'DEFAULT';
-  }
-  if (typeof userData.gender === 'undefined') {
-    userData.gender = 'DEFAULT';
-  }
-  const newUser = await usersData.createUser(userData);
-  return newUser;
+  const cryptedPassword = await bcrypt.hash(password, 10);
+
+  return {
+    error: null,
+    data: await usersData.createUser({
+      ...user,
+      password: cryptedPassword,
+    }),
+  };
 };
 
 const validateUser = (usersData) => async (username, password) => {

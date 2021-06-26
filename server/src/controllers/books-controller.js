@@ -34,6 +34,7 @@ booksController
 
     /** Retrieve all books */
     .get('/', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
+      console.log('all books');
       const {sort} = req.query;
       try {
         if (sort) {
@@ -42,6 +43,7 @@ booksController
         }
 
         const theBooks = await booksData.getAllBooks();
+        console.log(theBooks);
         res.json(theBooks);
       } catch (error) {
         return res.status(400).json({
