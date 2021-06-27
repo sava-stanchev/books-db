@@ -23,7 +23,7 @@ authController
       }
 
       const user = result.data;
-      console.log(user);
+
       const payload = {
         users_id: user.users_id,
         username: user.username,

@@ -1,11 +1,14 @@
 import {useEffect, useState} from 'react';
-import {Button, Table} from 'react-bootstrap';
-import { BAN_DAYS, HOST } from '../common/constants.js';
+import {BAN_DAYS, HOST} from '../common/constants.js';
+import {FaTrashAlt, FaBan} from "react-icons/fa";
+import {useHistory} from 'react-router-dom';
 
 const Users = () => {
-  const [users, setUsers] = useState(null);
+  const history = useHistory();
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [filteredUsers, setFilteredUsers] = useState([]);
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
     setLoading(true);
@@ -18,15 +21,25 @@ const Users = () => {
     })
     .then(res => res.json())
     .then(data => setUsers(data))
-    .then(()=> setLoading(false))
-    .catch((error) => setError(error.message))
-  }, []);
+    .then(() => setLoading(false))
+    .catch(() => history.push('/500'));
+  }, [history]);
 
-  const showError = () => {
-    if (error) {
-      return <h4><i>An error has occured: </i>{error}</h4>
+  useEffect(() => {
+    setFilteredUsers(users.filter(user => {
+      return user.username.toLowerCase().includes(search.toLowerCase())
+    }));
+  }, [search, users]);
+
+  let foundUsers = filteredUsers;
+
+  const Loader = () => <div className="Loader"></div>;
+
+  const showLoader = () => {
+    if (loading) {
+      return <Loader />
     }
-  }
+  };
 
   const updateUser = (i, userId, prop, value)=> {
     let user = {...users[i], [prop]: value}
@@ -42,81 +55,83 @@ const Users = () => {
     .then(res => res.json())
     .then(data => users[i] = data)
     .then(()=> setLoading(false))
-    .catch((error) => setError(error.message));
+    .catch(() => history.push('/500'));
 
     users[i]=user;
     const updatedUsers = [...users];
     setUsers(updatedUsers);
   };
 
+  const deleteUser = (id) => {
+    fetch(`${HOST}/users/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'content-type': 'application/json',
+        'authorization': `bearer ${localStorage.getItem('token')}`
+      },
+    })
+    .then((res) => res.json())
+    .then(() => setUsers(users.filter(u => u.users_id !== id)))
+    .catch(() => history.push('/500'));
+  };
+
+  const displayUsers = foundUsers.map((user, i) => {
+    return (
+      <tbody key={user.users_id}>
+        <tr style={{outline: '#202027 thin solid'}}>
+          <td>{user.username}</td>
+          <td>{user.first_name} {user.last_name}</td>
+          <td>{user.email}</td>
+          <td>{user.user_age}</td>
+          <td>
+            <div className="inline-td">
+              {user.ban_date ?
+                <>{new Date(user.ban_date).toLocaleDateString()}</> 
+              :
+                <button className="edit-btn-users" onClick={() => updateUser(i, user.users_id, 'ban_date', new Date(new Date().getTime() + BAN_DAYS))}><FaBan/></button>
+              }
+              <button className="delete-btn-users" onClick={() => deleteUser(user.users_id)}><FaTrashAlt/></button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    )
+  });
+
   return(
-    loading
-    ?
     <>
-    <p>Loading...</p>
-    </>
-    :    
-    <p>
-      <div>
-        {showError()}
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+      <section className="genre-section">
+        <div className="boxContainer">
+          <table className = "elementsContainer">
+            <tbody><tr>
+              <td>
+                <input type="text" placeholder="search by username" className="search" onChange={e => setSearch(e.target.value)}/>
+              </td>
+              <td>
+                <>
+                  <i className="material-icons">search</i>
+                </>
+              </td>
+            </tr></tbody>
+          </table>
+        </div>
+      </section>
+      <br/>
+      <div className="songs-container-main-section">
+        {showLoader()}
+        <div className="table-container">
+          <table className="table">
+            <thead>
+              <tr>
+                <th colSpan="4">List of Users</th>
+              </tr>
+            </thead>
+            {displayUsers}
+          </table>
+        </div>
       </div>
-      <Table>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Username</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>E-mail</th>
-            <th>Age</th>
-            <th>Delete?</th>
-            <th>Ban?</th>
-          </tr>
-        </thead>
-        <tbody>
-        {
-          users.map((u, i) => {
-            return (
-              <>
-                <tr>
-                  <td>{u.users_id}</td>
-                  <td>{u.user_name}</td>
-                  <td>{u.first_name}</td>
-                  <td>{u.last_name}</td>
-                  <td>{u.e_mail}</td>
-                  <td>{u.user_age ? u.user_age : <p>-</p>}
-                  </td>
-                  <td>{u.is_deleted
-                    ?
-                    <Button variant="warning" onClick={() =>updateUser(i, u.users_id, 'is_deleted', 0)}>
-                      Return user!
-                    </Button>
-                    :
-                    <Button variant="danger" onClick={() => updateUser(i, u.users_id, 'is_deleted', 1)}>
-                      Delete!
-                    </Button>}
-                  </td>
-                  <td>{u.ban_date
-                    ? 
-                    <>
-                      <>{new Date(u.ban_date).toLocaleDateString()}</><br/>
-                      <Button variant="primary" onClick={() => updateUser(i, u.users_id, 'ban_date', null)}>
-                        Unban user!
-                      </Button>
-                    </>
-                    :
-                    <Button variant="primary" onClick={() => updateUser(i, u.users_id, 'ban_date', new Date(new Date().getTime() + BAN_DAYS))}>
-                      Ban user!
-                    </Button>}
-                  </td>
-                </tr>
-              </>
-            )
-          })
-        }
-        </tbody>
-      </Table>
-    </p>
+    </>
   )
 };
 
