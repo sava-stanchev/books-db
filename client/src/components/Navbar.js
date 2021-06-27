@@ -2,7 +2,6 @@ import {Link, useHistory} from 'react-router-dom';
 import AuthContext from '../providers/auth-context';
 import {useContext} from 'react';
 import {CgProfile} from 'react-icons/cg';
-import {GiEvilBook} from 'react-icons/gi';
 import ReactTooltip from 'react-tooltip';
 import {FiLogOut} from 'react-icons/fi';
 import {HOST} from '../common/constants';
@@ -32,7 +31,6 @@ const NavBar = () => {
     <header className="main-header">
       <Link to="/home">
         <div className="brand-logo">
-          <GiEvilBook size={38}/>
           <div href="#home" className="brand-logo-name">The Library</div>
         </div>
       </Link>

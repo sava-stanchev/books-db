@@ -86,9 +86,9 @@ const Users = () => {
           <td>
             <div className="inline-td">
               {user.ban_date ?
-                <>{new Date(user.ban_date).toLocaleDateString()}</> 
+                <p>{new Date(user.ban_date).toLocaleDateString()}</p> 
               :
-                <button className="edit-btn-users" onClick={() => updateUser(i, user.users_id, 'ban_date', new Date(new Date().getTime() + BAN_DAYS))}><FaBan/></button>
+                <button className="ban-btn-users" onClick={() => updateUser(i, user.users_id, 'ban_date', new Date(new Date().getTime() + BAN_DAYS))}><FaBan/></button>
               }
               <button className="delete-btn-users" onClick={() => deleteUser(user.users_id)}><FaTrashAlt/></button>
             </div>
