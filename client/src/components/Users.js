@@ -124,7 +124,7 @@ const Users = () => {
           <table className="table">
             <thead>
               <tr>
-                <th colSpan="4">List of Users</th>
+                <th colSpan="5">List of Users</th>
               </tr>
             </thead>
             {displayUsers}

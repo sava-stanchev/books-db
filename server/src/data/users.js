@@ -74,7 +74,11 @@ const getUserById = async (id) => {
 };
 
 const deleteUser = async (id) => {
-  await pool.query(`UPDATE users AS u SET u.is_deleted = 1 WHERE u.users_id = ?`, [id]);
+  const sql = `
+    UPDATE users SET users.is_deleted = 1
+    WHERE users.users_id = ?
+  `;
+  return await pool.query(sql, [id]);
 };
 
 export default {
