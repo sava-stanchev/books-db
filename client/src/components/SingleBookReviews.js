@@ -3,8 +3,6 @@ import {useHistory} from "react-router-dom";
 import {Button} from "react-bootstrap";
 import {FaTrashAlt} from "react-icons/fa";
 import {FaEdit} from "react-icons/fa";
-import {FaThumbsUp} from "react-icons/fa";
-import {FaThumbsDown} from "react-icons/fa";
 import { HOST } from '../common/constants.js';
 import AuthContext from '../providers/auth-context';
 
@@ -37,36 +35,6 @@ const SingleBookReviews = ({id}) => {
     .then(data => setReviewsData(reviewsData.filter(r => r.reviews_id !== data.reviews_id)));
   };
 
-  const updateLike = (reviewLikesId, reviews_id) => {
-    const reviewsId = {reviews_id};
-    const bookId = {books_id: id};
-    fetch(`${HOST}/reviews/${reviewLikesId}/like`, {
-      method: 'PUT',
-      headers: {
-        'content-type': 'application/json',
-        'authorization': `bearer ${localStorage.getItem('token')}`
-      },
-      body: JSON.stringify([reviewsId, bookId])
-    })
-    .then((res) => res.json())
-    .then(data => setReviewsData(data));
-  };
-
-  const updateDislike = (reviewLikesId, reviews_id) => {
-    const reviewsId = {reviews_id};
-    const bookId = {books_id: id};
-    fetch(`${HOST}/reviews/${reviewLikesId}/dislike`, {
-      method: 'PUT',
-      headers: {
-        'content-type': 'application/json',
-        'authorization': `bearer ${localStorage.getItem('token')}`
-      },
-      body: JSON.stringify([reviewsId, bookId])
-    })
-    .then((res) => res.json())
-    .then(data => setReviewsData(data));
-  };
-
   const history = useHistory();
 
   if  (reviewsData === null) {
@@ -90,37 +58,6 @@ const SingleBookReviews = ({id}) => {
                     {
                       auth.user.users_id===review.users_id
                       ?
-                      <></>
-                      :                        
-                          review.review_likes_id === null?
-                            <>
-                              <Button variant="warning" className="reviewBtns" onClick={() => updateLike(review.review_likes_id, review.reviews_id)}>
-                                <FaThumbsUp/>
-                              </Button>
-                              <Button variant="warning" className="reviewBtns" onClick={() => updateDislike(review.review_likes_id, review.reviews_id)}>
-                                <FaThumbsDown/>
-                              </Button>
-                            </>
-                            :
-                              review.likes === 1?
-                              <>
-                                <p style={{fontSize: 14}}>You liked this review. <br/>Did you change your mind?</p>
-                                <Button variant="warning" className="reviewBtns" onClick={() => updateDislike(review.review_likes_id, review.reviews_id)}>
-                                  <FaThumbsDown/>
-                                </Button>
-                              </>
-                              :
-                              <>
-                                <p style={{fontSize: 14}}>You disliked this review. <br/>Did you change your mind?</p>
-                                <Button variant="warning" className="reviewBtns" onClick={() => updateLike(review.review_likes_id, review.reviews_id)}>
-                                  <FaThumbsUp/>
-                                </Button>
-                              </>                     
-                    }
-                    <p>Likes: {review.total_likes?review.total_likes:0} / Dislikes: {review.total_dislikes?review.total_dislikes:0}</p>
-                    {
-                      auth.user.users_id===review.users_id
-                      ?
                       <>
                         <Button variant="primary" className="reviewBtns" onClick={() => history.push(`/reviews/${review.reviews_id}/update`)}>
                           <FaEdit/>
@@ -129,7 +66,8 @@ const SingleBookReviews = ({id}) => {
                           <FaTrashAlt/>
                         </Button>
                       </>
-                      :<></>
+                      :
+                      <></>
                     }
                   </div>
                   <p>------------------</p>

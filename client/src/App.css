@@ -758,3 +758,10 @@ select:focus {
   text-decoration: none;
   font-size: 1rem;
 }
+
+.ban-date {
+  font-size: 1rem;
+  margin-right: 0.8rem;
+  margin-top: 0;
+  margin-bottom: 0;
+}
