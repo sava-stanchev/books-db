@@ -33,7 +33,7 @@ const upload = multer({
 booksController
 
     /** Retrieve all books */
-    .get('/', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
+    .get('/', authMiddleware, loggedUserGuard, async (req, res) => {
       console.log('all books');
       const {sort} = req.query;
       try {

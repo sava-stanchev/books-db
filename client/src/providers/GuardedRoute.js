@@ -3,9 +3,7 @@ import {Route, Redirect} from 'react-router-dom';
 import {DateTime} from 'luxon';
 import AuthContext from './auth-context';
 
-const GuardedRoute = ({
-  component: Component, admin, ...rest
-}) => {
+const GuardedRoute = ({component: Component, admin, ...rest}) => {
   const {user, setUser} = useContext(AuthContext);
   const renderComponent = (props) => {
     if (user) {

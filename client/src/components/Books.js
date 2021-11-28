@@ -7,7 +7,7 @@ import {HOST} from '../common/constants';
 
 const Books = () => {
   const auth = useContext(AuthContext);
-  console.log(auth);
+  const history = useHistory();
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -30,8 +30,9 @@ const Books = () => {
       .then((response) => response.json())
       .then((data) => setBooks(data))
       .catch((error) => setError(error.message))
-      .finally(() => setLoading(false));
-  }, []);
+      .finally(() => setLoading(false))
+      .catch(() => history.push('/500'));
+  }, [history]);
 
   useEffect(() => {
     setFilteredBooks(
@@ -56,8 +57,6 @@ const Books = () => {
       return <Loader />
     }
   }
-
-  const history = useHistory();
 
   const displayBooks = foundBooks
   .slice(pagesVisited, pagesVisited + booksPerPage)

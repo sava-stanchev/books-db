@@ -1,6 +1,5 @@
 import {useEffect, useState, useContext} from 'react';
-import {Button} from "react-bootstrap";
-import {useHistory} from "react-router-dom";
+import {Link} from "react-router-dom";
 import AuthContext from '../providers/auth-context';
 import {HOST} from '../common/constants.js';
 
@@ -38,11 +37,9 @@ const HomePage = () => {
     }
   }
 
-  const history = useHistory();
-
-  const displayBooks = topBooks.map((book) => {
+  const displayBooks = topBooks.map((book, index) => {
     return (
-      <div className="image-container d-flex justify-content-start m-3">
+      <div className="image-container d-flex justify-content-start m-3" key={index}>
         <img className="book-cover-size" src={book.posters} alt={book.title} />
         <div className="overlay d-flex align-items-center justify-content-center">
           {book.title}
@@ -54,11 +51,9 @@ const HomePage = () => {
   return(
     <div>
       <header className="w3-container w3-center">
-      {auth.isLoggedIn ?
-        <Button variant="primary" size="lg" onClick = {() => history.push('/books')}>Enter The Library</Button>
-      :
-        <Button variant="primary" size="lg" onClick = {() => history.push('/login')}>Enter The Library</Button>
-      }
+        <Link to={auth.isLoggedIn ? "/books" : "/login"}>
+          <button className="home-page-button">Enter The Library</button>
+        </Link>
       </header>
       <span className="pageTitle">Some of our books:</span>
       {showLoader()}
