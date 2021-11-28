@@ -6,10 +6,26 @@ import createUserValidator from '../validators/create-user-validator.js';
 import validateBody from '../middlewares/validate-body.js';
 import transformBody from '../middlewares/transform-body.js';
 import serviceErrors from '../common/service-errors.js';
+import loggedUserGuard from '../middlewares/logged-user-guard.js';
+import {authMiddleware} from '../auth/auth-middleware.js';
+import roleAuth from '../middlewares/role-auth.js';
+import {userRole} from '../common/user-role.js';
 
 const usersController = express.Router();
 
 usersController
+
+    /** Retrieve all users */
+    .get('/', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
+      try {
+        const users = await usersData.getAllUsers();
+        res.json(users);
+      } catch (error) {
+        return res.status(400).json({
+          error: error.message,
+        });
+      }
+    })
 
     .post('/', transformBody(createUserValidator), validateBody('user', createUserValidator), asyncHandler(async (req, res) => {
       const result = await usersService.createUser(usersData)(req.body);

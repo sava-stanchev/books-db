@@ -180,18 +180,6 @@ app.delete('/admin/users/:id', authMiddleware, loggedUserGuard, roleAuth(userRol
   }
 });
 
-/** Get all users (as admin) */
-app.get('/users', authMiddleware, loggedUserGuard, roleAuth(userRole.Admin), async (req, res) => {
-  try {
-    const users = await usersData.getAllUsers();
-    res.json(users);
-  } catch (error) {
-    return res.status(400).json({
-      error: error.message,
-    });
-  }
-});
-
 /** Return a user (as admin) */
 app.put('/admin/users/:id', authMiddleware, loggedUserGuard, async (req, res) => {
   try {
