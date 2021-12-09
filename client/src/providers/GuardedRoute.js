@@ -4,14 +4,19 @@ import {DateTime} from 'luxon';
 import AuthContext from './auth-context';
 
 const GuardedRoute = ({component: Component, admin, ...rest}) => {
-  const {user, setUser} = useContext(AuthContext);
+  const {user} = useContext(AuthContext);
+  const auth = useContext(AuthContext);
+
   const renderComponent = (props) => {
     if (user) {
       const tokenTime = DateTime.fromSeconds(user.exp).toUTC().toMillis();
       const currentTime = DateTime.now().toUTC().toMillis();
 
       if (currentTime > tokenTime) {
-        setUser(null);
+        auth.setAuthState({
+          user: null,
+          isLoggedIn: false,
+        });
         localStorage.removeItem('token');
         localStorage.setItem('exp', true);
 

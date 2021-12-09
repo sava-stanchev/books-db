@@ -62,7 +62,7 @@ const Books = () => {
   .slice(pagesVisited, pagesVisited + booksPerPage)
   .map((book) => {
     return (
-      <div className="each-book">
+      <div className="each-book" key={book.title}>
         <img className="poster" src={book.posters} alt={book.title} />
         <b className="title">{book.title}</b>
         <Button variant="primary" className="btn-details" onClick = {() => history.push(`/books/${book.books_id}`)}>View Details</Button>
