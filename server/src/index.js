@@ -2,8 +2,6 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import reviewsData from './data/reviews.js';
-import userCreateValidator from './validators/create-user-validator.js';
-import validateBody from './middlewares/validate-body.js';
 import dotenv from 'dotenv';
 import usersData from './data/users.js';
 import dropDownData from './data/dropDownData.js';
@@ -15,7 +13,6 @@ import roleAuth from './middlewares/role-auth.js';
 import {userRole} from './common/user-role.js';
 import banGuard from './middlewares/ban-guard.js';
 import reviewService from './services/review-service.js';
-import reviewsLikeData from './data/reviewsLike.js';
 import booksController from './controllers/books-controller.js';
 import authController from './controllers/auth-controller.js';
 import usersController from './controllers/users-controller.js';
@@ -199,24 +196,6 @@ app.put('/admin/users/:id', authMiddleware, loggedUserGuard, async (req, res) =>
   }
 });
 
-/** Get user by ID */
-app.get('/users/:id', authMiddleware, loggedUserGuard, async (req, res) => {
-  try {
-    const user = await usersData.getUserById(req.params.id);
-    if (!user) {
-      res.status(400).json({
-        message: 'User not found!',
-      });
-    }
-
-    res.status(200).send(user);
-  } catch (error) {
-    return res.status(400).json({
-      error: error.message,
-    });
-  }
-});
-
 /** Get all genders */
 app.get('/genders', async (req, res) => {
   try {
@@ -246,18 +225,6 @@ app.get('/genres', async (req, res) => {
   try {
     const genres = await dropDownData.getAllGenres();
     res.json(genres);
-  } catch (error) {
-    return res.status(400).json({
-      error: error.message,
-    });
-  }
-});
-
-/** Get reaction for review */
-app.get('/reactions', async (req, res) => {
-  try {
-    const reactions = await dropDownData.getAllReactions();
-    res.json(reactions);
   } catch (error) {
     return res.status(400).json({
       error: error.message,
