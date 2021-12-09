@@ -1,6 +1,6 @@
 export default {
   user: {
-    user_name: `Expected string with length [3 - 30]`,
+    username: `Expected string with length [3 - 30]`,
     password: `Expected string with length [4 - 30]`,
     first_name: `Expected string with length [2 - 20]`,
     last_name: `Expected string with length [2 - 20]`,

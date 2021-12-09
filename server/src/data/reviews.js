@@ -2,7 +2,7 @@ import pool from './pool.js';
 
 const getAllReviews = async () => {
   return await pool.query(`
-    SELECT r.reviews_id, r.content, r.date_created, b.title, u.user_name
+    SELECT r.reviews_id, r.content, r.date_created, b.title, u.username
     FROM reviews AS r
     JOIN users AS u ON r.users_id = u.users_id
     JOIN books AS b ON r.books_id = b.books_id
@@ -12,7 +12,7 @@ const getAllReviews = async () => {
 
 const getAllReviewForUser = async (userId) => {
   const sql = `
-    SELECT r.reviews_id, r.content, r.date_created, b.title, u.user_name
+    SELECT r.reviews_id, r.content, r.date_created, b.title, u.username
     FROM reviews AS r
     JOIN users AS u ON r.users_id = u.users_id
     JOIN books AS b ON r.books_id = b.books_id
@@ -24,7 +24,7 @@ const getAllReviewForUser = async (userId) => {
 
 const getReviewsForBook = async (id) => {
   const sql = `
-  SELECT r.content, r.date_created, u.user_name, r.reviews_id, r.users_id, rl.likes, rl.dislike, rl.review_likes_id,
+  SELECT r.content, r.date_created, u.username, r.reviews_id, r.users_id, rl.likes, rl.dislike, rl.review_likes_id,
   COUNT(IF(rl.likes = 1, 1, null)) AS total_likes,
   COUNT(IF(rl.dislike = 1, 1, null)) AS total_dislikes
   FROM reviews AS r
@@ -101,7 +101,7 @@ const userReviewByBookId = async (userId, bookId) => {
 
 const getAnyReviewById = async (id) => {
   const sql = `
-  SELECT r.reviews_id, r.content, r.date_created, b.title, u.user_name
+  SELECT r.reviews_id, r.content, r.date_created, b.title, u.username
   FROM reviews AS r
   JOIN users AS u ON r.users_id = u.users_id
   JOIN books AS b ON r.books_id = b.books_id

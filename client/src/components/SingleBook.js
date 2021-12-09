@@ -98,13 +98,12 @@ const SingleBook = props => {
       {showError()}
       <div className="content">
         <div id="book-detailed">
-        
-          <Row>
-            <Col>
+          <div className="poster-and-info">
+            <div className="the-poster">
               <img src={bookData.posters} alt={bookData.title}/>
               <UploadPoster books_id={bookData.books_id}/>
-            </Col>
-            <Col>
+            </div>
+            <div className="the-book-info-container">
               <div id="book-info">
                 <p>Title: {bookData.title}</p>
                 <p>Author: {bookData.author}</p>
@@ -114,59 +113,56 @@ const SingleBook = props => {
                 <p>Age Recommendation: {bookData.age_recommendation}</p>
                 <p>Print Length: {bookData.print_length}</p>
                 <p>ISBN: {bookData.isbn}</p>
-                <p>Book Rating: <StarRating bookData={bookData}/></p>
+                {/* <p>Book Rating: <StarRating bookData={bookData}/></p> */}
                 {auth.user.is_admin?
                   <>
                     <Button variant="primary" onClick={() => history.push(`/books/${bookData.books_id}/update`)}>
                       Update Book
                     </Button>
+                    {'  '}
                     <Button variant="danger" onClick={() => deleteBook()}>
                       Delete Book
                     </Button>
                   </>
                   :<></>
-                } 
+                }
+                            <br/>
+            {bookData.is_borrowed
+              ? 
+              <>
+                <p>Book already borrowed!</p>
+                <Button variant="primary" onClick={() => returnBook()}>
+                  Return!
+                </Button>
+              </>
+              :
+              <>
+                <p>Borrow the book?</p>
+                <Button variant="primary" onClick={() => borrowBook()}>
+                  Borrow!
+                </Button>
+              </>
+            }
               </div>
-            </Col>
-            <Col>
-              <br/>
-              {bookData.is_borrowed
-                ? 
-                <>
-                  <p>Book is already borrowed!</p>
-                  <Button variant="primary" onClick={() => returnBook()}>
-                    Return!
-                  </Button>
-                </>
+            </div>
+          </div>
+          <>
+            <br/>
+              {
+                review
+                ?
+                <p style={{marginLeft: '15px'}}>You have already reviewed this book.</p>
                 :
                 <>
-                  <p>Would you like to borrow the book?</p>
-                  <Button variant="primary" onClick={() => borrowBook()}>
-                    Borrow!
+                  <p style={{marginLeft: '15px'}}>Would you like to leave a review?</p>
+                  <Button style={{marginLeft: '15px'}} variant="primary" onClick={() => history.push(`/books/${bookData.books_id}/create-review`)}>
+                    Create Review
                   </Button>
                 </>
               }
-              <br/>
-              <br/>
-                {
-                  review
-                  ?
-                  <>
-                  <br/>
-                  <p>You have already reviewed this book.</p>
-                  </>
-                  :
-                  <>
-                    <p>Would you like to leave a review?</p>
-                    <Button variant="primary" onClick={() => history.push(`/books/${bookData.books_id}/create-review`)}>
-                      Create Review
-                    </Button>
-                  </>
-                }
-              <p>__________________________</p>
-              <SingleBookReviews id={id} />
-            </Col>
-          </Row>
+            <p style={{marginLeft: '15px'}}>__________________________</p>
+            <SingleBookReviews id={id} />
+          </>
         </div>
       </div>
     </div>

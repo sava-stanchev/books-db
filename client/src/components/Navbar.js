@@ -36,51 +36,55 @@ const NavBar = () => {
       </Link>
       <nav className="main-nav">
         <ul>
-        {
-          auth.isLoggedIn
-          ?
-            auth.user.is_admin === 1
-              ?            
-                <Link to="/users">
-                  <li>Users</li>
-                </Link>
-              :  
-               <></> 
-          :
-            null
-        }
-        {
-          auth.isLoggedIn
-          ?
-          <>
-            <Link to="/books">
-              <li>Books</li>
-            </Link>
-            <li><button className="tooltip-icon-two" data-tip data-for="userTip"><CgProfile size={27}/></button></li>
-            <ReactTooltip id="userTip" place="bottom" effect="solid">
-              {auth.user.username}
-            </ReactTooltip>
-            <Link to="/home">
-              <li onClick={() => logout()}>
-                <button className="tooltip-icon-one" data-tip data-for="log-out">
-                  <FiLogOut size={27}/>
-                </button>
-              </li>
-              <ReactTooltip id="log-out" place="bottom" effect="solid">
-                Log out
+          {
+            auth.isLoggedIn
+            ?
+              auth.user.is_admin === 1
+                ?            
+                  <Link to="/users">
+                    <li>Users</li>
+                  </Link>
+                :  
+                  null
+            :
+              null
+          }
+          {
+            auth.isLoggedIn
+            ?
+            <>
+              <Link to="/books">
+                <li>Books</li>
+              </Link>
+              <Link to="/profile" style={{marginTop: '-11px'}}>
+                <li>
+                  <button className="tooltip-icon-two" data-tip data-for="userTip"><CgProfile size={27}/></button>
+                </li>
+              </Link>
+              <ReactTooltip id="userTip" place="bottom" effect="solid">
+                {auth.user.username}
               </ReactTooltip>
-            </Link>
-          </>
-          :
-          <>
-            <Link to="/login">
-              <li>Login</li>
-            </Link>
-            <Link to="/register">
-              <li>Register</li>
-            </Link>
-          </>
-        }
+              <Link to="/home">
+                <li onClick={() => logout()}>
+                  <button className="tooltip-icon-one" data-tip data-for="log-out">
+                    <FiLogOut size={27}/>
+                  </button>
+                </li>
+                <ReactTooltip id="log-out" place="bottom" effect="solid">
+                  Log out
+                </ReactTooltip>
+              </Link>
+            </>
+            :
+            <>
+              <Link to="/login">
+                <li>Login</li>
+              </Link>
+              <Link to="/register">
+                <li>Register</li>
+              </Link>
+            </>
+          }
         </ul>
       </nav>
     </header>

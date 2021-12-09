@@ -1,6 +1,7 @@
 import {useState} from 'react';
 import {HOST} from '../common/constants.js';
 import {useHistory} from "react-router-dom";
+import { Button } from 'react-bootstrap';
 
 const UploadPoster = ({books_id}) => {
   const [file, setFile] = useState();
@@ -27,7 +28,7 @@ const UploadPoster = ({books_id}) => {
 
   return (
     <>
-      <form action="#" method="post" enctype="multipart/form-data">
+      <form action="#" method="post" encType="multipart/form-data" style={{marginLeft: '15px'}}>
         <div className="upload-container">
           <input type="file" id="file" onChange={event => {
             const file = event.target.files[0];
@@ -35,7 +36,7 @@ const UploadPoster = ({books_id}) => {
           }} />
         </div>
       </form>
-      <button onClick={send}>Update Cover</button>
+      <Button onClick={send} style={{marginTop: '10px', marginLeft: '15px'}}>Update Cover</Button>
     </>
   )
 }

@@ -42,7 +42,7 @@ const SingleBookReviews = ({id}) => {
   }
 
   return (
-    <div className="review-list">
+    <div className="review-list" style={{marginRight: '15px', marginLeft: '15px'}}>
       <div className="review-header">
         <h5 className="list-title">Reviews for this book:</h5>
       </div>
@@ -50,29 +50,27 @@ const SingleBookReviews = ({id}) => {
         <div className="reviews">
           {reviewsData.map((review) => {
             return (
-              <>
-                <div className="review">
-                  <h6>{review.content}</h6>
-                  <p>by <i>{review.user_name}</i> on {new Date(review.date_created).toLocaleDateString("en-US")}</p>
-                  <div>
-                    {
-                      auth.user.users_id===review.users_id
-                      ?
-                      <>
-                        <Button variant="primary" className="reviewBtns" onClick={() => history.push(`/reviews/${review.reviews_id}/update`)}>
-                          <FaEdit/>
-                        </Button>
-                        <Button variant="danger" className="reviewBtns" onClick={() => deleteReview(review.reviews_id)}>
-                          <FaTrashAlt/>
-                        </Button>
-                      </>
-                      :
-                      <></>
-                    }
-                  </div>
-                  <p>------------------</p>
+              <div className="review" key={review.content}>
+                <h5>{review.content}</h5>
+                <p>by <i>{review.username}</i> on {new Date(review.date_created).toLocaleDateString("en-US")}</p>
+                <div>
+                  {
+                    auth.user.users_id===review.users_id
+                    ?
+                    <>
+                      <Button variant="primary" className="reviewBtns" onClick={() => history.push(`/reviews/${review.reviews_id}/update`)}>
+                        <FaEdit/>
+                      </Button>
+                      <Button variant="danger" className="reviewBtns" onClick={() => deleteReview(review.reviews_id)}>
+                        <FaTrashAlt/>
+                      </Button>
+                    </>
+                    :
+                    <></>
+                  }
                 </div>
-              </>
+                <p>------------------</p>
+              </div>
             )
           })}
         </div>

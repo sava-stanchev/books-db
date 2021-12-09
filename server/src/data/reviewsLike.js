@@ -73,7 +73,7 @@ const updateReviewDislike = async (reviewLikesId) => {
 
 const reviewLikesByBookAndUser = async (reviewId) => {
   const sql = `
-  SELECT b.title, r.content, u.user_name, re.reaction
+  SELECT b.title, r.content, u.username, re.reaction
   FROM review_likes AS rl
   JOIN reviews AS r ON rl.reviews_id = r.reviews_id
   JOIN users AS u ON rl.users_id = u.users_id

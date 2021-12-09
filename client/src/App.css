@@ -136,6 +136,7 @@ body {
   justify-content: space-between;
   align-items: center;
   flex-grow: 1;
+  padding: 20px;
 }
 
 .join-login-text {
@@ -222,13 +223,13 @@ body {
 }
 
 #book #book-detailed {
-  display: grid;
   grid-template-areas: "img info";
   padding: 1em;
   background-color: #E9ECEF;
   border: 1px solid #333;
   border-radius: .3em;
   box-shadow: 0 0 17px 2px #333;
+  min-width: 825px;
 }
 
 #book #book-detailed img {
@@ -800,4 +801,18 @@ select:focus {
 
 .home-page-button:focus {
   background-color: #F2D349;
+}
+
+.poster-and-info {
+  display: flex;
+  flex-direction: row;
+  margin-left: auto;
+}
+
+.the-poster {
+  margin-right: 10px;
+}
+
+.the-book-info-container {
+  margin-left: 10px;
 }

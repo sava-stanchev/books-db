@@ -59,8 +59,8 @@ const SingleUserReviews = ({userId}) => {
             {reviewsData.map((review) => {
               return (
                 <div className="review">
-                  <h6>{review.content}</h6>
-                  <p>by <i>{review.user_name}</i> on {new Date(review.date_created).toLocaleDateString("en-US")} for {review.title}</p>
+                  <h5>{review.content}</h5>
+                  <p>by <i>{review.username}</i> on {new Date(review.date_created).toLocaleDateString("en-US")} for {review.title}</p>
                   <div>
                     <Button variant="primary" className="reviewBtns" onClick={() => history.push(`/reviews/${review.reviews_id}/update`)}>
                       <FaEdit/>
