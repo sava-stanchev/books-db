@@ -45,7 +45,7 @@ const SingleUser = () => {
               <Container>
                 <Row>
                   <Col>
-                    <h1>{user.user_name}'s Info</h1>
+                    <h1>{user.username}'s Info</h1>
                   </Col>
                 </Row>
                 <br/>
@@ -54,7 +54,7 @@ const SingleUser = () => {
                     <Form>
                       <Form.Row>
                         <Form.Group as={Col}>
-                          <Form.Label><b>Username:</b> <i>{user.user_name}</i></Form.Label>
+                          <Form.Label><b>Username:</b> <i>{user.username}</i></Form.Label>
                         </Form.Group>
                       </Form.Row>
                       <Form.Row>
