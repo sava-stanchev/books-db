@@ -58,7 +58,7 @@ const SingleUserReviews = ({userId}) => {
           <div className="reviews">
             {reviewsData.map((review) => {
               return (
-                <div className="review">
+                <div className="review" key={review.content}>
                   <h5>{review.content}</h5>
                   <p>by <i>{review.username}</i> on {new Date(review.date_created).toLocaleDateString("en-US")} for {review.title}</p>
                   <div>

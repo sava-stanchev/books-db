@@ -18,15 +18,8 @@ const getAllGenres = async () => {
   `);
 };
 
-const getAllReactions = async () => {
-  return await pool.query(`
-    SELECT * FROM reactions
-  `);
-};
-
 export default {
   getAllGenders,
   getAllLanguages,
   getAllGenres,
-  getAllReactions,
 };

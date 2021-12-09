@@ -37,6 +37,24 @@ usersController
       }
     }))
 
+    /** Get user by ID */
+    .get('/:id', authMiddleware, loggedUserGuard, async (req, res) => {
+      try {
+        const user = await usersData.getUserById(req.params.id);
+        if (!user) {
+          res.status(400).json({
+            message: 'User not found!',
+          });
+        }
+
+        res.status(200).send(user);
+      } catch (error) {
+        return res.status(400).json({
+          error: error.message,
+        });
+      }
+    })
+
     .delete('/:id', async (req, res) => {
       try {
         const user = await usersData.getUserById(+req.params.id);

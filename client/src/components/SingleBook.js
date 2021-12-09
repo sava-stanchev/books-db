@@ -1,7 +1,7 @@
 import {useEffect, useState, useContext} from 'react';
-import StarRating from './StarRating';
+// import StarRating from './StarRating';
 import {useHistory} from "react-router-dom";
-import {Button, Col, Row} from "react-bootstrap";
+import {Button} from "react-bootstrap";
 import SingleBookReviews from './SingleBookReviews';
 import AuthContext from '../providers/auth-context';
 import { HOST } from '../common/constants.js';
@@ -124,25 +124,25 @@ const SingleBook = props => {
                       Delete Book
                     </Button>
                   </>
-                  :<></>
+                  :
+                  null
                 }
-                            <br/>
-            {bookData.is_borrowed
-              ? 
-              <>
-                <p>Book already borrowed!</p>
-                <Button variant="primary" onClick={() => returnBook()}>
-                  Return!
-                </Button>
-              </>
-              :
-              <>
-                <p>Borrow the book?</p>
-                <Button variant="primary" onClick={() => borrowBook()}>
-                  Borrow!
-                </Button>
-              </>
-            }
+                <br/>
+                {bookData.is_borrowed ? 
+                  <>
+                    <p>Book already borrowed!</p>
+                    <Button variant="primary" onClick={() => returnBook()}>
+                      Return!
+                    </Button>
+                  </>
+                  :
+                  <>
+                    <p>Borrow the book?</p>
+                    <Button variant="primary" onClick={() => borrowBook()}>
+                      Borrow!
+                    </Button>
+                  </>
+                }
               </div>
             </div>
           </div>
