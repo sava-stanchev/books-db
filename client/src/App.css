@@ -302,7 +302,7 @@ body {
 }
 
 .paginationBttns {
-  width: 80%;
+  width: 90%;
   height: 40px;
   list-style: none;
   display: flex;
@@ -310,25 +310,24 @@ body {
 }
 
 .paginationBttns a {
-  padding: 10px;
+  padding: 6px 12px;
   margin: 8px;
-  border-radius: 35%;
-  border: 2.5px solid #007BFF;
-  font-family: 'Cardo', serif;
-  color: #007BFF !important;
+  border-radius: 5px;
+  border: 1.5px solid #E7E7E7;
+  color: black !important;
   cursor: pointer;
   font-size: large;
 }
 
 .paginationBttns a:hover {
   color: white !important;
-  background-color: #007BFF;
+  background-color: #5A6059;
   text-decoration-line: none;
 }
 
 .paginationActive a {
   color: white !important;
-  background-color: #007BFF;
+  background-color: #5A6059;
 }
 
 input[type="radio"] {
@@ -447,13 +446,14 @@ input[type="radio"] {
 }
 
 #books .content {
-  max-width: 90%;
-  margin: 2em auto;
+  max-width: 95%;
   display: grid;
-  gap: 2em;
-  grid-template-columns: repeat(4, 1fr);  
-  grid-template-rows: auto;
-  grid-row-gap: 1em;
+  grid-template-columns: repeat(auto-fill, 280px);
+  justify-content: center;
+  grid-gap: 40px;
+  margin: 2em auto;
+  padding-bottom: 1rem;
+  padding-left: 1.5rem;
 }
 
 #books .content>div {
@@ -462,9 +462,15 @@ input[type="radio"] {
   text-align: center;
 }
 
+.btn-details {
+  position: relative;
+  width: 100.5%;
+  margin-left: -1px;
+  margin-top: 1px;
+  border-radius: 5px !important;
+}
+
 .btn-details:hover {
-  background-color: rgb(108, 70, 158) !important;
-  border-color: rgb(108, 70, 158) !important;
   border-radius: 5px !important;
 }
 
@@ -692,6 +698,13 @@ select:focus {
   border: 3px solid #5A6059;
   padding: 0px 10px;
   border-radius: 50px;
+}
+
+.col-btnContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
 }
 
 .btnContainer {

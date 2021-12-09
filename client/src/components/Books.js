@@ -79,7 +79,7 @@ const Books = () => {
     <div>
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
       <Row>
-        <Col>
+        <Col className='col-btnContainer'>
             {
               auth.user.is_admin?
               <div className="btnContainer">
