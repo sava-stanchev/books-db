@@ -222,38 +222,6 @@ INSERT INTO `records` VALUES (32,4,1,'2021-05-11','2021-05-31','2021-05-11'),(33
 UNLOCK TABLES;
 
 --
--- Table structure for table `review_likes`
---
-
-DROP TABLE IF EXISTS `review_likes`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `review_likes` (
-  `review_likes_id` int(11) NOT NULL AUTO_INCREMENT,
-  `users_id` int(11) NOT NULL,
-  `reviews_id` int(11) NOT NULL,
-  `is_deleted` tinyint(3) NOT NULL,
-  `likes` int(11) NOT NULL,
-  `dislike` int(11) NOT NULL,
-  PRIMARY KEY (`review_likes_id`),
-  KEY `fk_review_likes_users_users_id_idx` (`users_id`),
-  KEY `fk_review_likes_reviews_reviews_id_idx` (`reviews_id`),
-  CONSTRAINT `fk_review_likes_reviews_reviews_id` FOREIGN KEY (`reviews_id`) REFERENCES `reviews` (`reviews_id`),
-  CONSTRAINT `fk_review_likes_users_users_id` FOREIGN KEY (`users_id`) REFERENCES `users` (`users_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `review_likes`
---
-
-LOCK TABLES `review_likes` WRITE;
-/*!40000 ALTER TABLE `review_likes` DISABLE KEYS */;
-INSERT INTO `review_likes` VALUES (6,1,33,0,1,0),(7,1,38,0,0,1),(8,1,37,0,1,0),(9,1,36,0,1,0),(10,4,35,0,1,0),(11,4,34,0,1,0),(12,4,2,0,0,1);
-/*!40000 ALTER TABLE `review_likes` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `reviews`
 --
 
@@ -318,18 +286,18 @@ DROP TABLE IF EXISTS `users`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `users` (
   `users_id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_name` varchar(45) NOT NULL,
+  `username` varchar(45) NOT NULL,
   `password` longtext NOT NULL,
   `first_name` varchar(45) NOT NULL,
   `last_name` varchar(45) NOT NULL,
   `user_age` int(11) DEFAULT NULL,
-  `e_mail` varchar(45) NOT NULL,
+  `email` varchar(45) NOT NULL,
   `is_admin` tinyint(3) NOT NULL,
   `is_deleted` tinyint(3) NOT NULL,
   `ban_date` datetime DEFAULT NULL,
   `gender` int(11) DEFAULT NULL,
   PRIMARY KEY (`users_id`),
-  UNIQUE KEY `user_name_UNIQUE` (`user_name`),
+  UNIQUE KEY `username_UNIQUE` (`username`),
   KEY `fk_users_genders_genders_id_idx` (`gender`),
   CONSTRAINT `fk_users_genders_genders_id` FOREIGN KEY (`gender`) REFERENCES `genders` (`genders_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4;
@@ -341,7 +309,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Ivan','$2b$10$6GvQNt0ej0u7pVNp.APhj.SHTEZm/xjGmJ0KYHRb9dcTjZ8PiIGYK','Ivan','Ivanov',35,'ivan4o86@email.com',1,0,NULL,2),(2,'Dragan','$2b$10$dFUL/4t8DcipKUgzyLYTXuL7OwuNddg.JF3XxNZbC3zkonxo.9Oqa','Dragan','Draganov',25,'email@email.com',0,0,NULL,2),(3,'Gudio','$2b$10$d1bhnDCSGjxbTODD7wKLdeFbELtGdFbsX62Xg4xrtF.7LrkJokJTe','Gudio','Gudev',41,'email@email.com',0,0,NULL,2),(4,'Margaritka','$2b$10$OBhza.yTsFBSpI6jvBlUqO/uiyUund1WEyE5OyyunzonLcy6HOnge','Margaritka','Tcvetkova',23,'email@email.com',0,0,NULL,1),(5,'Tcvetelinka','$2b$10$VxPczxMYA0ktVy1xEt6ATu4txKcMtPbvN130EP1NE9.pQLgj09Qie','Tcvetelinka','Protnikova',22,'email@email.com',0,0,NULL,1),(6,'Kina','$2b$10$.pWJJblSVlJMz1LZjZH4UORKAskCA3.C1xH0KAWBiHOFgcEEWKvBq','Kina','Chugunova',49,'email@email.com',0,0,NULL,1),(7,'Roza','$2b$10$EyIazoccCd7UNEQBJZoRNOnEplCo3cQMw8jY1X/.oE45TCrW3gNw6','Roza','Chugunova',30,'email@email.com',1,0,NULL,1),(12,'Kalin','$2b$10$fRLYYJpPbRHmxwgdYoDPT.OyPYAm6GE9cWoA2cqzlAG38me.9S2H2','Kalin','Borov',31,'email@email.com',0,0,NULL,2),(19,'Bibi','$2b$10$R052N6ijHgfxjKkzF.woAuE7SlRLVFpBL6zCCFdbXQ0JddwY4CW7i','Bibi','Dimitrova',18,'email@email.com',0,0,NULL,1);
+INSERT INTO `users` VALUES (1,'Sava','$2b$10$6GvQNt0ej0u7pVNp.APhj.SHTEZm/xjGmJ0KYHRb9dcTjZ8PiIGYK','Sava','Stanchev',27,'sava94@email.com',1,0,NULL,2),(2,'Dragan','$2b$10$dFUL/4t8DcipKUgzyLYTXuL7OwuNddg.JF3XxNZbC3zkonxo.9Oqa','Dragan','Draganov',25,'email@email.com',0,0,NULL,2),(3,'Gudio','$2b$10$d1bhnDCSGjxbTODD7wKLdeFbELtGdFbsX62Xg4xrtF.7LrkJokJTe','Gudio','Gudev',41,'email@email.com',0,0,NULL,2),(4,'Margaritka','$2b$10$OBhza.yTsFBSpI6jvBlUqO/uiyUund1WEyE5OyyunzonLcy6HOnge','Margaritka','Tcvetkova',23,'email@email.com',0,0,NULL,1),(5,'Tcvetelinka','$2b$10$VxPczxMYA0ktVy1xEt6ATu4txKcMtPbvN130EP1NE9.pQLgj09Qie','Tcvetelinka','Protnikova',22,'email@email.com',0,0,NULL,1),(6,'Kina','$2b$10$.pWJJblSVlJMz1LZjZH4UORKAskCA3.C1xH0KAWBiHOFgcEEWKvBq','Kina','Chugunova',49,'email@email.com',0,0,NULL,1),(7,'Roza','$2b$10$EyIazoccCd7UNEQBJZoRNOnEplCo3cQMw8jY1X/.oE45TCrW3gNw6','Roza','Chugunova',30,'email@email.com',1,0,NULL,1),(12,'Kalin','$2b$10$fRLYYJpPbRHmxwgdYoDPT.OyPYAm6GE9cWoA2cqzlAG38me.9S2H2','Kalin','Borov',31,'email@email.com',0,0,NULL,2),(19,'Bibi','$2b$10$R052N6ijHgfxjKkzF.woAuE7SlRLVFpBL6zCCFdbXQ0JddwY4CW7i','Bibi','Dimitrova',18,'email@email.com',0,0,NULL,1);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
