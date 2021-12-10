@@ -67,14 +67,7 @@ const AddBook = () => {
       body: JSON.stringify(book),
     })
     .then((res) => res.json())
-    .then((res) => {
-      try {
-        console.log({res});
-      } catch (error) {
-        console.warn(error);
-      }
-    })
-    .then(()=>routeChange())
+    .then(() => routeChange())
     .then(setLoading(false));
   };
 

@@ -56,14 +56,8 @@ const UpdateReview = () => {
 
   return(
     <>
-    <div>
       {showError()}
-    </div>
-    <div className="login-page-bg-info">
-      <Jumbotron className="form-box">
-        <UpdateReviewForm updateReviewProps={updateReviewProps} review={review} updateReview={updateReview}/>
-      </Jumbotron>
-    </div>
+      <UpdateReviewForm updateReviewProps={updateReviewProps} review={review} updateReview={updateReview}/>
     </>
   )
 };
