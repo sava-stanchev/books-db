@@ -145,14 +145,15 @@ const createBook = async (book, user) => {
     language,
     print_length,
   } = book;
-  const {user_id} = user;
+
+  const {users_id} = user;
 
   const sqlNewBook = `
       INSERT INTO books (title, author, genre, age_recommendation, isbn, publishing_year, language, print_length, created_by, is_deleted, is_borrowed, book_count, reading_count )
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 0, 1, 0)
   `;
   const result = await pool.query(sqlNewBook,
-      [title, author, +genre, age_recommendation, isbn, publishing_year, +language, print_length, user_id]);
+      [title, author, +genre, age_recommendation, isbn, publishing_year, +language, print_length, users_id]);
 
   const sql = `SELECT * FROM books AS b WHERE b.books_id = ?`;
   const createdBook = (await pool.query(sql, [result.insertId]))[0];

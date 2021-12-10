@@ -288,8 +288,8 @@ body {
   height: 64px;
   margin: 8px;
   border-radius: 50%;
-  border: 6px solid #58f;
-  border-color: #58f transparent #58f transparent;
+  border: 6px solid #e6c73f;
+  border-color: #e6c73f transparent #e6c73f transparent;
   animation: Loader 1.2s linear infinite;
 }
 
@@ -347,12 +347,8 @@ input[type="radio"] {
 
 .review-header {
   padding: var(--spacer);
-  background: linear-gradient(
-    90deg,
-    rgba(93, 12, 255, 1) 0%,
-    rgba(155, 0, 250, 1) 100%
-  );
-  color: white;
+  background: #e6c73f;
+  color: black;
 }
 
 .list-title {
@@ -372,22 +368,20 @@ input[type="radio"] {
 
 .user-page-bg-info {
   padding: 45px;
+  padding-bottom: 20px;
   justify-content: center;
   align-items: center;
 }
 
 .form-box-profile {
   box-shadow: 0px 0px 15px -5px black;
-  background: linear-gradient(
-    90deg,
-    rgba(93, 12, 255, 1) 0%,
-    rgba(155, 0, 250, 1) 100%
-  );
-  color: white;
+  background: #e6c73f;
+  color: black;
   text-align: left;
   box-sizing: border-box;
   padding: 20px;
   padding-top: 1px;
+  border-radius: 10px;
 }
 
 .review-list-profile {
@@ -819,3 +813,47 @@ select:focus {
 .the-book-info-container {
   margin-left: 10px;
 }
+
+.update-book-form {
+  box-shadow: 0px 0px 15px -5px black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 600px;
+  margin: 20px auto;
+  background-color: #5A6059;
+  color: white;
+}
+
+.update-book-input {
+  outline: none;
+  background: none;
+  border: 1px solid #f2d349c9;
+  font-size: 1em;
+  padding: .5em;
+  color: inherit;
+  border-radius: 5px;
+  margin-bottom: 8px;
+}
+
+.update-book-input:focus {
+  border-color: #F2D349;
+}
+
+.update-book-label {
+  margin-right: 20px;
+  margin-top: 8px;
+}
+
+.update-book-label-input {
+  display: flex;
+  justify-content: space-between;
+}
+
+.update-book-label-input-container {
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+/* form-box */
+/* registration-page-bg-info */

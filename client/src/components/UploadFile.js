@@ -1,7 +1,6 @@
 import {useState} from 'react';
 import {HOST} from '../common/constants.js';
 import {useHistory} from "react-router-dom";
-import { Button } from 'react-bootstrap';
 
 const UploadPoster = ({books_id}) => {
   const [file, setFile] = useState();
@@ -36,7 +35,7 @@ const UploadPoster = ({books_id}) => {
           }} />
         </div>
       </form>
-      <Button onClick={send} style={{marginTop: '10px', marginLeft: '15px'}}>Update Cover</Button>
+      <button className="btn" onClick={send} style={{marginTop: '10px', marginLeft: '120px'}}>Update Cover</button>
     </>
   )
 }
