@@ -1,4 +1,3 @@
-import {Jumbotron} from 'react-bootstrap';
 import AddBookForm from './AddBookForm';
 import {useEffect, useState} from 'react';
 import {useHistory} from "react-router-dom";
@@ -94,12 +93,10 @@ const AddBook = () => {
   }
 
   return(
-    <div className="registration-page-bg-info">
+    <>
       {showError()}
-      <Jumbotron className="form-box">
-        <AddBookForm genres = {genres} languages={languages} updateBook={updateBook} book={book} addBook={addBook}/>
-      </Jumbotron>
-    </div>
+      <AddBookForm genres = {genres} languages={languages} updateBook={updateBook} book={book} addBook={addBook}/>
+    </>
   )
 };
 

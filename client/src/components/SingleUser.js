@@ -42,22 +42,22 @@ const SingleUser = () => {
               <h1>{user.username}'s Info</h1>
             </div>
             <div style={{marginBottom: '5px'}}>
-              <b>Username:</b> <i>{user.username}</i>
+              <b>Username:</b> {user.username}
             </div>
             <div style={{marginBottom: '5px'}}>
-              <b>First Name:</b> <i>{user.first_name}</i>
+              <b>First Name:</b> {user.first_name}
             </div>
             <div style={{marginBottom: '5px'}}>
-              <b>Last Name:</b> <i>{user.last_name}</i>
+              <b>Last Name:</b> {user.last_name}
             </div>
             <div style={{marginBottom: '5px'}}>
-              <b>Email Address:</b> <i>{user.email}</i>
+              <b>Email Address:</b> {user.email}
             </div>
             <div style={{marginBottom: '5px'}}>
-              <b>Age:</b> <i>{user.user_age}</i>
+              <b>Age:</b> {user.user_age}
             </div>
             <div>
-              <b>Gender:</b> <i>{user.gender}</i>
+              <b>Gender:</b> {user.gender.toLowerCase()}
             </div>
         </div>
       </div>

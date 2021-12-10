@@ -1,4 +1,3 @@
-import {Jumbotron} from 'react-bootstrap';
 import UpdateBookForm from './UpdateBookForm';
 import {useEffect, useState} from 'react';
 import {useHistory} from "react-router-dom";
@@ -69,14 +68,7 @@ const UpdateBook = () => {
       body: JSON.stringify(book),
     })
     .then((res) => res.json())
-    .then((res) => {
-      try {
-        console.log({res});
-      } catch (error) {
-        console.warn(error);
-      }
-    })
-    .then(()=>routeChange());
+    .then(() => routeChange());
   };
 
   if (genres === null || languages === null) {
@@ -90,12 +82,10 @@ const UpdateBook = () => {
   }
 
   return(
-    <div className="registration-page-bg-info">
+    <>
       {showError()}
-      <Jumbotron className="form-box">
-        <UpdateBookForm genres = {genres} languages={languages} updateBookProps={updateBookProps} book={book} updateBook={updateBook}/>
-      </Jumbotron>
-    </div>
+      <UpdateBookForm genres = {genres} languages={languages} updateBookProps={updateBookProps} book={book} updateBook={updateBook}/>
+    </>
   )
 };
 
