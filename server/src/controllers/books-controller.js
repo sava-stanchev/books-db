@@ -78,7 +78,7 @@ booksController
     /** Borrow a book */
     .post('/:id', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
       const bookId = req.params.id;
-      const userId = req.user.user_id;
+      const userId = req.user.users_id;
 
       try {
         const theBook = await booksData.getBookById(+bookId);
@@ -110,7 +110,7 @@ booksController
     /** Return a book */
     .patch('/:id', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
       const bookId = req.params.id;
-      const userId = req.user.user_id;
+      const userId = req.user.users_id;
       try {
         const isBookBorrowed = await booksData.isBookBorrowed(bookId, userId);
         if (!isBookBorrowed) {
@@ -158,7 +158,7 @@ booksController
     /** Create book review */
     .post('/:id/create-review', transformBody(reviewCreateValidator), validateBody('review', reviewCreateValidator), authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
       const bookId = +req.params.id;
-      const userId = +req.user.user_id;
+      const userId = +req.user.users_id;
       const book = await booksData.getBookById(+bookId);
       try {
         if (!book[0]) {
@@ -170,7 +170,7 @@ booksController
         const check = (await reviewsData.userReviewByBookId(userId, bookId))[0];
         if (check) {
           return res.status(200).json({
-            message: 'Review already exist!',
+            message: 'Review already exists!',
           });
         }
         const review = await reviewsData.createReview(bookId, req.body.content, userId);
@@ -187,7 +187,7 @@ booksController
     .get('/:id/rating', authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
       try {
         const bookId = req.params.id;
-        const userId = req.user.user_id;
+        const userId = req.user.users_id;
         const rating = await booksRatingData.getBookRatingByUser(bookId, userId);
         return rating?res.status(200).json(rating.rating):null;
       } catch (error) {
@@ -202,7 +202,7 @@ booksController
       try {
         const bookId = req.params.id;
         const rating = req.body.rating;
-        const userId = req.user.user_id;
+        const userId = req.user.users_id;
         const book = await booksData.getBookById(bookId);
 
         if (!book) {

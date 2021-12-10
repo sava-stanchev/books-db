@@ -35,22 +35,11 @@ const AddReview = () => {
       body: JSON.stringify(review),
     })
     .then((res) => res.json())
-    .then((res) => {
-      try {
-        console.log({res});
-      } catch (error) {
-        console.warn(error);
-      }
-    })
     .then(() => routeChange());
   };
 
   return(
-    <div className="login-page-bg-info">
-      <Jumbotron className="form-box">
-        <AddReviewForm updateReview={updateReview} review={review} addReview={addReview}/>
-      </Jumbotron>
-    </div>
+    <AddReviewForm updateReview={updateReview} review={review} addReview={addReview}/>
   )
 };
 

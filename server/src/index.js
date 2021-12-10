@@ -89,7 +89,7 @@ app.patch('/reviews/:reviewId/update', authMiddleware, loggedUserGuard, banGuard
       });
     }
 
-    if (review.users_id !== req.user.user_id) {
+    if (review.users_id !== req.user.users_id) {
       return res.status(403).json({
         message: 'You are not authorized to update this review!',
       });
@@ -116,7 +116,7 @@ app.delete('/reviews/:reviews_id', authMiddleware, loggedUserGuard, banGuard, as
         message: 'Review not found!',
       });
     }
-    if (review.users_id !== req.user.user_id) {
+    if (review.users_id !== req.user.users_id) {
       return res.status(403).json({
         message: 'You are not authorized to delete this review!',
       });
