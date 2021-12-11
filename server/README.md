@@ -17,14 +17,6 @@ You need to install all the packages in the root folder: `npm i`.
 
 <br>
 
-### Postman
-
-1. Open the **Postman** tool
-2. Click the **Import** button and choose the **Library.postman_collection.json** file in the **postman** folder
-3. Use the imported requests to **test the API**
-
-<br>
-
 ### MySQL Workbench
 
 The database for this project can be found in the **database** folder.
