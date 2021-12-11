@@ -1,4 +1,3 @@
-import {Jumbotron} from 'react-bootstrap';
 import {useState} from 'react';
 import {useHistory} from "react-router-dom";
 import AddReviewForm from './AddReviewForm';

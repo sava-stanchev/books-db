@@ -200,23 +200,6 @@ body {
   }
 }
 
-#books .book-details-link:hover {
-  cursor: pointer;
-  background: rgb(108, 70, 158);
-}
-
-#books .book-details-link {
-  position:relative;
-  visibility: hidden;
-  top: -21%;
-  background: #58f;
-  border-radius: .3em;
-  color: white;
-  border: none;
-  padding: .5em 2em;
-  margin: 1em 0;
-}
-
 #book .content {
   max-width: 90%;
   margin: 2em auto;
@@ -481,64 +464,16 @@ input[type="radio"] {
 	flex-wrap: nowrap;
 }
 
-.image-container {
-	position: relative;
-	transition: transform 0.2s;
-}
-
-.image-container:hover {
-	transform: scale(1.05);
-}
-
-.image-container:hover .overlay {
-	opacity: 1;
-}
-
-.overlay {
-	position: absolute;
-	background: rgba(0, 0, 0, 0.8);
-	width: 100%;
-	transition: 0.5s ease;
-	opacity: 0;
-	bottom: 0;
-	font-size: 20px;
-	padding: 20px;
-	text-align: center;
-  color: white;
-}
-
-.pageTitle {
-  text-transform: uppercase;
+.library-photo-container {
   display: flex;
+  flex: 1;
+  height: calc(100vh - 100px);
   justify-content: center;
-  font-family: 'Cardo', serif;
-  font-size: 2vw;
-  padding: 4px;
-  border-radius: 50px;
-  color: black;
-}
-
-@media (max-width: 1000px) {
-  .pageTitle {
-    font-size: 3vw;
-  }
-}
-
-.w3-container {
-  display: flex;
-  justify-content: center;
-  padding: 160px 16px;
+  align-items: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
   background-image: url("./images/library-img.jpg");
-}
-
-.book-cover-size {
-  max-height: 375px;
-}
-
-@media (min-width: 1680px) {
-  .book-cover-size {
-    max-height: 500px;
-  }
 }
 
 .input-field {
@@ -855,5 +790,3 @@ select:focus {
   padding-top: 40px;
   padding-bottom: 40px;
 }
-/* form-box */
-/* registration-page-bg-info */
