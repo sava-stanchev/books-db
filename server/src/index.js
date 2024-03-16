@@ -234,18 +234,6 @@ app.put(
   }
 );
 
-/** Get all genders */
-app.get("/genders", async (req, res) => {
-  try {
-    const genders = await dropDownData.getAllGenders();
-    res.json(genders);
-  } catch (error) {
-    return res.status(400).json({
-      error: error.message,
-    });
-  }
-});
-
 /** Get all languages */
 app.get("/languages", async (req, res) => {
   try {
