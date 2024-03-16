@@ -1,4 +1,4 @@
-import pool from './pool.js';
+import pool from "./pool.js";
 
 const getAllBooks = async () => {
   return await pool.query(`
@@ -8,7 +8,7 @@ const getAllBooks = async () => {
 };
 
 const sortBooksByYear = async (sort) => {
-  if (sort === 'year_asc') {
+  if (sort === "year_asc") {
     return await pool.query(`
       SELECT * FROM books b
       WHERE b.is_deleted != 1
@@ -16,7 +16,7 @@ const sortBooksByYear = async (sort) => {
     `);
   }
 
-  if (sort === 'year_desc') {
+  if (sort === "year_desc") {
     return await pool.query(`
       SELECT * FROM books b
       WHERE b.is_deleted != 1
@@ -27,7 +27,7 @@ const sortBooksByYear = async (sort) => {
 
 const getBookById = async (bookId) => {
   const sql = `
-    SELECT b.books_id, b.title, b.author, b.age_recommendation, b.isbn, b.publishing_year, b.print_length, b.posters, l.language, g.genre, b.is_deleted, b.is_borrowed
+    SELECT b.books_id, b.title, b.author, b.year, b.posters, l.language, g.genre, b.is_deleted
     , (SELECT ROUND(AVG(r.rating), 2)
         FROM books AS b
         JOIN books_ratings AS br
@@ -59,42 +59,6 @@ const getBookByIdForUpdate = async (id) => {
   return result[0];
 };
 
-const borrowBook = async (id) => {
-  const sql = `
-  UPDATE books SET books.is_borrowed = 1
-  WHERE books.books_id = ?
-  AND books.is_borrowed != 1
-  `;
-  return await pool.query(sql, [id]);
-};
-
-const returnBook = async (bookId) => {
-  const sql = `
-  UPDATE books SET books.is_borrowed = 0
-  WHERE books.books_id = ?
-  AND books.is_borrowed = 1
-  `;
-  return await pool.query(sql, [bookId]);
-};
-
-const setReturnRecords = async (recordsId) => {
-  const sql = `
-  UPDATE records AS r SET date_returned = NOW()
-  WHERE r.records_id = ?
-  `;
-  return await pool.query(sql, [recordsId]);
-};
-
-const setBorrowRecords = async (bookId, userId) => {
-  const sql = `
-  INSERT INTO records (users_id, books_id, date_borrowed, date_to_return)
-  VALUES (?, ?, NOW(), NOW() + INTERVAL 20 DAY)
-  `;
-
-  const result = await pool.query(sql, [userId, bookId]);
-  return result;
-};
-
 const updateBookSQL = async (book) => {
   const {
     books_id,
@@ -121,12 +85,7 @@ const updateBookSQL = async (book) => {
     WHERE b.books_id = ?
   `;
 
-  return await pool.query(sql, [title, author, genre, age_recommendation,
-    isbn, publishing_year, language, print_length, books_id]);
-};
-
-const createBook = async (book, user) => {
-  const {
+  return await pool.query(sql, [
     title,
     author,
     genre,
@@ -135,16 +94,27 @@ const createBook = async (book, user) => {
     publishing_year,
     language,
     print_length,
-  } = book;
+    books_id,
+  ]);
+};
 
-  const {users_id} = user;
+const createBook = async (book, user) => {
+  const { title, author, genre, year, language } = book;
+
+  const { id } = user;
 
   const sqlNewBook = `
-      INSERT INTO books (title, author, genre, age_recommendation, isbn, publishing_year, language, print_length, created_by, is_deleted, is_borrowed, book_count, reading_count )
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 0, 1, 0)
+      INSERT INTO books (title, author, genre, year, language, is_deleted)
+      VALUES (?, ?, ?, ?, ?, 0)
   `;
-  const result = await pool.query(sqlNewBook,
-      [title, author, +genre, age_recommendation, isbn, publishing_year, +language, print_length, users_id]);
+  const result = await pool.query(sqlNewBook, [
+    title,
+    author,
+    +genre,
+    year,
+    +language,
+    id,
+  ]);
 
   const sql = `SELECT * FROM books AS b WHERE b.books_id = ?`;
   const createdBook = (await pool.query(sql, [result.insertId]))[0];
@@ -161,26 +131,6 @@ const deleteBook = async (id) => {
     WHERE books.books_id = ?
   `;
   return await pool.query(sql, [id]);
-};
-
-const isBookBorrowedAndReturned = async (bookId, userId) => {
-  const sql = `
-    SELECT * FROM records AS r
-    WHERE r.users_id = ? AND r.books_id =? AND r.date_returned IS NOT NULL
-  `;
-
-  const result = await pool.query(sql, [userId, bookId]);
-  return result[0];
-};
-
-const isBookBorrowed = async (bookId, userId) => {
-  const sql = `
-    SELECT * FROM records AS r
-    WHERE r.users_id = ? AND r.books_id = ? AND r.date_returned IS NULL
-  `;
-
-  const result = await pool.query(sql, [userId, bookId]);
-  return result[0];
 };
 
 const getAnyBookById = async (id) => {
@@ -218,16 +168,10 @@ export default {
   getAllBooks,
   sortBooksByYear,
   getBookById,
-  borrowBook,
   updateBookSQL,
   createBook,
   deleteBook,
-  returnBook,
-  isBookBorrowedAndReturned,
-  isBookBorrowed,
   getAnyBookById,
-  setReturnRecords,
-  setBorrowRecords,
   bookAverageRating,
   getBookByIdForUpdate,
   uploadFile,
