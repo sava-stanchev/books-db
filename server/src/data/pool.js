@@ -1,11 +1,10 @@
-import dotenv from 'dotenv';
-import mariadb from 'mariadb';
+import dotenv from "dotenv";
+import mysql from "mysql2";
 
 const config = dotenv.config().parsed;
 
-const pool = mariadb.createPool({
+const pool = mysql.createConnection({
   host: config.HOST,
-  port: config.DBPORT,
   user: config.USER,
   password: config.PASSWORD,
   database: config.DATABASE,
