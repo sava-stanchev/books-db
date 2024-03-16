@@ -19,7 +19,7 @@ const getUserBy = async (column, value) => {
 const createUser = async (user) => {
   const sqlNewUser = `
     INSERT INTO users (username, password, email, is_admin, is_deleted) 
-    VALUES (?, ?, ?, ?, ?, 0, 0, DEFAULT, ?, ?)
+    VALUES (?, ?, ?, 0, 0)
   `;
   const result = await promisePool.query(sqlNewUser, [
     user.username,
