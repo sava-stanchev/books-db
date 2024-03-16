@@ -3,11 +3,13 @@ import mysql from "mysql2";
 
 const config = dotenv.config().parsed;
 
-const pool = mysql.createConnection({
+const pool = mysql.createPool({
   host: config.HOST,
   user: config.USER,
   password: config.PASSWORD,
   database: config.DATABASE,
 });
 
-export default pool;
+const promisePool = pool.promise();
+
+export default promisePool;
