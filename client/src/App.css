@@ -1,14 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap");
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
 body {
   padding: 0;
   margin: 0;
-  background-color: #EFEDE0;
-  font-family: 'Lato', sans-serif;
+  background-color: #efede0;
+  font-family: "Lato", sans-serif;
   font-size: 1.2rem;
   color: black;
   min-height: 100vh;
@@ -42,11 +44,11 @@ body {
 }
 
 .tooltip-icon-two:hover {
-  color: #5A6059;
+  color: #5a6059;
 }
 
 .tooltip-icon-one:hover {
-  color: #5A6059;
+  color: #5a6059;
 }
 
 .tooltip-icon-one {
@@ -94,7 +96,7 @@ body {
 }
 
 .main-nav a:hover {
-  color: #5A6059;
+  color: #5a6059;
 }
 
 .main-header {
@@ -108,27 +110,6 @@ body {
   max-width: 1400px;
   margin: 0 auto;
   padding: 0 40px;
-}
-
-.btn {
-  color: #5A6059;
-  background-color: #f2d349c9;
-  padding: .75rem 1.5rem;
-  border-radius: .5rem;
-  text-decoration: none;
-  font-size: .9rem;
-  font-weight: 700;
-  outline: none;
-  border: none;
-  cursor: pointer;
-}
-
-.btn:hover {
-  background-color: #F2D349;
-}
-
-.btn:focus {
-  background-color: #F2D349;
 }
 
 .join-login-main-section {
@@ -146,11 +127,11 @@ body {
 }
 
 .accent-text {
-  color: #F2D349;
+  color: #f2d349;
 }
 
 .join-login-form {
-  background-color: #5A6059;
+  background-color: #5a6059;
   color: white;
   width: 50vw;
   max-width: 50%;
@@ -170,7 +151,7 @@ body {
 
 .input-group label {
   font-weight: bold;
-  margin-bottom: .5rem;
+  margin-bottom: 0.5rem;
 }
 
 .input-group input {
@@ -178,13 +159,13 @@ body {
   background: none;
   border: 1px solid #f2d349c9;
   font-size: 1em;
-  padding: .5em;
+  padding: 0.5em;
   color: inherit;
   border-radius: 5px;
 }
 
 .input-group input:focus {
-  border-color: #F2D349;
+  border-color: #f2d349;
 }
 
 @media (max-width: 900px) {
@@ -208,9 +189,9 @@ body {
 #book #book-detailed {
   grid-template-areas: "img info";
   padding: 1em;
-  background-color: #E9ECEF;
+  background-color: #e9ecef;
   border: 1px solid #333;
-  border-radius: .3em;
+  border-radius: 0.3em;
   box-shadow: 0 0 17px 2px #333;
   min-width: 825px;
 }
@@ -252,7 +233,7 @@ body {
   padding: 20px;
   display: inline-block;
   box-shadow: 0px 0px 15px -5px black;
-  background-color: #E9ECEF;
+  background-color: #e9ecef;
   color: black;
   font-size: 1.2em;
   line-height: 1;
@@ -297,7 +278,7 @@ body {
   padding: 6px 12px;
   margin: 8px;
   border-radius: 5px;
-  border: 1.5px solid #E7E7E7;
+  border: 1.5px solid #e7e7e7;
   color: black !important;
   cursor: pointer;
   font-size: large;
@@ -305,13 +286,13 @@ body {
 
 .paginationBttns a:hover {
   color: white !important;
-  background-color: #5A6059;
+  background-color: #5a6059;
   text-decoration-line: none;
 }
 
 .paginationActive a {
   color: white !important;
-  background-color: #5A6059;
+  background-color: #5a6059;
 }
 
 input[type="radio"] {
@@ -369,7 +350,7 @@ input[type="radio"] {
 
 .review-list-profile {
   --spacer: 1rem;
-  background: #E9ECEF;
+  background: #e9ecef;
 }
 
 .review-list-profile-container {
@@ -393,13 +374,13 @@ input[type="radio"] {
   border-radius: 10px;
   position: relative;
   -webkit-transition: background 0.5s;
-  -moz-transition:    background 0.5s;
-  -ms-transition:     background 0.5s;
-  -o-transition:      background 0.5s;
-  transition:         background 0.5s;
+  -moz-transition: background 0.5s;
+  -ms-transition: background 0.5s;
+  -o-transition: background 0.5s;
+  transition: background 0.5s;
 }
 
-#books .content>div img {
+#books .content > div img {
   max-width: 90%;
   display: flex;
   flex-direction: column;
@@ -411,7 +392,7 @@ input[type="radio"] {
 
 .each-book:hover {
   max-width: 90%;
-  background: #75757E;
+  background: #75757e;
   color: white;
 }
 
@@ -437,7 +418,7 @@ input[type="radio"] {
   padding-left: 1.5rem;
 }
 
-#books .content>div {
+#books .content > div {
   position: relative;
   margin: 0;
   text-align: center;
@@ -460,8 +441,8 @@ input[type="radio"] {
 }
 
 .book-app > .row {
-	overflow-x: auto;
-	flex-wrap: nowrap;
+  overflow-x: auto;
+  flex-wrap: nowrap;
 }
 
 .library-photo-container {
@@ -540,8 +521,8 @@ select {
   margin-right: 1rem;
   border: 1px solid #606060;
   border-radius: 900px;
-  background-color: #E7E7E7;
-  padding: .4rem .8rem;
+  background-color: #e7e7e7;
+  padding: 0.4rem 0.8rem;
   font-size: inherit;
   cursor: pointer;
 }
@@ -575,7 +556,7 @@ select:focus {
   font-size: 18px;
   font-weight: 600;
   letter-spacing: 0.35px;
-  color: #FFFFFF;
+  color: #ffffff;
   opacity: 1;
   padding: 12px;
   vertical-align: top;
@@ -592,7 +573,7 @@ select:focus {
   padding-left: 32px;
   padding-right: 32px;
   text-align: center;
-  background: #5A6059;
+  background: #5a6059;
 }
 
 @media (max-width: 768px) {
@@ -603,7 +584,10 @@ select:focus {
   .table thead tr th {
     display: block;
   }
-  .table, .table tbody, .table tr, .table td {
+  .table,
+  .table tbody,
+  .table tr,
+  .table td {
     display: block;
     width: 100%;
   }
@@ -628,7 +612,7 @@ select:focus {
   position: relative;
   width: 300px;
   height: 42px;
-  border: 3px solid #5A6059;
+  border: 3px solid #5a6059;
   padding: 0px 10px;
   border-radius: 50px;
 }
@@ -658,8 +642,8 @@ select:focus {
   padding: 0px 5px;
   border-radius: 50px;
   font-size: 18px;
-  color: #5A6059;
-  background-color: #EFEDE0;
+  color: #5a6059;
+  background-color: #efede0;
   font-weight: 500;
 }
 
@@ -669,11 +653,11 @@ select:focus {
 
 .material-icons {
   font-size: 26;
-  color: #5A6059;
+  color: #5a6059;
 }
 
 ::placeholder {
-  color: #5A6059;
+  color: #5a6059;
 }
 
 .delete-btn-users:hover {
@@ -715,10 +699,10 @@ select:focus {
 }
 
 .home-page-button {
-  color: #5A6059;
-  background-color: #F2D349;
-  padding: .9rem 1.8rem;
-  border-radius: .5rem;
+  color: #5a6059;
+  background-color: #f2d349;
+  padding: 0.9rem 1.8rem;
+  border-radius: 0.5rem;
   text-decoration: none;
   font-size: 1.1rem;
   font-weight: 700;
@@ -732,7 +716,7 @@ select:focus {
 }
 
 .home-page-button:focus {
-  background-color: #F2D349;
+  background-color: #f2d349;
 }
 
 .poster-and-info {
@@ -757,7 +741,7 @@ select:focus {
   align-items: center;
   width: 600px;
   margin: 20px auto;
-  background-color: #5A6059;
+  background-color: #5a6059;
   color: white;
 }
 
@@ -766,14 +750,14 @@ select:focus {
   background: none;
   border: 1px solid #f2d349c9;
   font-size: 1em;
-  padding: .5em;
+  padding: 0.5em;
   color: inherit;
   border-radius: 5px;
   margin-bottom: 8px;
 }
 
 .update-book-input:focus {
-  border-color: #F2D349;
+  border-color: #f2d349;
 }
 
 .update-book-label {
@@ -789,4 +773,20 @@ select:focus {
 .update-book-label-input-container {
   padding-top: 40px;
   padding-bottom: 40px;
+}
+
+.form-container {
+  width: 45%;
+}
+
+@media screen and (max-width: 1024px) {
+  .form-container {
+    width: 60%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .form-container {
+    width: 85%;
+  }
 }
