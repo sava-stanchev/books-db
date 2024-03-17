@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Col, Container, Row, Form, Button } from "react-bootstrap";
 import { HOST } from "../common/constants.js";
-import { useHistory } from "react-router-dom";
 
 const initialState = {
   username: "",

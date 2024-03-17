@@ -1,14 +1,12 @@
 import { useContext, useState } from "react";
-import { useHistory } from "react-router-dom";
 import { HOST } from "../common/constants";
 import decode from "jwt-decode";
 import AuthContext from "../providers/auth-context";
 
 const Login = () => {
-  const history = useHistory();
   const auth = useContext(AuthContext);
   const [user, setUser] = useState({
-    email: "",
+    username: "",
     password: "",
   });
 
@@ -38,10 +36,8 @@ const Login = () => {
           localStorage.setItem("token", res.token);
           const user = decode(res.token);
           auth.setAuthState({ user, isLoggedIn: true });
-          history.push("/home");
         }
-      })
-      .catch(() => history.push("/500"));
+      });
   };
 
   return (
@@ -50,13 +46,13 @@ const Login = () => {
         <form>
           <h3 className="text-center">Sign In</h3>
           <div className="mb-4">
-            <label htmlFor="email">Email</label>
+            <label htmlFor="username">Username</label>
             <input
-              type="email"
-              id="email"
-              placeholder="Enter Email"
+              type="text"
+              id="username"
+              placeholder="Enter Username"
               className="form-control"
-              onChange={(e) => updateUser("email", e.target.value)}
+              onChange={(e) => updateUser("username", e.target.value)}
             />
           </div>
           <div className="mb-4">

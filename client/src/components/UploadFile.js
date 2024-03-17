@@ -1,43 +1,56 @@
-import {useState} from 'react';
-import {HOST} from '../common/constants.js';
-import {useHistory} from "react-router-dom";
+// import { useState } from "react";
+// import { HOST } from "../common/constants.js";
 
-const UploadPoster = ({books_id}) => {
-  const [file, setFile] = useState();
-  
-  const send = () => {
-    const data = new FormData();
-    data.append('file', file);
+// const UploadPoster = ({ books_id }) => {
+//   const [file, setFile] = useState();
 
-    fetch(`${HOST}/books/${books_id}/upload`, {
-      method: 'POST',
-      headers: {
-  
-        Authorization: `Bearer ${localStorage.getItem('token')}`
-      },
-      body: data
-    }, )
-    .then(res => console.log(res))
-    .catch(err => console.log(err));
-    
-    history.go(0)
-  };
+//   const send = () => {
+//     const data = new FormData();
+//     data.append("file", file);
 
-  const history = useHistory();
+//     fetch(`${HOST}/books/${books_id}/upload`, {
+//       method: "POST",
+//       headers: {
+//         Authorization: `Bearer ${localStorage.getItem("token")}`,
+//       },
+//       body: data,
+//     })
+//       .then((res) => console.log(res))
+//       .catch((err) => console.log(err));
 
-  return (
-    <>
-      <form action="#" method="post" encType="multipart/form-data" style={{marginLeft: '15px'}}>
-        <div className="upload-container">
-          <input type="file" id="file" onChange={event => {
-            const file = event.target.files[0];
-            setFile(file);
-          }} />
-        </div>
-      </form>
-      <button className="btn" onClick={send} style={{marginTop: '10px', marginLeft: '120px'}}>Update Cover</button>
-    </>
-  )
-}
+//     history.go(0);
+//   };
 
-export default UploadPoster;
+//   const history = useHistory();
+
+//   return (
+//     <>
+//       <form
+//         action="#"
+//         method="post"
+//         encType="multipart/form-data"
+//         style={{ marginLeft: "15px" }}
+//       >
+//         <div className="upload-container">
+//           <input
+//             type="file"
+//             id="file"
+//             onChange={(event) => {
+//               const file = event.target.files[0];
+//               setFile(file);
+//             }}
+//           />
+//         </div>
+//       </form>
+//       <button
+//         className="btn"
+//         onClick={send}
+//         style={{ marginTop: "10px", marginLeft: "120px" }}
+//       >
+//         Update Cover
+//       </button>
+//     </>
+//   );
+// };
+
+// export default UploadPoster;

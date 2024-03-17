@@ -1,10 +1,10 @@
-import {useContext} from 'react';
-import {Route, Redirect} from 'react-router-dom';
-import {DateTime} from 'luxon';
-import AuthContext from './auth-context';
+import { useContext } from "react";
+import { Route } from "react-router-dom";
+import { DateTime } from "luxon";
+import AuthContext from "./auth-context";
 
-const GuardedRoute = ({component: Component, admin, ...rest}) => {
-  const {user} = useContext(AuthContext);
+const GuardedRoute = ({ component: Component, admin, ...rest }) => {
+  const { user } = useContext(AuthContext);
   const auth = useContext(AuthContext);
 
   const renderComponent = (props) => {
@@ -17,28 +17,23 @@ const GuardedRoute = ({component: Component, admin, ...rest}) => {
           user: null,
           isLoggedIn: false,
         });
-        localStorage.removeItem('token');
-        localStorage.setItem('exp', true);
+        localStorage.removeItem("token");
+        localStorage.setItem("exp", true);
 
-        return <Redirect to='/login' />;
+        return <Redirect to="/login" />;
       }
 
       if (!admin || (admin && user.is_admin === 1)) {
         return <Component {...props} />;
       }
 
-      return <Redirect to='/home' />;
+      return <Redirect to="/home" />;
     }
 
-    return <Redirect to='/login' />;
+    return <Redirect to="/login" />;
   };
 
-  return (
-    <Route
-      {...rest}
-      render={renderComponent}
-    />
-  );
+  return <Route {...rest} render={renderComponent} />;
 };
 
 export default GuardedRoute;
