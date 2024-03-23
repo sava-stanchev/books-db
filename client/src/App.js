@@ -1,5 +1,5 @@
 import "./App.css";
-import NavBar from "./components/Navbar";
+import NavbarComponent from "./components/Navbar";
 import Books from "./components/Books";
 import Login from "./components/Login";
 import Register from "./components/Register";
@@ -18,10 +18,10 @@ import GuardedRoute from "./providers/GuardedRoute";
 
 const router = createBrowserRouter([
   {
-    element: <NavBar />,
+    element: <NavbarComponent />,
     children: [
       {
-        path: "/",
+        path: "/home",
         element: <HomePage />,
       },
       {
@@ -31,6 +31,10 @@ const router = createBrowserRouter([
       {
         path: "/register",
         element: <Register />,
+      },
+      {
+        path: "/books",
+        element: <Books />,
       },
     ],
   },

@@ -27,7 +27,7 @@ const NavbarComponent = () => {
     <>
       <Navbar bg="dark" data-bs-theme="dark" collapseOnSelect expand="lg">
         <Container>
-          <Navbar.Brand href="/">BookDB</Navbar.Brand>
+          <Navbar.Brand href="/">BooksDB</Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
@@ -35,7 +35,7 @@ const NavbarComponent = () => {
             </Nav>
             <Nav>
               <Nav.Link href="/login">Login</Nav.Link>
-              <Nav.Link href="register">Register</Nav.Link>
+              <Nav.Link href="/register">Register</Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>

@@ -2,8 +2,10 @@ import { useContext, useState } from "react";
 import { HOST } from "../common/constants";
 import decode from "jwt-decode";
 import AuthContext from "../providers/auth-context";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate();
   const auth = useContext(AuthContext);
   const [user, setUser] = useState({
     username: "",
@@ -36,8 +38,10 @@ const Login = () => {
           localStorage.setItem("token", res.token);
           const user = decode(res.token);
           auth.setAuthState({ user, isLoggedIn: true });
+          navigate("/home");
         }
-      });
+      })
+      .catch(() => navigate("/500"));
   };
 
   return (

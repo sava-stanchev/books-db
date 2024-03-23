@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Col, Container, Row, Form, Button } from "react-bootstrap";
 import { HOST } from "../common/constants.js";
+import { useNavigate } from "react-router-dom";
 
 const initialState = {
   username: "",
@@ -26,10 +27,10 @@ const RegistrationForm = () => {
   const [emailError, setEmailError] = useState(emailVerificationError);
   const [usernameError, setUsernameError] = useState(usernameVerificationError);
 
-  const history = useHistory();
+  const navigate = useNavigate();
   const routeChange = () => {
     const path = `/login`;
-    history.push(path);
+    navigate(path);
   };
 
   useEffect(() => {}, [newUser]);
