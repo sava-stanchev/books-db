@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import ReactPaginate from "react-paginate";
-import { Col, Row, Button } from "react-bootstrap";
+import { Col, Row, Button, InputGroup, Form } from "react-bootstrap";
 import AuthContext from "../providers/auth-context";
 import { HOST } from "../common/constants";
 import { useNavigate } from "react-router-dom";
@@ -28,7 +28,7 @@ const Books = () => {
       },
     })
       .then((response) => response.json())
-      .then((data) => setBooks(data))
+      .then((data) => setBooks(data[0]))
       .catch((error) => setError(error.message))
       .finally(() => setLoading(false))
       .catch(() => navigate("/500"));
@@ -68,12 +68,11 @@ const Books = () => {
     .map((book) => {
       return (
         <div className="each-book" key={book.title}>
-          <img className="poster" src={book.posters} alt={book.title} />
+          <img className="poster" src={book.cover} alt={book.title} />
           <b className="title">{book.title}</b>
           <Button
             variant="primary"
-            className="btn-details"
-            onClick={() => history.push(`/books/${book.books_id}`)}
+            onClick={() => navigate(`/books/${book.id}`)}
           >
             View Details
           </Button>
@@ -87,48 +86,18 @@ const Books = () => {
   };
 
   return (
-    <div>
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      />
-      <Row>
-        <Col className="col-btnContainer">
-          {auth.user.is_admin ? (
-            <div className="btnContainer">
-              <Button
-                variant="primary"
-                onClick={() => navigate(`/books/create`)}
-              >
-                Create a book
-              </Button>
-            </div>
-          ) : (
-            <></>
-          )}
-        </Col>
-        <Col>
-          <div className="boxContainer">
-            <table className="elementsContainer">
-              <tbody>
-                <tr>
-                  <td>
-                    <input
-                      type="text"
-                      placeholder="search by title"
-                      className="search"
-                      onChange={(e) => setSearch(e.target.value)}
-                    />
-                  </td>
-                  <td>
-                    <>
-                      <i className="material-icons">search</i>
-                    </>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+    <div className="bg-dark">
+      <Row className="d-flex justify-content-center p-4">
+        <Col className="col-md-4 col-8">
+          <Form>
+            <InputGroup>
+              <Form.Control
+                type="text"
+                placeholder="Search"
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </InputGroup>
+          </Form>
         </Col>
       </Row>
       <div id="books">

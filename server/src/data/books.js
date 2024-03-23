@@ -12,7 +12,7 @@ const sortBooksByYear = async (sort) => {
     return await pool.query(`
       SELECT * FROM books b
       WHERE b.is_deleted != 1
-      ORDER BY b.publishing_year
+      ORDER BY b.year
     `);
   }
 
@@ -20,28 +20,20 @@ const sortBooksByYear = async (sort) => {
     return await pool.query(`
       SELECT * FROM books b
       WHERE b.is_deleted != 1
-      ORDER BY b.publishing_year DESC
+      ORDER BY b.year DESC
     `);
   }
 };
 
 const getBookById = async (bookId) => {
   const sql = `
-    SELECT b.books_id, b.title, b.author, b.year, b.posters, l.language, g.genre, b.is_deleted
-    , (SELECT ROUND(AVG(r.rating), 2)
-        FROM books AS b
-        JOIN books_ratings AS br
-        ON b.books_id = br.books_id
-        JOIN ratings AS r
-        ON br.ratings_id = r.ratings_id
-        WHERE br.books_id = ?
-        ) AS average_rating
+    SELECT b.id, b.title, b.author, b.year, b.cover, l.language, g.genre, b.is_deleted
     FROM books AS b
     JOIN languages AS l
-    ON b.language = l.languages_id
+    ON b.language = l.id
     JOIN genres AS g
-    ON b.genre = g.genres_id
-    WHERE b.is_deleted != 1 and b.books_id = ?
+    ON b.genre = g.id
+    WHERE b.is_deleted != 1 and b.id = ?
   `;
 
   const result = await pool.query(sql, [bookId, bookId]);
@@ -50,9 +42,9 @@ const getBookById = async (bookId) => {
 
 const getBookByIdForUpdate = async (id) => {
   const sql = `
-  SELECT b.title, b.author,b.age_recommendation, b.genre, b.isbn, b.publishing_year, b.language, b.print_length
+  SELECT b.title, b.author, b.genre, b.year, b.language
   FROM books AS b
-  WHERE b.is_deleted != 1 AND b.books_id = ?
+  WHERE b.is_deleted != 1 AND b.id = ?
 `;
   const result = await pool.query(sql, [id]);
 
@@ -60,42 +52,19 @@ const getBookByIdForUpdate = async (id) => {
 };
 
 const updateBookSQL = async (book) => {
-  const {
-    books_id,
-    title,
-    author,
-    genre,
-    age_recommendation,
-    isbn,
-    publishing_year,
-    language,
-    print_length,
-  } = book;
+  const { id, title, author, genre, year, language } = book;
 
   const sql = `
     UPDATE books AS b SET
       b.title = ?,
       b.author = ?,
       b.genre = ?,
-      b.age_recommendation = ?,
-      b.isbn = ?,
-      b.publishing_year = ?,
+      b.year = ?,
       b.language = ?,
-      b.print_length = ?
-    WHERE b.books_id = ?
+    WHERE b.id = ?
   `;
 
-  return await pool.query(sql, [
-    title,
-    author,
-    genre,
-    age_recommendation,
-    isbn,
-    publishing_year,
-    language,
-    print_length,
-    books_id,
-  ]);
+  return await pool.query(sql, [title, author, genre, year, language, id]);
 };
 
 const createBook = async (book, user) => {
@@ -116,7 +85,7 @@ const createBook = async (book, user) => {
     id,
   ]);
 
-  const sql = `SELECT * FROM books AS b WHERE b.books_id = ?`;
+  const sql = `SELECT * FROM books AS b WHERE b.id = ?`;
   const createdBook = (await pool.query(sql, [result.insertId]))[0];
 
   return {
@@ -128,7 +97,7 @@ const createBook = async (book, user) => {
 const deleteBook = async (id) => {
   const sql = `
     UPDATE books SET books.is_deleted = 1
-    WHERE books.books_id = ?
+    WHERE books.id = ?
   `;
   return await pool.query(sql, [id]);
 };
@@ -136,7 +105,7 @@ const deleteBook = async (id) => {
 const getAnyBookById = async (id) => {
   const sql = `
     SELECT * FROM books AS b
-    WHERE b.books_id = ?
+    WHERE b.id = ?
   `;
   const result = await pool.query(sql, [id]);
   return result;
@@ -155,7 +124,7 @@ const bookAverageRating = async (id) => {
 };
 
 const uploadFile = async (bookId, fileName) => {
-  const sql = `UPDATE books AS b SET b.posters = ? WHERE b.books_id = ?`;
+  const sql = `UPDATE books AS b SET b.cover = ? WHERE b.id = ?`;
   const result = await pool.query(sql, [fileName, bookId]);
 
   return {

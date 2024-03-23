@@ -35,7 +35,7 @@ const upload = multer({
 booksController
 
   /** Retrieve all books */
-  .get("/", authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
+  .get("/", async (req, res) => {
     const { sort } = req.query;
     try {
       if (sort) {
@@ -47,6 +47,7 @@ booksController
       console.log(theBooks);
       res.json(theBooks);
     } catch (error) {
+      console.log("yoooo");
       return res.status(400).json({
         error: error.message,
       });
@@ -187,25 +188,6 @@ booksController
       } catch (error) {
         return res.status(500).json({
           message: error.message,
-        });
-      }
-    }
-  )
-
-  /** Create any book (as admin) */
-  .put(
-    "/create",
-    authMiddleware,
-    loggedUserGuard,
-    transformBody(bookCreateValidator),
-    validateBody("book", bookCreateValidator),
-    async (req, res) => {
-      try {
-        const book = await booksData.createBook(req.body, req.user);
-        res.json(book);
-      } catch (error) {
-        return res.status(400).json({
-          error: error.message,
         });
       }
     }

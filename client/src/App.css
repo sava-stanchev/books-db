@@ -27,20 +27,6 @@
   font-size: 1.2em;
 }
 
-.registration-page-bg-info {
-  height: 110vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.login-page-bg-info {
-  height: 80vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .form-box {
   box-shadow: 0px 0px 15px -5px black;
 }
@@ -434,38 +420,10 @@ select:focus {
   border-radius: 50px;
 }
 
-.col-btnContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  align-content: center;
-}
-
-.btnContainer {
-  margin: auto;
-  margin-top: 1.5%;
-}
-
 .elementsContainer {
   width: 100%;
   height: 100%;
   vertical-align: middle;
-}
-
-.search {
-  border: none;
-  height: 100%;
-  width: 100%;
-  padding: 0px 5px;
-  border-radius: 50px;
-  font-size: 18px;
-  color: #5a6059;
-  background-color: #efede0;
-  font-weight: 500;
-}
-
-.search:focus {
-  outline: none;
 }
 
 .material-icons {
@@ -513,27 +471,6 @@ select:focus {
   margin-right: 0.8rem;
   margin-top: 0;
   margin-bottom: 0;
-}
-
-.home-page-button {
-  color: #5a6059;
-  background-color: #f2d349;
-  padding: 0.9rem 1.8rem;
-  border-radius: 0.5rem;
-  text-decoration: none;
-  font-size: 1.1rem;
-  font-weight: 700;
-  outline: none;
-  border: none;
-  cursor: pointer;
-}
-
-.home-page-button:hover {
-  background-color: #fad73b;
-}
-
-.home-page-button:focus {
-  background-color: #f2d349;
 }
 
 .poster-and-info {

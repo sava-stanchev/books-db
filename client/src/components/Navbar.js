@@ -27,7 +27,7 @@ const NavbarComponent = () => {
     <>
       <Navbar bg="dark" data-bs-theme="dark" collapseOnSelect expand="lg">
         <Container>
-          <Navbar.Brand href="/home">BooksDB</Navbar.Brand>
+          <Navbar.Brand href="/home">BookDB</Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">

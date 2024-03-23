@@ -7,13 +7,12 @@ import SingleBook from "./components/SingleBook";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import React, { useState } from "react";
 import AuthContext, { getUser } from "./providers/auth-context";
-import AddBook from "./components/AddBook";
 import AddReview from "./components/AddReview";
 import UpdateBook from "./components/UpdateBook";
 import Users from "./components/Users";
 import SingleUser from "./components/SingleUser";
 import UpdateReview from "./components/UpdateReview";
-import HomePage from "./components/HomePage";
+import Home from "./components/Home";
 import GuardedRoute from "./providers/GuardedRoute";
 
 const router = createBrowserRouter([
@@ -22,7 +21,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/home",
-        element: <HomePage />,
+        element: <Home />,
       },
       {
         path: "/login",
@@ -47,13 +46,9 @@ const App = () => {
   });
 
   return (
-    <div>
-      <AuthContext.Provider
-        value={{ ...authValue, setAuthState: setAuthValue }}
-      >
-        <RouterProvider router={router}></RouterProvider>
-      </AuthContext.Provider>
-    </div>
+    <AuthContext.Provider value={{ ...authValue, setAuthState: setAuthValue }}>
+      <RouterProvider router={router}></RouterProvider>
+    </AuthContext.Provider>
   );
 };
 
