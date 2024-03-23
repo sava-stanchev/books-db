@@ -2,6 +2,42 @@ body {
   background-color: #212529;
 }
 
+.pagination {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem;
+  font-size: 1.2rem;
+  gap: 5px;
+}
+
+.pagination .page-num {
+  padding: 8px 15px;
+  cursor: pointer;
+  border-radius: 3px;
+  font-weight: 400;
+  color: black;
+  background-color: white;
+  text-decoration: none;
+}
+
+.pagination .page-num:hover {
+  background-color: #0275d8;
+  color: #fff;
+}
+
+.pagination .active .page-num {
+  background-color: #0275d8;
+  color: #fff;
+}
+
+.pagination .disabled .page-num {
+  background-color: #9fa5aa;
+  cursor: not-allowed;
+  color: black;
+}
+
 #book .content {
   max-width: 90%;
   margin: 2em auto;
@@ -40,35 +76,6 @@ body {
   color: black;
   font-size: 1.2em;
   line-height: 1;
-}
-
-.paginationBttns {
-  width: 90%;
-  height: 40px;
-  list-style: none;
-  display: flex;
-  justify-content: center;
-}
-
-.paginationBttns a {
-  padding: 6px 12px;
-  margin: 8px;
-  border-radius: 5px;
-  border: 1.5px solid #e7e7e7;
-  color: black !important;
-  cursor: pointer;
-  font-size: large;
-}
-
-.paginationBttns a:hover {
-  color: white !important;
-  background-color: #5a6059;
-  text-decoration-line: none;
-}
-
-.paginationActive a {
-  color: white !important;
-  background-color: #5a6059;
 }
 
 input[type="radio"] {
@@ -122,38 +129,6 @@ input[type="radio"] {
   overflow-y: scroll;
 }
 
-.each-book {
-  max-width: 90%;
-  display: flex;
-  flex-direction: column;
-  padding: 0.5px;
-  margin: 5px 13.5px;
-  background: #dadcdd;
-  border-radius: 10px;
-  position: relative;
-  -webkit-transition: background 0.5s;
-  -moz-transition: background 0.5s;
-  -ms-transition: background 0.5s;
-  -o-transition: background 0.5s;
-  transition: background 0.5s;
-}
-
-#books .content > div img {
-  max-width: 90%;
-  display: flex;
-  flex-direction: column;
-  margin: 5px 13.5px;
-  background-color: #dadcdd;
-  border-radius: 5px;
-  position: relative;
-}
-
-.each-book:hover {
-  max-width: 90%;
-  background: #75757e;
-  color: white;
-}
-
 .poster {
   border-radius: 5px;
 }
@@ -163,35 +138,6 @@ input[type="radio"] {
   text-align: center;
   font-size: 17px;
   padding: 2px 0;
-}
-
-#books .content {
-  max-width: 95%;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 280px);
-  justify-content: center;
-  grid-gap: 40px;
-  margin: 2em auto;
-  padding-bottom: 1rem;
-  padding-left: 1.5rem;
-}
-
-#books .content > div {
-  position: relative;
-  margin: 0;
-  text-align: center;
-}
-
-.btn-details {
-  position: relative;
-  width: 100.5%;
-  margin-left: -1px;
-  margin-top: 1px;
-  border-radius: 5px !important;
-}
-
-.btn-details:hover {
-  border-radius: 5px !important;
 }
 
 .reviewBtns {

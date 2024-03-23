@@ -1,6 +1,14 @@
 import { useEffect, useState, useContext } from "react";
 import ReactPaginate from "react-paginate";
-import { Col, Row, Button, InputGroup, Form } from "react-bootstrap";
+import {
+  Col,
+  Row,
+  Button,
+  InputGroup,
+  Form,
+  Card,
+  Container,
+} from "react-bootstrap";
 import AuthContext from "../providers/auth-context";
 import { HOST } from "../common/constants";
 import { useNavigate } from "react-router-dom";
@@ -15,7 +23,7 @@ const Books = () => {
   const [search, setSearch] = useState("");
   const [filteredBooks, setFilteredBooks] = useState([]);
 
-  const booksPerPage = 8;
+  const booksPerPage = 6;
   const pagesVisited = pageNumber * booksPerPage;
 
   useEffect(() => {
@@ -42,20 +50,24 @@ const Books = () => {
 
   const foundBooks = filteredBooks.slice();
 
-  const displayBooks = foundBooks
+  const booksRender = foundBooks
     .slice(pagesVisited, pagesVisited + booksPerPage)
-    .map((book) => {
+    .map((book, idx) => {
       return (
-        <div className="each-book" key={book.title}>
-          <img className="poster" src={book.cover} alt={book.title} />
-          <b className="title">{book.title}</b>
-          <Button
-            variant="primary"
-            onClick={() => navigate(`/books/${book.id}`)}
-          >
-            View Details
-          </Button>
-        </div>
+        <Col key={idx} className="d-flex justify-content-center">
+          <Card style={{ width: "18rem" }}>
+            <Card.Img variant="top" src={book.cover} />
+            <Card.Body>
+              <Card.Title>{book.title}</Card.Title>
+              <Button
+                variant="primary"
+                onClick={() => navigate(`/books/${book.id}`)}
+              >
+                View Details
+              </Button>
+            </Card.Body>
+          </Card>
+        </Col>
       );
     });
 
@@ -65,7 +77,7 @@ const Books = () => {
   };
 
   return (
-    <div>
+    <Container>
       <Row className="d-flex justify-content-center m-4">
         <Col className="col-md-4 col-8">
           <Form>
@@ -81,22 +93,25 @@ const Books = () => {
       </Row>
       {loading && <Loader />}
       {!loading && (
-        <div id="books">
-          <div className="content">{displayBooks}</div>
+        <>
+          <Row xs={"auto"} sm={2} md={3} className="g-4 justify-content-center">
+            {booksRender}
+          </Row>
           <ReactPaginate
             previousLabel={"<"}
             nextLabel={">"}
             pageCount={pageCount}
             onPageChange={changePage}
-            containerClassName={"paginationBttns"}
-            previousLinkClassName={"previousBttn"}
-            nextLinkClassName={"nextBttn"}
-            disabledClassName={"paginationDisabled"}
-            activeClassName={"paginationActive"}
+            renderOnZeroPageCount={null}
+            containerClassName="pagination"
+            previousLinkClassName="page-num"
+            pageLinkClassName="page-num"
+            nextLinkClassName="page-num"
+            activeClassName="active"
           />
-        </div>
+        </>
       )}
-    </div>
+    </Container>
   );
 };
 
