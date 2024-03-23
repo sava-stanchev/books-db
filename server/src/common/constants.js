@@ -4,8 +4,6 @@ export const book = {
   AUTHOR_MIN_LENGTH: 1,
   AUTHOR_MAX_LENGTH: 100,
   AGE_MIN: 1,
-  ISBN_LENGTH: 10,
-  PRINTLENGTH_MIN_LENGTH: 1,
 };
 
 export const user = {

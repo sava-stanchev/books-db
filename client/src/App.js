@@ -48,7 +48,11 @@ const App = () => {
 
   return (
     <div>
-      <RouterProvider router={router}></RouterProvider>
+      <AuthContext.Provider
+        value={{ ...authValue, setAuthState: setAuthValue }}
+      >
+        <RouterProvider router={router}></RouterProvider>
+      </AuthContext.Provider>
     </div>
   );
 };

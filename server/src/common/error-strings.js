@@ -8,7 +8,7 @@ export default {
     title: "Expected string with length [1 - 100]",
     author: "Expected string with length [1 - 100]",
     genre: "Expected string with length [1 - 40]",
-    publishing_year: "Expected year",
+    year: "Expected year",
     language: "Expected string with length [1 - 40]",
     is_deleted: "Expected boolean",
   },

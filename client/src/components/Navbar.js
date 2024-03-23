@@ -27,15 +27,26 @@ const NavbarComponent = () => {
     <>
       <Navbar bg="dark" data-bs-theme="dark" collapseOnSelect expand="lg">
         <Container>
-          <Navbar.Brand href="/">BooksDB</Navbar.Brand>
+          <Navbar.Brand href="/home">BooksDB</Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link href="/">Home</Nav.Link>
+              <Nav.Link href="/home">Home</Nav.Link>
             </Nav>
             <Nav>
-              <Nav.Link href="/login">Login</Nav.Link>
-              <Nav.Link href="/register">Register</Nav.Link>
+              {auth.isLoggedIn ? (
+                <>
+                  <Nav.Link href="/books">Books</Nav.Link>
+                  <Nav.Link href="/home" onClick={() => logout()}>
+                    Log Out
+                  </Nav.Link>
+                </>
+              ) : (
+                <>
+                  <Nav.Link href="/login">Login</Nav.Link>
+                  <Nav.Link href="/register">Register</Nav.Link>
+                </>
+              )}
             </Nav>
           </Navbar.Collapse>
         </Container>
