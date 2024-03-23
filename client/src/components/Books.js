@@ -4,13 +4,13 @@ import { Col, Row, Button, InputGroup, Form } from "react-bootstrap";
 import AuthContext from "../providers/auth-context";
 import { HOST } from "../common/constants";
 import { useNavigate } from "react-router-dom";
+import Loader from "./Loader";
 
 const Books = () => {
   const auth = useContext(AuthContext);
   const navigate = useNavigate();
   const [books, setBooks] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [pageNumber, setPageNumber] = useState(0);
   const [search, setSearch] = useState("");
   const [filteredBooks, setFilteredBooks] = useState([]);
@@ -19,7 +19,6 @@ const Books = () => {
   const pagesVisited = pageNumber * booksPerPage;
 
   useEffect(() => {
-    setLoading(true);
     fetch(`${HOST}/books`, {
       method: "GET",
       headers: {
@@ -29,7 +28,6 @@ const Books = () => {
     })
       .then((response) => response.json())
       .then((data) => setBooks(data[0]))
-      .catch((error) => setError(error.message))
       .finally(() => setLoading(false))
       .catch(() => navigate("/500"));
   }, []);
@@ -43,25 +41,6 @@ const Books = () => {
   }, [search, books]);
 
   const foundBooks = filteredBooks.slice();
-
-  const showError = () => {
-    if (error) {
-      return (
-        <h4>
-          <i>An error has occured: </i>
-          {error}
-        </h4>
-      );
-    }
-  };
-
-  const Loader = () => <div className="Loader"></div>;
-
-  const showLoader = () => {
-    if (loading) {
-      return <Loader />;
-    }
-  };
 
   const displayBooks = foundBooks
     .slice(pagesVisited, pagesVisited + booksPerPage)
@@ -86,8 +65,8 @@ const Books = () => {
   };
 
   return (
-    <div className="bg-dark">
-      <Row className="d-flex justify-content-center p-4">
+    <div>
+      <Row className="d-flex justify-content-center m-4">
         <Col className="col-md-4 col-8">
           <Form>
             <InputGroup>
@@ -100,22 +79,23 @@ const Books = () => {
           </Form>
         </Col>
       </Row>
-      <div id="books">
-        {showLoader()}
-        {showError()}
-        <div className="content">{displayBooks}</div>
-      </div>
-      <ReactPaginate
-        previousLabel={"<"}
-        nextLabel={">"}
-        pageCount={pageCount}
-        onPageChange={changePage}
-        containerClassName={"paginationBttns"}
-        previousLinkClassName={"previousBttn"}
-        nextLinkClassName={"nextBttn"}
-        disabledClassName={"paginationDisabled"}
-        activeClassName={"paginationActive"}
-      />
+      {loading && <Loader />}
+      {!loading && (
+        <div id="books">
+          <div className="content">{displayBooks}</div>
+          <ReactPaginate
+            previousLabel={"<"}
+            nextLabel={">"}
+            pageCount={pageCount}
+            onPageChange={changePage}
+            containerClassName={"paginationBttns"}
+            previousLinkClassName={"previousBttn"}
+            nextLinkClassName={"nextBttn"}
+            disabledClassName={"paginationDisabled"}
+            activeClassName={"paginationActive"}
+          />
+        </div>
+      )}
     </div>
   );
 };
