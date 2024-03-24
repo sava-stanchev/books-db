@@ -2,7 +2,7 @@ import promisePool from "./pool.js";
 
 const getAllUsers = async () => {
   return await promisePool.query(`
-    SELECT * FROM users AS u
+    SELECT * FROM users
   `);
 };
 

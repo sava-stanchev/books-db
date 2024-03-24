@@ -44,10 +44,8 @@ booksController
       }
 
       const theBooks = await booksData.getAllBooks();
-      console.log(theBooks);
       res.json(theBooks);
     } catch (error) {
-      console.log("yoooo");
       return res.status(400).json({
         error: error.message,
       });

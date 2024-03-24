@@ -16,22 +16,16 @@ const usersController = express.Router();
 usersController
 
   /** Retrieve all users */
-  .get(
-    "/",
-    authMiddleware,
-    loggedUserGuard,
-    roleAuth(userRole.Admin),
-    async (req, res) => {
-      try {
-        const users = await usersData.getAllUsers();
-        res.json(users);
-      } catch (error) {
-        return res.status(400).json({
-          error: error.message,
-        });
-      }
+  .get("/", async (req, res) => {
+    try {
+      const users = await usersData.getAllUsers();
+      res.json(users[0]);
+    } catch (error) {
+      return res.status(400).json({
+        error: error.message,
+      });
     }
-  )
+  })
 
   .post(
     "/",

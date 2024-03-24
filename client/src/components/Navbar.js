@@ -4,11 +4,14 @@ import { HOST } from "../common/constants";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 
 const NavbarComponent = () => {
   const auth = useContext(AuthContext);
-  const logout = () => {
+  const navigate = useNavigate();
+
+  const logout = (e) => {
+    e.preventDefault();
     fetch(`${HOST}/logout`, {
       method: "DELETE",
       headers: {
@@ -20,6 +23,7 @@ const NavbarComponent = () => {
         isLoggedIn: false,
       });
       localStorage.removeItem("token");
+      navigate("/home");
     });
   };
 
@@ -36,10 +40,11 @@ const NavbarComponent = () => {
             <Nav>
               {auth.isLoggedIn ? (
                 <>
+                  {auth.user.is_admin === 1 && (
+                    <Nav.Link href="/users">Users</Nav.Link>
+                  )}
                   <Nav.Link href="/books">Books</Nav.Link>
-                  <Nav.Link href="/home" onClick={() => logout()}>
-                    Log Out
-                  </Nav.Link>
+                  <Nav.Link onClick={logout}>Log Out</Nav.Link>
                 </>
               ) : (
                 <>
