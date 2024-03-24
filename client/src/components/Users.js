@@ -1,8 +1,16 @@
 import { useEffect, useState } from "react";
-import { BAN_DAYS, HOST } from "../common/constants.js";
-import { FaTrashAlt, FaBan } from "react-icons/fa";
+import { HOST } from "../common/constants.js";
 import { useNavigate } from "react-router-dom";
 import Loader from "./Loader";
+import {
+  Col,
+  Row,
+  Button,
+  InputGroup,
+  Form,
+  Container,
+  Table,
+} from "react-bootstrap";
 
 const Users = () => {
   const navigate = useNavigate();
@@ -36,35 +44,6 @@ const Users = () => {
 
   let foundUsers = filteredUsers;
 
-  const Loader = () => <div className="Loader"></div>;
-
-  const showLoader = () => {
-    if (loading) {
-      return <Loader />;
-    }
-  };
-
-  const updateUser = (i, userId, prop, value) => {
-    let user = { ...users[i], [prop]: value };
-
-    fetch(`${HOST}/users/${userId}/update`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        authorization: `bearer ${localStorage.getItem("token")}`,
-      },
-      body: JSON.stringify(user),
-    })
-      .then((res) => res.json())
-      .then((data) => (users[i] = data))
-      .then(() => setLoading(false))
-      .catch(() => navigate("/500"));
-
-    users[i] = user;
-    const updatedUsers = [...users];
-    setUsers(updatedUsers);
-  };
-
   const deleteUser = (id) => {
     fetch(`${HOST}/users/${id}`, {
       method: "DELETE",
@@ -78,94 +57,49 @@ const Users = () => {
       .catch(() => navigate("/500"));
   };
 
-  const displayUsers = foundUsers.map((user, i) => {
+  const displayUsers = foundUsers.map((user, idx) => {
     return (
-      <tbody key={user.id}>
-        <tr style={{ outline: "#202027 thin solid" }}>
-          <td>{user.username}</td>
-          <td>
-            {user.first_name} {user.last_name}
-          </td>
-          <td>{user.email}</td>
-          <td>{user.user_age}</td>
-          <td>
-            <div className="inline-td">
-              {user.ban_date ? (
-                <p className="ban-date">
-                  Banned until: {new Date(user.ban_date).toLocaleDateString()}
-                </p>
-              ) : (
-                <button
-                  className="ban-btn-users"
-                  onClick={() =>
-                    updateUser(
-                      i,
-                      user.id,
-                      "ban_date",
-                      new Date(new Date().getTime() + BAN_DAYS)
-                    )
-                  }
-                >
-                  <FaBan />
-                </button>
-              )}
-              <button
-                className="delete-btn-users"
-                onClick={() => deleteUser(user.id)}
-              >
-                <FaTrashAlt />
-              </button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
+      <tr key={idx}>
+        <td>{user.username}</td>
+        <td>{user.email}</td>
+        <td>
+          <Button variant="danger" onClick={() => deleteUser(user.id)}>
+            Delete
+          </Button>
+        </td>
+      </tr>
     );
   });
 
   return (
-    <>
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      />
-      <section className="genre-section">
-        <div className="boxContainer">
-          <table className="elementsContainer">
-            <tbody>
-              <tr>
-                <td>
-                  <input
-                    type="text"
-                    placeholder="search by username"
-                    className="search"
-                    onChange={(e) => setSearch(e.target.value)}
-                  />
-                </td>
-                <td>
-                  <>
-                    <i className="material-icons">search</i>
-                  </>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-      <br />
-      <div className="songs-container-main-section">
-        {showLoader()}
-        <div className="table-container">
-          <table className="table">
-            <thead>
-              <tr>
-                <th colSpan="5">List of Users</th>
-              </tr>
-            </thead>
-            {displayUsers}
-          </table>
-        </div>
-      </div>
-    </>
+    <Container>
+      <Row className="d-flex justify-content-center m-4">
+        <Col className="col-md-4 col-8">
+          <Form>
+            <InputGroup>
+              <Form.Control
+                type="text"
+                placeholder="Search"
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </InputGroup>
+          </Form>
+        </Col>
+      </Row>
+      {loading && <Loader />}
+      {!loading && (
+        <Table striped responsive>
+          <thead>
+            <tr>
+              <th>Username</th>
+              <th>Email</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>{displayUsers}</tbody>
+        </Table>
+      )}
+    </Container>
   );
 };
 
