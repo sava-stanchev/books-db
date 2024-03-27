@@ -53,10 +53,12 @@ booksController
   })
 
   /** Retrieve one book */
-  .get("/:id", authMiddleware, loggedUserGuard, banGuard, async (req, res) => {
+  .get("/:id", async (req, res) => {
     const bookId = +req.params.id;
     try {
-      res.json(await booksData.getBookById(bookId));
+      const book = await booksData.getBookById(bookId);
+      console.log(book[0]);
+      res.json(book[0]);
     } catch (error) {
       return res.status(404).json({
         error: error.message,

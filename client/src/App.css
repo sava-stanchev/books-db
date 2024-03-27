@@ -129,30 +129,13 @@ input[type="radio"] {
   overflow-y: scroll;
 }
 
-.poster {
-  border-radius: 5px;
-}
-
-.title {
-  width: 100%;
-  text-align: center;
-  font-size: 17px;
-  padding: 2px 0;
-}
-
 .reviewBtns {
   padding: 5px 9px !important;
 }
 
-.book-app > .row {
-  overflow-x: auto;
-  flex-wrap: nowrap;
-}
-
-.library-photo-container {
+.home-page-background {
   display: flex;
-  flex: 1;
-  height: calc(100vh - 100px);
+  height: calc(100vh - 56px);
   justify-content: center;
   align-items: center;
   background-size: cover;
@@ -212,13 +195,6 @@ input[type="radio"] {
 
 .genre-section {
   text-align: center;
-}
-
-.songs-container-main-section {
-  display: flex;
-  align-items: center;
-  flex-grow: 1;
-  justify-content: center;
 }
 
 select {

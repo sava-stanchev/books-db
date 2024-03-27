@@ -7,7 +7,7 @@ const HomePage = () => {
   const auth = useContext(AuthContext);
 
   return (
-    <div className="library-photo-container">
+    <div className="home-page-background">
       <Link to={auth.isLoggedIn ? "/books" : "/login"}>
         <Button variant="warning" size="lg">
           Enter The Book Database

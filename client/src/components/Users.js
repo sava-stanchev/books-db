@@ -57,7 +57,7 @@ const Users = () => {
       .catch(() => navigate("/500"));
   };
 
-  const displayUsers = foundUsers.map((user, idx) => {
+  const usersRender = foundUsers.map((user, idx) => {
     return (
       <tr key={idx}>
         <td>{user.username}</td>
@@ -96,7 +96,7 @@ const Users = () => {
               <th></th>
             </tr>
           </thead>
-          <tbody>{displayUsers}</tbody>
+          <tbody>{usersRender}</tbody>
         </Table>
       )}
     </Container>
