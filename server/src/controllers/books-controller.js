@@ -8,7 +8,6 @@ import { authMiddleware, roleMiddleware } from "../auth/auth-middleware.js";
 import { userRole } from "../common/user-role.js";
 import booksRatingData from "../data/books-rating.js";
 import reviewCreateValidator from "../validators/review-create-validation.js";
-import banGuard from "../middlewares/ban-guard.js";
 import loggedUserGuard from "../middlewares/logged-user-guard.js";
 import validateBody from "../middlewares/validate-body.js";
 import roleAuth from "../middlewares/role-auth.js";
@@ -92,7 +91,6 @@ booksController
     validateBody("review", reviewCreateValidator),
     authMiddleware,
     loggedUserGuard,
-    banGuard,
     async (req, res) => {
       const bookId = +req.params.id;
       const userId = +req.user.id;
@@ -126,72 +124,55 @@ booksController
   )
 
   /** Get user rating for book */
-  .get(
-    "/:id/rating",
-    authMiddleware,
-    loggedUserGuard,
-    banGuard,
-    async (req, res) => {
-      try {
-        const bookId = req.params.id;
-        const userId = req.user.id;
-        const rating = await booksRatingData.getBookRatingByUser(
-          bookId,
-          userId
-        );
-        return rating ? res.status(200).json(rating.rating) : null;
-      } catch (error) {
-        return res.status(500).json({
-          message: error.message,
-        });
-      }
+  .get("/:id/rating", authMiddleware, loggedUserGuard, async (req, res) => {
+    try {
+      const bookId = req.params.id;
+      const userId = req.user.id;
+      const rating = await booksRatingData.getBookRatingByUser(bookId, userId);
+      return rating ? res.status(200).json(rating.rating) : null;
+    } catch (error) {
+      return res.status(500).json({
+        message: error.message,
+      });
     }
-  )
+  })
 
   /** Rate book */
-  .patch(
-    "/:id/rating",
-    authMiddleware,
-    loggedUserGuard,
-    banGuard,
-    async (req, res) => {
-      try {
-        const bookId = req.params.id;
-        const rating = req.body.rating;
-        const userId = req.user.id;
-        const book = await booksData.getBookById(bookId);
+  .patch("/:id/rating", authMiddleware, loggedUserGuard, async (req, res) => {
+    try {
+      const bookId = req.params.id;
+      const rating = req.body.rating;
+      const userId = req.user.id;
+      const book = await booksData.getBookById(bookId);
 
-        if (!book) {
-          return res.status(404).json({
-            massage: "Book not found!",
-          });
-        }
-
-        const checkForRating = await booksRatingData.getBookRatingByUser(
-          bookId,
-          userId
-        );
-
-        if (checkForRating) {
-          await booksRatingData.updateBookRating(
-            checkForRating.book_ratings_id,
-            rating
-          );
-          return res
-            .status(200)
-            .send(await booksData.bookAverageRating(bookId));
-        }
-
-        await booksRatingData.setRatingToBook(userId, bookId, rating);
-
-        return res.status(200).send(await booksData.bookAverageRating(bookId));
-      } catch (error) {
-        return res.status(500).json({
-          message: error.message,
+      if (!book) {
+        return res.status(404).json({
+          massage: "Book not found!",
         });
       }
+
+      const checkForRating = await booksRatingData.getBookRatingByUser(
+        bookId,
+        userId
+      );
+
+      if (checkForRating) {
+        await booksRatingData.updateBookRating(
+          checkForRating.book_ratings_id,
+          rating
+        );
+        return res.status(200).send(await booksData.bookAverageRating(bookId));
+      }
+
+      await booksRatingData.setRatingToBook(userId, bookId, rating);
+
+      return res.status(200).send(await booksData.bookAverageRating(bookId));
+    } catch (error) {
+      return res.status(500).json({
+        message: error.message,
+      });
     }
-  )
+  })
 
   /** Upload book cover */
   .post(

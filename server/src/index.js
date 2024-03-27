@@ -11,7 +11,6 @@ import jwtStrategy from "./auth/strategy.js";
 import loggedUserGuard from "./middlewares/logged-user-guard.js";
 import roleAuth from "./middlewares/role-auth.js";
 import { userRole } from "./common/user-role.js";
-import banGuard from "./middlewares/ban-guard.js";
 import reviewService from "./services/review-service.js";
 import booksController from "./controllers/books-controller.js";
 import authController from "./controllers/auth-controller.js";
@@ -67,7 +66,6 @@ app.get(
   "/reviews/:reviewId",
   authMiddleware,
   loggedUserGuard,
-  banGuard,
   async (req, res) => {
     try {
       const reviewId = req.params.reviewId;
@@ -88,7 +86,6 @@ app.patch(
   "/reviews/:reviewId/update",
   authMiddleware,
   loggedUserGuard,
-  banGuard,
   async (req, res) => {
     const reviewId = req.params.reviewId;
     const updateData = req.body;
@@ -127,7 +124,6 @@ app.delete(
   "/reviews/:reviews_id",
   authMiddleware,
   loggedUserGuard,
-  banGuard,
   async (req, res) => {
     try {
       const review = await reviewsData.getReviewById(req.params.reviews_id);

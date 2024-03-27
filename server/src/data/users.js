@@ -37,20 +37,6 @@ const createUser = async (user) => {
   return createdUser;
 };
 
-const banUser = async (id) => {
-  const result = await promisePool.query(
-    `SELECT * FROM users u WHERE u.id = ?`,
-    [id]
-  );
-
-  if (result && result[0]) {
-    await promisePool.query(
-      `UPDATE users u SET u.ban_date = ? WHERE u.id = ?`,
-      [new Date(Date.now() + 10 * 24 * 3600 * 1000), id]
-    );
-  }
-};
-
 const updateUser = async (user) => {
   const sql = `
     UPDATE users AS u
@@ -66,13 +52,6 @@ const updateUser = async (user) => {
     user.id,
   ]);
   return await getUserById(user.id);
-};
-
-const liftBan = async (id) => {
-  await promisePool.query(
-    `UPDATE users u SET u.ban_date = NULL WHERE u.id = ?`,
-    [id]
-  );
 };
 
 const getUserById = async (id) => {
@@ -95,8 +74,6 @@ const deleteUser = async (id) => {
 export default {
   createUser,
   getAllUsers,
-  banUser,
-  liftBan,
   getUserById,
   deleteUser,
   updateUser,
