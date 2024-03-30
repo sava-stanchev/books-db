@@ -23,7 +23,7 @@ const NavbarComponent = () => {
         isLoggedIn: false,
       });
       localStorage.removeItem("token");
-      navigate("/home");
+      navigate("/");
     });
   };
 
@@ -31,11 +31,11 @@ const NavbarComponent = () => {
     <>
       <Navbar bg="dark" data-bs-theme="dark" collapseOnSelect expand="lg">
         <Container>
-          <Navbar.Brand href="/home">BookDB</Navbar.Brand>
+          <Navbar.Brand href="/">BooksDB</Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link href="/home">Home</Nav.Link>
+              <Nav.Link href="/">Home</Nav.Link>
             </Nav>
             <Nav>
               {auth.isLoggedIn ? (

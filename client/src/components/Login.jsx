@@ -38,7 +38,7 @@ const Login = () => {
           localStorage.setItem("token", res.token);
           const user = decode(res.token);
           auth.setAuthState({ user, isLoggedIn: true });
-          navigate("/home");
+          navigate("/");
         }
       })
       .catch(() => navigate("/500"));
