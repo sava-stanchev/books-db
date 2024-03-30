@@ -67,13 +67,14 @@ const SingleBook = () => {
               alt=""
             />
           </div>
-          <div className="col-6 ps-5">
+          <div className="col-8 ps-5">
             <div className="text-light">
               <h1>{bookData.title}</h1>
               <h3>{bookData.author}</h3>
               <h4>({bookData.year})</h4>
               <p>Genre: {bookData.genre}</p>
               <p>Language: {bookData.language}</p>
+              <p>{bookData.description}</p>
               {auth.user.is_admin && (
                 <Button variant="danger" onClick={() => deleteBook()}>
                   Delete Book

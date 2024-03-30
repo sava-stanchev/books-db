@@ -27,7 +27,7 @@ const sortBooksByYear = async (sort) => {
 
 const getBookById = async (bookId) => {
   const sql = `
-    SELECT b.id, b.title, b.author, b.year, b.cover, l.language, g.genre, b.is_deleted
+    SELECT b.id, b.title, b.author, b.year, b.cover, b.description, l.language, g.genre, b.is_deleted
     FROM books AS b
     JOIN languages AS l
     ON b.language = l.id
