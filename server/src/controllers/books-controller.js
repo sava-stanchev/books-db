@@ -1,6 +1,4 @@
 import express from "express";
-import bookCreateValidator from "../validators/book-create-validator.js";
-import bookUpdateValidator from "../validators/book-update-validator.js";
 import booksData from "../data/books.js";
 import booksService from "../services/books-service.js";
 import transformBody from "../middlewares/transform-body.js";
@@ -13,23 +11,8 @@ import validateBody from "../middlewares/validate-body.js";
 import roleAuth from "../middlewares/role-auth.js";
 import reviewsData from "../data/reviews.js";
 import dropDownData from "../data/dropDownData.js";
-import multer from "multer";
-import path from "path";
 
 const booksController = express.Router();
-const __dirname = path
-  .join(path.dirname(decodeURI(new URL(import.meta.url).pathname)))
-  .replace(/^\\([A-Z]:\\)/, "$1");
-const upload = multer({
-  storage: multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, path.join(__dirname, "/../../../front_end/public/posters"));
-    },
-    filename: (req, file, cb) => {
-      cb(null, file.originalname);
-    },
-  }),
-});
 
 booksController
 
@@ -173,20 +156,6 @@ booksController
     }
   })
 
-  /** Upload book cover */
-  .post(
-    "/:id/upload",
-    authMiddleware,
-    loggedUserGuard,
-    roleMiddleware(userRole.Admin),
-    upload.single("file"),
-    async (req, res) => {
-      const bookId = req.params.id;
-      const fileName = "/posters/" + req.file.originalname;
-      await booksData.uploadFile(bookId, fileName);
-    }
-  )
-
   /** Read any book (as admin) */
   .get(
     "/:id",
@@ -198,45 +167,6 @@ booksController
         res.json(await booksData.getAnyBookById(+req.params.id));
       } catch (error) {
         return res.status(404).json({
-          error: error.message,
-        });
-      }
-    }
-  )
-
-  /** Update any book (as admin) */
-  .put(
-    "/:id/update",
-    authMiddleware,
-    loggedUserGuard,
-    roleAuth(userRole.Admin),
-    validateBody("book", bookUpdateValidator),
-    async (req, res) => {
-      const { id } = req.params;
-      const updateData = req.body;
-      const languages = await dropDownData.getAllLanguages();
-      const genres = await dropDownData.getAllGenres();
-      updateData.language = languages.filter(
-        (l) => l.language === updateData.language
-      )[0].languages_id;
-      updateData.genre = genres.filter(
-        (g) => g.genre === updateData.genre
-      )[0].genres_id;
-
-      try {
-        const updatedBook = await booksService.updateBook(+id, updateData);
-
-        if (!updatedBook) {
-          res.status(404).send({
-            message: "Book not found!",
-          });
-        } else {
-          res.send({
-            message: "Book updated!",
-          });
-        }
-      } catch (error) {
-        return res.status(400).json({
           error: error.message,
         });
       }

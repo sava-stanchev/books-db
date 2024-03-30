@@ -52,8 +52,7 @@ const SingleBook = () => {
       },
     })
       .then((res) => res.json())
-      .then(() => navigate(`/books`))
-      .catch((error) => setError(error.message));
+      .then(() => navigate(`/books`));
   };
 
   return (
@@ -75,20 +74,11 @@ const SingleBook = () => {
               <h4>({bookData.year})</h4>
               <p>Genre: {bookData.genre}</p>
               <p>Language: {bookData.language}</p>
-              {auth.user.is_admin ? (
-                <>
-                  <Button
-                    variant="primary"
-                    onClick={() => navigate(`/books/${bookData.id}/update`)}
-                  >
-                    Update Book
-                  </Button>
-                  {"  "}
-                  <Button variant="danger" onClick={() => deleteBook()}>
-                    Delete Book
-                  </Button>
-                </>
-              ) : null}
+              {auth.user.is_admin && (
+                <Button variant="danger" onClick={() => deleteBook()}>
+                  Delete Book
+                </Button>
+              )}
             </div>
           </div>
         </Row>
