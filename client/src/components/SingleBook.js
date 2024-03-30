@@ -1,17 +1,18 @@
 import { useEffect, useState, useContext } from "react";
-import { Button } from "react-bootstrap";
+import { Button, Container, Row } from "react-bootstrap";
 import SingleBookReviews from "./SingleBookReviews";
 import AuthContext from "../providers/auth-context";
 import { HOST } from "../common/constants.js";
 import { useNavigate, useParams } from "react-router-dom";
+import Loader from "./Loader.jsx";
 
 const SingleBook = () => {
   const auth = useContext(AuthContext);
   const navigate = useNavigate();
   const { id } = useParams();
   const [bookData, setBookData] = useState(null);
-  const [error, setError] = useState(null);
   const [review, setReview] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const userId = { userId: auth.user.users_id };
@@ -25,7 +26,7 @@ const SingleBook = () => {
     })
       .then((response) => response.json())
       .then((data) => setReview(data))
-      .catch((error) => setError(error.message));
+      .catch(() => navigate("/500"));
   }, [id, auth.user.users_id, bookData]);
 
   useEffect(() => {
@@ -38,7 +39,8 @@ const SingleBook = () => {
     })
       .then((response) => response.json())
       .then((data) => setBookData(data[0]))
-      .catch((error) => setError(error.message));
+      .finally(() => setLoading(false))
+      .catch(() => navigate("/500"));
   }, [id]);
 
   const deleteBook = () => {
@@ -54,80 +56,44 @@ const SingleBook = () => {
       .catch((error) => setError(error.message));
   };
 
-  const showError = () => {
-    if (error) {
-      return (
-        <h4>
-          <i>An error has occured: </i>
-          {error}
-        </h4>
-      );
-    }
-  };
-
-  if (bookData === null) {
-    return <div className="Loader"></div>;
-  }
-  console.log(bookData);
   return (
-    <div id="book">
-      {showError()}
-      <div className="content">
-        <div id="book-detailed">
-          <div className="poster-and-info">
-            <div className="the-poster">
-              <img src={bookData.cover} alt="" />
-            </div>
-            <div className="the-book-info-container">
-              <div id="book-info">
-                <p>Title: {bookData.title}</p>
-                <p>Author: {bookData.author}</p>
-                <p>Year: {bookData.year}</p>
-                <p>Genre: {bookData.genre}</p>
-                <p>Language: {bookData.language}</p>
-                {auth.user.is_admin ? (
-                  <>
-                    <Button
-                      variant="primary"
-                      onClick={() => navigate(`/books/${bookData.id}/update`)}
-                    >
-                      Update Book
-                    </Button>
-                    {"  "}
-                    <Button variant="danger" onClick={() => deleteBook()}>
-                      Delete Book
-                    </Button>
-                  </>
-                ) : null}
-              </div>
+    <Container className="my-5">
+      {loading && <Loader />}
+      {!loading && (
+        <Row>
+          <div className="col-4 border-end pe-5">
+            <img
+              className="img-fluid border border-5"
+              src={bookData.cover}
+              alt=""
+            />
+          </div>
+          <div className="col-6 ps-5">
+            <div className="text-light">
+              <h1>{bookData.title}</h1>
+              <h3>{bookData.author}</h3>
+              <h4>({bookData.year})</h4>
+              <p>Genre: {bookData.genre}</p>
+              <p>Language: {bookData.language}</p>
+              {auth.user.is_admin ? (
+                <>
+                  <Button
+                    variant="primary"
+                    onClick={() => navigate(`/books/${bookData.id}/update`)}
+                  >
+                    Update Book
+                  </Button>
+                  {"  "}
+                  <Button variant="danger" onClick={() => deleteBook()}>
+                    Delete Book
+                  </Button>
+                </>
+              ) : null}
             </div>
           </div>
-          <>
-            <br />
-            {review ? (
-              <p style={{ marginLeft: "15px" }}>
-                You have already reviewed this book.
-              </p>
-            ) : (
-              <>
-                <p style={{ marginLeft: "15px" }}>
-                  Would you like to leave a review?
-                </p>
-                <Button
-                  style={{ marginLeft: "15px" }}
-                  variant="primary"
-                  onClick={() =>
-                    navigate(`/books/${bookData.id}/create-review`)
-                  }
-                >
-                  Create Review
-                </Button>
-              </>
-            )}
-          </>
-        </div>
-      </div>
-    </div>
+        </Row>
+      )}
+    </Container>
   );
 };
 

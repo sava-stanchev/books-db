@@ -56,7 +56,6 @@ booksController
     const bookId = +req.params.id;
     try {
       const book = await booksData.getBookById(bookId);
-      console.log(book[0]);
       res.json(book[0]);
     } catch (error) {
       return res.status(404).json({

@@ -38,35 +38,6 @@ body {
   color: black;
 }
 
-#book .content {
-  max-width: 90%;
-  margin: 2em auto;
-}
-
-#book #book-detailed {
-  grid-template-areas: "img info";
-  padding: 1em;
-  background-color: #e9ecef;
-  border: 1px solid #333;
-  border-radius: 0.3em;
-  box-shadow: 0 0 17px 2px #333;
-  min-width: 825px;
-}
-
-#book #book-detailed img {
-  grid-area: img;
-  margin: 1em;
-  width: 100%;
-  max-width: 400px;
-}
-
-#book #book-detailed #book-info {
-  grid-area: info;
-  border-left: 1px solid #333;
-  padding: 1em;
-  font-size: 1.2em;
-}
-
 #reviews {
   margin: 20px;
   padding: 20px;
@@ -209,20 +180,6 @@ select {
 
 select:focus {
   outline: none;
-}
-
-.poster-and-info {
-  display: flex;
-  flex-direction: row;
-  margin-left: auto;
-}
-
-.the-poster {
-  margin-right: 10px;
-}
-
-.the-book-info-container {
-  margin-left: 10px;
 }
 
 .update-book-form {
