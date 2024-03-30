@@ -4,31 +4,25 @@ import helmet from "helmet";
 import reviewsData from "./data/reviews.js";
 import dotenv from "dotenv";
 import usersData from "./data/users.js";
-import dropDownData from "./data/dropDownData.js";
 import { authMiddleware } from "./auth/auth-middleware.js";
 import passport from "passport";
 import jwtStrategy from "./auth/strategy.js";
 import loggedUserGuard from "./middlewares/logged-user-guard.js";
 import roleAuth from "./middlewares/role-auth.js";
 import { userRole } from "./common/user-role.js";
-import reviewService from "./services/review-service.js";
 import booksController from "./controllers/books-controller.js";
 import authController from "./controllers/auth-controller.js";
 import usersController from "./controllers/users-controller.js";
 
 const config = dotenv.config().parsed;
-
 const PORT = config.PORT;
-
 const app = express();
 
 app.use(cors());
 app.use(helmet());
 app.use(express.json());
-
 passport.use(jwtStrategy);
 app.use(passport.initialize());
-
 app.use("/", authController);
 app.use("/avatars", express.static("avatars"));
 app.use("/books", booksController);
@@ -77,44 +71,6 @@ app.get(
       return null;
     } catch (error) {
       console.log(error);
-    }
-  }
-);
-
-/** Update book review */
-app.patch(
-  "/reviews/:reviewId/update",
-  authMiddleware,
-  loggedUserGuard,
-  async (req, res) => {
-    const reviewId = req.params.reviewId;
-    const updateData = req.body;
-    try {
-      const review = await reviewsData.getReviewById(+reviewId);
-      if (!review) {
-        res.status(404).send({
-          message: "Review not found!",
-        });
-      }
-
-      if (review.id !== req.user.id) {
-        return res.status(403).json({
-          message: "You are not authorized to update this review!",
-        });
-      }
-
-      const reviewUpdated = await reviewService.updateReview(
-        +reviewId,
-        updateData
-      );
-
-      if (reviewUpdated) {
-        res.send(await reviewsData.getReviewByIdForUser(+reviewId));
-      }
-    } catch (error) {
-      return res.status(400).json({
-        error: error.message,
-      });
     }
   }
 );
@@ -229,29 +185,5 @@ app.put(
     }
   }
 );
-
-/** Get all languages */
-app.get("/languages", async (req, res) => {
-  try {
-    const languages = await dropDownData.getAllLanguages();
-    res.json(languages);
-  } catch (error) {
-    return res.status(400).json({
-      error: error.message,
-    });
-  }
-});
-
-/** Get all genres */
-app.get("/genres", async (req, res) => {
-  try {
-    const genres = await dropDownData.getAllGenres();
-    res.json(genres);
-  } catch (error) {
-    return res.status(400).json({
-      error: error.message,
-    });
-  }
-});
 
 app.listen(PORT, () => console.log(`Listening on ${PORT}...`));

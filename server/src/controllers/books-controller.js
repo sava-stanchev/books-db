@@ -1,6 +1,5 @@
 import express from "express";
 import booksData from "../data/books.js";
-import booksService from "../services/books-service.js";
 import transformBody from "../middlewares/transform-body.js";
 import { authMiddleware, roleMiddleware } from "../auth/auth-middleware.js";
 import { userRole } from "../common/user-role.js";
@@ -10,7 +9,6 @@ import loggedUserGuard from "../middlewares/logged-user-guard.js";
 import validateBody from "../middlewares/validate-body.js";
 import roleAuth from "../middlewares/role-auth.js";
 import reviewsData from "../data/reviews.js";
-import dropDownData from "../data/dropDownData.js";
 
 const booksController = express.Router();
 

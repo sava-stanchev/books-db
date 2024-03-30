@@ -9,7 +9,6 @@ import React, { useState } from "react";
 import AuthContext, { getUser } from "./providers/auth-context";
 import AddReview from "./components/AddReview";
 import Users from "./components/Users";
-import UpdateReview from "./components/UpdateReview";
 import Home from "./components/Home";
 import GuardedRoute from "./providers/GuardedRoute";
 
