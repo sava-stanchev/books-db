@@ -4,7 +4,7 @@ import { HOST } from "../common/constants";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 
 const NavbarComponent = () => {
   const auth = useContext(AuthContext);
@@ -35,21 +35,31 @@ const NavbarComponent = () => {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link href="/">Home</Nav.Link>
+              <Nav.Link as={Link} to="/">
+                Home
+              </Nav.Link>
             </Nav>
             <Nav>
               {auth.isLoggedIn ? (
                 <>
                   {auth.user.is_admin === 1 && (
-                    <Nav.Link href="/users">Users</Nav.Link>
+                    <Nav.Link as={Link} to="/users">
+                      Users
+                    </Nav.Link>
                   )}
-                  <Nav.Link href="/books">Books</Nav.Link>
+                  <Nav.Link as={Link} to="/books">
+                    Books
+                  </Nav.Link>
                   <Nav.Link onClick={logout}>Log Out</Nav.Link>
                 </>
               ) : (
                 <>
-                  <Nav.Link href="/login">Login</Nav.Link>
-                  <Nav.Link href="/register">Register</Nav.Link>
+                  <Nav.Link as={Link} to="/login">
+                    Login
+                  </Nav.Link>
+                  <Nav.Link as={Link} to="/register">
+                    Register
+                  </Nav.Link>
                 </>
               )}
             </Nav>
