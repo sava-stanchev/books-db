@@ -3,6 +3,7 @@ import { HOST } from "../common/constants";
 import decode from "jwt-decode";
 import AuthContext from "../providers/auth-context";
 import { useNavigate } from "react-router-dom";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -11,6 +12,11 @@ const Login = () => {
     username: "",
     password: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const updateUser = (prop, value) => {
     setUser({
@@ -61,16 +67,29 @@ const Login = () => {
           </div>
           <div className="mb-4">
             <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              placeholder="Enter Password"
-              className="form-control"
-              onChange={(e) => updateUser("password", e.target.value)}
-            />
+            <div className="position-relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                placeholder="Enter Password"
+                className="form-control pe-5"
+                onChange={(e) => updateUser("password", e.target.value)}
+              />
+              <button
+                className="password-eye-icon"
+                type="button"
+                onClick={togglePasswordVisibility}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </button>
+            </div>
           </div>
           <div className="d-grid">
-            <button className="btn btn-primary" onClick={(e) => login(e)}>
+            <button
+              className="btn btn-primary"
+              onClick={(e) => login(e)}
+              disabled={!user.username || !user.password}
+            >
               Sign in
             </button>
           </div>
