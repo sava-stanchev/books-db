@@ -25,9 +25,33 @@ const Register = () => {
   const [passwordError, setPasswordError] = useState(passVerificationError);
   const [emailError, setEmailError] = useState(emailVerificationError);
   const [usernameError, setUsernameError] = useState(usernameVerificationError);
+  const [strength, setStrength] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {}, [newUser]);
+
+  function evaluatePasswordStrength(password) {
+    let score = 0;
+
+    if (!password) return;
+    if (password.length > 8) score += 1;
+    if (/[a-z]/.test(password)) score += 1;
+    if (/[A-Z]/.test(password)) score += 1;
+    if (/\d/.test(password)) score += 1;
+    if (/[^A-Za-z0-9]/.test(password)) score += 1;
+
+    switch (score) {
+      case 0:
+      case 1:
+      case 2:
+        return "weak";
+      case 3:
+        return "medium";
+      case 4:
+      case 5:
+        return "strong";
+    }
+  }
 
   const updateUser = (name, value) => {
     setNewUser({
@@ -104,8 +128,18 @@ const Register = () => {
               placeholder="Enter Password"
               className="form-control"
               value={newUser.password}
-              onChange={(e) => updateUser("password", e.target.value)}
+              onChange={(e) => {
+                setStrength(evaluatePasswordStrength(e.target.value));
+                updateUser("password", e.target.value);
+              }}
             />
+            <div className="password-strength-container">
+              {newUser.password && (
+                <small>
+                  Password strength: <strong>{strength}</strong>
+                </small>
+              )}
+            </div>
           </div>
           <div className="d-grid">
             <button

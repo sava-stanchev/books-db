@@ -133,6 +133,11 @@ input[type="radio"] {
   border: none;
 }
 
+.password-strength-container {
+  height: 25px;
+  margin-top: 1px;
+}
+
 @media screen and (max-width: 1024px) {
   .form-container {
     width: 60%;
