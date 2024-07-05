@@ -27,25 +27,33 @@ const Login = () => {
     });
   };
 
-  const login = (e) => {
-    e.preventDefault();
-    fetch(`${HOST}/login`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(user),
-    })
-      .then((res) => res.json())
-      .then((res) => {
+  async function post(request) {
+    try {
+      const response = await fetch(request);
+
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      } else {
+        const result = await response.json();
         localStorage.clear();
-        localStorage.setItem("token", res.token);
-        const user = decode(res.token);
+        localStorage.setItem("token", result.token);
+        const user = decode(result.token);
         auth.setAuthState({ user, isLoggedIn: true });
         navigate("/");
-      })
-      .catch(() => setActiveAlert(true));
-  };
+      }
+    } catch (error) {
+      setActiveAlert(true);
+      console.error(error.message);
+    }
+  }
+
+  const loginRequest = new Request(`${HOST}/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(user),
+  });
 
   return (
     <>
@@ -90,7 +98,8 @@ const Login = () => {
             <div className="d-grid">
               <button
                 className="btn btn-primary"
-                onClick={(e) => login(e)}
+                type="button"
+                onClick={() => post(loginRequest)}
                 disabled={!user.username || !user.password}
               >
                 Sign in
