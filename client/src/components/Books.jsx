@@ -42,9 +42,9 @@ const Books = () => {
       }
     } catch (error) {
       console.error(error.message);
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   }
 
   const booksRequest = new Request(`${HOST}/books`, {

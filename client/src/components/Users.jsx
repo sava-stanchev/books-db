@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { HOST } from "../common/constants.js";
 import { useNavigate } from "react-router-dom";
-import Loader from "./Loader";
+import Loader from "./Loader.jsx";
 import {
   Col,
   Row,
@@ -20,19 +20,33 @@ const Users = () => {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    setLoading(true);
-    fetch(`${HOST}/users`, {
-      method: "GET",
-      headers: {
-        "content-type": "application/json",
-        authorization: `bearer ${localStorage.getItem("token")}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => setUsers(data))
-      .then(() => setLoading(false))
-      .catch(() => navigate("/500"));
+    get(usersRequest);
   }, []);
+
+  async function get(request) {
+    try {
+      const response = await fetch(request);
+
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      } else {
+        const result = await response.json();
+        setUsers(result);
+      }
+    } catch (error) {
+      console.error(error.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const usersRequest = new Request(`${HOST}/users`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `bearer ${localStorage.getItem("token")}`,
+    },
+  });
 
   useEffect(() => {
     setFilteredUsers(
