@@ -1,4 +1,4 @@
-import AuthContext from "../providers/auth-context";
+import AuthContext from "../utils/auth-context";
 import { useContext } from "react";
 import { HOST } from "../common/constants";
 import Container from "react-bootstrap/Container";

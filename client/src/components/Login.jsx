@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { HOST } from "../common/constants";
 import decode from "jwt-decode";
-import AuthContext from "../providers/auth-context";
+import AuthContext from "../utils/auth-context";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import AlertDismissible from "./Alert";

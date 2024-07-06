@@ -6,11 +6,10 @@ import Register from "./components/Register";
 import SingleBook from "./components/SingleBook";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import React, { useState } from "react";
-import AuthContext, { getUser } from "./providers/auth-context";
-import AddReview from "./components/AddReview";
+import AuthContext, { getUser } from "./utils/auth-context";
 import Users from "./components/Users";
 import Home from "./components/Home";
-import GuardedRoute from "./providers/GuardedRoute";
+import ProtectedRoutes from "./utils/ProtectedRoutes";
 
 const router = createBrowserRouter([
   {
@@ -29,16 +28,21 @@ const router = createBrowserRouter([
         element: <Register />,
       },
       {
-        path: "/books",
-        element: <Books />,
-      },
-      {
-        path: "/books/:id",
-        element: <SingleBook />,
-      },
-      {
-        path: "/users",
-        element: <Users />,
+        element: <ProtectedRoutes />,
+        children: [
+          {
+            path: "/books",
+            element: <Books />,
+          },
+          {
+            path: "/books/:id",
+            element: <SingleBook />,
+          },
+          {
+            path: "/users",
+            element: <Users />,
+          },
+        ],
       },
     ],
   },

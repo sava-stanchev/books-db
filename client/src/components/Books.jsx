@@ -9,7 +9,7 @@ import {
   Card,
   Container,
 } from "react-bootstrap";
-import AuthContext from "../providers/auth-context";
+import AuthContext from "../utils/auth-context";
 import { HOST } from "../common/constants";
 import { useNavigate } from "react-router-dom";
 import Loader from "./Loader";

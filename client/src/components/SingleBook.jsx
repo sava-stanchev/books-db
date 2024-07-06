@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import { Button, Container, Row } from "react-bootstrap";
 // import SingleBookReviews from "./SingleBookReviews.js";
-import AuthContext from "../providers/auth-context.js";
+import AuthContext from "../utils/auth-context.js";
 import { HOST } from "../common/constants.js";
 import { useNavigate, useParams } from "react-router-dom";
 import Loader from "./Loader";
