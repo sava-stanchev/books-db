@@ -96,7 +96,7 @@ const Register = () => {
     }
   }
 
-  const registerRequest = new Request(`${HOST}/usersas`, {
+  const registerRequest = new Request(`${HOST}/users`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

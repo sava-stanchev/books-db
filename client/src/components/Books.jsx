@@ -27,18 +27,33 @@ const Books = () => {
   const pagesVisited = pageNumber * booksPerPage;
 
   useEffect(() => {
-    fetch(`${HOST}/books`, {
-      method: "GET",
-      headers: {
-        "content-type": "application/json",
-        authorization: `bearer ${localStorage.getItem("token")}`,
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => setBooks(data[0]))
-      .finally(() => setLoading(false))
-      .catch(() => navigate("/500"));
+    get(booksRequest);
   }, []);
+
+  async function get(request) {
+    try {
+      const response = await fetch(request);
+
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      } else {
+        const result = await response.json();
+        setBooks(result[0]);
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+
+    setLoading(false);
+  }
+
+  const booksRequest = new Request(`${HOST}/books`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `bearer ${localStorage.getItem("token")}`,
+    },
+  });
 
   useEffect(() => {
     setFilteredBooks(
