@@ -4,7 +4,8 @@ import { Button, Container, Row } from "react-bootstrap";
 import AuthContext from "../providers/auth-context.js";
 import { HOST } from "../common/constants.js";
 import { useNavigate, useParams } from "react-router-dom";
-import Loader from "./Loader.jsx";
+import Loader from "./Loader";
+import StarRating from "./StarRating";
 
 const SingleBook = () => {
   const auth = useContext(AuthContext);
@@ -13,6 +14,7 @@ const SingleBook = () => {
   const [bookData, setBookData] = useState(null);
   // const [review, setReview] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [rating, setRating] = useState(3);
 
   // useEffect(() => {
   //   const userId = { userId: auth.user.users_id };
@@ -97,6 +99,7 @@ const SingleBook = () => {
               <h1>{bookData.title}</h1>
               <h3>{bookData.author}</h3>
               <h4>({bookData.year})</h4>
+              <StarRating value={rating} onChange={setRating} />
               <p>Genre: {bookData.genre}</p>
               <p>Language: {bookData.language}</p>
               <p>{bookData.description}</p>

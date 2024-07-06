@@ -138,6 +138,18 @@ input[type="radio"] {
   margin-top: 1px;
 }
 
+.star-icon {
+  --icon-size: 32px;
+
+  cursor: pointer;
+  height: var(--icon-size);
+  width: var(--icon-size);
+}
+
+.star-icon-filled {
+  fill: yellow;
+}
+
 @media screen and (max-width: 1024px) {
   .form-container {
     width: 60%;
