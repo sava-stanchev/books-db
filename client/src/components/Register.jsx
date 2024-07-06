@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { HOST } from "../common/constants.js";
 import { useNavigate } from "react-router-dom";
+import AlertDismissible from "./Alert";
 
 const initialState = {
   username: "",
@@ -26,6 +27,7 @@ const Register = () => {
   const [emailError, setEmailError] = useState(emailVerificationError);
   const [usernameError, setUsernameError] = useState(usernameVerificationError);
   const [strength, setStrength] = useState("");
+  const [activeAlert, setActiveAlert] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {}, [newUser]);
@@ -78,85 +80,102 @@ const Register = () => {
     }
   };
 
-  const register = () => {
-    fetch(`${HOST}/users`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(newUser),
-    })
-      .then((res) => res.json())
-      .then(() => {
+  async function post(request) {
+    try {
+      const response = await fetch(request);
+
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      } else {
         navigate("/login");
         navigate(0);
-      });
-  };
+      }
+    } catch (error) {
+      setActiveAlert(true);
+      console.error(error.message);
+    }
+  }
+
+  const registerRequest = new Request(`${HOST}/usersas`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(newUser),
+  });
 
   return (
-    <div className="d-flex justify-content-center align-items-center vh-100 bg-dark">
-      <div className="form-container p-5 rounded bg-light">
-        <form>
-          <h3 className="text-center">Sign Up</h3>
-          <div className="mb-4">
-            <label htmlFor="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              placeholder="Enter Email"
-              className="form-control"
-              value={newUser.email}
-              onChange={(e) => updateUser("email", e.target.value)}
-            />
-          </div>
-          <div className="mb-4">
-            <label htmlFor="username">Username</label>
-            <input
-              type="text"
-              id="username"
-              placeholder="Enter Username"
-              className="form-control"
-              value={newUser.username}
-              onChange={(e) => updateUser("username", e.target.value)}
-            />
-          </div>
-          <div className="mb-4">
-            <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              placeholder="Enter Password"
-              className="form-control"
-              value={newUser.password}
-              onChange={(e) => {
-                setStrength(evaluatePasswordStrength(e.target.value));
-                updateUser("password", e.target.value);
-              }}
-            />
-            <div className="password-strength-container">
-              {newUser.password && (
-                <small>
-                  Password strength: <strong>{strength}</strong>
-                </small>
-              )}
-            </div>
-          </div>
-          <div className="d-grid">
-            <button
-              className="btn btn-primary"
-              disabled={
-                Object.values(passwordError).includes(false) ||
-                Object.values(emailError).includes(false) ||
-                Object.values(usernameError).includes(false)
-              }
-              onClick={() => register()}
-            >
-              Sign in
-            </button>
-          </div>
-        </form>
+    <>
+      <div className="position-absolute start-0 end-0">
+        <div className="d-flex justify-content-center col-md-12">
+          <AlertDismissible activeAlert={activeAlert} />
+        </div>
       </div>
-    </div>
+      <div className="d-flex justify-content-center align-items-center vh-100 bg-dark">
+        <div className="form-container p-5 rounded bg-light">
+          <form>
+            <h3 className="text-center">Sign Up</h3>
+            <div className="mb-4">
+              <label htmlFor="email">Email</label>
+              <input
+                type="email"
+                id="email"
+                placeholder="Enter Email"
+                className="form-control"
+                value={newUser.email}
+                onChange={(e) => updateUser("email", e.target.value)}
+              />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="username">Username</label>
+              <input
+                type="text"
+                id="username"
+                placeholder="Enter Username"
+                className="form-control"
+                value={newUser.username}
+                onChange={(e) => updateUser("username", e.target.value)}
+              />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="password">Password</label>
+              <input
+                type="password"
+                id="password"
+                placeholder="Enter Password"
+                className="form-control"
+                value={newUser.password}
+                onChange={(e) => {
+                  setStrength(evaluatePasswordStrength(e.target.value));
+                  updateUser("password", e.target.value);
+                }}
+              />
+              <div className="password-strength-container">
+                {newUser.password && (
+                  <small>
+                    Password strength: <strong>{strength}</strong>
+                  </small>
+                )}
+              </div>
+            </div>
+            <div className="d-grid">
+              <button
+                className="btn btn-primary"
+                disabled={
+                  Object.values(passwordError).includes(false) ||
+                  Object.values(emailError).includes(false) ||
+                  Object.values(usernameError).includes(false)
+                }
+                type="button"
+                onClick={() => post(registerRequest)}
+              >
+                Sign in
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </>
   );
 };
 
