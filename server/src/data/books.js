@@ -1,10 +1,11 @@
 import pool from "./pool.js";
 
 const getAllBooks = async () => {
-  return await pool.query(`
+  const result = await pool.query(`
     SELECT * FROM books b
     WHERE b.is_deleted != 1
   `);
+  return result[0];
 };
 
 const sortBooksByYear = async (sort) => {
@@ -27,7 +28,7 @@ const sortBooksByYear = async (sort) => {
 
 const getBookById = async (bookId) => {
   const sql = `
-    SELECT b.id, b.title, b.author, b.year, b.cover, b.description, l.language, g.genre, b.is_deleted
+    SELECT b.id, b.title, b.author, b.year, b.cover, b.description, l.language, g.genre, b.avg_rating , b.is_deleted
     FROM books AS b
     JOIN languages AS l
     ON b.language = l.id
@@ -37,7 +38,7 @@ const getBookById = async (bookId) => {
   `;
 
   const result = await pool.query(sql, [bookId, bookId]);
-  return result;
+  return result[0];
 };
 
 const deleteBook = async (id) => {
@@ -57,23 +58,10 @@ const getAnyBookById = async (id) => {
   return result;
 };
 
-const bookAverageRating = async (id) => {
-  const sql = `
-  SELECT br.books_id, b.title, ROUND(AVG(r.rating)) AS avg_rating
-  FROM books_ratings AS br
-  JOIN books AS b ON br.books_id = b.books_id
-  JOIN ratings AS r ON br.ratings_id = r.ratings_id
-  WHERE br.books_id = ?
-  `;
-  const result = await pool.query(sql, [id]);
-  return result[0];
-};
-
 export default {
   getAllBooks,
   sortBooksByYear,
   getBookById,
   deleteBook,
   getAnyBookById,
-  bookAverageRating,
 };

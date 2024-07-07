@@ -38,7 +38,7 @@ const Books = () => {
         throw new Error(`Response status: ${response.status}`);
       } else {
         const result = await response.json();
-        setBooks(result[0]);
+        setBooks(result);
       }
     } catch (error) {
       console.error(error.message);

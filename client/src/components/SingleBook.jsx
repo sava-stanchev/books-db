@@ -14,7 +14,7 @@ const SingleBook = () => {
   const [bookData, setBookData] = useState(null);
   // const [review, setReview] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [rating, setRating] = useState(3);
+  const [rating, setRating] = useState(null);
 
   // useEffect(() => {
   //   const userId = { userId: auth.user.users_id };
@@ -43,7 +43,8 @@ const SingleBook = () => {
         throw new Error(`Response status: ${response.status}`);
       } else {
         const result = await response.json();
-        setBookData(result[0]);
+        setBookData(result);
+        setRating(result.avg_rating);
       }
     } catch (error) {
       console.error(error.message);
