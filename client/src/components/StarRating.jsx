@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { HOST } from "../common/constants.js";
 
 function Star({ filled }) {
   return (
@@ -19,8 +20,21 @@ function Star({ filled }) {
   );
 }
 
-export default function StarRating({ value, onChange }) {
+export default function StarRating({ value, onChange, updateBookRating, id }) {
   const [hoveredIndex, setHoveredIndex] = useState(null);
+  const [newRating, setNewRating] = useState(null);
+  console.log(newRating);
+  let updateBookRatingRequest;
+  useEffect(() => {
+    updateBookRatingRequest = new Request(`${HOST}/books/${id}/rating`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify(newRating),
+    });
+  }, [newRating]);
 
   return (
     <div>
@@ -30,7 +44,11 @@ export default function StarRating({ value, onChange }) {
           tabIndex={0}
           onMouseEnter={() => setHoveredIndex(index)}
           onMouseLeave={() => setHoveredIndex(null)}
-          onClick={() => onChange(index + 1)}
+          onClick={() => {
+            onChange(index + 1);
+            setNewRating(index + 1);
+            updateBookRating(updateBookRatingRequest);
+          }}
         >
           <Star
             filled={

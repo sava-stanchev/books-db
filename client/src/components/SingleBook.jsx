@@ -53,6 +53,23 @@ const SingleBook = () => {
     }
   }
 
+  async function updateBookRating(request) {
+    try {
+      const response = await fetch(request);
+
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      } else {
+        const result = await response.json();
+        setRating(result.avg_rating);
+      }
+    } catch (error) {
+      console.error(error.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   async function deleteBook(request) {
     try {
       const response = await fetch(request);
@@ -100,7 +117,12 @@ const SingleBook = () => {
               <h1>{bookData.title}</h1>
               <h3>{bookData.author}</h3>
               <h4>({bookData.year})</h4>
-              <StarRating value={rating} onChange={setRating} />
+              <StarRating
+                value={rating}
+                onChange={setRating}
+                updateBookRating={updateBookRating}
+                id={id}
+              />
               <p>Genre: {bookData.genre}</p>
               <p>Language: {bookData.language}</p>
               <p>{bookData.description}</p>

@@ -49,12 +49,15 @@ const deleteBook = async (id) => {
   return await pool.query(sql, [id]);
 };
 
-const getAnyBookById = async (id) => {
+const updateBookRating = async (bookId, rating) => {
   const sql = `
-    SELECT * FROM books AS b
+    UPDATE books AS b
+    SET b.avg_rating = ${rating}/(b.num_ratings+1) + b.avg_rating*(b.num_ratings/(b.num_ratings+1)),
+    b.num_ratings = b.num_ratings + 1
     WHERE b.id = ?
   `;
-  const result = await pool.query(sql, [id]);
+
+  const result = await pool.query(sql, [bookId]);
   return result;
 };
 
@@ -63,5 +66,5 @@ export default {
   sortBooksByYear,
   getBookById,
   deleteBook,
-  getAnyBookById,
+  updateBookRating,
 };

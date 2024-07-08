@@ -3,7 +3,6 @@ import booksData from "../data/books.js";
 import transformBody from "../middlewares/transform-body.js";
 import { authMiddleware, roleMiddleware } from "../auth/auth-middleware.js";
 import { userRole } from "../common/user-role.js";
-import booksRatingData from "../data/books-rating.js";
 import reviewCreateValidator from "../validators/review-create-validation.js";
 import loggedUserGuard from "../middlewares/logged-user-guard.js";
 import validateBody from "../middlewares/validate-body.js";
@@ -103,27 +102,15 @@ booksController
     }
   )
 
-  /** Get user rating for book */
-  .get("/:id/rating", authMiddleware, loggedUserGuard, async (req, res) => {
-    try {
-      const bookId = req.params.id;
-      const userId = req.user.id;
-      const rating = await booksRatingData.getBookRatingByUser(bookId, userId);
-      return rating ? res.status(200).json(rating.rating) : null;
-    } catch (error) {
-      return res.status(500).json({
-        message: error.message,
-      });
-    }
-  })
-
   /** Rate book */
-  .patch("/:id/rating", authMiddleware, loggedUserGuard, async (req, res) => {
+  .patch("/:id/rating", async (req, res) => {
     try {
       const bookId = req.params.id;
       const rating = req.body.rating;
-      const userId = req.user.id;
       const book = await booksData.getBookById(bookId);
+
+      console.log(bookId);
+      console.log(rating);
 
       if (!book) {
         return res.status(404).json({
@@ -131,45 +118,15 @@ booksController
         });
       }
 
-      const checkForRating = await booksRatingData.getBookRatingByUser(
-        bookId,
-        userId
-      );
+      await booksData.updateBookRating(bookId, rating);
 
-      if (checkForRating) {
-        await booksRatingData.updateBookRating(
-          checkForRating.book_ratings_id,
-          rating
-        );
-        return res.status(200).send(await booksData.bookAverageRating(bookId));
-      }
-
-      await booksRatingData.setRatingToBook(userId, bookId, rating);
-
-      return res.status(200).send(await booksData.bookAverageRating(bookId));
+      return res.status(200).send(await booksData.getBookById(bookId));
     } catch (error) {
       return res.status(500).json({
         message: error.message,
       });
     }
   })
-
-  /** Read any book (as admin) */
-  .get(
-    "/:id",
-    authMiddleware,
-    loggedUserGuard,
-    roleMiddleware(userRole.Admin),
-    async (req, res) => {
-      try {
-        res.json(await booksData.getAnyBookById(+req.params.id));
-      } catch (error) {
-        return res.status(404).json({
-          error: error.message,
-        });
-      }
-    }
-  )
 
   /** Delete any book (as admin) */
   .delete(
