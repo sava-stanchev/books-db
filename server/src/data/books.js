@@ -50,15 +50,12 @@ const deleteBook = async (id) => {
 };
 
 const updateBookRating = async (bookId, rating) => {
-  const sql = `
+  await pool.query(`
     UPDATE books AS b
     SET b.avg_rating = ${rating}/(b.num_ratings+1) + b.avg_rating*(b.num_ratings/(b.num_ratings+1)),
     b.num_ratings = b.num_ratings + 1
-    WHERE b.id = ?
-  `;
-
-  const result = await pool.query(sql, [bookId]);
-  return result;
+    WHERE b.id = ${bookId}
+  `);
 };
 
 export default {

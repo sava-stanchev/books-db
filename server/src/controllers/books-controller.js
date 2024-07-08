@@ -110,9 +110,6 @@ booksController
       const rating = reqBody[0];
       const book = await booksData.getBookById(bookId);
 
-      console.log(bookId);
-      console.log(rating);
-
       if (!book) {
         return res.status(404).json({
           massage: "Book not found!",
@@ -120,8 +117,8 @@ booksController
       }
 
       await booksData.updateBookRating(bookId, rating);
-
-      return res.status(200).send(await booksData.getBookById(bookId));
+      const newBookData = await booksData.getBookById(bookId);
+      return res.status(200).send(newBookData[0]);
     } catch (error) {
       return res.status(500).json({
         message: error.message,
