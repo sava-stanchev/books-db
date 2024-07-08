@@ -106,7 +106,8 @@ booksController
   .patch("/:id/rating", async (req, res) => {
     try {
       const bookId = req.params.id;
-      const rating = req.body.rating;
+      const reqBody = req.body;
+      const rating = reqBody[0];
       const book = await booksData.getBookById(bookId);
 
       console.log(bookId);

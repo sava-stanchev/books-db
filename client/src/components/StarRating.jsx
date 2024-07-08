@@ -20,21 +20,32 @@ function Star({ filled }) {
   );
 }
 
-export default function StarRating({ value, onChange, updateBookRating, id }) {
+export default function StarRating({ value, setRating, id }) {
   const [hoveredIndex, setHoveredIndex] = useState(null);
-  const [newRating, setNewRating] = useState(null);
-  console.log(newRating);
-  let updateBookRatingRequest;
-  useEffect(() => {
-    updateBookRatingRequest = new Request(`${HOST}/books/${id}/rating`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: `bearer ${localStorage.getItem("token")}`,
-      },
-      body: JSON.stringify(newRating),
-    });
-  }, [newRating]);
+
+  async function updateBookRating(newRating) {
+    const newRatingData = [newRating];
+
+    try {
+      const response = await fetch(`${HOST}/books/${id}/rating`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify(newRatingData),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      } else {
+        const result = await response.json();
+        setRating(result.avg_rating);
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
 
   return (
     <div>
@@ -45,9 +56,7 @@ export default function StarRating({ value, onChange, updateBookRating, id }) {
           onMouseEnter={() => setHoveredIndex(index)}
           onMouseLeave={() => setHoveredIndex(null)}
           onClick={() => {
-            onChange(index + 1);
-            setNewRating(index + 1);
-            updateBookRating(updateBookRatingRequest);
+            updateBookRating(index + 1);
           }}
         >
           <Star

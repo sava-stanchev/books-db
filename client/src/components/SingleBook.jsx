@@ -1,6 +1,5 @@
 import { useEffect, useState, useContext } from "react";
 import { Button, Container, Row } from "react-bootstrap";
-// import SingleBookReviews from "./SingleBookReviews.js";
 import AuthContext from "../utils/auth-context.js";
 import { HOST } from "../common/constants.js";
 import { useNavigate, useParams } from "react-router-dom";
@@ -12,24 +11,8 @@ const SingleBook = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [bookData, setBookData] = useState(null);
-  // const [review, setReview] = useState(null);
   const [loading, setLoading] = useState(true);
   const [rating, setRating] = useState(null);
-
-  // useEffect(() => {
-  //   const userId = { userId: auth.user.users_id };
-  //   fetch(`${HOST}/reviews/${id}`, {
-  //     method: "PATCH",
-  //     headers: {
-  //       "content-type": "application/json",
-  //       authorization: `bearer ${localStorage.getItem("token")}`,
-  //     },
-  //     body: JSON.stringify(userId),
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => setReview(data))
-  //     .catch(() => navigate("/500"));
-  // }, [id, auth.user.users_id, bookData]);
 
   useEffect(() => {
     getBook(getBookRequest);
@@ -44,23 +27,6 @@ const SingleBook = () => {
       } else {
         const result = await response.json();
         setBookData(result);
-        setRating(result.avg_rating);
-      }
-    } catch (error) {
-      console.error(error.message);
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  async function updateBookRating(request) {
-    try {
-      const response = await fetch(request);
-
-      if (!response.ok) {
-        throw new Error(`Response status: ${response.status}`);
-      } else {
-        const result = await response.json();
         setRating(result.avg_rating);
       }
     } catch (error) {
@@ -117,12 +83,7 @@ const SingleBook = () => {
               <h1>{bookData.title}</h1>
               <h3>{bookData.author}</h3>
               <h4>({bookData.year})</h4>
-              <StarRating
-                value={rating}
-                onChange={setRating}
-                updateBookRating={updateBookRating}
-                id={id}
-              />
+              <StarRating value={rating} setRating={setRating} id={id} />
               <p>Genre: {bookData.genre}</p>
               <p>Language: {bookData.language}</p>
               <p>{bookData.description}</p>
