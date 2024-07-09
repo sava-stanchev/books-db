@@ -1,10 +1,10 @@
 import { useContext, useState } from "react";
-import { HOST } from "../common/constants";
+import { HOST } from "src/common/constants";
 import decode from "jwt-decode";
-import AuthContext from "../utils/auth-context";
+import AuthContext from "src/utils/auth-context";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import AlertDismissible from "./Alert";
+import AlertDismissible from "src/components/Alert";
 
 const Login = () => {
   const navigate = useNavigate();

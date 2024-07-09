@@ -1,6 +1,6 @@
-import AuthContext from "../utils/auth-context";
 import { useContext } from "react";
-import { HOST } from "../common/constants";
+import AuthContext from "src/utils/auth-context";
+import { HOST } from "src/common/constants";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";

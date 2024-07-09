@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom";
-import AuthContext from "../utils/auth-context";
+import AuthContext from "src/utils/auth-context";
 import { Button } from "react-bootstrap";
 
 const HomePage = () => {

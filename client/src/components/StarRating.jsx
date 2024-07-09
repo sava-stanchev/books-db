@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { HOST } from "../common/constants.js";
+import { useState } from "react";
+import { HOST } from "src/common/constants";
 
 function Star({ filled }) {
   return (

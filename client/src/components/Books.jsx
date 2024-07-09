@@ -9,10 +9,10 @@ import {
   Card,
   Container,
 } from "react-bootstrap";
-import AuthContext from "../utils/auth-context";
-import { HOST } from "../common/constants";
+import AuthContext from "src/utils/auth-context";
+import { HOST } from "src/common/constants";
 import { useNavigate } from "react-router-dom";
-import Loader from "./Loader";
+import Loader from "src/components/Loader";
 
 const Books = () => {
   const auth = useContext(AuthContext);

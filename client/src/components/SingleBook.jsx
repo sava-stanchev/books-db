@@ -1,10 +1,10 @@
 import { useEffect, useState, useContext } from "react";
 import { Button, Container, Row } from "react-bootstrap";
-import AuthContext from "../utils/auth-context.js";
-import { HOST } from "../common/constants.js";
+import AuthContext from "src/utils/auth-context";
+import { HOST } from "src/common/constants";
 import { useNavigate, useParams } from "react-router-dom";
-import Loader from "./Loader";
-import StarRating from "./StarRating";
+import Loader from "src/components/Loader";
+import StarRating from "src/components/StarRating";
 
 const SingleBook = () => {
   const auth = useContext(AuthContext);

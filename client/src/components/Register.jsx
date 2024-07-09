@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { HOST } from "../common/constants.js";
+import { HOST } from "src/common/constants";
 import { useNavigate } from "react-router-dom";
 import AlertDismissible from "./Alert";
 
