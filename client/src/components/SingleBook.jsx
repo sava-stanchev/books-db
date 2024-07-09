@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from "react";
-import { Button, Container, Row } from "react-bootstrap";
+import { Button, Container, Row, Form } from "react-bootstrap";
 import AuthContext from "src/utils/auth-context";
 import { HOST } from "src/common/constants";
 import { useNavigate, useParams } from "react-router-dom";
@@ -70,34 +70,56 @@ const SingleBook = () => {
     <Container className="my-5">
       {loading && <Loader />}
       {!loading && (
-        <Row>
-          <div className="col-4 border-end pe-5">
-            <img
-              className="img-fluid border border-5"
-              src={bookData.cover}
-              alt=""
-            />
-          </div>
-          <div className="col-8 ps-5">
-            <div className="text-light">
-              <h1>{bookData.title}</h1>
-              <h3>{bookData.author}</h3>
-              <h4>({bookData.year})</h4>
-              <StarRating value={rating} setRating={setRating} id={id} />
-              <p>Genre: {bookData.genre}</p>
-              <p>Language: {bookData.language}</p>
-              <p>{bookData.description}</p>
-              {auth.user.is_admin && (
-                <Button
-                  variant="danger"
-                  onClick={() => deleteBook(deleteBookRequest)}
-                >
-                  Delete Book
-                </Button>
-              )}
+        <>
+          <Row>
+            <div className="col-4 border-end pe-5">
+              <img
+                className="img-fluid border border-5"
+                src={bookData.cover}
+                alt=""
+              />
             </div>
-          </div>
-        </Row>
+            <div className="col-8 ps-5">
+              <div className="text-light">
+                <h1>{bookData.title}</h1>
+                <h3>{bookData.author}</h3>
+                <h4>({bookData.year})</h4>
+                <StarRating value={rating} setRating={setRating} id={id} />
+                <p>Genre: {bookData.genre}</p>
+                <p>Language: {bookData.language}</p>
+                <p className="book-description">{bookData.description}</p>
+                {auth.user.is_admin && (
+                  <Button
+                    variant="danger"
+                    onClick={() => deleteBook(deleteBookRequest)}
+                  >
+                    Delete Book
+                  </Button>
+                )}
+              </div>
+            </div>
+          </Row>
+          <Row className="d-flex justify-content-center m-4">
+            <div className="text-light">
+              <h2 className="text-center">Reviews</h2>
+              <Form>
+                <Form.Group
+                  className="mb-3"
+                  controlId="exampleForm.ControlTextarea1"
+                >
+                  <Form.Label>Leave a comment</Form.Label>
+                  <Form.Control as="textarea" rows={3} />
+                </Form.Group>
+              </Form>
+              <Button
+                variant="primary"
+                onClick={() => console.log("Submit Review")}
+              >
+                Submit
+              </Button>
+            </div>
+          </Row>
+        </>
       )}
     </Container>
   );
