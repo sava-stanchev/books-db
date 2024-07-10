@@ -1,98 +1,48 @@
-// import { useEffect, useState, useContext } from "react";
-// import { Button } from "react-bootstrap";
-// import { FaTrashAlt } from "react-icons/fa";
-// import { FaEdit } from "react-icons/fa";
-// import { HOST } from "../common/constants.js";
-// import AuthContext from "../providers/auth-context";
+import { useEffect, useState } from "react";
+import { HOST } from "src/common/constants";
 
-// const SingleBookReviews = ({ id }) => {
-//   const auth = useContext(AuthContext);
-//   const [reviewsData, setReviewsData] = useState([]);
+const SingleBookReviews = ({ id }) => {
+  const [reviewsData, setReviewsData] = useState([]);
 
-//   useEffect(() => {
-//     fetch(`${HOST}/books/${id}/reviews`, {
-//       method: "GET",
-//       headers: {
-//         "content-type": "application/json",
-//         authorization: `bearer ${localStorage.getItem("token")}`,
-//       },
-//     })
-//       .then((response) => response.json())
-//       .then((data) => setReviewsData(data));
-//   }, [id]);
+  useEffect(() => {
+    getBookReviews(getBookReviewRequest);
+  }, []);
 
-//   const deleteReview = (reviewId) => {
-//     fetch(`${HOST}/reviews/${reviewId}`, {
-//       method: "DELETE",
-//       headers: {
-//         "content-type": "application/json",
-//         authorization: `bearer ${localStorage.getItem("token")}`,
-//       },
-//     })
-//       .then((res) => res.json())
-//       .then((data) =>
-//         setReviewsData(
-//           reviewsData.filter((r) => r.reviews_id !== data.reviews_id)
-//         )
-//       );
-//   };
+  async function getBookReviews(request) {
+    try {
+      const response = await fetch(request);
 
-//   const history = useHistory();
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      } else {
+        const result = await response.json();
+        setReviewsData(result);
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
 
-//   if (reviewsData === null) {
-//     return <div className="Loader"></div>;
-//   }
+  const getBookReviewRequest = new Request(`${HOST}/books/${id}/reviews`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `bearer ${localStorage.getItem("token")}`,
+    },
+  });
 
-//   return (
-//     <div
-//       className="review-list"
-//       style={{ marginRight: "15px", marginLeft: "15px" }}
-//     >
-//       <div className="review-header">
-//         <h5 className="list-title">Reviews for this book:</h5>
-//       </div>
-//       <div className="review-body">
-//         <div className="reviews">
-//           {reviewsData.map((review) => {
-//             return (
-//               <div className="review" key={review.content}>
-//                 <h5>{review.content}</h5>
-//                 <p>
-//                   by <i>{review.username}</i> on{" "}
-//                   {new Date(review.date_created).toLocaleDateString("en-US")}
-//                 </p>
-//                 <div>
-//                   {auth.user.users_id === review.users_id ? (
-//                     <>
-//                       <Button
-//                         variant="primary"
-//                         className="reviewBtns"
-//                         onClick={() =>
-//                           history.push(`/reviews/${review.reviews_id}/update`)
-//                         }
-//                       >
-//                         <FaEdit />
-//                       </Button>
-//                       <Button
-//                         variant="danger"
-//                         className="reviewBtns"
-//                         onClick={() => deleteReview(review.reviews_id)}
-//                       >
-//                         <FaTrashAlt />
-//                       </Button>
-//                     </>
-//                   ) : (
-//                     <></>
-//                   )}
-//                 </div>
-//                 <p>------------------</p>
-//               </div>
-//             );
-//           })}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
+  return (
+    <div className="mt-4">
+      <h5 className="fw-bold">Sava94</h5>
+      <p>
+        Lorem Ipsum is simply dummy text of the printing and typesetting
+        industry. Lorem Ipsum has been the industry's standard dummy text ever
+        since the 1500s, when an unknown printer took a galley of type and
+        scrambled it to make a type specimen book.
+      </p>
+      <hr />
+    </div>
+  );
+};
 
-// export default SingleBookReviews;
+export default SingleBookReviews;

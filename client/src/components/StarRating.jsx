@@ -48,7 +48,7 @@ export default function StarRating({ value, setRating, id }) {
   }
 
   return (
-    <div>
+    <div className="d-flex align-items-center">
       {Array.from({ length: 5 }).map((_, index) => (
         <span
           key={index}
@@ -66,6 +66,8 @@ export default function StarRating({ value, setRating, id }) {
           />
         </span>
       ))}
+      <span class="mx-3 fw-bold fs-3">3.48</span>
+      <span className="">271 ratings</span>
     </div>
   );
 }
