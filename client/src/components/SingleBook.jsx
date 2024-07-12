@@ -89,6 +89,7 @@ const SingleBook = () => {
                 <h4>({bookData.year})</h4>
                 <StarRating
                   value={rating}
+                  rating={rating}
                   setRating={setRating}
                   numRatings={numRatings}
                   setNumRatings={setNumRatings}

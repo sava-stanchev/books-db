@@ -22,6 +22,7 @@ function Star({ filled }) {
 
 export default function StarRating({
   value,
+  rating,
   setRating,
   numRatings,
   setNumRatings,
@@ -68,12 +69,15 @@ export default function StarRating({
         >
           <Star
             filled={
-              hoveredIndex != null ? index <= hoveredIndex : index < value
+              hoveredIndex != null
+                ? index <= hoveredIndex
+                : index < Math.round(value)
             }
           />
         </span>
       ))}
-      <span className="mx-3 fw-bold">{numRatings} ratings</span>
+      <span class="mx-3 fw-bold fs-3">{rating.toFixed(2)}</span>
+      <span>{numRatings} ratings</span>
     </div>
   );
 }
