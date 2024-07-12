@@ -20,7 +20,13 @@ function Star({ filled }) {
   );
 }
 
-export default function StarRating({ value, setRating, id }) {
+export default function StarRating({
+  value,
+  setRating,
+  numRatings,
+  setNumRatings,
+  id,
+}) {
   const [hoveredIndex, setHoveredIndex] = useState(null);
 
   async function updateBookRating(newRating) {
@@ -41,6 +47,7 @@ export default function StarRating({ value, setRating, id }) {
       } else {
         const result = await response.json();
         setRating(result.avg_rating);
+        setNumRatings(result.num_ratings);
       }
     } catch (error) {
       console.error(error.message);
@@ -66,8 +73,7 @@ export default function StarRating({ value, setRating, id }) {
           />
         </span>
       ))}
-      <span class="mx-3 fw-bold fs-3">3.48</span>
-      <span className="">271 ratings</span>
+      <span className="mx-3 fw-bold">{numRatings} ratings</span>
     </div>
   );
 }

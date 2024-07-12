@@ -14,6 +14,7 @@ const SingleBook = () => {
   const [bookData, setBookData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [rating, setRating] = useState(null);
+  const [numRatings, setNumRatings] = useState(null);
 
   useEffect(() => {
     getBook(getBookRequest);
@@ -29,6 +30,7 @@ const SingleBook = () => {
         const result = await response.json();
         setBookData(result);
         setRating(result.avg_rating);
+        setNumRatings(result.num_ratings);
       }
     } catch (error) {
       console.error(error.message);
@@ -85,7 +87,13 @@ const SingleBook = () => {
                 <h1>{bookData.title}</h1>
                 <h3>{bookData.author}</h3>
                 <h4>({bookData.year})</h4>
-                <StarRating value={rating} setRating={setRating} id={id} />
+                <StarRating
+                  value={rating}
+                  setRating={setRating}
+                  numRatings={numRatings}
+                  setNumRatings={setNumRatings}
+                  id={id}
+                />
                 <p>Genre: {bookData.genre}</p>
                 <p>Language: {bookData.language}</p>
                 <p className="book-description">{bookData.description}</p>
