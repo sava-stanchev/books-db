@@ -1,12 +1,10 @@
 import express from "express";
 import booksData from "../data/books.js";
 import transformBody from "../middlewares/transform-body.js";
-import { authMiddleware, roleMiddleware } from "../auth/auth-middleware.js";
-import { userRole } from "../common/user-role.js";
+import { authMiddleware } from "../auth/auth-middleware.js";
 import reviewCreateValidator from "../validators/review-create-validation.js";
 import loggedUserGuard from "../middlewares/logged-user-guard.js";
 import validateBody from "../middlewares/validate-body.js";
-import roleAuth from "../middlewares/role-auth.js";
 import reviewsData from "../data/reviews.js";
 
 const booksController = express.Router();
@@ -126,24 +124,17 @@ booksController
     }
   })
 
-  /** Delete any book (as admin) */
-  .delete(
-    "/:id",
-    authMiddleware,
-    loggedUserGuard,
-    roleAuth(userRole.Admin),
-    async (req, res) => {
-      try {
-        await booksData.deleteBook(+req.params.id);
-        res.json({
-          message: `Book deleted`,
-        });
-      } catch (error) {
-        return res.status(400).json({
-          error: error.message,
-        });
-      }
+  // Delete a book (as admin)
+  .delete("/:id", async (req, res) => {
+    try {
+      const bookId = req.params.id;
+      await booksData.deleteBook(bookId);
+      res.end();
+    } catch (error) {
+      return res.status(400).json({
+        error: error.message,
+      });
     }
-  );
+  });
 
 export default booksController;

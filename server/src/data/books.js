@@ -41,21 +41,22 @@ const getBookById = async (bookId) => {
   return result[0];
 };
 
-const deleteBook = async (id) => {
+const deleteBook = async (bookId) => {
   const sql = `
     UPDATE books SET books.is_deleted = 1
     WHERE books.id = ?
   `;
-  return await pool.query(sql, [id]);
+  await pool.query(sql, [bookId]);
 };
 
 const updateBookRating = async (bookId, rating) => {
-  await pool.query(`
+  const sql = `
     UPDATE books AS b
     SET b.avg_rating = (b.num_ratings / (b.num_ratings + 1)) * b.avg_rating + (1 / (b.num_ratings + 1)) * ${rating},
     b.num_ratings = b.num_ratings + 1
-    WHERE b.id = ${bookId}
-  `);
+    WHERE b.id = ?
+  `;
+  await pool.query(sql, [bookId]);
 };
 
 export default {

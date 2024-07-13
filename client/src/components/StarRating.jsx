@@ -76,7 +76,7 @@ export default function StarRating({
           />
         </span>
       ))}
-      <span class="mx-3 fw-bold fs-3">{rating.toFixed(2)}</span>
+      <span className="mx-3 fw-bold fs-3">{rating.toFixed(2)}</span>
       <span>{numRatings} ratings</span>
     </div>
   );
