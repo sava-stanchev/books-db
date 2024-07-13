@@ -61,44 +61,25 @@ booksController
     }
   })
 
-  /** Create book review */
-  .post(
-    "/:id/create-review",
-    transformBody(reviewCreateValidator),
-    validateBody("review", reviewCreateValidator),
-    authMiddleware,
-    loggedUserGuard,
-    async (req, res) => {
-      const bookId = +req.params.id;
-      const userId = +req.user.id;
-      const book = await booksData.getBookById(+bookId);
-      try {
-        if (!book[0]) {
-          return res.status(404).json({
-            msg: `Book was not found!`,
-          });
-        }
+  // Create book review
+  .post("/:id/create-review", async (req, res) => {
+    const bookId = req.params.id;
+    const userId = req.user.id;
 
-        const check = (await reviewsData.userReviewByBookId(userId, bookId))[0];
-        if (check) {
-          return res.status(200).json({
-            message: "Review already exists!",
-          });
-        }
-        const review = await reviewsData.createReview(
-          bookId,
-          req.body.content,
-          userId
-        );
+    try {
+      const review = await reviewsData.createReview(
+        bookId,
+        req.body.content,
+        userId
+      );
 
-        return res.status(200).json(review);
-      } catch (error) {
-        return res.status(400).json({
-          error: error.message,
-        });
-      }
+      return res.status(200).json(review);
+    } catch (error) {
+      return res.status(400).json({
+        error: error.message,
+      });
     }
-  )
+  })
 
   /** Rate book */
   .patch("/:id/rating", async (req, res) => {
@@ -106,13 +87,6 @@ booksController
       const bookId = req.params.id;
       const reqBody = req.body;
       const rating = reqBody[0];
-      const book = await booksData.getBookById(bookId);
-
-      if (!book) {
-        return res.status(404).json({
-          massage: "Book not found!",
-        });
-      }
 
       await booksData.updateBookRating(bookId, rating);
       const newBookData = await booksData.getBookById(bookId);

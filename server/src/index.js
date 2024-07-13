@@ -28,19 +28,6 @@ app.use("/avatars", express.static("avatars"));
 app.use("/books", booksController);
 app.use("/users", usersController);
 
-/** Get reviews from a user */
-app.get("/profile/:userId/reviews", async (req, res) => {
-  try {
-    const userId = req.params.userId;
-    const review = await reviewsData.getAllReviewForUser(userId);
-    res.send(review);
-  } catch (error) {
-    return res.status(400).json({
-      error: error.message,
-    });
-  }
-});
-
 // get review by bookId and userId
 app.patch("/reviews/:bookId", async (req, res) => {
   try {

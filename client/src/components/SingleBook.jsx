@@ -15,6 +15,9 @@ const SingleBook = () => {
   const [loading, setLoading] = useState(true);
   const [rating, setRating] = useState(null);
   const [numRatings, setNumRatings] = useState(null);
+  const [newReview, setNewReview] = useState({
+    content: "",
+  });
 
   useEffect(() => {
     getBook(getBookRequest);
@@ -53,6 +56,20 @@ const SingleBook = () => {
     }
   }
 
+  async function createReview(request) {
+    try {
+      const response = await fetch(request);
+
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      } else {
+        const result = await response.json();
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
+
   const getBookRequest = new Request(`${HOST}/books/${id}`, {
     method: "GET",
     headers: {
@@ -67,6 +84,15 @@ const SingleBook = () => {
       "Content-Type": "application/json",
       authorization: `bearer ${localStorage.getItem("token")}`,
     },
+  });
+
+  const createReviewRequest = new Request(`${HOST}/books/${id}/create-review`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `bearer ${localStorage.getItem("token")}`,
+    },
+    body: JSON.stringify([newReview]),
   });
 
   return (
@@ -113,17 +139,18 @@ const SingleBook = () => {
             <div className="text-light">
               <h2 className="text-center">Reviews</h2>
               <Form>
-                <Form.Group
-                  className="mb-3"
-                  controlId="exampleForm.ControlTextarea1"
-                >
+                <Form.Group className="mb-3" controlId="review-input">
                   <Form.Label>Leave a comment</Form.Label>
-                  <Form.Control as="textarea" rows={3} />
+                  <Form.Control
+                    as="textarea"
+                    rows={3}
+                    onChange={(e) => setNewReview(e.target.value)}
+                  />
                 </Form.Group>
               </Form>
               <Button
                 variant="primary"
-                onClick={() => console.log("Submit Review")}
+                onClick={() => createReview(createReviewRequest)}
               >
                 Submit
               </Button>

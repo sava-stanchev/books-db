@@ -59,8 +59,8 @@ const getReviewByIdForUser = async (id) => {
 
 const createReview = async (bookId, content, userId) => {
   const sqlNewReview = `
-  INSERT INTO reviews (users_id, books_id, date_created, is_deleted, content)
-  VALUES (?, ?, ? , ?, ?)
+    INSERT INTO reviews (user_id, book_id, date_created, is_deleted, content)
+    VALUES (?, ?, ? , ?, ?)
   `;
   const result = await pool.query(sqlNewReview, [
     userId,
@@ -69,9 +69,11 @@ const createReview = async (bookId, content, userId) => {
     0,
     content,
   ]);
-  const sql = `SELECT content, date_created FROM reviews AS r
-              WHERE r.reviews_id = ?
-`;
+
+  const sql = `
+    SELECT content, date_created FROM reviews AS r
+    WHERE r.reviews_id = ?
+  `;
   const createdReview = (await pool.query(sql, [result.insertId]))[0];
   return createdReview;
 };
