@@ -20,19 +20,19 @@ authController
       );
 
       if (result.error === serviceErrors.OPERATION_NOT_PERMITTED) {
-        return res.status(401).json({ message: "Invalid credentials!" });
+        return res.status(401).json({ message: "Invalid password!" });
       }
 
       if (result.error === serviceErrors.RECORD_NOT_FOUND) {
-        return res.status(400).json({ message: "User has been deleted!" });
+        return res.status(400).json({ message: "User does not exist!" });
       }
 
       const user = result.data;
 
       const payload = {
-        id: user[0].id,
-        username: user[0].username,
-        is_admin: user[0].is_admin,
+        id: user.id,
+        username: user.username,
+        is_admin: user.is_admin,
       };
 
       const token = createToken(payload);

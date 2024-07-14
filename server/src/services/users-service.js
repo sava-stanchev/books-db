@@ -28,16 +28,16 @@ const createUser = (usersData) => async (user) => {
 const validateUser = (usersData) => async (username, password) => {
   const user = await usersData.getUserBy("username", username);
 
-  if (!user || !(await bcrypt.compare(password, user[0].password))) {
+  if (!user) {
     return {
-      error: serviceErrors.OPERATION_NOT_PERMITTED,
+      error: serviceErrors.RECORD_NOT_FOUND,
       data: null,
     };
   }
 
-  if (user[0].is_deleted) {
+  if (!(await bcrypt.compare(password, user.password))) {
     return {
-      error: serviceErrors.RECORD_NOT_FOUND,
+      error: serviceErrors.OPERATION_NOT_PERMITTED,
       data: null,
     };
   }
