@@ -64,15 +64,11 @@ booksController
   // Create book review
   .post("/:id/create-review", async (req, res) => {
     const bookId = req.params.id;
-    const userId = req.user.id;
+    const newReview = req.body.newReview;
+    const userId = req.body.user.id;
 
     try {
-      const review = await reviewsData.createReview(
-        bookId,
-        req.body.content,
-        userId
-      );
-
+      const review = await reviewsData.createReview(bookId, newReview, userId);
       return res.status(200).json(review);
     } catch (error) {
       return res.status(400).json({

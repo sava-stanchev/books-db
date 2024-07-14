@@ -8,7 +8,7 @@ import StarRating from "src/components/StarRating";
 import SingleBookReviews from "./SingleBookReviews";
 
 const SingleBook = () => {
-  const auth = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const navigate = useNavigate();
   const { id } = useParams();
   const [bookData, setBookData] = useState(null);
@@ -92,7 +92,7 @@ const SingleBook = () => {
       "Content-Type": "application/json",
       authorization: `bearer ${localStorage.getItem("token")}`,
     },
-    body: JSON.stringify([newReview]),
+    body: JSON.stringify({ newReview, user }),
   });
 
   return (
@@ -124,7 +124,7 @@ const SingleBook = () => {
                 <p>Genre: {bookData.genre}</p>
                 <p>Language: {bookData.language}</p>
                 <p className="book-description">{bookData.description}</p>
-                {auth.user.is_admin && (
+                {user.is_admin && (
                   <Button
                     variant="danger"
                     onClick={() => deleteBook(deleteBookRequest)}
