@@ -15,6 +15,7 @@ const Login = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [activeAlert, setActiveAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState(null);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -28,13 +29,16 @@ const Login = () => {
   };
 
   async function post(request) {
+    setActiveAlert(false);
+
     try {
       const response = await fetch(request);
+      const result = await response.json();
 
       if (!response.ok) {
+        setAlertMessage(result.message);
         throw new Error(`Response status: ${response.status}`);
       } else {
-        const result = await response.json();
         localStorage.clear();
         localStorage.setItem("token", result.token);
         const user = decode(result.token);
@@ -59,7 +63,10 @@ const Login = () => {
     <>
       <div className="position-absolute start-0 end-0">
         <div className="d-flex justify-content-center col-md-12">
-          <AlertDismissible activeAlert={activeAlert} />
+          <AlertDismissible
+            activeAlert={activeAlert}
+            alertMessage={alertMessage}
+          />
         </div>
       </div>
       <div className="d-flex justify-content-center align-items-center vh-100 bg-dark">
