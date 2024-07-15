@@ -28,21 +28,6 @@ app.use("/avatars", express.static("avatars"));
 app.use("/books", booksController);
 app.use("/users", usersController);
 
-// get review by bookId and userId
-app.patch("/reviews/:bookId", async (req, res) => {
-  try {
-    const bookId = req.params.bookId;
-    const userId = req.body.userId;
-    const review = await reviewsData.userReviewByBookId(userId, bookId);
-    if (review[0]) {
-      return res.status(200).send(review[0]);
-    }
-    return null;
-  } catch (error) {
-    console.log(error);
-  }
-});
-
 app.get(
   "/reviews/:reviewId",
   authMiddleware,
@@ -90,18 +75,6 @@ app.delete(
     }
   }
 );
-
-/** Read all reviews (as admin) */
-app.get("/reviews", async (req, res) => {
-  try {
-    const review = await reviewsData.getAllReviews();
-    res.send(review);
-  } catch (error) {
-    return res.status(400).json({
-      error: error.message,
-    });
-  }
-});
 
 /** update user info */
 app.post(

@@ -42,7 +42,7 @@ booksController
     }
   })
 
-  /** Read book reviews */
+  // Get reviews for book
   .get("/:id/reviews", authMiddleware, loggedUserGuard, async (req, res) => {
     try {
       const { id } = req.params;
