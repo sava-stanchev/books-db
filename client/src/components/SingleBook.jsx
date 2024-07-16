@@ -154,7 +154,7 @@ const SingleBook = () => {
               >
                 Submit
               </Button>
-              <SingleBookReviews />
+              <SingleBookReviews id={id} />
             </div>
           </Row>
         </>

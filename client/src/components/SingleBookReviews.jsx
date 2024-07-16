@@ -1,19 +1,22 @@
 import { useEffect, useState } from "react";
 import { HOST } from "src/common/constants";
 
-const Reviews = ({ content, username }) => {
+const Reviews = ({ content, username, date_created }) => {
   return (
-    <div>
-      <h5 className="fw-bold">{username}</h5>
+    <>
+      <div className="d-flex justify-content-between">
+        <h5 className="fw-bold">{username}</h5>
+        <span>{date_created.split("T")[0]}</span>
+      </div>
       <p>{content}</p>
       <hr />
-    </div>
+    </>
   );
 };
 
 const SingleBookReviews = ({ id }) => {
   const [reviews, setReviews] = useState([]);
-  console.log(reviews);
+
   useEffect(() => {
     getBookReviews(getBookReviewsRequest);
   }, []);
@@ -47,6 +50,7 @@ const SingleBookReviews = ({ id }) => {
         <div className="fw-bold fs-3">No reviews yet.</div>
       ) : (
         <div>
+          <hr />
           {reviews.map((review) => (
             <Reviews key={review.id} {...review} />
           ))}
