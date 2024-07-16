@@ -68,8 +68,8 @@ booksController
     const userId = req.body.user.id;
 
     try {
-      const review = await reviewsData.createReview(bookId, newReview, userId);
-      return res.status(200).json(review);
+      await reviewsData.createReview(bookId, newReview, userId);
+      res.end();
     } catch (error) {
       return res.status(400).json({
         error: error.message,

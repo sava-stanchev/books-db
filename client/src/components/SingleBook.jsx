@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from "react";
-import { Button, Container, Row, Form } from "react-bootstrap";
+import { Button, Container, Row } from "react-bootstrap";
 import AuthContext from "src/utils/auth-context";
 import { HOST } from "src/common/constants";
 import { useNavigate, useParams } from "react-router-dom";
@@ -15,9 +15,6 @@ const SingleBook = () => {
   const [loading, setLoading] = useState(true);
   const [rating, setRating] = useState(null);
   const [numRatings, setNumRatings] = useState(null);
-  const [newReview, setNewReview] = useState({
-    content: "",
-  });
 
   useEffect(() => {
     getBook(getBookRequest);
@@ -56,20 +53,6 @@ const SingleBook = () => {
     }
   }
 
-  async function createReview(request) {
-    try {
-      const response = await fetch(request);
-
-      if (!response.ok) {
-        throw new Error(`Response status: ${response.status}`);
-      } else {
-        const result = await response.json();
-      }
-    } catch (error) {
-      console.error(error.message);
-    }
-  }
-
   const getBookRequest = new Request(`${HOST}/books/${id}`, {
     method: "GET",
     headers: {
@@ -84,15 +67,6 @@ const SingleBook = () => {
       "Content-Type": "application/json",
       authorization: `bearer ${localStorage.getItem("token")}`,
     },
-  });
-
-  const createReviewRequest = new Request(`${HOST}/books/${id}/create-review`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      authorization: `bearer ${localStorage.getItem("token")}`,
-    },
-    body: JSON.stringify({ newReview, user }),
   });
 
   return (
@@ -135,28 +109,7 @@ const SingleBook = () => {
               </div>
             </div>
           </Row>
-          <Row className="d-flex justify-content-center m-4">
-            <div className="text-light">
-              <h2 className="text-center">Reviews</h2>
-              <Form>
-                <Form.Group className="mb-3" controlId="review-input">
-                  <Form.Label>Leave a comment</Form.Label>
-                  <Form.Control
-                    as="textarea"
-                    rows={3}
-                    onChange={(e) => setNewReview(e.target.value)}
-                  />
-                </Form.Group>
-              </Form>
-              <Button
-                variant="primary"
-                onClick={() => createReview(createReviewRequest)}
-              >
-                Submit
-              </Button>
-              <SingleBookReviews id={id} />
-            </div>
-          </Row>
+          <SingleBookReviews id={id} user={user} />
         </>
       )}
     </Container>
