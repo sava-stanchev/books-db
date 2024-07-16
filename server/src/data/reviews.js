@@ -12,7 +12,7 @@ const getReviewsForBook = async (id) => {
         GROUP BY r.id
   `;
   const result = await pool.query(sql, [id]);
-  return result;
+  return result[0];
 };
 
 const getReviewById = async (id) => {

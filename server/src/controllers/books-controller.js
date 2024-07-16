@@ -43,10 +43,10 @@ booksController
   })
 
   // Get reviews for book
-  .get("/:id/reviews", authMiddleware, loggedUserGuard, async (req, res) => {
+  .get("/:id/reviews", async (req, res) => {
     try {
       const { id } = req.params;
-      const theReviews = await reviewsData.getReviewsForBook(+id);
+      const theReviews = await reviewsData.getReviewsForBook(id);
       if (!theReviews) {
         return res.json({
           msg: "Book has no reviews yet!",

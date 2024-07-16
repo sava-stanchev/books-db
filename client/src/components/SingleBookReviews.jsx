@@ -1,11 +1,21 @@
 import { useEffect, useState } from "react";
 import { HOST } from "src/common/constants";
 
-const SingleBookReviews = ({ id }) => {
-  const [reviewsData, setReviewsData] = useState([]);
+const Reviews = ({ content, username }) => {
+  return (
+    <div>
+      <h5 className="fw-bold">{username}</h5>
+      <p>{content}</p>
+      <hr />
+    </div>
+  );
+};
 
+const SingleBookReviews = ({ id }) => {
+  const [reviews, setReviews] = useState([]);
+  console.log(reviews);
   useEffect(() => {
-    getBookReviews(getBookReviewRequest);
+    getBookReviews(getBookReviewsRequest);
   }, []);
 
   async function getBookReviews(request) {
@@ -16,14 +26,14 @@ const SingleBookReviews = ({ id }) => {
         throw new Error(`Response status: ${response.status}`);
       } else {
         const result = await response.json();
-        setReviewsData(result);
+        setReviews(result);
       }
     } catch (error) {
       console.error(error.message);
     }
   }
 
-  const getBookReviewRequest = new Request(`${HOST}/books/${id}/reviews`, {
+  const getBookReviewsRequest = new Request(`${HOST}/books/${id}/reviews`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -32,15 +42,16 @@ const SingleBookReviews = ({ id }) => {
   });
 
   return (
-    <div className="mt-4">
-      <h5 className="fw-bold">Sava94</h5>
-      <p>
-        Lorem Ipsum is simply dummy text of the printing and typesetting
-        industry. Lorem Ipsum has been the industry's standard dummy text ever
-        since the 1500s, when an unknown printer took a galley of type and
-        scrambled it to make a type specimen book.
-      </p>
-      <hr />
+    <div className="mt-4" role="list">
+      {reviews.length === 0 ? (
+        <div className="fw-bold fs-3">No reviews yet.</div>
+      ) : (
+        <div>
+          {reviews.map((review) => (
+            <Reviews key={review.id} {...review} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
