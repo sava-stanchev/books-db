@@ -74,15 +74,15 @@ const SingleBook = () => {
       {loading && <Loader />}
       {!loading && (
         <>
-          <Row>
-            <div className="col-4 border-end pe-5">
+          <Row className="d-flex flex-lg-row flex-column">
+            <div className="d-flex d-lg-block col-lg-4 pe-lg-5 justify-content-center mb-3 mb-lg-0">
               <img
                 className="img-fluid border border-5"
                 src={bookData.cover}
                 alt=""
               />
             </div>
-            <div className="col-8 ps-5">
+            <div className="col-lg-8 ps-lg-5">
               <div className="text-light">
                 <h1>{bookData.title}</h1>
                 <h3>{bookData.author}</h3>

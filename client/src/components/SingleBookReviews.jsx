@@ -104,7 +104,7 @@ const SingleBookReviews = ({ id, user }) => {
   });
 
   return (
-    <Row className="d-flex justify-content-center m-4">
+    <Row className="d-flex justify-content-center my-4">
       <div className="text-light">
         <h2 className="text-center">Reviews</h2>
         <Form>
