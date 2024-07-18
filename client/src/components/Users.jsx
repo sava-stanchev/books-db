@@ -1,19 +1,10 @@
 import { useEffect, useState } from "react";
 import { HOST } from "src/common/constants";
-import { useNavigate } from "react-router-dom";
 import Loader from "src/components/Loader";
-import {
-  Col,
-  Row,
-  Button,
-  InputGroup,
-  Form,
-  Container,
-  Table,
-} from "react-bootstrap";
+import { Col, Row, InputGroup, Form, Container, Table } from "react-bootstrap";
+import { FaTrashAlt } from "react-icons/fa";
 
 const Users = () => {
-  const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filteredUsers, setFilteredUsers] = useState([]);
@@ -58,18 +49,25 @@ const Users = () => {
 
   let foundUsers = filteredUsers;
 
-  const deleteUser = (id) => {
-    fetch(`${HOST}/users/${id}`, {
-      method: "DELETE",
-      headers: {
-        "content-type": "application/json",
-        authorization: `bearer ${localStorage.getItem("token")}`,
-      },
-    })
-      .then((res) => res.json())
-      .then(() => setUsers(users.filter((u) => u.id !== id)))
-      .catch(() => navigate("/500"));
-  };
+  async function deleteUserRequest(userId) {
+    try {
+      const response = await fetch(`${HOST}/users/${userId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      } else {
+        setUsers(foundUsers.filter((user) => user.id !== userId));
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
 
   const usersRender = foundUsers.map((user, idx) => {
     return (
@@ -77,9 +75,13 @@ const Users = () => {
         <td>{user.username}</td>
         <td>{user.email}</td>
         <td>
-          <Button variant="danger" onClick={() => deleteUser(user.id)}>
-            Delete
-          </Button>
+          <button
+            className="delete-icon"
+            type="button"
+            onClick={() => deleteUserRequest(user.id)}
+          >
+            <FaTrashAlt />
+          </button>
         </td>
       </tr>
     );

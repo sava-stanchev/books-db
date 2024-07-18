@@ -3,6 +3,7 @@ import pool from "./pool.js";
 const getAllUsers = async () => {
   return await pool.query(`
     SELECT * FROM users
+    WHERE users.is_deleted = 0
   `);
 };
 
