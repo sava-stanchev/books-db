@@ -3,6 +3,8 @@ import { HOST } from "src/common/constants";
 import Loader from "src/components/Loader";
 import { Col, Row, InputGroup, Form, Container, Table } from "react-bootstrap";
 import { FaTrashAlt } from "react-icons/fa";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import renderTooltip from "src/components/Tooltip";
 
 const Users = () => {
   const [users, setUsers] = useState([]);
@@ -75,13 +77,15 @@ const Users = () => {
         <td>{user.username}</td>
         <td>{user.email}</td>
         <td>
-          <button
-            className="delete-icon"
-            type="button"
-            onClick={() => deleteUserRequest(user.id)}
-          >
-            <FaTrashAlt />
-          </button>
+          <OverlayTrigger placement="top" overlay={renderTooltip}>
+            <button
+              className="delete-icon"
+              type="button"
+              onClick={() => deleteUserRequest(user.id)}
+            >
+              <FaTrashAlt />
+            </button>
+          </OverlayTrigger>
         </td>
       </tr>
     );

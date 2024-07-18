@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { HOST } from "src/common/constants";
 import { Button, Row, Form } from "react-bootstrap";
 import { FaTrashAlt } from "react-icons/fa";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import renderTooltip from "src/components/Tooltip";
 
 const Reviews = ({ review, user, deleteReviewRequest }) => {
   return (
@@ -11,13 +13,15 @@ const Reviews = ({ review, user, deleteReviewRequest }) => {
         <div className="d-flex gap-2 align-items-center">
           <span>{review.date_created.split("T")[0]}</span>
           {user.is_admin && (
-            <button
-              className="delete-icon"
-              type="button"
-              onClick={() => deleteReviewRequest(review.id)}
-            >
-              <FaTrashAlt />
-            </button>
+            <OverlayTrigger placement="top" overlay={renderTooltip}>
+              <button
+                className="delete-icon"
+                type="button"
+                onClick={() => deleteReviewRequest(review.id)}
+              >
+                <FaTrashAlt />
+              </button>
+            </OverlayTrigger>
           )}
         </div>
       </div>
