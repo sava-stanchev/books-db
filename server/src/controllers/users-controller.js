@@ -2,9 +2,6 @@ import express from "express";
 import asyncHandler from "express-async-handler";
 import usersService from "../services/users-service.js";
 import usersData from "../data/users.js";
-import createUserValidator from "../validators/create-user-validator.js";
-import validateBody from "../middlewares/validate-body.js";
-import transformBody from "../middlewares/transform-body.js";
 import serviceErrors from "../common/service-errors.js";
 import loggedUserGuard from "../middlewares/logged-user-guard.js";
 import { authMiddleware } from "../auth/auth-middleware.js";
@@ -29,8 +26,6 @@ usersController
 
   .post(
     "/",
-    transformBody(createUserValidator),
-    validateBody("user", createUserValidator),
     asyncHandler(async (req, res) => {
       const result = await usersService.createUser(usersData)(req.body);
 

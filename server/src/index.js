@@ -47,34 +47,17 @@ app.get(
   }
 );
 
-/** Delete book review */
-app.delete(
-  "/reviews/:reviews_id",
-  authMiddleware,
-  loggedUserGuard,
-  async (req, res) => {
-    try {
-      const review = await reviewsData.getReviewById(req.params.reviews_id);
-      if (!review || review.is_deleted === 1) {
-        return res.status(400).json({
-          message: "Review not found!",
-        });
-      }
-      if (review.id !== req.user.id) {
-        return res.status(403).json({
-          message: "You are not authorized to delete this review!",
-        });
-      }
-
-      await reviewsData.deleteReview(req.params.reviews_id);
-      res.status(200).send(review);
-    } catch (error) {
-      return res.status(400).json({
-        error: error.message,
-      });
-    }
+// Delete review
+app.delete("/reviews/:reviews_id", async (req, res) => {
+  try {
+    await reviewsData.deleteReview(req.params.reviews_id);
+    res.end();
+  } catch (error) {
+    return res.status(400).json({
+      error: error.message,
+    });
   }
-);
+});
 
 /** update user info */
 app.post(

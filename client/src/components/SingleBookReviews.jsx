@@ -2,14 +2,24 @@ import { useEffect, useState } from "react";
 import { HOST } from "src/common/constants";
 import { Button, Row, Form } from "react-bootstrap";
 
-const Reviews = ({ content, username, date_created }) => {
+const Reviews = ({ review, user, deleteReview, deleteReviewRequest }) => {
   return (
     <>
       <div className="d-flex justify-content-between">
-        <h5 className="fw-bold">{username}</h5>
-        <span>{date_created.split("T")[0]}</span>
+        <h5 className="fw-bold">{review.username}</h5>
+        <div>
+          <span>{review.date_created.split("T")[0]}</span>
+          {user.is_admin && (
+            <Button
+              variant="danger"
+              onClick={() => deleteReview(deleteReviewRequest)}
+            >
+              Delete
+            </Button>
+          )}
+        </div>
       </div>
-      <p>{content}</p>
+      <p>{review.content}</p>
       <hr />
     </>
   );
@@ -54,6 +64,20 @@ const SingleBookReviews = ({ id, user }) => {
     }
   }
 
+  async function deleteReview(request) {
+    try {
+      const response = await fetch(request);
+
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      } else {
+        getBookReviews(getBookReviewsRequest);
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
+
   const getBookReviewsRequest = new Request(`${HOST}/books/${id}/reviews`, {
     method: "GET",
     headers: {
@@ -69,6 +93,15 @@ const SingleBookReviews = ({ id, user }) => {
       authorization: `bearer ${localStorage.getItem("token")}`,
     },
     body: JSON.stringify({ newReview, user }),
+  });
+
+  const deleteReviewRequest = new Request(`${HOST}/reviews/${reviewId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `bearer ${localStorage.getItem("token")}`,
+    },
+    body: JSON.stringify({}),
   });
 
   return (
@@ -98,7 +131,13 @@ const SingleBookReviews = ({ id, user }) => {
             <div>
               <hr />
               {reviews.map((review) => (
-                <Reviews key={review.id} {...review} />
+                <Reviews
+                  key={review.id}
+                  review={review}
+                  user={user}
+                  deleteReview={deleteReview}
+                  deleteReviewRequest={deleteReviewRequest}
+                />
               ))}
             </div>
           )}

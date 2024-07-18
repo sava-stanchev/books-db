@@ -1,10 +1,7 @@
 import express from "express";
 import booksData from "../data/books.js";
-import transformBody from "../middlewares/transform-body.js";
 import { authMiddleware } from "../auth/auth-middleware.js";
-import reviewCreateValidator from "../validators/review-create-validation.js";
 import loggedUserGuard from "../middlewares/logged-user-guard.js";
-import validateBody from "../middlewares/validate-body.js";
 import reviewsData from "../data/reviews.js";
 
 const booksController = express.Router();
