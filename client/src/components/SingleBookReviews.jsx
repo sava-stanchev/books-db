@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { HOST } from "src/common/constants";
 import { Button, Row, Form } from "react-bootstrap";
 
-const Reviews = ({ review, user, deleteReview, deleteReviewRequest }) => {
+const Reviews = ({ review, user, deleteReviewRequest }) => {
   return (
     <>
       <div className="d-flex justify-content-between">
@@ -12,7 +12,7 @@ const Reviews = ({ review, user, deleteReview, deleteReviewRequest }) => {
           {user.is_admin && (
             <Button
               variant="danger"
-              onClick={() => deleteReview(deleteReviewRequest)}
+              onClick={() => deleteReviewRequest(review.id)}
             >
               Delete
             </Button>
@@ -64,9 +64,16 @@ const SingleBookReviews = ({ id, user }) => {
     }
   }
 
-  async function deleteReview(request) {
+  async function deleteReviewRequest(reviewId) {
     try {
-      const response = await fetch(request);
+      const response = await fetch(`${HOST}/reviews/${reviewId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({}),
+      });
 
       if (!response.ok) {
         throw new Error(`Response status: ${response.status}`);
@@ -93,15 +100,6 @@ const SingleBookReviews = ({ id, user }) => {
       authorization: `bearer ${localStorage.getItem("token")}`,
     },
     body: JSON.stringify({ newReview, user }),
-  });
-
-  const deleteReviewRequest = new Request(`${HOST}/reviews/${reviewId}`, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-      authorization: `bearer ${localStorage.getItem("token")}`,
-    },
-    body: JSON.stringify({}),
   });
 
   return (
@@ -135,7 +133,6 @@ const SingleBookReviews = ({ id, user }) => {
                   key={review.id}
                   review={review}
                   user={user}
-                  deleteReview={deleteReview}
                   deleteReviewRequest={deleteReviewRequest}
                 />
               ))}
