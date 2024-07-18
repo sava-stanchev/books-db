@@ -124,6 +124,12 @@ input[type="radio"] {
   width: 45%;
 }
 
+.delete-icon {
+  background: none;
+  border: none;
+  color: red;
+}
+
 .password-eye-icon {
   position: absolute;
   top: 50%;

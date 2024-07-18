@@ -1,21 +1,23 @@
 import { useEffect, useState } from "react";
 import { HOST } from "src/common/constants";
 import { Button, Row, Form } from "react-bootstrap";
+import { FaTrashAlt } from "react-icons/fa";
 
 const Reviews = ({ review, user, deleteReviewRequest }) => {
   return (
     <>
       <div className="d-flex justify-content-between">
         <h5 className="fw-bold">{review.username}</h5>
-        <div>
+        <div className="d-flex gap-2 align-items-center">
           <span>{review.date_created.split("T")[0]}</span>
           {user.is_admin && (
-            <Button
-              variant="danger"
+            <button
+              className="delete-icon"
+              type="button"
               onClick={() => deleteReviewRequest(review.id)}
             >
-              Delete
-            </Button>
+              <FaTrashAlt />
+            </button>
           )}
         </div>
       </div>
@@ -72,7 +74,6 @@ const SingleBookReviews = ({ id, user }) => {
           "Content-Type": "application/json",
           authorization: `bearer ${localStorage.getItem("token")}`,
         },
-        body: JSON.stringify({}),
       });
 
       if (!response.ok) {
