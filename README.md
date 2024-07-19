@@ -1,7 +1,7 @@
-# The Library
+# BooksDB
 
 ### Description
-A single-page application where the users can borrow and return books, rate them, write a review about a book and read all the reviews for a book.
+A single-page application where users can find books, rate them and write reviews.
 
 ### Tech Stack
-React.js, HTML, CSS, Express.js, MySQL, MariaDB
+React.js, Bootstrap, CSS, Express.js, MySQL
