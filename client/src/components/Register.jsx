@@ -28,6 +28,7 @@ const Register = () => {
   const [usernameError, setUsernameError] = useState(usernameVerificationError);
   const [strength, setStrength] = useState("");
   const [activeAlert, setActiveAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {}, [newUser]);
@@ -83,8 +84,10 @@ const Register = () => {
   async function post(request) {
     try {
       const response = await fetch(request);
+      const result = await response.json();
 
       if (!response.ok) {
+        setAlertMessage(result.message);
         throw new Error(`Response status: ${response.status}`);
       } else {
         navigate("/login");
@@ -108,7 +111,10 @@ const Register = () => {
     <>
       <div className="position-absolute start-0 end-0">
         <div className="d-flex justify-content-center col-md-12">
-          <AlertDismissible activeAlert={activeAlert} />
+          <AlertDismissible
+            activeAlert={activeAlert}
+            alertMessage={alertMessage}
+          />
         </div>
       </div>
       <div className="d-flex justify-content-center align-items-center vh-100 bg-dark">

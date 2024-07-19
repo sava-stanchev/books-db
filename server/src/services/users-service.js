@@ -7,7 +7,7 @@ const createUser = (usersData) => async (user) => {
   const usernameExists = await usersData.getUserBy("username", username);
   const emailExists = await usersData.getUserBy("email", email);
 
-  if (usernameExists.length || emailExists.length) {
+  if (usernameExists || emailExists) {
     return {
       error: serviceErrors.DUPLICATE_RECORD,
       data: null,
