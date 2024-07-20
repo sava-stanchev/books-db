@@ -19,7 +19,6 @@ app.use(express.json());
 passport.use(jwtStrategy);
 app.use(passport.initialize());
 app.use("/", authController);
-app.use("/avatars", express.static("avatars"));
 app.use("/books", booksController);
 app.use("/users", usersController);
 app.use("/reviews", reviewsController);

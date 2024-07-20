@@ -70,6 +70,27 @@ const SingleBookReviews = ({ id, user }) => {
     }
   }
 
+  async function editReviewRequest(reviewId) {
+    try {
+      const response = await fetch(`${HOST}/reviews/${reviewId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ updatedReview }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      } else {
+        getBookReviews(getBookReviewsRequest);
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
+
   async function deleteReviewRequest(reviewId) {
     try {
       const response = await fetch(`${HOST}/reviews/${reviewId}`, {
