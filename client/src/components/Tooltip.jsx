@@ -1,9 +1,7 @@
 import Tooltip from "react-bootstrap/Tooltip";
 
-const renderTooltip = (props) => (
-  <Tooltip id="button-tooltip" {...props}>
-    Delete
-  </Tooltip>
+const renderTooltip = (tooltipText) => (
+  <Tooltip id="button-tooltip">{tooltipText}</Tooltip>
 );
 
 export default renderTooltip;

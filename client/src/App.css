@@ -124,10 +124,18 @@ input[type="radio"] {
   width: 45%;
 }
 
-.delete-icon {
+.icon {
+  display: flex;
   background: none;
   border: none;
+}
+
+.delete-icon {
   color: red;
+}
+
+.edit-icon {
+  color: white;
 }
 
 .password-eye-icon {

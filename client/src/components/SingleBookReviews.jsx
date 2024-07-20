@@ -1,21 +1,32 @@
 import { useEffect, useState } from "react";
 import { HOST } from "src/common/constants";
 import { Button, Row, Form } from "react-bootstrap";
-import { FaTrashAlt } from "react-icons/fa";
+import { FaTrashAlt, FaEdit } from "react-icons/fa";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import renderTooltip from "src/components/Tooltip";
 
-const Reviews = ({ review, user, deleteReviewRequest }) => {
+const Reviews = ({ review, user, editReviewRequest, deleteReviewRequest }) => {
   return (
     <>
       <div className="d-flex justify-content-between">
         <h5 className="fw-bold">{review.username}</h5>
-        <div className="d-flex gap-2 align-items-center">
-          <span>{review.date_created.split("T")[0]}</span>
-          {user.is_admin && (
-            <OverlayTrigger placement="top" overlay={renderTooltip}>
+        <div className="d-flex gap-1 align-items-center">
+          <span className="me-1">{review.date_created.split("T")[0]}</span>
+          {user.id === review.user_id && (
+            <OverlayTrigger placement="top" overlay={renderTooltip("Edit")}>
               <button
-                className="delete-icon"
+                className="icon edit-icon"
+                type="button"
+                onClick={() => editReviewRequest(review.id)}
+              >
+                <FaEdit />
+              </button>
+            </OverlayTrigger>
+          )}
+          {user.is_admin && (
+            <OverlayTrigger placement="top" overlay={renderTooltip("Delete")}>
+              <button
+                className="icon delete-icon"
                 type="button"
                 onClick={() => deleteReviewRequest(review.id)}
               >
@@ -159,6 +170,7 @@ const SingleBookReviews = ({ id, user }) => {
                   key={review.id}
                   review={review}
                   user={user}
+                  editReviewRequest={editReviewRequest}
                   deleteReviewRequest={deleteReviewRequest}
                 />
               ))}

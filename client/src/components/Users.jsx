@@ -77,9 +77,9 @@ const Users = () => {
         <td>{user.username}</td>
         <td>{user.email}</td>
         <td>
-          <OverlayTrigger placement="top" overlay={renderTooltip}>
+          <OverlayTrigger placement="top" overlay={renderTooltip("Delete")}>
             <button
-              className="delete-icon"
+              className="icon delete-icon"
               type="button"
               onClick={() => deleteUserRequest(user.id)}
             >
