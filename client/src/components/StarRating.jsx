@@ -27,11 +27,12 @@ export default function StarRating({
   numRatings,
   setNumRatings,
   id,
+  user,
 }) {
   const [hoveredIndex, setHoveredIndex] = useState(null);
 
   async function updateBookRating(newRating) {
-    const newRatingData = [newRating];
+    const newRatingData = { newRating, user };
 
     try {
       const response = await fetch(`${HOST}/books/${id}/rating`, {

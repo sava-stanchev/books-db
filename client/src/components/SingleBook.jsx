@@ -15,6 +15,7 @@ const SingleBook = () => {
   const [loading, setLoading] = useState(true);
   const [rating, setRating] = useState(null);
   const [numRatings, setNumRatings] = useState(null);
+  const [didUserRate, setdidUserRate] = useState(false);
 
   useEffect(() => {
     getBook(getBookRequest);
@@ -94,6 +95,7 @@ const SingleBook = () => {
                   numRatings={numRatings}
                   setNumRatings={setNumRatings}
                   id={id}
+                  user={user}
                 />
                 <p>Genre: {bookData.genre}</p>
                 <p>Language: {bookData.language}</p>

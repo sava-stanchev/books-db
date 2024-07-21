@@ -1,5 +1,6 @@
 import express from "express";
 import booksData from "../data/books.js";
+import bookRatingsData from "../data/book-ratings.js";
 import { authMiddleware } from "../auth/auth-middleware.js";
 import loggedUserGuard from "../middlewares/logged-user-guard.js";
 import reviewsData from "../data/reviews.js";
@@ -79,9 +80,11 @@ booksController
     try {
       const bookId = req.params.id;
       const reqBody = req.body;
-      const rating = reqBody[0];
+      const rating = reqBody.newRating;
+      const userId = reqBody.user.id;
 
       await booksData.updateBookRating(bookId, rating);
+      await bookRatingsData.addBookRating(bookId, userId);
       const newBookData = await booksData.getBookById(bookId);
       return res.status(200).send(newBookData[0]);
     } catch (error) {
