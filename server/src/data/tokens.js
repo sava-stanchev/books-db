@@ -12,7 +12,7 @@ const getToken = async (token) => {
   `;
 
   const result = await pool.query(sql, [token]);
-  return result[0][0].token;
+  return result[0][0];
 };
 
 const removeToken = async (token) => {
