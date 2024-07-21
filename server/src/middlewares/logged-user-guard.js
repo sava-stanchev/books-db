@@ -1,10 +1,11 @@
-import tokensData from '../data/tokens.js';
+import tokensData from "../data/tokens.js";
 
 export default async (req, res, next) => {
-  const token = req.headers.authorization.replace('Bearer ', '');
+  const token = req.headers.authorization.replace("bearer ", "");
+  const result = await tokensData.getToken(token);
 
-  if (await tokensData.tokenExists(token)) {
-    return res.status(401).json({message: `You're not logged in!`});
+  if (result !== token) {
+    return res.status(401).json({ message: `You're not signed in!` });
   }
 
   await next();

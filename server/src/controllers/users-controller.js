@@ -3,13 +3,14 @@ import asyncHandler from "express-async-handler";
 import usersService from "../services/users-service.js";
 import usersData from "../data/users.js";
 import serviceErrors from "../common/service-errors.js";
+import loggedUserGuard from "../middlewares/logged-user-guard.js";
 
 const usersController = express.Router();
 
 usersController
 
   // Get all users
-  .get("/", async (req, res) => {
+  .get("/", loggedUserGuard, async (req, res) => {
     try {
       const users = await usersData.getAllUsers();
       res.json(users[0]);
@@ -35,7 +36,7 @@ usersController
   )
 
   // Delete user
-  .delete("/:id", async (req, res) => {
+  .delete("/:id", loggedUserGuard, async (req, res) => {
     try {
       await usersData.deleteUser(req.params.id);
       res.end();

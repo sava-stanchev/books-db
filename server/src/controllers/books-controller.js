@@ -2,13 +2,14 @@ import express from "express";
 import booksData from "../data/books.js";
 import bookRatingsData from "../data/book-ratings.js";
 import reviewsData from "../data/reviews.js";
+import loggedUserGuard from "../middlewares/logged-user-guard.js";
 
 const booksController = express.Router();
 
 booksController
 
   // Get all books
-  .get("/", async (req, res) => {
+  .get("/", loggedUserGuard, async (req, res) => {
     const { sort } = req.query;
     try {
       if (sort) {
@@ -26,7 +27,7 @@ booksController
   })
 
   // Get a book
-  .get("/:id", async (req, res) => {
+  .get("/:id", loggedUserGuard, async (req, res) => {
     const bookId = +req.params.id;
     try {
       const book = await booksData.getBookById(bookId);
@@ -39,7 +40,7 @@ booksController
   })
 
   // Get reviews for book
-  .get("/:id/reviews", async (req, res) => {
+  .get("/:id/reviews", loggedUserGuard, async (req, res) => {
     try {
       const { id } = req.params;
       const theReviews = await reviewsData.getReviewsForBook(id);
@@ -58,7 +59,7 @@ booksController
   })
 
   // Create book review
-  .post("/:id/create-review", async (req, res) => {
+  .post("/:id/create-review", loggedUserGuard, async (req, res) => {
     const bookId = req.params.id;
     const newReview = req.body.newReview;
     const userId = req.body.user.id;
@@ -74,7 +75,7 @@ booksController
   })
 
   // Rate book
-  .patch("/:id/rating", async (req, res) => {
+  .patch("/:id/rating", loggedUserGuard, async (req, res) => {
     try {
       const bookId = req.params.id;
       const reqBody = req.body;
@@ -93,7 +94,7 @@ booksController
   })
 
   // Delete a book (as admin)
-  .delete("/:id", async (req, res) => {
+  .delete("/:id", loggedUserGuard, async (req, res) => {
     try {
       const bookId = req.params.id;
       await booksData.deleteBook(bookId);
