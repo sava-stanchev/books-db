@@ -3,10 +3,6 @@ import asyncHandler from "express-async-handler";
 import usersService from "../services/users-service.js";
 import usersData from "../data/users.js";
 import serviceErrors from "../common/service-errors.js";
-import loggedUserGuard from "../middlewares/logged-user-guard.js";
-import { authMiddleware } from "../auth/auth-middleware.js";
-import roleAuth from "../middlewares/role-auth.js";
-import { userRole } from "../common/user-role.js";
 
 const usersController = express.Router();
 
@@ -24,6 +20,7 @@ usersController
     }
   })
 
+  // Register user
   .post(
     "/",
     asyncHandler(async (req, res) => {
@@ -36,24 +33,6 @@ usersController
       }
     })
   )
-
-  /** Get user by ID */
-  .get("/:id", authMiddleware, loggedUserGuard, async (req, res) => {
-    try {
-      const user = await usersData.getUserById(req.params.id);
-      if (!user) {
-        res.status(400).json({
-          message: "User not found!",
-        });
-      }
-
-      res.status(200).send(user);
-    } catch (error) {
-      return res.status(400).json({
-        error: error.message,
-      });
-    }
-  })
 
   // Delete user
   .delete("/:id", async (req, res) => {

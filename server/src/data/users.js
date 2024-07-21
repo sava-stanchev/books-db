@@ -38,15 +38,6 @@ const createUser = async (user) => {
   return createdUser;
 };
 
-const getUserById = async (id) => {
-  const sql = `
-    SELECT u.id, u.username, u.email, u.is_admin, u.is_deleted FROM users AS u
-    WHERE u.id = ?
-  `;
-  const result = await pool.query(sql, [id]);
-  return result[0];
-};
-
 const deleteUser = async (id) => {
   const sql = `
     UPDATE users SET users.is_deleted = 1
@@ -58,7 +49,6 @@ const deleteUser = async (id) => {
 export default {
   createUser,
   getAllUsers,
-  getUserById,
   deleteUser,
   getUserBy,
 };

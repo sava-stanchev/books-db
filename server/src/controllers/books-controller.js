@@ -1,15 +1,13 @@
 import express from "express";
 import booksData from "../data/books.js";
 import bookRatingsData from "../data/book-ratings.js";
-import { authMiddleware } from "../auth/auth-middleware.js";
-import loggedUserGuard from "../middlewares/logged-user-guard.js";
 import reviewsData from "../data/reviews.js";
 
 const booksController = express.Router();
 
 booksController
 
-  /** Retrieve all books */
+  // Get all books
   .get("/", async (req, res) => {
     const { sort } = req.query;
     try {
@@ -27,7 +25,7 @@ booksController
     }
   })
 
-  /** Retrieve one book */
+  // Get a book
   .get("/:id", async (req, res) => {
     const bookId = +req.params.id;
     try {
@@ -75,7 +73,7 @@ booksController
     }
   })
 
-  /** Rate book */
+  // Rate book
   .patch("/:id/rating", async (req, res) => {
     try {
       const bookId = req.params.id;
