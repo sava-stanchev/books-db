@@ -48,7 +48,7 @@ const createReview = async (bookId, content, userId) => {
   return createdReview[0][0];
 };
 
-const editReview = async ({ id, content }) => {
+const editReview = async (id, content) => {
   const sql = `
     UPDATE reviews
     SET reviews.content = ?

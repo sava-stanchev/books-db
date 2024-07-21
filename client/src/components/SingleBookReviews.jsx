@@ -11,7 +11,7 @@ const Reviews = ({
   user,
   editReviewRequest,
   deleteReviewRequest,
-  setUpdatedReview,
+  setUpdatedReviewContent,
 }) => {
   const [show, setShow] = useState(false);
 
@@ -27,7 +27,7 @@ const Reviews = ({
         handleClose={handleClose}
         editReviewRequest={editReviewRequest}
         review={review}
-        setUpdatedReview={setUpdatedReview}
+        setUpdatedReviewContent={setUpdatedReviewContent}
       />
       <div className="d-flex justify-content-between">
         <h5 className="fw-bold">{review.username}</h5>
@@ -68,7 +68,7 @@ const SingleBookReviews = ({ id, user }) => {
   const [newReview, setNewReview] = useState({
     content: "",
   });
-  const [updatedReview, setUpdatedReview] = useState({
+  const [updatedReviewContent, setUpdatedReviewContent] = useState({
     content: "",
   });
 
@@ -113,7 +113,7 @@ const SingleBookReviews = ({ id, user }) => {
           "Content-Type": "application/json",
           authorization: `bearer ${localStorage.getItem("token")}`,
         },
-        body: JSON.stringify({ updatedReview }),
+        body: JSON.stringify({ updatedReviewContent }),
       });
 
       if (!response.ok) {
@@ -196,7 +196,7 @@ const SingleBookReviews = ({ id, user }) => {
                   user={user}
                   editReviewRequest={editReviewRequest}
                   deleteReviewRequest={deleteReviewRequest}
-                  setUpdatedReview={setUpdatedReview}
+                  setUpdatedReviewContent={setUpdatedReviewContent}
                 />
               ))}
             </div>

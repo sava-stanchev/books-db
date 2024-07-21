@@ -8,10 +8,10 @@ reviewsController
   // Edit review
   .patch("/:review_id", async (req, res) => {
     const reviewId = req.params.review_id;
-    const updateData = req.body;
+    const updatedContent = req.body.updatedReviewContent;
 
     try {
-      await reviewsData.editReview(reviewId, updateData);
+      await reviewsData.editReview(reviewId, updatedContent);
       res.end();
     } catch (error) {
       return res.status(400).json({

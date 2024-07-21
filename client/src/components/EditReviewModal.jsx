@@ -5,7 +5,7 @@ const EditReviewModal = ({
   handleClose,
   editReviewRequest,
   review,
-  setUpdatedReview,
+  setUpdatedReviewContent,
 }) => {
   return (
     <Modal backdrop="static" centered show={show} onHide={handleClose}>
@@ -20,7 +20,7 @@ const EditReviewModal = ({
               as="textarea"
               rows={3}
               defaultValue={review.content}
-              onChange={(e) => setUpdatedReview(e.target.value)}
+              onChange={(e) => setUpdatedReviewContent(e.target.value)}
             />
           </Form.Group>
         </Form>
