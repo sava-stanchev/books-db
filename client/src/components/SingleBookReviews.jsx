@@ -1,13 +1,47 @@
 import { useEffect, useState } from "react";
 import { HOST } from "src/common/constants";
-import { Button, Row, Form } from "react-bootstrap";
+import { Button, Row, Form, Modal } from "react-bootstrap";
 import { FaTrashAlt, FaEdit } from "react-icons/fa";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import renderTooltip from "src/components/Tooltip";
 
+const EditReviewModal = ({ show, handleClose }) => {
+  return (
+    <Modal backdrop="static" centered show={show} onHide={handleClose}>
+      <Modal.Header closeButton>
+        <Modal.Title>Edit</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form>
+          <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+            <Form.Label>Enter your updated review</Form.Label>
+            <Form.Control autoFocus as="textarea" rows={3} />
+          </Form.Group>
+        </Form>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="primary" onClick={handleClose}>
+          Update
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  );
+};
+
 const Reviews = ({ review, user, editReviewRequest, deleteReviewRequest }) => {
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   return (
     <>
+      <EditReviewModal
+        show={show}
+        setShow={setShow}
+        handleShow={handleShow}
+        handleClose={handleClose}
+      />
       <div className="d-flex justify-content-between">
         <h5 className="fw-bold">{review.username}</h5>
         <div className="d-flex gap-1 align-items-center">
@@ -17,7 +51,7 @@ const Reviews = ({ review, user, editReviewRequest, deleteReviewRequest }) => {
               <button
                 className="icon edit-icon"
                 type="button"
-                onClick={() => editReviewRequest(review.id)}
+                onClick={handleShow}
               >
                 <FaEdit />
               </button>
