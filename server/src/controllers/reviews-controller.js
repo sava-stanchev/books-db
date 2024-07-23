@@ -1,13 +1,14 @@
 import express from "express";
 import reviewsData from "../data/reviews.js";
 import loggedUserGuard from "../middlewares/logged-user-guard.js";
+import { authMiddleware } from "../auth/auth-middleware.js";
 
 const reviewsController = express.Router();
 
 reviewsController
 
   // Edit review
-  .patch("/:review_id", loggedUserGuard, async (req, res) => {
+  .patch("/:review_id", authMiddleware, loggedUserGuard, async (req, res) => {
     const reviewId = req.params.review_id;
     const updatedContent = req.body.updatedReviewContent;
 
@@ -22,7 +23,7 @@ reviewsController
   })
 
   // Delete review
-  .delete("/:review_id", loggedUserGuard, async (req, res) => {
+  .delete("/:review_id", authMiddleware, loggedUserGuard, async (req, res) => {
     try {
       await reviewsData.deleteReview(req.params.review_id);
       res.end();

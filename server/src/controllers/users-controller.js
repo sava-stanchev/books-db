@@ -4,13 +4,14 @@ import usersService from "../services/users-service.js";
 import usersData from "../data/users.js";
 import serviceErrors from "../common/service-errors.js";
 import loggedUserGuard from "../middlewares/logged-user-guard.js";
+import { authMiddleware } from "../auth/auth-middleware.js";
 
 const usersController = express.Router();
 
 usersController
 
   // Get all users
-  .get("/", loggedUserGuard, async (req, res) => {
+  .get("/", authMiddleware, loggedUserGuard, async (req, res) => {
     try {
       const users = await usersData.getAllUsers();
       res.json(users[0]);
@@ -36,7 +37,7 @@ usersController
   )
 
   // Delete user
-  .delete("/:id", loggedUserGuard, async (req, res) => {
+  .delete("/:id", authMiddleware, loggedUserGuard, async (req, res) => {
     try {
       await usersData.deleteUser(req.params.id);
       res.end();

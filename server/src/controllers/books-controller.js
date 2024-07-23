@@ -3,13 +3,14 @@ import booksData from "../data/books.js";
 import bookRatingsData from "../data/book-ratings.js";
 import reviewsData from "../data/reviews.js";
 import loggedUserGuard from "../middlewares/logged-user-guard.js";
+import { authMiddleware } from "../auth/auth-middleware.js";
 
 const booksController = express.Router();
 
 booksController
 
   // Get all books
-  .get("/", loggedUserGuard, async (req, res) => {
+  .get("/", authMiddleware, loggedUserGuard, async (req, res) => {
     const { sort } = req.query;
     try {
       if (sort) {
@@ -27,7 +28,7 @@ booksController
   })
 
   // Get a book
-  .get("/:id", loggedUserGuard, async (req, res) => {
+  .get("/:id", authMiddleware, loggedUserGuard, async (req, res) => {
     const bookId = +req.params.id;
     try {
       const book = await booksData.getBookById(bookId);
@@ -40,7 +41,7 @@ booksController
   })
 
   // Get reviews for book
-  .get("/:id/reviews", loggedUserGuard, async (req, res) => {
+  .get("/:id/reviews", authMiddleware, loggedUserGuard, async (req, res) => {
     try {
       const { id } = req.params;
       const theReviews = await reviewsData.getReviewsForBook(id);
@@ -59,23 +60,28 @@ booksController
   })
 
   // Create book review
-  .post("/:id/create-review", loggedUserGuard, async (req, res) => {
-    const bookId = req.params.id;
-    const newReview = req.body.newReview;
-    const userId = req.body.user.id;
+  .post(
+    "/:id/create-review",
+    authMiddleware,
+    loggedUserGuard,
+    async (req, res) => {
+      const bookId = req.params.id;
+      const newReview = req.body.newReview;
+      const userId = req.body.user.id;
 
-    try {
-      await reviewsData.createReview(bookId, newReview, userId);
-      res.end();
-    } catch (error) {
-      return res.status(400).json({
-        error: error.message,
-      });
+      try {
+        await reviewsData.createReview(bookId, newReview, userId);
+        res.end();
+      } catch (error) {
+        return res.status(400).json({
+          error: error.message,
+        });
+      }
     }
-  })
+  )
 
   // Rate book
-  .patch("/:id/rating", loggedUserGuard, async (req, res) => {
+  .patch("/:id/rating", authMiddleware, loggedUserGuard, async (req, res) => {
     try {
       const bookId = req.params.id;
       const reqBody = req.body;
@@ -94,7 +100,7 @@ booksController
   })
 
   // Delete a book (as admin)
-  .delete("/:id", loggedUserGuard, async (req, res) => {
+  .delete("/:id", authMiddleware, loggedUserGuard, async (req, res) => {
     try {
       const bookId = req.params.id;
       await booksData.deleteBook(bookId);
