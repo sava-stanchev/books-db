@@ -10,10 +10,12 @@ import AuthContext, { getUser } from "src/utils/auth-context";
 import Users from "src/components/Users";
 import Home from "src/components/Home";
 import ProtectedRoutes from "src/utils/ProtectedRoutes";
+import Error404 from "src/components/Error404";
 
 const router = createBrowserRouter([
   {
     element: <NavbarComponent />,
+    errorElement: <Error404 />,
     children: [
       {
         path: "/",
