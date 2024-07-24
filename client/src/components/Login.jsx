@@ -28,7 +28,7 @@ const Login = () => {
     });
   };
 
-  async function post(request) {
+  async function signIn(request) {
     setActiveAlert(false);
 
     try {
@@ -106,7 +106,7 @@ const Login = () => {
               <button
                 className="btn btn-primary"
                 type="button"
-                onClick={() => post(loginRequest)}
+                onClick={() => signIn(loginRequest)}
                 disabled={!user.username || !user.password}
               >
                 Sign in

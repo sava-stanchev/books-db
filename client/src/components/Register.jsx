@@ -81,7 +81,7 @@ const Register = () => {
     }
   };
 
-  async function post(request) {
+  async function signUp(request) {
     try {
       const response = await fetch(request);
       const result = await response.json();
@@ -173,7 +173,7 @@ const Register = () => {
                   Object.values(usernameError).includes(false)
                 }
                 type="button"
-                onClick={() => post(registerRequest)}
+                onClick={() => signUp(registerRequest)}
               >
                 Sign in
               </button>
