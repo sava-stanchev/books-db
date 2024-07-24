@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { HOST } from "src/common/constants";
 import { useNavigate } from "react-router-dom";
 import AlertDismissible from "./Alert";
@@ -30,8 +30,6 @@ const Register = () => {
   const [activeAlert, setActiveAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState(null);
   const navigate = useNavigate();
-
-  useEffect(() => {}, [newUser]);
 
   function evaluatePasswordStrength(password) {
     let score = 0;

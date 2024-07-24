@@ -10,22 +10,31 @@ const NavbarComponent = () => {
   const auth = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const logout = (e) => {
-    e.preventDefault();
-    fetch(`${HOST}/logout`, {
-      method: "DELETE",
-      headers: {
-        authorization: `bearer ${localStorage.getItem("token")}`,
-      },
-    }).then(() => {
-      auth.setAuthState({
-        user: null,
-        isLoggedIn: false,
-      });
-      localStorage.removeItem("token");
-      navigate("/");
-    });
-  };
+  async function signOut(request) {
+    try {
+      const response = await fetch(request);
+
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      } else {
+        auth.setAuthState({
+          user: null,
+          isLoggedIn: false,
+        });
+        localStorage.removeItem("token");
+        navigate("/");
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
+
+  const logoutRequest = new Request(`${HOST}/logout`, {
+    method: "DELETE",
+    headers: {
+      authorization: `bearer ${localStorage.getItem("token")}`,
+    },
+  });
 
   return (
     <>
@@ -52,7 +61,9 @@ const NavbarComponent = () => {
                   <Nav.Link as={Link} to="/books">
                     Books
                   </Nav.Link>
-                  <Nav.Link onClick={logout}>Log Out</Nav.Link>
+                  <Nav.Link onClick={() => signOut(logoutRequest)}>
+                    Log Out
+                  </Nav.Link>
                 </>
               ) : (
                 <>
