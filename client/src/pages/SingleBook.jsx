@@ -5,7 +5,7 @@ import { HOST } from "src/common/constants";
 import { useNavigate, useParams } from "react-router-dom";
 import Loader from "src/components/Loader";
 import StarRating from "src/components/StarRating";
-import SingleBookReviews from "./SingleBookReviews";
+import SingleBookReviews from "../components/SingleBookReviews";
 
 const SingleBook = () => {
   const { user } = useContext(AuthContext);

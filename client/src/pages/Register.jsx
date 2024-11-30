@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { HOST } from "src/common/constants";
 import { useNavigate } from "react-router-dom";
-import AlertDismissible from "./Alert";
+import AlertDismissible from "src/components/Alert";
 
 const initialState = {
   username: "",

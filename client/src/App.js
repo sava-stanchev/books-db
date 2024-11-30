@@ -1,16 +1,16 @@
 import "src/App.css";
 import NavbarComponent from "src/components/Navbar";
-import Books from "src/components/Books";
-import Login from "src/components/Login";
-import Register from "src/components/Register";
-import SingleBook from "src/components/SingleBook";
+import Books from "src/pages/Books";
+import Login from "src/pages/Login";
+import Register from "./pages/Register";
+import SingleBook from "src/pages/SingleBook";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import React, { useState } from "react";
 import AuthContext, { getUser } from "src/utils/auth-context";
-import Users from "src/components/Users";
-import Home from "src/components/Home";
+import Users from "src/pages/Users";
+import Home from "src/pages/Home";
 import ProtectedRoutes from "src/utils/ProtectedRoutes";
-import Error404 from "src/components/Error404";
+import Error404 from "src/pages/Error404";
 
 const router = createBrowserRouter([
   {

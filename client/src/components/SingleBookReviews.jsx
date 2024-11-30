@@ -36,9 +36,10 @@ const Reviews = ({
           {user.id === review.user_id && (
             <OverlayTrigger placement="top" overlay={renderTooltip("Edit")}>
               <button
-                className="icon edit-icon"
                 type="button"
+                className="icon edit-icon"
                 onClick={handleShow}
+                aria-label="Edit review"
               >
                 <FaEdit />
               </button>
