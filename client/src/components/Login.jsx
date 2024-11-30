@@ -97,6 +97,7 @@ const Login = () => {
                   className="password-eye-icon"
                   type="button"
                   onClick={togglePasswordVisibility}
+                  aria-label="Toggle password visibility"
                 >
                   {showPassword ? <FaEyeSlash /> : <FaEye />}
                 </button>

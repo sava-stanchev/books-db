@@ -86,8 +86,8 @@ const SingleBook = () => {
             <div className="col-lg-8 ps-lg-5">
               <div className="text-light">
                 <h1>{bookData.title}</h1>
-                <h3>{bookData.author}</h3>
-                <h4>({bookData.year})</h4>
+                <h2>{bookData.author}</h2>
+                <h3>({bookData.year})</h3>
                 <StarRating
                   value={rating}
                   rating={rating}

@@ -71,7 +71,7 @@ const Books = () => {
       return (
         <Col key={idx} className="d-flex justify-content-center">
           <Card style={{ width: "18rem" }}>
-            <Card.Img variant="top" src={book.cover} />
+            <Card.Img variant="top" src={book.cover} alt={book.title} />
             <Card.Body>
               <Card.Title>{book.title}</Card.Title>
               <Button

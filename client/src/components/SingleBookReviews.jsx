@@ -47,9 +47,10 @@ const Reviews = ({
           {user.is_admin && (
             <OverlayTrigger placement="top" overlay={renderTooltip("Delete")}>
               <button
-                className="icon delete-icon"
                 type="button"
+                className="icon delete-icon"
                 onClick={() => deleteReviewRequest(review.id)}
+                aria-label="Delete review"
               >
                 <FaTrashAlt />
               </button>
@@ -183,7 +184,7 @@ const SingleBookReviews = ({ id, user }) => {
         >
           Submit
         </Button>
-        <div className="mt-4" role="list">
+        <div className="mt-4">
           {reviews.length === 0 ? (
             <div className="fw-bold fs-3">No reviews yet.</div>
           ) : (

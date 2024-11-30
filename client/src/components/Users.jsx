@@ -79,9 +79,10 @@ const Users = () => {
         <td>
           <OverlayTrigger placement="top" overlay={renderTooltip("Delete")}>
             <button
-              className="icon delete-icon"
               type="button"
+              className="icon delete-icon"
               onClick={() => deleteUserRequest(user.id)}
+              aria-label="Delete user"
             >
               <FaTrashAlt />
             </button>
