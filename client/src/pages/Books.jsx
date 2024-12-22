@@ -1,17 +1,10 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
-import {
-  Col,
-  Row,
-  Button,
-  InputGroup,
-  Form,
-  Card,
-  Container,
-} from "react-bootstrap";
+import { Col, Row, Button, Card, Container } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { HOST } from "src/common/constants";
 import Loader from "src/components/Loader";
+import Search from "src/components/Search";
 
 const Books = () => {
   const navigate = useNavigate();
@@ -19,7 +12,7 @@ const Books = () => {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [pageNumber, setPageNumber] = useState(0);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [search, setSearch] = useState("");
 
   const booksPerPage = 6;
 
@@ -47,7 +40,7 @@ const Books = () => {
   }, []);
 
   const filteredBooks = books.filter((book) =>
-    book.title.toLowerCase().includes(searchQuery.toLowerCase())
+    book.title.toLowerCase().includes(search.toLowerCase())
   );
 
   const displayedBooks = filteredBooks.slice(
@@ -57,26 +50,15 @@ const Books = () => {
 
   const pageCount = Math.ceil(filteredBooks.length / booksPerPage);
 
-  const handleSearchChange = (event) => setSearchQuery(event.target.value);
+  const handleSearchChange = useCallback((value) => {
+    setSearch(value);
+  }, []);
 
   const handlePageChange = ({ selected }) => setPageNumber(selected);
 
   return (
     <Container>
-      <Row className="justify-content-center my-4">
-        <Col md={4} xs={8}>
-          <Form>
-            <InputGroup>
-              <Form.Control
-                type="text"
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={handleSearchChange}
-              />
-            </InputGroup>
-          </Form>
-        </Col>
-      </Row>
+      <Search search={search} onSearchChange={handleSearchChange} />
       {loading ? (
         <Loader />
       ) : (
