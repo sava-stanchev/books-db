@@ -2,7 +2,7 @@ import "src/App.css";
 import NavbarComponent from "src/components/Navbar";
 import Books from "src/pages/Books";
 import Login from "src/pages/Login";
-import Register from "./pages/Register";
+import Register from "src/pages/Register";
 import SingleBook from "src/pages/SingleBook";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import React, { useState } from "react";
