@@ -1,15 +1,16 @@
 import Alert from "react-bootstrap/Alert";
 
-function AlertDismissible({ activeAlert, alertMessage }) {
-  if (activeAlert) {
-    return (
-      <Alert variant="danger" dismissible>
-        <Alert.Heading>{alertMessage || "Something went wrong!"}</Alert.Heading>
-      </Alert>
-    );
-  }
+function AlertDismissible({
+  activeAlert,
+  alertMessage = "Something went wrong!",
+}) {
+  if (!activeAlert) return null;
 
-  return null;
+  return (
+    <Alert variant="danger" dismissible>
+      <Alert.Heading>{alertMessage}</Alert.Heading>
+    </Alert>
+  );
 }
 
 export default AlertDismissible;
