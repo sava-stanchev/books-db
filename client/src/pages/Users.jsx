@@ -1,57 +1,53 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { HOST } from "src/common/constants";
 import Loader from "src/components/Loader";
-import { Col, Row, InputGroup, Form, Container, Table } from "react-bootstrap";
+import { Container, Table } from "react-bootstrap";
 import { FaTrashAlt } from "react-icons/fa";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import renderTooltip from "src/components/Tooltip";
+import Search from "src/components/Search";
 
 const Users = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [filteredUsers, setFilteredUsers] = useState([]);
   const [search, setSearch] = useState("");
 
-  useEffect(() => {
-    get(usersRequest);
-  }, []);
+  const filteredUsers = users.filter((user) =>
+    user.username.toLowerCase().includes(search.toLowerCase())
+  );
 
-  async function get(request) {
+  const fetchUsers = useCallback(async () => {
+    const usersRequest = new Request(`${HOST}/users`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `bearer ${localStorage.getItem("token")}`,
+      },
+    });
+
     try {
-      const response = await fetch(request);
-
+      const response = await fetch(usersRequest);
       if (!response.ok) {
-        throw new Error(`Response status: ${response.status}`);
-      } else {
-        const result = await response.json();
-        setUsers(result);
+        throw new Error(`Failed to fetch users: ${response.status}`);
       }
+      const result = await response.json();
+      setUsers(result);
     } catch (error) {
-      console.error(error.message);
+      console.error("Error fetching users:", error);
     } finally {
       setLoading(false);
     }
-  }
-
-  const usersRequest = new Request(`${HOST}/users`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      authorization: `bearer ${localStorage.getItem("token")}`,
-    },
-  });
+  }, []);
 
   useEffect(() => {
-    setFilteredUsers(
-      users.filter((user) => {
-        return user.username.toLowerCase().includes(search.toLowerCase());
-      })
-    );
-  }, [search, users]);
+    fetchUsers();
+  }, [fetchUsers]);
 
-  let foundUsers = filteredUsers;
+  const handleSearchChange = useCallback((value) => {
+    setSearch(value);
+  }, []);
 
-  async function deleteUserRequest(userId) {
+  const handleDeleteUser = async (userId) => {
     try {
       const response = await fetch(`${HOST}/users/${userId}`, {
         method: "DELETE",
@@ -62,18 +58,17 @@ const Users = () => {
       });
 
       if (!response.ok) {
-        throw new Error(`Response status: ${response.status}`);
-      } else {
-        setUsers(foundUsers.filter((user) => user.id !== userId));
+        throw new Error(`Failed to delete user: ${response.status}`);
       }
+      setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
     } catch (error) {
-      console.error(error.message);
+      console.error("Error deleting user:", error);
     }
-  }
+  };
 
-  const usersRender = foundUsers.map((user, idx) => {
-    return (
-      <tr key={idx}>
+  const renderUsers = () =>
+    filteredUsers.map((user) => (
+      <tr key={user.id}>
         <td>{user.username}</td>
         <td>{user.email}</td>
         <td>
@@ -81,7 +76,7 @@ const Users = () => {
             <button
               type="button"
               className="icon delete-icon"
-              onClick={() => deleteUserRequest(user.id)}
+              onClick={() => handleDeleteUser(user.id)}
               aria-label="Delete user"
             >
               <FaTrashAlt />
@@ -89,35 +84,23 @@ const Users = () => {
           </OverlayTrigger>
         </td>
       </tr>
-    );
-  });
+    ));
 
   return (
     <Container>
-      <Row className="d-flex justify-content-center m-4">
-        <Col className="col-md-4 col-8">
-          <Form>
-            <InputGroup>
-              <Form.Control
-                type="text"
-                placeholder="Search"
-                onChange={(e) => setSearch(e.target.value)}
-              />
-            </InputGroup>
-          </Form>
-        </Col>
-      </Row>
-      {loading && <Loader />}
-      {!loading && (
+      <Search search={search} onSearchChange={handleSearchChange} />
+      {loading ? (
+        <Loader />
+      ) : (
         <Table striped responsive>
           <thead>
             <tr>
               <th>Username</th>
               <th>Email</th>
-              <th></th>
+              <th>Actions</th>
             </tr>
           </thead>
-          <tbody>{usersRender}</tbody>
+          <tbody>{renderUsers()}</tbody>
         </Table>
       )}
     </Container>
