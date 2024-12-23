@@ -49,7 +49,7 @@ const Login = () => {
 
   return (
     <div className="d-flex justify-content-center align-items-center flex-fill bg-dark">
-      <div className="position-absolute start-0 end-0">
+      <div className="position-absolute bottom-0">
         <AlertDismissible
           activeAlert={alert.active}
           alertMessage={alert.message}

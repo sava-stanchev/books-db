@@ -42,7 +42,13 @@ const NavbarComponent = () => {
 
   return (
     <>
-      <Navbar bg="dark" data-bs-theme="dark" collapseOnSelect expand="lg">
+      <Navbar
+        bg="dark"
+        data-bs-theme="dark"
+        collapseOnSelect
+        expand="lg"
+        fixed="top"
+      >
         <Container>
           <Navbar.Brand as={Link} to="/">
             BooksDB

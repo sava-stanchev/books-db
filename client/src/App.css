@@ -1,3 +1,7 @@
+html, body {
+  height: 100%;
+}
+
 body {
   background-color: #212529;
 }
@@ -40,7 +44,7 @@ body {
 
 .home-page-background {
   display: flex;
-  height: calc(100vh - 56px);
+  height: 100vh;
   justify-content: center;
   align-items: center;
   background-size: cover;

@@ -87,7 +87,7 @@ const Users = () => {
     ));
 
   return (
-    <Container>
+    <Container className="my-5">
       <Search search={search} onSearchChange={handleSearchChange} />
       {loading ? (
         <Loader />
