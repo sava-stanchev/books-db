@@ -49,12 +49,10 @@ const Login = () => {
 
   return (
     <div className="d-flex justify-content-center align-items-center flex-fill bg-dark">
-      <div className="position-absolute bottom-0">
-        <AlertDismissible
-          activeAlert={alert.active}
-          alertMessage={alert.message}
-        />
-      </div>
+      <AlertDismissible
+        activeAlert={alert.active}
+        alertMessage={alert.message}
+      />
       <div className="form-container p-5 rounded bg-light">
         <form>
           <h3 className="text-center">Sign In</h3>

@@ -7,9 +7,11 @@ function AlertDismissible({
   if (!activeAlert) return null;
 
   return (
-    <Alert variant="danger" dismissible>
-      <Alert.Heading>{alertMessage}</Alert.Heading>
-    </Alert>
+    <div className="position-absolute bottom-0">
+      <Alert variant="danger" dismissible>
+        <Alert.Heading>{alertMessage}</Alert.Heading>
+      </Alert>
+    </div>
   );
 }
 
