@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import { Button, Container, Row } from "react-bootstrap";
-import AuthContext from "src/utils/auth-context";
+import { AuthContext } from "src/utils/AuthContext";
 import { HOST } from "src/common/constants";
 import { useNavigate, useParams } from "react-router-dom";
 import Loader from "src/components/Loader";

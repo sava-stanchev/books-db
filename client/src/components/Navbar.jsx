@@ -1,14 +1,14 @@
 import { useContext } from "react";
-import AuthContext from "src/utils/auth-context";
 import { HOST } from "src/common/constants";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { Link, Outlet, useNavigate } from "react-router-dom";
+import { AuthContext } from "src/utils/AuthContext";
 
 const useSignOut = () => {
-  const auth = useContext(AuthContext);
   const navigate = useNavigate();
+  const auth = useContext(AuthContext);
 
   const signOut = async () => {
     try {
@@ -25,7 +25,7 @@ const useSignOut = () => {
         throw new Error(`Response status: ${response.status}`);
       }
 
-      auth.setAuthState({ user: null, isLoggedIn: false });
+      auth.setUser(null);
       localStorage.removeItem("token");
       navigate("/");
     } catch (error) {
@@ -37,7 +37,7 @@ const useSignOut = () => {
 };
 
 const NavbarComponent = () => {
-  const { isLoggedIn, user } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const signOut = useSignOut();
 
   return (
@@ -61,7 +61,7 @@ const NavbarComponent = () => {
               </Nav.Link>
             </Nav>
             <Nav>
-              {isLoggedIn ? (
+              {user ? (
                 <>
                   {user?.is_admin === 1 && (
                     <Nav.Link as={Link} to="/users">

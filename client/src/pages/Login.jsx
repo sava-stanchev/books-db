@@ -4,14 +4,14 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import decode from "jwt-decode";
 
 import { HOST } from "src/common/constants";
-import AuthContext from "src/utils/auth-context";
+import { AuthContext } from "src/utils/AuthContext";
 import AlertDismissible from "src/components/Alert";
 
 const Login = () => {
   const navigate = useNavigate();
   const auth = useContext(AuthContext);
 
-  const [user, setUser] = useState({ username: "", password: "" });
+  const [formData, setFormData] = useState({ username: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const [alert, setAlert] = useState({ active: false, message: "" });
 
@@ -19,7 +19,7 @@ const Login = () => {
 
   const handleChange = (e) => {
     const { id, value } = e.target;
-    setUser((prev) => ({ ...prev, [id]: value }));
+    setFormData((prev) => ({ ...prev, [id]: value }));
   };
 
   const signIn = async () => {
@@ -28,7 +28,7 @@ const Login = () => {
       const response = await fetch(`${HOST}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(user),
+        body: JSON.stringify(formData),
       });
 
       const result = await response.json();
@@ -38,8 +38,8 @@ const Login = () => {
 
       localStorage.clear();
       localStorage.setItem("token", result.token);
-      const decodedUser = decode(result.token);
-      auth.setAuthState({ user: decodedUser, isLoggedIn: true });
+      const user = decode(result.token);
+      auth.setUser(user);
       navigate("/");
     } catch (error) {
       console.error(error.message);
@@ -63,7 +63,7 @@ const Login = () => {
               id="username"
               placeholder="Enter Username"
               className="form-control"
-              value={user.username}
+              value={formData.username}
               onChange={handleChange}
             />
           </div>
@@ -75,7 +75,7 @@ const Login = () => {
                 id="password"
                 placeholder="Enter Password"
                 className="form-control pe-5"
-                value={user.password}
+                value={formData.password}
                 onChange={handleChange}
               />
               <button
@@ -93,7 +93,7 @@ const Login = () => {
               type="button"
               className="btn btn-primary"
               onClick={signIn}
-              disabled={!user.username || !user.password}
+              disabled={!formData.username || !formData.password}
             >
               Sign In
             </button>

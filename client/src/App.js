@@ -6,11 +6,12 @@ import Register from "src/pages/Register";
 import SingleBook from "src/pages/SingleBook";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import React, { useState } from "react";
-import AuthContext, { getUser } from "src/utils/auth-context";
+import AuthContext, { getUser } from "src/utils/AuthContext";
 import Users from "src/pages/Users";
 import Home from "src/pages/Home";
 import ProtectedRoutes from "src/utils/ProtectedRoutes";
 import Error404 from "src/pages/Error404";
+import AuthContextProvider from "src/utils/AuthContext";
 
 const router = createBrowserRouter([
   {
@@ -51,15 +52,10 @@ const router = createBrowserRouter([
 ]);
 
 const App = () => {
-  const [authValue, setAuthValue] = useState({
-    user: getUser(),
-    isLoggedIn: Boolean(getUser()),
-  });
-
   return (
-    <AuthContext.Provider value={{ ...authValue, setAuthState: setAuthValue }}>
+    <AuthContextProvider>
       <RouterProvider router={router}></RouterProvider>
-    </AuthContext.Provider>
+    </AuthContextProvider>
   );
 };
 
