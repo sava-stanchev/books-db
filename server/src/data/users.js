@@ -1,20 +1,25 @@
 import pool from "./pool.js";
 
 const getAllUsers = async () => {
-  return await pool.query(`
+  const sql = `
     SELECT * FROM users
-    WHERE users.is_deleted = 0
-  `);
+    WHERE is_deleted = 0
+  `;
+
+  const result = await pool.query(sql);
+  return result;
 };
 
 const getUserBy = async (column, value) => {
   const sql = `
-    SELECT u.id, u.username, u.password, u.email, u.is_admin FROM users AS u
-    WHERE u.${column} = ?
-    AND u.is_deleted = 0
+    SELECT id, username, password, email, is_admin  
+    FROM users
+    WHERE ${pool.escapeId(column)} = ?
+    AND is_deleted = 0
   `;
-  const result = await pool.query(sql, [value]);
-  return result[0][0];
+
+  const [result] = await pool.query(sql, [value]);
+  return result[0];
 };
 
 const createUser = async (user) => {
@@ -22,6 +27,7 @@ const createUser = async (user) => {
     INSERT INTO users (username, password, email, is_admin, is_deleted) 
     VALUES (?, ?, ?, 0, 0)
   `;
+
   const result = await pool.query(sqlNewUser, [
     user.username,
     user.password,
@@ -29,21 +35,24 @@ const createUser = async (user) => {
   ]);
 
   const sql = `
-    SELECT u.username, u.email
-    FROM users AS u
-    WHERE u.id = ?
+    SELECT username, email
+    FROM users
+    WHERE id = ?
   `;
 
-  const createdUser = (await pool.query(sql, [result.insertId]))[0];
-  return createdUser;
+  const [createdUser] = await pool.query(sql, [result.insertId]);
+  return createdUser[0] || null;
 };
 
 const deleteUser = async (id) => {
   const sql = `
-    UPDATE users SET users.is_deleted = 1
-    WHERE users.id = ?
+    UPDATE users 
+    SET is_deleted = 1
+    WHERE id = ?
   `;
-  await pool.query(sql, [id]);
+
+  const [result] = await pool.query(sql, [id]);
+  return result.affectedRows > 0;
 };
 
 export default {
