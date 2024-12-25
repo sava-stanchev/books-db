@@ -1,10 +1,11 @@
 import { useContext, useEffect } from "react";
-import { Outlet, Navigate } from "react-router-dom";
+import { Outlet, Navigate, useLocation } from "react-router-dom";
 import { DateTime } from "luxon";
 import { AuthContext } from "./AuthContext";
 
 const ProtectedRoutes = () => {
   const { user, setUser } = useContext(AuthContext);
+  const location = useLocation();
 
   const isTokenExpired = (user) => {
     if (!user || !user.exp) return true;
@@ -18,9 +19,9 @@ const ProtectedRoutes = () => {
       setUser(null);
       localStorage.removeItem("token");
     }
-  }, [user, setUser]);
+  }, [user, setUser, location]);
 
-  return user ? <Outlet /> : <Navigate to="/login" />;
+  return user ? <Outlet /> : <Navigate to="/login" replace />;
 };
 
 export default ProtectedRoutes;
