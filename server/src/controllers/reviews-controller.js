@@ -1,4 +1,5 @@
 import express from "express";
+import asyncHandler from "express-async-handler";
 import reviewsData from "../data/reviews.js";
 import loggedUserGuard from "../middlewares/logged-user-guard.js";
 import { authMiddleware } from "../auth/auth-middleware.js";
@@ -8,30 +9,32 @@ const reviewsController = express.Router();
 reviewsController
 
   // Edit review
-  .patch("/:review_id", authMiddleware, loggedUserGuard, async (req, res) => {
-    const reviewId = req.params.review_id;
-    const updatedContent = req.body.updatedReviewContent;
+  .patch(
+    "/:review_id",
+    authMiddleware,
+    loggedUserGuard,
+    asyncHandler(async (req, res) => {
+      const reviewId = req.params.review_id;
+      const updatedContent = req.body.updatedReviewContent;
 
-    try {
-      await reviewsData.editReview(reviewId, updatedContent);
-      res.end();
-    } catch (error) {
-      return res.status(400).json({
-        error: error.message,
-      });
-    }
-  })
+      const isUpdated = await reviewsData.editReview(reviewId, updatedContent);
+      if (isUpdated) {
+        res.status(204).end();
+      }
+    })
+  )
 
   // Delete review
-  .delete("/:review_id", authMiddleware, loggedUserGuard, async (req, res) => {
-    try {
-      await reviewsData.deleteReview(req.params.review_id);
-      res.end();
-    } catch (error) {
-      return res.status(400).json({
-        error: error.message,
-      });
-    }
-  });
+  .delete(
+    "/:review_id",
+    authMiddleware,
+    loggedUserGuard,
+    asyncHandler(async (req, res) => {
+      const isDeleted = await reviewsData.deleteReview(req.params.review_id);
+      if (isDeleted) {
+        res.status(204).end();
+      }
+    })
+  );
 
 export default reviewsController;
