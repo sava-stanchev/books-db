@@ -2,10 +2,12 @@ import { useState } from "react";
 import { HOST } from "src/common/constants";
 
 function Star({ filled }) {
+  const starClass = `star-icon${filled ? " star-icon-filled" : ""}`;
+
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className={["star-icon", filled ? "star-icon-filled" : ""].join(" ")}
+      className={starClass}
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
@@ -32,8 +34,12 @@ export default function StarRating({
 }) {
   const [hoveredIndex, setHoveredIndex] = useState(null);
 
-  async function updateBookRating(newRating) {
-    const newRatingData = { newRating, user };
+  const handleMouseEnter = (index) => setHoveredIndex(index);
+  const handleMouseLeave = () => setHoveredIndex(null);
+
+  const handleClick = async (index) => {
+    if (disabled) return;
+    const newRating = index + 1;
 
     try {
       const response = await fetch(`${HOST}/books/${id}/rating`, {
@@ -42,44 +48,42 @@ export default function StarRating({
           "Content-Type": "application/json",
           authorization: `bearer ${localStorage.getItem("token")}`,
         },
-        body: JSON.stringify(newRatingData),
+        body: JSON.stringify({ newRating, user }),
       });
 
       if (!response.ok) {
-        throw new Error(`Response status: ${response.status}`);
-      } else {
-        const result = await response.json();
-        setRating(result.avg_rating);
-        setNumRatings(result.num_ratings);
+        throw new Error(`Failed to update rating: ${response.status}`);
       }
+
+      const { avg_rating, num_ratings } = await response.json();
+      setRating(avg_rating);
+      setNumRatings(num_ratings);
     } catch (error) {
       console.error(error.message);
     }
-  }
+  };
+
+  const renderedStars = Array.from({ length: 5 }, (_, index) => (
+    <span
+      key={index}
+      tabIndex={0}
+      onMouseEnter={() => handleMouseEnter(index)}
+      onMouseLeave={handleMouseLeave}
+      onClick={() => handleClick(index)}
+    >
+      <Star
+        filled={
+          !disabled && hoveredIndex != null
+            ? index <= hoveredIndex
+            : index < Math.round(value)
+        }
+      />
+    </span>
+  ));
 
   return (
     <div className="d-flex align-items-center">
-      {Array.from({ length: 5 }).map((_, index) => (
-        <span
-          key={index}
-          tabIndex={0}
-          onMouseEnter={() => setHoveredIndex(index)}
-          onMouseLeave={() => setHoveredIndex(null)}
-          onClick={() => {
-            if (!disabled) {
-              updateBookRating(index + 1);
-            }
-          }}
-        >
-          <Star
-            filled={
-              !disabled && hoveredIndex != null
-                ? index <= hoveredIndex
-                : index < Math.round(value)
-            }
-          />
-        </span>
-      ))}
+      {renderedStars}
       <span className="mx-3 fw-bold fs-3">{rating.toFixed(2)}</span>
       <span>{numRatings} ratings</span>
     </div>
