@@ -32,13 +32,39 @@ booksController
     const bookId = +req.params.id;
     try {
       const book = await booksData.getBookById(bookId);
-      res.json(book[0]);
+      res.json(book);
     } catch (error) {
       return res.status(404).json({
         error: error.message,
       });
     }
   })
+
+  // Get rating for book by user
+  .post(
+    "/:id/user-rating",
+    authMiddleware,
+    loggedUserGuard,
+    async (req, res) => {
+      const bookId = req.params.id;
+      const userId = req.body.id;
+
+      try {
+        const userRating = await bookRatingsData.hasUserRatedBook(
+          userId,
+          bookId
+        );
+
+        res.json({
+          rating: userRating !== null ? userRating.rating : 0,
+        });
+      } catch (error) {
+        return res.status(400).json({
+          error: error.message,
+        });
+      }
+    }
+  )
 
   // Get reviews for book
   .get("/:id/reviews", authMiddleware, loggedUserGuard, async (req, res) => {
@@ -89,7 +115,7 @@ booksController
       const userId = reqBody.user.id;
 
       await booksData.updateBookRating(bookId, rating);
-      await bookRatingsData.addBookRating(bookId, userId);
+      await bookRatingsData.addBookRating(bookId, userId, rating);
       const newBookData = await booksData.getBookById(bookId);
       return res.status(200).send(newBookData[0]);
     } catch (error) {

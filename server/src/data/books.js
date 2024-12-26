@@ -42,7 +42,7 @@ const getBookById = async (id) => {
   `;
 
   const [result] = await pool.query(sql, [id]);
-  return result;
+  return result[0];
 };
 
 const deleteBook = async (id) => {

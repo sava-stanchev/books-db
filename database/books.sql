@@ -25,10 +25,10 @@ DROP TABLE IF EXISTS `book_ratings`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `book_ratings` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `user_id` int NOT NULL,
   `book_id` int NOT NULL,
-  PRIMARY KEY (`id`),
+  `rating` float NOT NULL,
   KEY `FK_book_ratings_users` (`user_id`),
   KEY `FK_book_ratings_books` (`book_id`),
   CONSTRAINT `FK_book_ratings_books` FOREIGN KEY (`book_id`) REFERENCES `books` (`id`),
