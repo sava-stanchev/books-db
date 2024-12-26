@@ -101,7 +101,7 @@ const SingleBook = () => {
       ) : (
         <>
           <Row className="d-flex flex-lg-row flex-column">
-            <div className="d-flex d-lg-block col-lg-4 pe-lg-5 justify-content-center mb-3 mb-lg-0">
+            <div className="d-flex d-lg-block col-lg-4 pe-lg-5 justify-content-center my-3 mb-lg-0">
               <img
                 className="img-fluid border border-5"
                 src={bookData.cover}
