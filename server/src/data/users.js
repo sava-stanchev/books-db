@@ -6,7 +6,7 @@ const getAllUsers = async () => {
     WHERE is_deleted = 0
   `;
 
-  const result = await pool.query(sql);
+  const [result] = await pool.query(sql);
   return result;
 };
 

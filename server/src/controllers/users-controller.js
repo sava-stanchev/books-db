@@ -11,16 +11,15 @@ const usersController = express.Router();
 usersController
 
   // Get all users
-  .get("/", authMiddleware, loggedUserGuard, async (req, res) => {
-    try {
+  .get(
+    "/",
+    authMiddleware,
+    loggedUserGuard,
+    asyncHandler(async (req, res) => {
       const users = await usersData.getAllUsers();
-      res.json(users[0]);
-    } catch (error) {
-      return res.status(400).json({
-        error: error.message,
-      });
-    }
-  })
+      res.status(200).json(users);
+    })
+  )
 
   // Register user
   .post(
@@ -37,15 +36,16 @@ usersController
   )
 
   // Delete user
-  .delete("/:id", authMiddleware, loggedUserGuard, async (req, res) => {
-    try {
-      await usersData.deleteUser(req.params.id);
-      res.end();
-    } catch (error) {
-      return res.status(400).json({
-        error: error.message,
-      });
-    }
-  });
+  .delete(
+    "/:id",
+    authMiddleware,
+    loggedUserGuard,
+    asyncHandler(async (req, res) => {
+      const isDeleted = await usersData.deleteUser(req.params.id);
+      if (isDeleted) {
+        res.status(204).end();
+      }
+    })
+  );
 
 export default usersController;
