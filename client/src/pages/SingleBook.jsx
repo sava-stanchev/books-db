@@ -15,86 +15,90 @@ const SingleBook = () => {
   const [loading, setLoading] = useState(true);
   const [rating, setRating] = useState(null);
   const [numRatings, setNumRatings] = useState(null);
-  const [userBookRating, setUserBookRating] = useState(false);
+  const [userBookRating, setUserBookRating] = useState(null);
 
   useEffect(() => {
-    getBook(getBookRequest);
-    fetchUserRating();
-  }, []);
+    const fetchBookData = async () => {
+      try {
+        const response = await fetch(`${HOST}/books/${id}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `bearer ${localStorage.getItem("token")}`,
+          },
+        });
 
-  async function getBook(request) {
-    try {
-      const response = await fetch(request);
+        if (!response.ok) {
+          throw new Error(`Response status: ${response.status}`);
+        }
 
-      if (!response.ok) {
-        throw new Error(`Response status: ${response.status}`);
-      } else {
         const result = await response.json();
         setBookData(result);
         setRating(result.avg_rating);
         setNumRatings(result.num_ratings);
+      } catch (error) {
+        console.error(error.message);
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error(error.message);
-    } finally {
-      setLoading(false);
-    }
-  }
+    };
 
-  const fetchUserRating = async () => {
+    fetchBookData();
+  }, [id]);
+
+  useEffect(() => {
+    const fetchUserRating = async () => {
+      try {
+        const response = await fetch(`${HOST}/books/${id}/user-rating`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify(user),
+        });
+
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status}`);
+        }
+
+        const result = await response.json();
+        setUserBookRating(result.rating);
+      } catch (error) {
+        console.error(error.message);
+      }
+    };
+
+    if (user && id) {
+      fetchUserRating();
+    }
+  }, [id, user, rating]);
+
+  const deleteBook = async (id) => {
     try {
-      const response = await fetch(`${HOST}/books/${id}/user-rating`, {
-        method: "POST",
+      const response = await fetch(`${HOST}/books/${id}`, {
+        method: "DELETE",
         headers: {
           "Content-Type": "application/json",
           authorization: `bearer ${localStorage.getItem("token")}`,
         },
-        body: JSON.stringify(user),
       });
-      if (!response.ok) throw new Error(`Error: ${response.status}`);
-      const data = await response.json();
-      setUserBookRating(data.rating);
-    } catch (error) {
-      console.error("Failed to fetch books:", error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  async function deleteBook(request) {
-    try {
-      const response = await fetch(request);
 
       if (!response.ok) {
         throw new Error(`Response status: ${response.status}`);
-      } else {
-        navigate(`/books`);
       }
+
+      navigate(`/books`);
     } catch (error) {
       console.error(error.message);
     }
-  }
-
-  const getBookRequest = new Request(`${HOST}/books/${id}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      authorization: `bearer ${localStorage.getItem("token")}`,
-    },
-  });
-
-  const deleteBookRequest = new Request(`${HOST}/books/${id}`, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-      authorization: `bearer ${localStorage.getItem("token")}`,
-    },
-  });
+  };
 
   return (
     <Container className="my-5">
-      {loading && <Loader />}
-      {!loading && (
+      {loading ? (
+        <Loader />
+      ) : (
         <>
           <Row className="d-flex flex-lg-row flex-column">
             <div className="d-flex d-lg-block col-lg-4 pe-lg-5 justify-content-center mb-3 mb-lg-0">
@@ -117,20 +121,22 @@ const SingleBook = () => {
                   setNumRatings={setNumRatings}
                   id={id}
                   user={user}
+                  disabled={userBookRating > 0}
                 />
-                <p>
-                  {userBookRating > 0
-                    ? `You gave this book ${userBookRating} stars`
-                    : "You haven't rated this book yet."}
-                </p>
+                {userBookRating !== null && (
+                  <p>
+                    {userBookRating > 0
+                      ? `You gave this book ${userBookRating} ${
+                          userBookRating === 1 ? "star" : "stars"
+                        }.`
+                      : "You haven't rated this book yet."}
+                  </p>
+                )}
                 <p>Genre: {bookData.genre}</p>
                 <p>Language: {bookData.language}</p>
                 <p className="book-description">{bookData.description}</p>
                 {user.is_admin && (
-                  <Button
-                    variant="danger"
-                    onClick={() => deleteBook(deleteBookRequest)}
-                  >
+                  <Button variant="danger" onClick={() => deleteBook(id)}>
                     Delete Book
                   </Button>
                 )}

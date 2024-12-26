@@ -117,7 +117,7 @@ booksController
       await booksData.updateBookRating(bookId, rating);
       await bookRatingsData.addBookRating(bookId, userId, rating);
       const newBookData = await booksData.getBookById(bookId);
-      return res.status(200).send(newBookData[0]);
+      return res.status(200).send(newBookData);
     } catch (error) {
       return res.status(500).json({
         message: error.message,

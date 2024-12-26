@@ -28,6 +28,7 @@ export default function StarRating({
   setNumRatings,
   id,
   user,
+  disabled,
 }) {
   const [hoveredIndex, setHoveredIndex] = useState(null);
 
@@ -65,12 +66,14 @@ export default function StarRating({
           onMouseEnter={() => setHoveredIndex(index)}
           onMouseLeave={() => setHoveredIndex(null)}
           onClick={() => {
-            updateBookRating(index + 1);
+            if (!disabled) {
+              updateBookRating(index + 1);
+            }
           }}
         >
           <Star
             filled={
-              hoveredIndex != null
+              !disabled && hoveredIndex != null
                 ? index <= hoveredIndex
                 : index < Math.round(value)
             }
