@@ -11,32 +11,29 @@ booksController
 
   // Get all books
   .get("/", authMiddleware, loggedUserGuard, async (req, res) => {
-    const { sort } = req.query;
     try {
-      if (sort) {
-        const theBooksSortedByYear = await booksData.sortBooksByYear(sort);
-        return res.json(theBooksSortedByYear);
-      }
-
-      const theBooks = await booksData.getAllBooks();
-      res.json(theBooks);
+      const { sort } = req.query;
+      const books = sort
+        ? await booksData.sortBooksByYear(sort)
+        : await booksData.getAllBooks();
+      res.json(books);
     } catch (error) {
-      return res.status(400).json({
-        error: error.message,
-      });
+      res.status(500).json({ error: error.message });
     }
   })
 
   // Get a book
   .get("/:id", authMiddleware, loggedUserGuard, async (req, res) => {
-    const bookId = +req.params.id;
     try {
+      const bookId = +req.params.id;
       const book = await booksData.getBookById(bookId);
-      res.json(book);
+      if (!book) {
+        res.status(404).json({ error: "Book not found" });
+      } else {
+        res.json(book);
+      }
     } catch (error) {
-      return res.status(404).json({
-        error: error.message,
-      });
+      res.status(500).json({ error: error.message });
     }
   })
 
@@ -46,22 +43,16 @@ booksController
     authMiddleware,
     loggedUserGuard,
     async (req, res) => {
-      const bookId = req.params.id;
-      const userId = req.body.id;
-
       try {
+        const bookId = req.params.id;
+        const userId = req.body.id;
         const userRating = await bookRatingsData.hasUserRatedBook(
           userId,
           bookId
         );
-
-        res.json({
-          rating: userRating !== null ? userRating.rating : 0,
-        });
+        res.json({ rating: userRating?.rating || 0 });
       } catch (error) {
-        return res.status(400).json({
-          error: error.message,
-        });
+        res.status(500).json({ error: error.message });
       }
     }
   )
@@ -70,18 +61,14 @@ booksController
   .get("/:id/reviews", authMiddleware, loggedUserGuard, async (req, res) => {
     try {
       const { id } = req.params;
-      const theReviews = await reviewsData.getReviewsForBook(id);
-      if (!theReviews) {
-        return res.json({
-          msg: "Book has no reviews yet!",
-        });
+      const reviews = await reviewsData.getReviewsForBook(id);
+      if (!reviews) {
+        res.json({ msg: "Book has no reviews yet!" });
+      } else {
+        res.json(reviews);
       }
-
-      return res.send(theReviews);
     } catch (error) {
-      return res.status(400).json({
-        error: error.message,
-      });
+      res.status(500).json({ error: error.message });
     }
   })
 
@@ -91,17 +78,14 @@ booksController
     authMiddleware,
     loggedUserGuard,
     async (req, res) => {
-      const bookId = req.params.id;
-      const newReview = req.body.newReview;
-      const userId = req.body.user.id;
-
       try {
+        const bookId = req.params.id;
+        const newReview = req.body.newReview;
+        const userId = req.body.user.id;
         await reviewsData.createReview(bookId, newReview, userId);
         res.end();
       } catch (error) {
-        return res.status(400).json({
-          error: error.message,
-        });
+        res.status(500).json({ error: error.message });
       }
     }
   )
@@ -110,18 +94,13 @@ booksController
   .patch("/:id/rating", authMiddleware, loggedUserGuard, async (req, res) => {
     try {
       const bookId = req.params.id;
-      const reqBody = req.body;
-      const rating = reqBody.newRating;
-      const userId = reqBody.user.id;
-
-      await booksData.updateBookRating(bookId, rating);
-      await bookRatingsData.addBookRating(bookId, userId, rating);
+      const { newRating, user } = req.body;
+      await booksData.updateBookRating(bookId, newRating);
+      await bookRatingsData.addBookRating(bookId, user.id, newRating);
       const newBookData = await booksData.getBookById(bookId);
-      return res.status(200).send(newBookData);
+      res.status(200).json(newBookData);
     } catch (error) {
-      return res.status(500).json({
-        message: error.message,
-      });
+      res.status(500).json({ message: error.message });
     }
   })
 
@@ -129,12 +108,12 @@ booksController
   .delete("/:id", authMiddleware, loggedUserGuard, async (req, res) => {
     try {
       const bookId = req.params.id;
-      await booksData.deleteBook(bookId);
-      res.end();
+      const isDeleted = await booksData.deleteBook(bookId);
+      if (isDeleted) {
+        return res.status(204).end();
+      }
     } catch (error) {
-      return res.status(400).json({
-        error: error.message,
-      });
+      res.status(500).json({ error: error.message });
     }
   });
 
