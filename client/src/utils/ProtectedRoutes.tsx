@@ -3,11 +3,19 @@ import { Outlet, Navigate, useLocation } from "react-router-dom";
 import { DateTime } from "luxon";
 import { AuthContext } from "./AuthContext";
 
-const ProtectedRoutes = () => {
+interface User {
+  id: number;
+  username: string;
+  is_admin: number;
+  iat: number;
+  exp: number;
+}
+
+const ProtectedRoutes: React.FC = () => {
   const { user, setUser } = useContext(AuthContext);
   const location = useLocation();
 
-  const isTokenExpired = (user) => {
+  const isTokenExpired = (user: User | null): boolean => {
     if (!user || !user.exp) return true;
     const tokenTime = DateTime.fromSeconds(user.exp).toUTC().toMillis();
     const currentTime = DateTime.now().toUTC().toMillis();
