@@ -5,8 +5,6 @@ import Login from "src/pages/Login";
 import Register from "src/pages/Register";
 import SingleBook from "src/pages/SingleBook";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import React, { useState } from "react";
-import AuthContext, { getUser } from "src/utils/AuthContext";
 import Users from "src/pages/Users";
 import Home from "src/pages/Home";
 import ProtectedRoutes from "src/utils/ProtectedRoutes";
@@ -51,7 +49,7 @@ const router = createBrowserRouter([
   },
 ]);
 
-const App = () => {
+const App: React.FC = () => {
   return (
     <AuthContextProvider>
       <RouterProvider router={router}></RouterProvider>
