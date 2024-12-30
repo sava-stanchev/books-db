@@ -5,14 +5,15 @@ import { useNavigate } from "react-router-dom";
 import { HOST } from "src/common/constants";
 import Loader from "src/components/Loader";
 import Search from "src/components/Search";
+import { Book } from "src/types";
 
-const Books = () => {
+const Books: React.FC = () => {
   const navigate = useNavigate();
 
-  const [books, setBooks] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [pageNumber, setPageNumber] = useState(0);
-  const [search, setSearch] = useState("");
+  const [books, setBooks] = useState<Book[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [pageNumber, setPageNumber] = useState<number>(0);
+  const [search, setSearch] = useState<string>("");
 
   const booksPerPage = 6;
 
@@ -27,10 +28,10 @@ const Books = () => {
           },
         });
         if (!response.ok) throw new Error(`Error: ${response.status}`);
-        const data = await response.json();
+        const data: Book[] = await response.json();
         setBooks(data);
       } catch (error) {
-        console.error("Failed to fetch books:", error.message);
+        console.error("Failed to fetch books:", (error as Error).message);
       } finally {
         setLoading(false);
       }
@@ -50,11 +51,12 @@ const Books = () => {
 
   const pageCount = Math.ceil(filteredBooks.length / booksPerPage);
 
-  const handleSearchChange = useCallback((value) => {
+  const handleSearchChange = useCallback((value: string) => {
     setSearch(value);
   }, []);
 
-  const handlePageChange = ({ selected }) => setPageNumber(selected);
+  const handlePageChange = ({ selected }: { selected: number }) =>
+    setPageNumber(selected);
 
   return (
     <Container className="my-5">
@@ -70,6 +72,7 @@ const Books = () => {
                   <Card.Img variant="top" src={book.cover} alt={book.title} />
                   <Card.Body>
                     <Card.Title>{book.title}</Card.Title>
+                    <Card.Text>{book.description}</Card.Text>
                     <Button
                       variant="primary"
                       onClick={() => navigate(`/books/${book.id}`)}
