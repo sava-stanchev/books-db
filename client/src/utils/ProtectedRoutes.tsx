@@ -2,14 +2,7 @@ import { useContext, useEffect } from "react";
 import { Outlet, Navigate, useLocation } from "react-router-dom";
 import { DateTime } from "luxon";
 import { AuthContext } from "./AuthContext";
-
-interface User {
-  id: number;
-  username: string;
-  is_admin: number;
-  iat: number;
-  exp: number;
-}
+import { User } from "src/types";
 
 const ProtectedRoutes: React.FC = () => {
   const { user, setUser } = useContext(AuthContext);

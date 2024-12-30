@@ -6,14 +6,7 @@ import React, {
   ReactNode,
 } from "react";
 import jwtDecode from "jwt-decode";
-
-interface User {
-  id: number;
-  username: string;
-  is_admin: number;
-  iat: number;
-  exp: number;
-}
+import { User } from "src/types";
 
 interface AuthContextValue {
   user: User | null;
