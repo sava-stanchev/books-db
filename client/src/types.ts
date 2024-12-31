@@ -28,3 +28,8 @@ export interface Book {
   num_ratings: number;
   year: number;
 }
+
+export interface AlertDismissibleProps {
+  activeAlert: boolean;
+  alertMessage?: string;
+}
