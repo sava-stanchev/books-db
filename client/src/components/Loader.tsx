@@ -1,7 +1,7 @@
 import { Row } from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
 
-function Loader() {
+const Loader: React.FC = () => {
   return (
     <Row className="d-flex justify-content-center m-4">
       <Spinner animation="border" variant="primary" role="status">
@@ -9,6 +9,6 @@ function Loader() {
       </Spinner>
     </Row>
   );
-}
+};
 
 export default Loader;

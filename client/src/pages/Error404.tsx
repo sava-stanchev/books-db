@@ -1,6 +1,5 @@
 import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import React from "react";
 
 const Error404: React.FC = () => {
   const navigate = useNavigate();

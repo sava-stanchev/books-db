@@ -73,7 +73,10 @@ const Users: React.FC = () => {
         <td>{user.username}</td>
         <td>{user.email}</td>
         <td>
-          <OverlayTrigger placement="top" overlay={renderTooltip("Delete")}>
+          <OverlayTrigger
+            placement="top"
+            overlay={() => renderTooltip("Delete")}
+          >
             <button
               type="button"
               className="icon delete-icon"
