@@ -6,11 +6,12 @@ import { FaTrashAlt } from "react-icons/fa";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import renderTooltip from "src/components/Tooltip";
 import Search from "src/components/Search";
+import { ListedUser } from "src/types";
 
-const Users = () => {
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState("");
+const Users: React.FC = () => {
+  const [users, setUsers] = useState<ListedUser[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [search, setSearch] = useState<string>("");
 
   const filteredUsers = users.filter((user) =>
     user.username.toLowerCase().includes(search.toLowerCase())
@@ -30,7 +31,7 @@ const Users = () => {
       if (!response.ok) {
         throw new Error(`Failed to fetch users: ${response.status}`);
       }
-      const result = await response.json();
+      const result: ListedUser[] = await response.json();
       setUsers(result);
     } catch (error) {
       console.error("Error fetching users:", error);
@@ -43,17 +44,17 @@ const Users = () => {
     fetchUsers();
   }, [fetchUsers]);
 
-  const handleSearchChange = useCallback((value) => {
+  const handleSearchChange = useCallback((value: string) => {
     setSearch(value);
   }, []);
 
-  const handleDeleteUser = async (userId) => {
+  const handleDeleteUser = async (userId: number) => {
     try {
       const response = await fetch(`${HOST}/users/${userId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          authorization: `bearer ${localStorage.getItem("token")}`,
+          authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
 

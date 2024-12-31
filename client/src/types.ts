@@ -6,6 +6,15 @@ export interface User {
   exp: number; // Expiration time
 }
 
+export interface ListedUser {
+  id: number;
+  username: string;
+  email: string;
+  is_admin: number;
+  is_deleted: number;
+  password: string;
+}
+
 export interface Book {
   id: number;
   title: string;
