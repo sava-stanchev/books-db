@@ -16,7 +16,7 @@ const SingleBook = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [rating, setRating] = useState<number | null>(null);
   const [numRatings, setNumRatings] = useState<number | null>(null);
-  const [userBookRating, setUserBookRating] = useState<number | null>(null);
+  const [userBookRating, setUserBookRating] = useState<number>(0);
 
   useEffect(() => {
     const fetchBookData = async () => {
@@ -44,7 +44,7 @@ const SingleBook = () => {
       }
     };
 
-    if (id) fetchBookData();
+    fetchBookData();
   }, [id]);
 
   useEffect(() => {
@@ -70,7 +70,7 @@ const SingleBook = () => {
       }
     };
 
-    if (user && id) fetchUserRating();
+    fetchUserRating();
   }, [id, user]);
 
   const handleDeleteBook = async (bookId: string | undefined) => {
@@ -118,19 +118,17 @@ const SingleBook = () => {
                   setRating={setRating}
                   numRatings={numRatings}
                   setNumRatings={setNumRatings}
-                  id={id!}
+                  id={id}
                   user={user}
-                  disabled={userBookRating !== null && userBookRating > 0}
+                  disabled={userBookRating > 0}
                 />
-                {userBookRating !== null && (
-                  <p>
-                    {userBookRating > 0
-                      ? `You gave this book ${userBookRating} ${
-                          userBookRating === 1 ? "star" : "stars"
-                        }.`
-                      : "You haven't rated this book yet."}
-                  </p>
-                )}
+                <p>
+                  {userBookRating > 0
+                    ? `You gave this book ${userBookRating} ${
+                        userBookRating === 1 ? "star" : "stars"
+                      }.`
+                    : "You haven't rated this book yet."}
+                </p>
                 <p>Genre: {bookData?.genre}</p>
                 <p>Language: {bookData?.language}</p>
                 <p className="book-description">{bookData?.description}</p>
@@ -142,7 +140,7 @@ const SingleBook = () => {
               </div>
             </div>
           </Row>
-          <SingleBookReviews id={id!} user={user} />
+          <SingleBookReviews id={id} user={user} />
         </>
       )}
     </Container>
