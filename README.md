@@ -33,6 +33,10 @@ Frontend:
 ![Books](/screenshots/books-page-1.png)
 - Books (2)
 ![Books](/screenshots/books-page-2.png)
+- Single Book (1)
+![SingleBook](/screenshots/single-book-1.png)
+- Single Book (2)
+![SingleBook](/screenshots/single-book-2.png)
 - Users
 ![Users](screenshots/users-page.png)
 - Register
