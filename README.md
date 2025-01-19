@@ -4,7 +4,7 @@
 A single-page application where users can find books, rate them and write reviews.
 
 ### Tech Stack
-React.js, Bootstrap, CSS, Express.js, MySQL
+Typescript, React.js, Bootstrap, CSS, Express.js, MySQL
 
 ### Setup
 Backend:
@@ -29,8 +29,10 @@ Frontend:
 ### Pages
 - Home page
 ![Home](/screenshots/home-page.png)
-- Tracklist
-![Books](/screenshots/books-page.png)
+- Books (1)
+![Books](/screenshots/books-page-1.png)
+- Books (2)
+![Books](/screenshots/books-page-2.png)
 - Users
 ![Users](screenshots/users-page.png)
 - Register
