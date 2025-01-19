@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import { Col, Row, InputGroup, Form } from "react-bootstrap";
 
-const Search = ({ search, onSearchChange }) => {
-  const [searchInput, setSearchInput] = useState(search);
+const Search: React.FC<{
+  search: string;
+  onSearchChange: (search: string) => void;
+}> = ({ search, onSearchChange }) => {
+  const [searchInput, setSearchInput] = useState<string>(search);
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {

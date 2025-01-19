@@ -6,11 +6,11 @@ import Navbar from "react-bootstrap/Navbar";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { AuthContext } from "src/utils/AuthContext";
 
-const useSignOut = () => {
+const useSignOut = (): (() => Promise<void>) => {
   const navigate = useNavigate();
   const auth = useContext(AuthContext);
 
-  const signOut = async () => {
+  const signOut = async (): Promise<void> => {
     try {
       const logoutRequest = new Request(`${HOST}/logout`, {
         method: "DELETE",
@@ -29,14 +29,14 @@ const useSignOut = () => {
       localStorage.removeItem("token");
       navigate("/");
     } catch (error) {
-      console.error(error.message);
+      console.error((error as Error).message);
     }
   };
 
   return signOut;
 };
 
-const NavbarComponent = () => {
+const NavbarComponent: React.FC = () => {
   const { user } = useContext(AuthContext);
   const signOut = useSignOut();
 
