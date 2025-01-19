@@ -118,8 +118,8 @@ const SingleBook = () => {
                   setRating={setRating}
                   numRatings={numRatings}
                   setNumRatings={setNumRatings}
-                  id={id}
-                  user={user}
+                  id={id!}
+                  user={user!}
                   disabled={userBookRating > 0}
                 />
                 <p>
@@ -132,7 +132,7 @@ const SingleBook = () => {
                 <p>Genre: {bookData?.genre}</p>
                 <p>Language: {bookData?.language}</p>
                 <p className="book-description">{bookData?.description}</p>
-                {user && user.is_admin && (
+                {user && user.is_admin !== 0 && (
                   <Button variant="danger" onClick={() => handleDeleteBook(id)}>
                     Delete Book
                   </Button>

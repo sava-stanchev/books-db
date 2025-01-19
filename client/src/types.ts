@@ -33,3 +33,14 @@ export interface AlertDismissibleProps {
   active: boolean;
   message?: string;
 }
+
+export interface StarRatingProps {
+  value: number | null;
+  rating: number | null;
+  setRating: (rating: number) => void;
+  numRatings: number | null;
+  setNumRatings: (numRatings: number) => void;
+  id: string;
+  user: User;
+  disabled: boolean;
+}

@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { JSX, useState } from "react";
 import { HOST } from "src/common/constants";
+import { StarRatingProps } from "src/types";
 
-function Star({ filled }) {
+function Star({ filled }: { filled: boolean }): JSX.Element {
   const starClass = `star-icon${filled ? " star-icon-filled" : ""}`;
 
   return (
@@ -31,13 +32,13 @@ export default function StarRating({
   id,
   user,
   disabled,
-}) {
-  const [hoveredIndex, setHoveredIndex] = useState(null);
+}: StarRatingProps): JSX.Element {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
-  const handleMouseEnter = (index) => setHoveredIndex(index);
-  const handleMouseLeave = () => setHoveredIndex(null);
+  const handleMouseEnter = (index: number): void => setHoveredIndex(index);
+  const handleMouseLeave = (): void => setHoveredIndex(null);
 
-  const handleClick = async (index) => {
+  const handleClick = async (index: number): Promise<void> => {
     if (disabled) return;
     const newRating = index + 1;
 
@@ -58,7 +59,7 @@ export default function StarRating({
       const { avg_rating, num_ratings } = await response.json();
       setRating(avg_rating);
       setNumRatings(num_ratings);
-    } catch (error) {
+    } catch (error: any) {
       console.error(error.message);
     }
   };
@@ -75,7 +76,7 @@ export default function StarRating({
         filled={
           !disabled && hoveredIndex != null
             ? index <= hoveredIndex
-            : index < Math.round(value)
+            : index < Math.round(value ?? 0)
         }
       />
     </span>
@@ -84,7 +85,7 @@ export default function StarRating({
   return (
     <div className="d-flex align-items-center">
       {renderedStars}
-      <span className="mx-3 fw-bold fs-3">{rating.toFixed(2)}</span>
+      <span className="mx-3 fw-bold fs-3">{(rating ?? 0).toFixed(2)}</span>
       <span>{numRatings} ratings</span>
     </div>
   );
