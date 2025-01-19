@@ -1,23 +1,32 @@
-import { useContext, useState } from "react";
+import { useContext, useState, ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import decode from "jwt-decode";
-
 import { HOST } from "src/common/constants";
 import { AuthContext } from "src/utils/AuthContext";
 import AlertDismissible from "src/components/Alert";
+import { AlertDismissibleProps, User } from "src/types";
 
-const Login = () => {
+const Login: React.FC = () => {
   const navigate = useNavigate();
   const auth = useContext(AuthContext);
 
-  const [formData, setFormData] = useState({ username: "", password: "" });
-  const [showPassword, setShowPassword] = useState(false);
-  const [alert, setAlert] = useState({ active: false, message: "" });
+  const [formData, setFormData] = useState<{
+    username: string;
+    password: string;
+  }>({
+    username: "",
+    password: "",
+  });
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [alert, setAlert] = useState<AlertDismissibleProps>({
+    active: false,
+    message: "",
+  });
 
   const togglePasswordVisibility = () => setShowPassword((prev) => !prev);
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
     setFormData((prev) => ({ ...prev, [id]: value }));
   };
@@ -38,10 +47,10 @@ const Login = () => {
 
       localStorage.clear();
       localStorage.setItem("token", result.token);
-      const user = decode(result.token);
+      const user = decode(result.token) as User;
       auth.setUser(user);
       navigate("/");
-    } catch (error) {
+    } catch (error: any) {
       console.error(error.message);
       setAlert({ active: true, message: error.message });
     }
@@ -49,10 +58,7 @@ const Login = () => {
 
   return (
     <div className="d-flex justify-content-center align-items-center flex-fill bg-dark">
-      <AlertDismissible
-        activeAlert={alert.active}
-        alertMessage={alert.message}
-      />
+      <AlertDismissible active={alert.active} message={alert.message} />
       <div className="form-container p-5 rounded bg-light">
         <form>
           <h3 className="text-center">Sign In</h3>

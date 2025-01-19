@@ -30,6 +30,6 @@ export interface Book {
 }
 
 export interface AlertDismissibleProps {
-  activeAlert: boolean;
-  alertMessage?: string;
+  active: boolean;
+  message?: string;
 }
