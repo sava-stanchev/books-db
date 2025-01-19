@@ -68,11 +68,13 @@ const Books: React.FC = () => {
           <Row xs={1} sm={2} md={3} className="g-4 justify-content-center">
             {displayedBooks.map((book) => (
               <Col key={book.id} className="d-flex justify-content-center">
-                <Card style={{ width: "18rem" }}>
+                <Card className="text-center" style={{ width: "18rem" }}>
                   <Card.Img variant="top" src={book.cover} alt={book.title} />
-                  <Card.Body>
+                  <Card.Body className="d-flex flex-column justify-content-between">
                     <Card.Title>{book.title}</Card.Title>
-                    <Card.Text>{book.description}</Card.Text>
+                    <Card.Text className="book-teaser-description">
+                      {book.description}
+                    </Card.Text>
                     <Button
                       variant="primary"
                       onClick={() => navigate(`/books/${book.id}`)}
