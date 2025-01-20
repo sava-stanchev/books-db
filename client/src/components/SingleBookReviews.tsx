@@ -3,7 +3,7 @@ import { HOST } from "src/common/constants";
 import { Button, Row, Form } from "react-bootstrap";
 import { FaTrashAlt, FaEdit } from "react-icons/fa";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
-import renderTooltip from "src/components/Tooltip";
+import Tooltip from "react-bootstrap/Tooltip";
 import EditReviewModal from "src/components/EditReviewModal";
 import { Review, User } from "src/types";
 
@@ -43,7 +43,7 @@ const Reviews: React.FC<ReviewsProps> = ({
           {user.id === review.user_id && (
             <OverlayTrigger
               placement="top"
-              overlay={() => renderTooltip("Edit")}
+              overlay={<Tooltip id="button-tooltip">Edit</Tooltip>}
             >
               <button
                 type="button"
@@ -58,7 +58,7 @@ const Reviews: React.FC<ReviewsProps> = ({
           {user.is_admin === 1 && (
             <OverlayTrigger
               placement="top"
-              overlay={() => renderTooltip("Delete")}
+              overlay={<Tooltip id="button-tooltip">Delete</Tooltip>}
             >
               <button
                 type="button"

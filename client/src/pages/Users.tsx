@@ -4,7 +4,7 @@ import Loader from "src/components/Loader";
 import { Container, Table } from "react-bootstrap";
 import { FaTrashAlt } from "react-icons/fa";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
-import renderTooltip from "src/components/Tooltip";
+import Tooltip from "react-bootstrap/Tooltip";
 import Search from "src/components/Search";
 import { ListedUser } from "src/types";
 
@@ -75,7 +75,7 @@ const Users: React.FC = () => {
         <td>
           <OverlayTrigger
             placement="top"
-            overlay={() => renderTooltip("Delete")}
+            overlay={<Tooltip id="button-tooltip">Delete</Tooltip>}
           >
             <button
               type="button"
