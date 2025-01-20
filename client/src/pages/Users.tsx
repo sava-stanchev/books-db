@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import { HOST } from "src/common/constants";
 import Loader from "src/components/Loader";
 import { Container, Table } from "react-bootstrap";
@@ -13,24 +13,30 @@ const Users: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [search, setSearch] = useState<string>("");
 
-  const filteredUsers = users.filter((user) =>
-    user.username.toLowerCase().includes(search.toLowerCase())
+  const filteredUsers = useMemo(
+    () =>
+      users.filter((user) =>
+        user.username.toLowerCase().includes(search.toLowerCase())
+      ),
+    [users, search]
   );
 
   const fetchUsers = useCallback(async () => {
-    const usersRequest = new Request(`${HOST}/users`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: `bearer ${localStorage.getItem("token")}`,
-      },
-    });
+    setLoading(true);
 
     try {
-      const response = await fetch(usersRequest);
+      const response = await fetch(`${HOST}/users`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
       if (!response.ok) {
         throw new Error(`Failed to fetch users: ${response.status}`);
       }
+
       const result: ListedUser[] = await response.json();
       setUsers(result);
     } catch (error) {
@@ -44,9 +50,7 @@ const Users: React.FC = () => {
     fetchUsers();
   }, [fetchUsers]);
 
-  const handleSearchChange = useCallback((value: string) => {
-    setSearch(value);
-  }, []);
+  const handleSearchChange = (value: string) => setSearch(value);
 
   const handleDeleteUser = async (userId: number) => {
     try {
@@ -61,6 +65,7 @@ const Users: React.FC = () => {
       if (!response.ok) {
         throw new Error(`Failed to delete user: ${response.status}`);
       }
+
       setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
     } catch (error) {
       console.error("Error deleting user:", error);
