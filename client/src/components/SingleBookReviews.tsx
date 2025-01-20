@@ -5,15 +5,24 @@ import { FaTrashAlt, FaEdit } from "react-icons/fa";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import renderTooltip from "src/components/Tooltip";
 import EditReviewModal from "src/components/EditReviewModal";
+import { Review, User } from "src/types";
 
-const Reviews = ({
+type ReviewsProps = {
+  review: Review;
+  user: User;
+  editReviewRequest: (reviewId: number) => Promise<void>;
+  deleteReviewRequest: (reviewId: number) => Promise<void>;
+  setUpdatedReviewContent: (content: { content: string }) => void;
+};
+
+const Reviews: React.FC<ReviewsProps> = ({
   review,
   user,
   editReviewRequest,
   deleteReviewRequest,
   setUpdatedReviewContent,
 }) => {
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState<boolean>(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -22,8 +31,6 @@ const Reviews = ({
     <>
       <EditReviewModal
         show={show}
-        setShow={setShow}
-        handleShow={handleShow}
         handleClose={handleClose}
         editReviewRequest={editReviewRequest}
         review={review}
@@ -34,7 +41,10 @@ const Reviews = ({
         <div className="d-flex gap-1 align-items-center">
           <span className="me-1">{review.date_created.split("T")[0]}</span>
           {user.id === review.user_id && (
-            <OverlayTrigger placement="top" overlay={renderTooltip("Edit")}>
+            <OverlayTrigger
+              placement="top"
+              overlay={() => renderTooltip("Edit")}
+            >
               <button
                 type="button"
                 className="icon edit-icon"
@@ -45,8 +55,11 @@ const Reviews = ({
               </button>
             </OverlayTrigger>
           )}
-          {user.is_admin && (
-            <OverlayTrigger placement="top" overlay={renderTooltip("Delete")}>
+          {user.is_admin === 1 && (
+            <OverlayTrigger
+              placement="top"
+              overlay={() => renderTooltip("Delete")}
+            >
               <button
                 type="button"
                 className="icon delete-icon"
@@ -65,12 +78,19 @@ const Reviews = ({
   );
 };
 
-const SingleBookReviews = ({ id, user }) => {
-  const [reviews, setReviews] = useState([]);
-  const [newReview, setNewReview] = useState({
+type SingleBookReviewsProps = {
+  id: string;
+  user: User;
+};
+
+const SingleBookReviews: React.FC<SingleBookReviewsProps> = ({ id, user }) => {
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [newReview, setNewReview] = useState<{ content: string }>({
     content: "",
   });
-  const [updatedReviewContent, setUpdatedReviewContent] = useState({
+  const [updatedReviewContent, setUpdatedReviewContent] = useState<{
+    content: string;
+  }>({
     content: "",
   });
 
@@ -78,7 +98,7 @@ const SingleBookReviews = ({ id, user }) => {
     getBookReviews(getBookReviewsRequest);
   }, []);
 
-  async function getBookReviews(request) {
+  async function getBookReviews(request: Request) {
     try {
       const response = await fetch(request);
 
@@ -89,11 +109,11 @@ const SingleBookReviews = ({ id, user }) => {
         setReviews(result);
       }
     } catch (error) {
-      console.error(error.message);
+      console.error((error as Error).message);
     }
   }
 
-  async function createReview(request) {
+  async function createReview(request: Request) {
     try {
       const response = await fetch(request);
 
@@ -103,11 +123,11 @@ const SingleBookReviews = ({ id, user }) => {
         getBookReviews(getBookReviewsRequest);
       }
     } catch (error) {
-      console.error(error.message);
+      console.error((error as Error).message);
     }
   }
 
-  async function editReviewRequest(reviewId) {
+  async function editReviewRequest(reviewId: number) {
     try {
       const response = await fetch(`${HOST}/reviews/${reviewId}`, {
         method: "PATCH",
@@ -124,11 +144,11 @@ const SingleBookReviews = ({ id, user }) => {
         getBookReviews(getBookReviewsRequest);
       }
     } catch (error) {
-      console.error(error.message);
+      console.error((error as Error).message);
     }
   }
 
-  async function deleteReviewRequest(reviewId) {
+  async function deleteReviewRequest(reviewId: number) {
     try {
       const response = await fetch(`${HOST}/reviews/${reviewId}`, {
         method: "DELETE",
@@ -144,7 +164,7 @@ const SingleBookReviews = ({ id, user }) => {
         getBookReviews(getBookReviewsRequest);
       }
     } catch (error) {
-      console.error(error.message);
+      console.error((error as Error).message);
     }
   }
 
@@ -175,7 +195,7 @@ const SingleBookReviews = ({ id, user }) => {
             <Form.Control
               as="textarea"
               rows={3}
-              onChange={(e) => setNewReview(e.target.value)}
+              onChange={(e) => setNewReview({ content: e.target.value })}
             />
           </Form.Group>
         </Form>

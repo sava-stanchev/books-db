@@ -29,6 +29,14 @@ export interface Book {
   year: number;
 }
 
+export interface Review {
+  id: number;
+  username: string;
+  date_created: string;
+  content: string;
+  user_id: number;
+}
+
 export interface AlertDismissibleProps {
   active: boolean;
   message?: string;

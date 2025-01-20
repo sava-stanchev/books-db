@@ -1,6 +1,16 @@
+import React from "react";
 import { Button, Form, Modal } from "react-bootstrap";
+import { Review } from "src/types";
 
-const EditReviewModal = ({
+interface EditReviewModalProps {
+  show: boolean;
+  handleClose: () => void;
+  editReviewRequest: (reviewId: number) => void;
+  review: Review;
+  setUpdatedReviewContent: (content: { content: string }) => void;
+}
+
+const EditReviewModal: React.FC<EditReviewModalProps> = ({
   show,
   handleClose,
   editReviewRequest,
@@ -20,7 +30,9 @@ const EditReviewModal = ({
               as="textarea"
               rows={3}
               defaultValue={review.content}
-              onChange={(e) => setUpdatedReviewContent(e.target.value)}
+              onChange={(e) =>
+                setUpdatedReviewContent({ content: e.target.value })
+              }
             />
           </Form.Group>
         </Form>

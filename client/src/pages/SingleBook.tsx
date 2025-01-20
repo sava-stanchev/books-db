@@ -140,7 +140,7 @@ const SingleBook = () => {
               </div>
             </div>
           </Row>
-          <SingleBookReviews id={id} user={user} />
+          <SingleBookReviews id={id!} user={user!} />
         </>
       )}
     </Container>
