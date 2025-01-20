@@ -41,10 +41,7 @@ const Reviews: React.FC<ReviewsProps> = ({
         <div className="d-flex gap-1 align-items-center">
           <span className="me-1">{review.date_created.split("T")[0]}</span>
           {user.id === review.user_id && (
-            <OverlayTrigger
-              placement="top"
-              overlay={<Tooltip id="button-tooltip">Edit</Tooltip>}
-            >
+            <OverlayTrigger placement="top" overlay={<Tooltip>Edit</Tooltip>}>
               <button
                 type="button"
                 className="icon edit-icon"
@@ -56,10 +53,7 @@ const Reviews: React.FC<ReviewsProps> = ({
             </OverlayTrigger>
           )}
           {user.is_admin === 1 && (
-            <OverlayTrigger
-              placement="top"
-              overlay={<Tooltip id="button-tooltip">Delete</Tooltip>}
-            >
+            <OverlayTrigger placement="top" overlay={<Tooltip>Delete</Tooltip>}>
               <button
                 type="button"
                 className="icon delete-icon"
