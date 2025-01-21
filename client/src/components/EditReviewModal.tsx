@@ -7,7 +7,7 @@ interface EditReviewModalProps {
   handleClose: () => void;
   editReviewRequest: (reviewId: number) => void;
   review: Review;
-  setUpdatedReviewContent: (content: { content: string }) => void;
+  setUpdatedReviewContent: (content: string) => void;
 }
 
 const EditReviewModal: React.FC<EditReviewModalProps> = ({
@@ -30,9 +30,7 @@ const EditReviewModal: React.FC<EditReviewModalProps> = ({
               as="textarea"
               rows={3}
               defaultValue={review.content}
-              onChange={(e) =>
-                setUpdatedReviewContent({ content: e.target.value })
-              }
+              onChange={(e) => setUpdatedReviewContent(e.target.value)}
             />
           </Form.Group>
         </Form>

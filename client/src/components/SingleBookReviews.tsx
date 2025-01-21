@@ -12,7 +12,7 @@ type ReviewsProps = {
   user: User;
   editReviewRequest: (reviewId: number) => Promise<void>;
   deleteReviewRequest: (reviewId: number) => Promise<void>;
-  setUpdatedReviewContent: (content: { content: string }) => void;
+  setUpdatedReviewContent: (content: string) => void;
 };
 
 const Reviews: React.FC<ReviewsProps> = ({
@@ -79,14 +79,8 @@ type SingleBookReviewsProps = {
 
 const SingleBookReviews: React.FC<SingleBookReviewsProps> = ({ id, user }) => {
   const [reviews, setReviews] = useState<Review[]>([]);
-  const [newReview, setNewReview] = useState<{ content: string }>({
-    content: "",
-  });
-  const [updatedReviewContent, setUpdatedReviewContent] = useState<{
-    content: string;
-  }>({
-    content: "",
-  });
+  const [newReview, setNewReview] = useState<string>("");
+  const [updatedReviewContent, setUpdatedReviewContent] = useState<string>("");
 
   useEffect(() => {
     getBookReviews(getBookReviewsRequest);
@@ -189,7 +183,7 @@ const SingleBookReviews: React.FC<SingleBookReviewsProps> = ({ id, user }) => {
             <Form.Control
               as="textarea"
               rows={3}
-              onChange={(e) => setNewReview({ content: e.target.value })}
+              onChange={(e) => setNewReview(e.target.value)}
             />
           </Form.Group>
         </Form>
