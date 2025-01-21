@@ -25,15 +25,16 @@ DROP TABLE IF EXISTS `book_ratings`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `book_ratings` (
-  `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
   `book_id` int NOT NULL,
   `rating` float NOT NULL,
+  PRIMARY KEY (`id`),
   KEY `FK_book_ratings_users` (`user_id`),
   KEY `FK_book_ratings_books` (`book_id`),
   CONSTRAINT `FK_book_ratings_books` FOREIGN KEY (`book_id`) REFERENCES `books` (`id`),
   CONSTRAINT `FK_book_ratings_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,6 +43,7 @@ CREATE TABLE `book_ratings` (
 
 LOCK TABLES `book_ratings` WRITE;
 /*!40000 ALTER TABLE `book_ratings` DISABLE KEYS */;
+INSERT INTO `book_ratings` VALUES (1,6,1,3),(2,6,2,1),(3,6,6,4),(4,1,1,4),(5,1,3,3),(6,1,6,5),(7,1,2,2),(8,2,1,5),(9,2,3,4),(10,2,4,2),(11,2,5,5),(12,3,1,2),(13,3,10,5),(14,3,4,3);
 /*!40000 ALTER TABLE `book_ratings` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -78,7 +80,7 @@ CREATE TABLE `books` (
 
 LOCK TABLES `books` WRITE;
 /*!40000 ALTER TABLE `books` DISABLE KEYS */;
-INSERT INTO `books` VALUES (1,'/posters/neuromancer.jpg','Neuromancer','William Gibson','Neuromancer is a cyberpunk novel about a group of mercenary criminals who secretly work for an artificial intelligence that\'s trying to break free. Cyberpunk is a genre that focuses on future societies where technology has advanced, but crime and corruption have as well.',20,1984,21,0,0,0),(2,'/posters/winnetou.jpg','Winnetou','Karl May','Karl May\'s most popular work originally published in 1892 and influenced by Harriet Beecher Stowe, Winnetou is the story of a young Apache chief told by his white friend and blood-brother Old Shatterhand. The action takes place in the U.S. Southwest, in the latter half of the 1800s, where the Indian way of life is threatened by the first transcontinental railroad. Winnetou, the only Native Indian chief who could have united the various rival tribes to reach a settlement with the whites, is murdered. His tragic death foreshadows the death of his people. May\'s central theme here, as in much of his work, is the relationship between aggression, racism, and religious intolerance.',13,1892,30,0,0,0),(3,'/posters/mort.jpg','Mort','Terry Pratchett','Death comes to us all. When he came to Mort, he offered him a job.',21,1987,21,0,0,0),(4,'/posters/the-sisters-brothers.jpg','The Sisters Brothers','Patrick deWitt','Hermann Kermit Warm is going to die. The enigmatic and powerful man known only as the Commodore has ordered it, and his henchmen, Eli and Charlie Sisters, will make sure of it. Though Eli doesn\'t share his brother\'s appetite for whiskey and killing, he\'s never known anything else. But their prey isn\'t an easy mark, and on the road from Oregon City to Warm\'s gold-mining claim outside Sacramento, Eli begins to question what he does for a living - and whom he does it for.',13,2011,21,0,0,0),(5,'/posters/the-48-laws-of-power.jpg','The 48 Laws Of Power','Robert Greene','In the book that People magazine proclaimed “beguiling” and “fascinating,” Robert Greene and Joost Elffers have distilled three thousand years of the history of power into 48 essential laws by drawing from the philosophies of Machiavelli, Sun Tzu, and Carl Von Clausewitz and also from the lives of figures ranging from Henry Kissinger to P.T. Barnum.',1,1998,21,0,0,0),(6,'/posters/simulacra-and-simulation.jpg','Simulacra and Simulation','Jean Baudrillard','Baudrillard\'s book represents a unique and original effort to rethink cultural theory from the perspective of a new concept of cultural materialism, one that radically redefines postmodern formulations of the body.',11,1981,26,0,0,0),(7,'/posters/the-brothers-karamazov.jpg','The Brothers Karamazov','Fyodor Dostoyevsky','The Brothers Karamazov is a murder mystery, a courtroom drama, and an exploration of erotic rivalry in a series of triangular love affairs involving the “wicked and sentimental” Fyodor Pavlovich Karamazov and his three sons―the impulsive and sensual Dmitri; the coldly rational Ivan; and the healthy, red-cheeked young novice Alyosha. Through the gripping events of their story, Dostoevsky portrays the whole of Russian life, is social and spiritual striving, in what was both the golden age and a tragic turning point in Russian culture.',13,1880,77,0,0,0),(8,'/posters/the-zuni-cafe-cookbook.jpg','The Zuni Café Cookbook','Judy Rodgers','In The Zuni Café Cookbook, a book customers have been anticipating for years, chef and owner Judy Rodgers provides recipes for Zuni\'s most well-known dishes, ranging from the Zuni Roast Chicken to the Espresso Granita.',6,2002,21,0,0,0),(9,'/posters/patilansko-tsarstvo.jpg','Patilansko Tsarstvo','Ran Bosilek','В тази книга са събрани най-забавните приключения на прочутите патиланци. Веселите истории за Панчо, Данчо, Ганчо, Мика, Дана, Гана и баба Цоцолана са любимо четиво на поколения български деца.',5,1927,11,0,0,0),(10,'/posters/hagakure.jpg','Hagakure','Yamamoto Tsunetomo','It is not a book of philosophy as most would understand the it is a collection of thoughts and sayings recorded over a period of seven years, and as such covers a wide variety of subjects, often in no particular sequence. The work represents an attitude far removed from our modern pragmatism and materialism, and possesses an intuitive rather than rational appeal in its assertion that Bushido is a Way of Dying, and that only a samurai retainer prepared and willing to die at any moment can be totally true to his lord.',18,1900,45,0,0,0),(11,'/posters/retire-before-mom-and-dad.jpg','Retire Before Mom and Dad','Rob Berger','It’s time to claim your financial freedom.',4,2019,21,0,0,0),(12,'/posters/daytripper.jpg','Daytripper','Fábio Moon and Gabriel Bá','In Daytripper, the Eisner Award-winning twin brothers Fábio Moon and Gabriel Bá tell a magical, mysterious and moving story about life itself—a hauntingly lyrical journey that uses the quiet moments to ask the big questions.',12,2010,21,0,0,0),(13,'/posters/notes-from-the-underground.jpg','Notes from the Underground','Fyodor Dostoyevsky','Its nameless hero is a profoundly alienated individual in whose brooding self-analysis there is a search for the true and the good in a world of relative values and few absolutes. Moreover, the novel introduces themes — moral, religious, political and social — that dominated Dostoyevsky\'s later works.',13,1864,77,0,0,0);
+INSERT INTO `books` VALUES (1,'/posters/neuromancer.jpg','Neuromancer','William Gibson','Neuromancer is a cyberpunk novel about a group of mercenary criminals who secretly work for an artificial intelligence that\'s trying to break free. Cyberpunk is a genre that focuses on future societies where technology has advanced, but crime and corruption have as well.',20,1984,21,3.5,4,0),(2,'/posters/winnetou.jpg','Winnetou','Karl May','Karl May\'s most popular work originally published in 1892 and influenced by Harriet Beecher Stowe, Winnetou is the story of a young Apache chief told by his white friend and blood-brother Old Shatterhand. The action takes place in the U.S. Southwest, in the latter half of the 1800s, where the Indian way of life is threatened by the first transcontinental railroad. Winnetou, the only Native Indian chief who could have united the various rival tribes to reach a settlement with the whites, is murdered. His tragic death foreshadows the death of his people. May\'s central theme here, as in much of his work, is the relationship between aggression, racism, and religious intolerance.',13,1892,30,1.5,2,0),(3,'/posters/mort.jpg','Mort','Terry Pratchett','Death comes to us all. When he came to Mort, he offered him a job.',21,1987,21,3.5,2,0),(4,'/posters/the-sisters-brothers.jpg','The Sisters Brothers','Patrick deWitt','Hermann Kermit Warm is going to die. The enigmatic and powerful man known only as the Commodore has ordered it, and his henchmen, Eli and Charlie Sisters, will make sure of it. Though Eli doesn\'t share his brother\'s appetite for whiskey and killing, he\'s never known anything else. But their prey isn\'t an easy mark, and on the road from Oregon City to Warm\'s gold-mining claim outside Sacramento, Eli begins to question what he does for a living - and whom he does it for.',13,2011,21,2.5,2,0),(5,'/posters/the-48-laws-of-power.jpg','The 48 Laws Of Power','Robert Greene','In the book that People magazine proclaimed “beguiling” and “fascinating,” Robert Greene and Joost Elffers have distilled three thousand years of the history of power into 48 essential laws by drawing from the philosophies of Machiavelli, Sun Tzu, and Carl Von Clausewitz and also from the lives of figures ranging from Henry Kissinger to P.T. Barnum.',1,1998,21,5,1,0),(6,'/posters/simulacra-and-simulation.jpg','Simulacra and Simulation','Jean Baudrillard','Baudrillard\'s book represents a unique and original effort to rethink cultural theory from the perspective of a new concept of cultural materialism, one that radically redefines postmodern formulations of the body.',11,1981,26,4.5,2,0),(7,'/posters/the-brothers-karamazov.jpg','The Brothers Karamazov','Fyodor Dostoyevsky','The Brothers Karamazov is a murder mystery, a courtroom drama, and an exploration of erotic rivalry in a series of triangular love affairs involving the “wicked and sentimental” Fyodor Pavlovich Karamazov and his three sons―the impulsive and sensual Dmitri; the coldly rational Ivan; and the healthy, red-cheeked young novice Alyosha. Through the gripping events of their story, Dostoevsky portrays the whole of Russian life, is social and spiritual striving, in what was both the golden age and a tragic turning point in Russian culture.',13,1880,77,0,0,0),(8,'/posters/the-zuni-cafe-cookbook.jpg','The Zuni Café Cookbook','Judy Rodgers','In The Zuni Café Cookbook, a book customers have been anticipating for years, chef and owner Judy Rodgers provides recipes for Zuni\'s most well-known dishes, ranging from the Zuni Roast Chicken to the Espresso Granita.',6,2002,21,0,0,0),(9,'/posters/patilansko-tsarstvo.jpg','Patilansko Tsarstvo','Ran Bosilek','В тази книга са събрани най-забавните приключения на прочутите патиланци. Веселите истории за Панчо, Данчо, Ганчо, Мика, Дана, Гана и баба Цоцолана са любимо четиво на поколения български деца.',5,1927,11,0,0,0),(10,'/posters/hagakure.jpg','Hagakure','Yamamoto Tsunetomo','It is not a book of philosophy as most would understand the it is a collection of thoughts and sayings recorded over a period of seven years, and as such covers a wide variety of subjects, often in no particular sequence. The work represents an attitude far removed from our modern pragmatism and materialism, and possesses an intuitive rather than rational appeal in its assertion that Bushido is a Way of Dying, and that only a samurai retainer prepared and willing to die at any moment can be totally true to his lord.',18,1900,45,5,1,0),(11,'/posters/retire-before-mom-and-dad.jpg','Retire Before Mom and Dad','Rob Berger','It’s time to claim your financial freedom.',4,2019,21,0,0,0),(12,'/posters/daytripper.jpg','Daytripper','Fábio Moon and Gabriel Bá','In Daytripper, the Eisner Award-winning twin brothers Fábio Moon and Gabriel Bá tell a magical, mysterious and moving story about life itself—a hauntingly lyrical journey that uses the quiet moments to ask the big questions.',12,2010,21,0,0,0),(13,'/posters/notes-from-the-underground.jpg','Notes from the Underground','Fyodor Dostoyevsky','Its nameless hero is a profoundly alienated individual in whose brooding self-analysis there is a search for the true and the good in a world of relative values and few absolutes. Moreover, the novel introduces themes — moral, religious, political and social — that dominated Dostoyevsky\'s later works.',13,1864,77,0,0,0);
 /*!40000 ALTER TABLE `books` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -149,7 +151,7 @@ CREATE TABLE `reviews` (
   KEY `FK_reviews_users` (`user_id`),
   CONSTRAINT `FK_reviews_books` FOREIGN KEY (`book_id`) REFERENCES `books` (`id`),
   CONSTRAINT `FK_reviews_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -158,6 +160,7 @@ CREATE TABLE `reviews` (
 
 LOCK TABLES `reviews` WRITE;
 /*!40000 ALTER TABLE `reviews` DISABLE KEYS */;
+INSERT INTO `reviews` VALUES (1,'Interesting...','2025-01-21',1,6,0),(2,'Quite intriguing!','2025-01-21',4,1,0),(3,'I didn\'t really enjoy it..','2025-01-21',4,2,0),(4,'it is what it is I guess.','2025-01-21',6,1,0),(5,'average..','2025-01-21',1,3,0),(6,'I didn\'t finish it.. got bored.','2025-01-21',2,4,0),(7,'Plenty of rules to live by in this one.','2025-01-21',3,10,0);
 /*!40000 ALTER TABLE `reviews` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -172,7 +175,7 @@ CREATE TABLE `tokens` (
   `tokens_id` int NOT NULL AUTO_INCREMENT,
   `token` varchar(255) NOT NULL,
   PRIMARY KEY (`tokens_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -196,10 +199,10 @@ CREATE TABLE `users` (
   `username` varchar(50) NOT NULL,
   `password` longtext NOT NULL,
   `email` varchar(100) NOT NULL,
-  `is_admin` tinyint DEFAULT NULL,
-  `is_deleted` tinyint DEFAULT NULL,
+  `is_admin` tinyint(1) DEFAULT '0',
+  `is_deleted` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -208,7 +211,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Sava94','$2b$10$plUKMQTsooQl/Ei3BR.9p.t/YdsN81MZ7qXvsktD8SDL2puDtWlmu','sava94@email.com',1,0),(2,'Janellz99','$2b$10$MrhHe00XLeMJ0v04InO0A.5WYu.WM/YVIE.JjoDFM60yc7CTQIktK','janellz99@email.com',0,0),(3,'Barksdale70','$2b$10$l9UAjT8.OY6/RV1mBCI/vewpxQWfkwF8ICNpGwTjXTqjfJ0qL4o66','barksdale70@email.com',0,0);
+INSERT INTO `users` VALUES (1,'Sava94','$2b$10$zdq8fwbK2Tvc5a2EG0flLu64mIGdX6xXJQuXwL6kxD9uH4RVA5zQe','sava94@email.com',1,0),(2,'Janellz99','$2b$10$B1rXaiL674L7.ATAo1Ofm.rtAnJG46cSwzfAO4F5ei3nSB2PrV7fy','janellz99@email.com',0,0),(3,'Barksdale70','$2b$10$4eTHiR5Hfq8892zDLUtdBeGgfOwqD7uME3w0HznFE2.jwcYB9.IKC','barksdale70@email.com',0,0),(4,'Jingxuan96','$2b$10$yXdgB.388elZoCk05.3F/Omd4npo3jPZRzZqer8mYfbAtfTdJjRyy','jingxuan96@email.com',0,0),(5,'Niko75','$2b$10$AGH4oiUeKT4ozE91bP1Qb.VF3e3xeBIkFFjSZcqt7bSpq9t6BFvFq','niko75@email.com',0,0),(6,'Devlin90','$2b$10$8WmH.KWoaYGky239g4pTau.hgafh9gRRSSHWf9GLCXFDl/kM3y0hW','devlin90@email.com',0,0),(7,'Icyspicy','$2b$10$p8VB5RrSGaSuNMZV4dxLw.NLDVeEOLwEyV.SyBehNvyPdlbfepVjy','icyspicy@email.com',0,0);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -221,4 +224,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-11-30 19:03:34
+-- Dump completed on 2025-01-21 21:51:57
