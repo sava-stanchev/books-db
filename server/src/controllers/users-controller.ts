@@ -1,10 +1,10 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
-import usersService from "../services/users-service.js";
-import usersData from "../data/users.js";
-import serviceErrors from "../common/service-errors.js";
-import loggedUserGuard from "../middlewares/logged-user-guard.js";
-import { authMiddleware } from "../auth/auth-middleware.js";
+import usersService from "../services/users-service";
+import usersData from "../data/users";
+import serviceErrors from "../common/service-errors";
+import loggedUserGuard from "../middlewares/logged-user-guard";
+import { authMiddleware } from "../auth/auth-middleware";
 
 const usersController = express.Router();
 
@@ -15,7 +15,7 @@ usersController
     "/",
     authMiddleware,
     loggedUserGuard,
-    asyncHandler(async (req, res) => {
+    asyncHandler(async (req: Request, res: Response) => {
       const users = await usersData.getAllUsers();
       res.status(200).json(users);
     })
@@ -24,7 +24,7 @@ usersController
   // Register user
   .post(
     "/",
-    asyncHandler(async (req, res) => {
+    asyncHandler(async (req: Request, res: Response) => {
       const result = await usersService.createUser(usersData)(req.body);
 
       if (result.error === serviceErrors.DUPLICATE_RECORD) {
@@ -40,7 +40,7 @@ usersController
     "/:id",
     authMiddleware,
     loggedUserGuard,
-    asyncHandler(async (req, res) => {
+    asyncHandler(async (req: Request, res: Response) => {
       const isDeleted = await usersData.deleteUser(req.params.id);
       if (isDeleted) {
         res.status(204).end();
