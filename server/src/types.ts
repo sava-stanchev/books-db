@@ -9,6 +9,6 @@ export interface User {
   username: string;
   password: string;
   email: string;
-  is_admin?: boolean;
-  is_deleted?: boolean;
+  is_admin?: number;
+  is_deleted?: number;
 }
