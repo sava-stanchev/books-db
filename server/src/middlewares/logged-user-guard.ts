@@ -13,7 +13,7 @@ export default async (
     return;
   }
 
-  const token = authorizationHeader.replace("bearer ", "");
+  const token = authorizationHeader.replace(/^bearer\s/i, "");
   const result = await tokensData.getToken(token);
 
   if (!result) {

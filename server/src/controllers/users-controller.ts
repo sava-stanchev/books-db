@@ -41,7 +41,7 @@ usersController
     authMiddleware,
     loggedUserGuard,
     asyncHandler(async (req: Request, res: Response) => {
-      const isDeleted = await usersData.deleteUser(req.params.id);
+      const isDeleted = await usersData.deleteUser(+req.params.id);
       if (isDeleted) {
         res.status(204).end();
       }

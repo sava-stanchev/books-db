@@ -1,15 +1,15 @@
 import bcrypt from "bcrypt";
 import serviceErrors from "../common/service-errors.js";
-
-type User = {
-  username: string;
-  email: string;
-  password: string;
-};
+import { User } from "src/types.js";
 
 type UsersData = {
-  getUserBy: (field: string, value: string) => Promise<User | null>;
-  createUser: (user: User) => Promise<User>;
+  createUser: (user: User) => Promise<User | null>;
+  getAllUsers: () => Promise<User[]>;
+  deleteUser: (id: number) => Promise<boolean>;
+  getUserBy: (
+    column: keyof User,
+    value: string | number
+  ) => Promise<User | null>;
 };
 
 type PromiseResult = {
