@@ -16,10 +16,7 @@ booksController
     authMiddleware,
     loggedUserGuard,
     asyncHandler(async (req, res) => {
-      const { sort } = req.query;
-      const books = sort
-        ? await booksData.sortBooksByYear(sort)
-        : await booksData.getAllBooks();
+      const books = await booksData.getAllBooks();
       res.json(books);
     })
   )

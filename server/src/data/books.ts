@@ -1,36 +1,18 @@
+import { Book } from "src/types.js";
 import pool from "./pool.js";
+import { RowDataPacket, ResultSetHeader } from "mysql2";
 
-const getAllBooks = async () => {
+const getAllBooks = async (): Promise<Book[]> => {
   const sql = `
     SELECT * FROM books
     WHERE is_deleted != 1
   `;
 
-  const [result] = await pool.query(sql);
-  return result;
+  const [result] = await pool.query<RowDataPacket[]>(sql);
+  return result as Book[];
 };
 
-const sortBooksByYear = async (sortOrder) => {
-  let orderClause;
-  if (sortOrder === "year_asc") {
-    orderClause = "ORDER BY year ASC";
-  } else if (sortOrder === "year_desc") {
-    orderClause = "ORDER BY year DESC";
-  } else {
-    throw new Error("Invalid sort order");
-  }
-
-  const sql = `
-    SELECT * FROM books
-    WHERE is_deleted != 1
-    ${orderClause}
-  `;
-
-  const [result] = await pool.query(sql);
-  return result;
-};
-
-const getBookById = async (id) => {
+const getBookById = async (id: number): Promise<Book | null> => {
   const sql = `
     SELECT 
       b.id, b.title, b.author, b.year, b.cover, b.description, 
@@ -41,22 +23,22 @@ const getBookById = async (id) => {
     WHERE b.is_deleted != 1 AND b.id = ?
   `;
 
-  const [result] = await pool.query(sql, [id]);
-  return result[0];
+  const [result] = await pool.query<RowDataPacket[]>(sql, [id]);
+  return result[0] ? (result[0] as Book) : null;
 };
 
-const deleteBook = async (id) => {
+const deleteBook = async (id: number): Promise<boolean> => {
   const sql = `
     UPDATE books
     SET is_deleted = 1
     WHERE id = ?
   `;
 
-  const [result] = await pool.query(sql, [id]);
+  const [result] = await pool.query<ResultSetHeader>(sql, [id]);
   return result.affectedRows > 0;
 };
 
-const updateBookRating = async (id, rating) => {
+const updateBookRating = async (id: number, rating: number): Promise<void> => {
   const sql = `
     UPDATE books
     SET 
@@ -69,7 +51,6 @@ const updateBookRating = async (id, rating) => {
 
 export default {
   getAllBooks,
-  sortBooksByYear,
   getBookById,
   deleteBook,
   updateBookRating,
