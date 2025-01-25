@@ -1,7 +1,10 @@
 import dotenv from "dotenv";
-import mysql from "mysql2";
+import mysql from "mysql2/promise";
 
 const config = dotenv.config().parsed;
+if (!config) {
+  throw new Error("Failed to load environment variables from .env file");
+}
 
 const pool = mysql.createPool({
   host: config.HOST,
@@ -10,6 +13,4 @@ const pool = mysql.createPool({
   database: config.DATABASE,
 });
 
-const promisePool = pool.promise();
-
-export default promisePool;
+export default pool;
