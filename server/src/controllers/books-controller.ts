@@ -1,21 +1,21 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 import booksData from "../data/books.js";
 import bookRatingsData from "../data/book-ratings.js";
 import reviewsData from "../data/reviews.js";
 import loggedUserGuard from "../middlewares/logged-user-guard.js";
 import { authMiddleware } from "../auth/auth-middleware.js";
+import { Review, User } from "src/types.js";
 
 const booksController = express.Router();
 
 booksController
-
   // Get all books
   .get(
     "/",
     authMiddleware,
     loggedUserGuard,
-    asyncHandler(async (req, res) => {
+    asyncHandler(async (req: Request, res: Response) => {
       const books = await booksData.getAllBooks();
       res.json(books);
     })
@@ -26,8 +26,8 @@ booksController
     "/:id",
     authMiddleware,
     loggedUserGuard,
-    asyncHandler(async (req, res) => {
-      const bookId = +req.params.id;
+    asyncHandler(async (req: Request, res: Response) => {
+      const bookId = Number(req.params.id);
       const book = await booksData.getBookById(bookId);
       if (!book) {
         res.status(404).json({ error: "Book not found" });
@@ -42,9 +42,9 @@ booksController
     "/:id/user-rating",
     authMiddleware,
     loggedUserGuard,
-    asyncHandler(async (req, res) => {
-      const bookId = req.params.id;
-      const userId = req.body.id;
+    asyncHandler(async (req: Request, res: Response) => {
+      const bookId = Number(req.params.id);
+      const userId: number = req.body.id;
       const userRating = await bookRatingsData.hasUserRatedBook(userId, bookId);
       res.json({ rating: userRating?.rating || 0 });
     })
@@ -55,9 +55,9 @@ booksController
     "/:id/reviews",
     authMiddleware,
     loggedUserGuard,
-    asyncHandler(async (req, res) => {
-      const { id } = req.params;
-      const reviews = await reviewsData.getReviewsForBook(id);
+    asyncHandler(async (req: Request, res: Response) => {
+      const bookId = Number(req.params.id);
+      const reviews = await reviewsData.getReviewsForBook(bookId);
       if (!reviews) {
         res.json({ msg: "Book has no reviews yet!" });
       } else {
@@ -71,10 +71,10 @@ booksController
     "/:id/create-review",
     authMiddleware,
     loggedUserGuard,
-    asyncHandler(async (req, res) => {
-      const bookId = req.params.id;
-      const newReview = req.body.newReview;
-      const userId = req.body.user.id;
+    asyncHandler(async (req: Request, res: Response) => {
+      const bookId = Number(req.params.id);
+      const newReview: Review = req.body.newReview;
+      const userId: number = req.body.user.id;
       await reviewsData.createReview(bookId, newReview, userId);
       res.status(204).end();
     })
@@ -85,9 +85,9 @@ booksController
     "/:id/rating",
     authMiddleware,
     loggedUserGuard,
-    asyncHandler(async (req, res) => {
-      const bookId = req.params.id;
-      const { newRating, user } = req.body;
+    asyncHandler(async (req: Request, res: Response) => {
+      const bookId = Number(req.params.id);
+      const { newRating, user }: { newRating: number; user: User } = req.body;
       await booksData.updateBookRating(bookId, newRating);
       await bookRatingsData.addBookRating(bookId, user.id, newRating);
       const newBookData = await booksData.getBookById(bookId);
@@ -100,11 +100,13 @@ booksController
     "/:id",
     authMiddleware,
     loggedUserGuard,
-    asyncHandler(async (req, res) => {
-      const bookId = req.params.id;
+    asyncHandler(async (req: Request, res: Response): Promise<void> => {
+      const bookId = parseInt(req.params.id, 10);
       const isDeleted = await booksData.deleteBook(bookId);
       if (isDeleted) {
-        return res.status(204).end();
+        res.status(204).end();
+      } else {
+        res.status(500).json({ error: "Failed to delete book" });
       }
     })
   );

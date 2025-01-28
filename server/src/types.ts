@@ -26,3 +26,13 @@ export interface Book {
   num_ratings: number;
   is_deleted: number;
 }
+
+export interface Review {
+  id: number;
+  bookId: number;
+  userId: number;
+  content: string;
+  rating: number;
+  createdAt: string;
+  updatedAt: string;
+}
