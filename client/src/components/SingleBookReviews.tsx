@@ -109,6 +109,7 @@ const SingleBookReviews: React.FC<SingleBookReviewsProps> = ({ id, user }) => {
         throw new Error(`Response status: ${response.status}`);
       } else {
         getBookReviews(getBookReviewsRequest);
+        setNewReview("");
       }
     } catch (error) {
       console.error((error as Error).message);
@@ -183,6 +184,7 @@ const SingleBookReviews: React.FC<SingleBookReviewsProps> = ({ id, user }) => {
             <Form.Control
               as="textarea"
               rows={3}
+              value={newReview}
               onChange={(e) => setNewReview(e.target.value)}
             />
           </Form.Group>
