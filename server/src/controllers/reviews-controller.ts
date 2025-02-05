@@ -7,16 +7,14 @@ import { authMiddleware } from "../auth/auth-middleware.js";
 const reviewsController = express.Router();
 
 reviewsController
-
   // Edit review
   .patch(
     "/:review_id",
     authMiddleware,
     loggedUserGuard,
     asyncHandler(async (req, res) => {
-      const reviewId = req.params.review_id;
+      const reviewId = Number(req.params.review_id);
       const updatedContent = req.body.updatedReviewContent;
-
       const isUpdated = await reviewsData.editReview(reviewId, updatedContent);
       if (isUpdated) {
         res.status(204).end();
@@ -30,7 +28,8 @@ reviewsController
     authMiddleware,
     loggedUserGuard,
     asyncHandler(async (req, res) => {
-      const isDeleted = await reviewsData.deleteReview(req.params.review_id);
+      const reviewId = Number(req.params.review_id);
+      const isDeleted = await reviewsData.deleteReview(reviewId);
       if (isDeleted) {
         res.status(204).end();
       }
