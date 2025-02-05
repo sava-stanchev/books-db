@@ -73,9 +73,9 @@ booksController
     loggedUserGuard,
     asyncHandler(async (req: Request, res: Response) => {
       const bookId = Number(req.params.id);
-      const newReview: Review = req.body.newReview;
+      const reviewContent: string = req.body.newReview;
       const userId: number = req.body.user.id;
-      await reviewsData.createReview(bookId, newReview, userId);
+      await reviewsData.createReview(bookId, reviewContent, userId);
       res.status(204).end();
     })
   )
