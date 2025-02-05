@@ -5,7 +5,7 @@ import bookRatingsData from "../data/book-ratings.js";
 import reviewsData from "../data/reviews.js";
 import loggedUserGuard from "../middlewares/logged-user-guard.js";
 import { authMiddleware } from "../auth/auth-middleware.js";
-import { Review, User } from "src/types.js";
+import { User } from "src/types.js";
 
 const booksController = express.Router();
 
@@ -46,7 +46,7 @@ booksController
       const bookId = Number(req.params.id);
       const userId: number = req.body.id;
       const userRating = await bookRatingsData.hasUserRatedBook(userId, bookId);
-      res.json({ rating: userRating?.rating || 0 });
+      res.json({ rating: userRating ?? 0 });
     })
   )
 
@@ -88,8 +88,9 @@ booksController
     asyncHandler(async (req: Request, res: Response) => {
       const bookId = Number(req.params.id);
       const { newRating, user }: { newRating: number; user: User } = req.body;
+      const userId = Number(user.id);
       await booksData.updateBookRating(bookId, newRating);
-      await bookRatingsData.addBookRating(bookId, user.id, newRating);
+      await bookRatingsData.addBookRating(bookId, userId, newRating);
       const newBookData = await booksData.getBookById(bookId);
       res.status(200).json(newBookData);
     })
