@@ -7,13 +7,13 @@ import Tooltip from "react-bootstrap/Tooltip";
 import EditReviewModal from "src/components/EditReviewModal";
 import { Review, User } from "src/types";
 
-type ReviewsProps = {
+interface ReviewsProps {
   review: Review;
   user: User;
   editReviewRequest: (reviewId: number) => Promise<void>;
   deleteReviewRequest: (reviewId: number) => Promise<void>;
   setUpdatedReviewContent: (content: string) => void;
-};
+}
 
 const Reviews: React.FC<ReviewsProps> = ({
   review,
@@ -22,16 +22,13 @@ const Reviews: React.FC<ReviewsProps> = ({
   deleteReviewRequest,
   setUpdatedReviewContent,
 }) => {
-  const [show, setShow] = useState<boolean>(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const [show, setShow] = useState(false);
 
   return (
     <>
       <EditReviewModal
         show={show}
-        handleClose={handleClose}
+        handleClose={() => setShow(false)}
         editReviewRequest={editReviewRequest}
         review={review}
         setUpdatedReviewContent={setUpdatedReviewContent}
@@ -45,7 +42,7 @@ const Reviews: React.FC<ReviewsProps> = ({
               <button
                 type="button"
                 className="icon edit-icon"
-                onClick={handleShow}
+                onClick={() => setShow(true)}
                 aria-label="Edit review"
               >
                 <FaEdit />
@@ -72,51 +69,56 @@ const Reviews: React.FC<ReviewsProps> = ({
   );
 };
 
-type SingleBookReviewsProps = {
+interface SingleBookReviewsProps {
   id: string;
   user: User;
-};
+}
 
 const SingleBookReviews: React.FC<SingleBookReviewsProps> = ({ id, user }) => {
   const [reviews, setReviews] = useState<Review[]>([]);
-  const [newReview, setNewReview] = useState<string>("");
-  const [updatedReviewContent, setUpdatedReviewContent] = useState<string>("");
+  const [newReview, setNewReview] = useState("");
+  const [updatedReviewContent, setUpdatedReviewContent] = useState("");
 
   useEffect(() => {
-    getBookReviews(getBookReviewsRequest);
+    fetchReviews();
   }, []);
 
-  async function getBookReviews(request: Request) {
+  const fetchReviews = async () => {
     try {
-      const response = await fetch(request);
-
-      if (!response.ok) {
-        throw new Error(`Response status: ${response.status}`);
-      } else {
-        const result = await response.json();
-        setReviews(result);
-      }
+      const response = await fetch(`${HOST}/books/${id}/reviews`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      if (!response.ok) throw new Error(`Response status: ${response.status}`);
+      const result = await response.json();
+      setReviews(result);
     } catch (error) {
       console.error((error as Error).message);
     }
-  }
+  };
 
-  async function createReview(request: Request) {
+  const handleCreateReview = async () => {
     try {
-      const response = await fetch(request);
-
-      if (!response.ok) {
-        throw new Error(`Response status: ${response.status}`);
-      } else {
-        getBookReviews(getBookReviewsRequest);
-        setNewReview("");
-      }
+      const response = await fetch(`${HOST}/books/${id}/create-review`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ newReview, user }),
+      });
+      if (!response.ok) throw new Error(`Response status: ${response.status}`);
+      fetchReviews();
+      setNewReview("");
     } catch (error) {
       console.error((error as Error).message);
     }
-  }
+  };
 
-  async function editReviewRequest(reviewId: number) {
+  const handleEditReview = async (reviewId: number) => {
     try {
       const response = await fetch(`${HOST}/reviews/${reviewId}`, {
         method: "PATCH",
@@ -126,18 +128,14 @@ const SingleBookReviews: React.FC<SingleBookReviewsProps> = ({ id, user }) => {
         },
         body: JSON.stringify({ updatedReviewContent }),
       });
-
-      if (!response.ok) {
-        throw new Error(`Response status: ${response.status}`);
-      } else {
-        getBookReviews(getBookReviewsRequest);
-      }
+      if (!response.ok) throw new Error(`Response status: ${response.status}`);
+      fetchReviews();
     } catch (error) {
       console.error((error as Error).message);
     }
-  }
+  };
 
-  async function deleteReviewRequest(reviewId: number) {
+  const handleDeleteReview = async (reviewId: number) => {
     try {
       const response = await fetch(`${HOST}/reviews/${reviewId}`, {
         method: "DELETE",
@@ -146,33 +144,12 @@ const SingleBookReviews: React.FC<SingleBookReviewsProps> = ({ id, user }) => {
           authorization: `bearer ${localStorage.getItem("token")}`,
         },
       });
-
-      if (!response.ok) {
-        throw new Error(`Response status: ${response.status}`);
-      } else {
-        getBookReviews(getBookReviewsRequest);
-      }
+      if (!response.ok) throw new Error(`Response status: ${response.status}`);
+      fetchReviews();
     } catch (error) {
       console.error((error as Error).message);
     }
-  }
-
-  const getBookReviewsRequest = new Request(`${HOST}/books/${id}/reviews`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      authorization: `bearer ${localStorage.getItem("token")}`,
-    },
-  });
-
-  const createReviewRequest = new Request(`${HOST}/books/${id}/create-review`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      authorization: `bearer ${localStorage.getItem("token")}`,
-    },
-    body: JSON.stringify({ newReview, user }),
-  });
+  };
 
   return (
     <Row className="d-flex justify-content-center my-4">
@@ -189,10 +166,7 @@ const SingleBookReviews: React.FC<SingleBookReviewsProps> = ({ id, user }) => {
             />
           </Form.Group>
         </Form>
-        <Button
-          variant="primary"
-          onClick={() => createReview(createReviewRequest)}
-        >
+        <Button variant="primary" onClick={handleCreateReview}>
           Submit
         </Button>
         <div className="mt-4">
@@ -206,8 +180,8 @@ const SingleBookReviews: React.FC<SingleBookReviewsProps> = ({ id, user }) => {
                   key={review.id}
                   review={review}
                   user={user}
-                  editReviewRequest={editReviewRequest}
-                  deleteReviewRequest={deleteReviewRequest}
+                  editReviewRequest={handleEditReview}
+                  deleteReviewRequest={handleDeleteReview}
                   setUpdatedReviewContent={setUpdatedReviewContent}
                 />
               ))}
