@@ -11,14 +11,8 @@ const Login: React.FC = () => {
   const navigate = useNavigate();
   const auth = useContext(AuthContext);
 
-  const [formData, setFormData] = useState<{
-    username: string;
-    password: string;
-  }>({
-    username: "",
-    password: "",
-  });
-  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [formData, setFormData] = useState({ username: "", password: "" });
+  const [showPassword, setShowPassword] = useState(false);
   const [alert, setAlert] = useState<AlertDismissibleProps>({
     active: false,
     message: "",
