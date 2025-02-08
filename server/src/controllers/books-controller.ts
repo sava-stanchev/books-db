@@ -29,11 +29,7 @@ booksController
     asyncHandler(async (req: Request, res: Response) => {
       const bookId = Number(req.params.id);
       const book = await booksData.getBookById(bookId);
-      if (!book) {
-        res.status(404).json({ error: "Book not found" });
-      } else {
-        res.json(book);
-      }
+      res.json(book);
     })
   )
 
@@ -58,11 +54,7 @@ booksController
     asyncHandler(async (req: Request, res: Response) => {
       const bookId = Number(req.params.id);
       const reviews = await reviewsData.getReviewsForBook(bookId);
-      if (!reviews) {
-        res.json({ msg: "Book has no reviews yet!" });
-      } else {
-        res.json(reviews);
-      }
+      res.json(reviews);
     })
   )
 
@@ -102,13 +94,9 @@ booksController
     authMiddleware,
     loggedUserGuard,
     asyncHandler(async (req: Request, res: Response): Promise<void> => {
-      const bookId = parseInt(req.params.id, 10);
-      const isDeleted = await booksData.deleteBook(bookId);
-      if (isDeleted) {
-        res.status(204).end();
-      } else {
-        res.status(500).json({ error: "Failed to delete book" });
-      }
+      const bookId = Number(req.params.id);
+      await booksData.deleteBook(bookId);
+      res.status(204).end();
     })
   );
 

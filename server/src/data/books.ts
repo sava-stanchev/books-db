@@ -27,7 +27,7 @@ const getBookById = async (id: number): Promise<Book | null> => {
   return result[0] ? (result[0] as Book) : null;
 };
 
-const deleteBook = async (id: number): Promise<boolean> => {
+const deleteBook = async (id: number): Promise<void> => {
   const sql = `
     UPDATE books
     SET is_deleted = 1
@@ -35,7 +35,10 @@ const deleteBook = async (id: number): Promise<boolean> => {
   `;
 
   const [result] = await pool.query<ResultSetHeader>(sql, [id]);
-  return result.affectedRows > 0;
+
+  if (result.affectedRows === 0) {
+    throw new Error("Book not found or already deleted");
+  }
 };
 
 const updateBookRating = async (id: number, rating: number): Promise<void> => {
