@@ -47,16 +47,20 @@ const createReview = async (
   return createdReview[0] as Review;
 };
 
-const editReview = async (id: number, content: string): Promise<boolean> => {
+const editReview = async (id: number, content: string): Promise<void> => {
   const sql = `UPDATE reviews SET content = ? WHERE id = ?`;
   const [result] = await pool.query<ResultSetHeader>(sql, [content, id]);
-  return result.affectedRows > 0;
+  if (result.affectedRows === 0) {
+    throw new Error("Something went wrong when trying to edit review");
+  }
 };
 
-const deleteReview = async (id: number): Promise<boolean> => {
+const deleteReview = async (id: number): Promise<void> => {
   const sql = `UPDATE reviews SET is_deleted = 1 WHERE id = ?`;
   const [result] = await pool.query<ResultSetHeader>(sql, [id]);
-  return result.affectedRows > 0;
+  if (result.affectedRows === 0) {
+    throw new Error("Something went wrong when trying to delete review");
+  }
 };
 
 export default {

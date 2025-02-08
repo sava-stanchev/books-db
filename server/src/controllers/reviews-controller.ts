@@ -15,10 +15,8 @@ reviewsController
     asyncHandler(async (req, res) => {
       const reviewId = Number(req.params.review_id);
       const updatedContent = req.body.updatedReviewContent;
-      const isUpdated = await reviewsData.editReview(reviewId, updatedContent);
-      if (isUpdated) {
-        res.status(204).end();
-      }
+      await reviewsData.editReview(reviewId, updatedContent);
+      res.status(204).end();
     })
   )
 
@@ -29,10 +27,8 @@ reviewsController
     loggedUserGuard,
     asyncHandler(async (req, res) => {
       const reviewId = Number(req.params.review_id);
-      const isDeleted = await reviewsData.deleteReview(reviewId);
-      if (isDeleted) {
-        res.status(204).end();
-      }
+      await reviewsData.deleteReview(reviewId);
+      res.status(204).end();
     })
   );
 
