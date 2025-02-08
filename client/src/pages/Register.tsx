@@ -20,17 +20,15 @@ const validationRules: Record<
   keyof UserRegisterFormData,
   (value: string) => boolean
 > = {
-  email: (value: string) =>
+  email: (value) =>
     /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(
       value
     ),
-  username: (value: string) => value.length >= 3 && value.length <= 20,
-  password: (value: string) => value.length >= 4 && value.length <= 30,
+  username: (value) => value.length >= 3 && value.length <= 20,
+  password: (value) => value.length >= 4 && value.length <= 30,
 };
 
 const evaluatePasswordStrength = (password: string): string => {
-  if (!password) return "";
-
   const conditions = [
     password.length > 8,
     /[a-z]/.test(password),
@@ -38,9 +36,7 @@ const evaluatePasswordStrength = (password: string): string => {
     /\d/.test(password),
     /[^A-Za-z0-9]/.test(password),
   ];
-
   const score = conditions.filter(Boolean).length;
-
   if (score <= 1) return "weak";
   if (score === 2) return "medium";
   return "strong";
@@ -48,11 +44,7 @@ const evaluatePasswordStrength = (password: string): string => {
 
 const Register: React.FC = () => {
   const [newUser, setNewUser] = useState<UserRegisterFormData>(initialState);
-  const [errors, setErrors] = useState<{
-    email: boolean;
-    username: boolean;
-    password: boolean;
-  }>({
+  const [errors, setErrors] = useState({
     email: false,
     username: false,
     password: false,
@@ -64,35 +56,30 @@ const Register: React.FC = () => {
   });
   const navigate = useNavigate();
 
-  const updateField = (
-    name: keyof UserRegisterFormData,
-    value: string
-  ): void => {
+  const updateField = (name: keyof UserRegisterFormData, value: string) => {
     setNewUser((prev) => ({ ...prev, [name]: value }));
     setErrors((prev) => ({ ...prev, [name]: validationRules[name](value) }));
     if (name === "password") setStrength(evaluatePasswordStrength(value));
   };
 
-  const handleSignUp = async (): Promise<void> => {
-    const request = new Request(`${HOST}/users`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newUser),
-    });
-
+  const handleSignUp = async () => {
     try {
-      const response = await fetch(request);
+      const response = await fetch(`${HOST}/users`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newUser),
+      });
+
       const result = await response.json();
 
       if (!response.ok) {
         setAlert({ active: true, message: result.message });
-        throw new Error(`Error: ${response.status}`);
+        return;
       }
 
-      navigate("/login");
-      navigate(0);
+      navigate("/login", { replace: true });
     } catch (error) {
-      console.error((error as Error).message);
+      console.error("Error signing up:", error);
     }
   };
 
@@ -104,7 +91,7 @@ const Register: React.FC = () => {
       <div className="form-container p-5 rounded bg-light">
         <form>
           <h3 className="text-center">Sign Up</h3>
-          {["email", "username", "password"].map((field) => (
+          {Object.keys(newUser).map((field) => (
             <div className="mb-4" key={field}>
               <label htmlFor={field}>
                 {field.charAt(0).toUpperCase() + field.slice(1)}
