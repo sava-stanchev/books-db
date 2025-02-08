@@ -13,10 +13,10 @@ const SingleBook = () => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const [bookData, setBookData] = useState<Book | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
   const [rating, setRating] = useState<number | null>(null);
   const [numRatings, setNumRatings] = useState<number | null>(null);
-  const [userBookRating, setUserBookRating] = useState<number>(0);
+  const [userBookRating, setUserBookRating] = useState(0);
 
   useEffect(() => {
     const fetchBookData = async () => {
@@ -73,9 +73,9 @@ const SingleBook = () => {
     fetchUserRating();
   }, [id, user]);
 
-  const handleDeleteBook = async (bookId: string | undefined) => {
+  const handleDeleteBook = async () => {
     try {
-      const response = await fetch(`${HOST}/books/${bookId}`, {
+      const response = await fetch(`${HOST}/books/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -134,7 +134,7 @@ const SingleBook = () => {
                 <p>Language: {bookData?.language}</p>
                 <p className="book-description">{bookData?.description}</p>
                 {user && user.is_admin !== 0 && (
-                  <Button variant="danger" onClick={() => handleDeleteBook(id)}>
+                  <Button variant="danger" onClick={handleDeleteBook}>
                     Delete Book
                   </Button>
                 )}
