@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { HOST } from "src/common/constants";
 import Loader from "src/components/Loader";
 import { Container, Table } from "react-bootstrap";
@@ -21,36 +21,33 @@ const Users: React.FC = () => {
     [users, search]
   );
 
-  const fetchUsers = useCallback(async () => {
-    setLoading(true);
-
-    try {
-      const response = await fetch(`${HOST}/users`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          authorization: `bearer ${localStorage.getItem("token")}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error(`Failed to fetch users: ${response.status}`);
-      }
-
-      const result: ListedUser[] = await response.json();
-      setUsers(result);
-    } catch (error) {
-      console.error("Error fetching users:", error);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
   useEffect(() => {
-    fetchUsers();
-  }, [fetchUsers]);
+    const fetchUsers = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(`${HOST}/users`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `bearer ${localStorage.getItem("token")}`,
+          },
+        });
 
-  const handleSearchChange = (value: string) => setSearch(value);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch users: ${response.status}`);
+        }
+
+        const result: ListedUser[] = await response.json();
+        setUsers(result);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUsers();
+  }, []);
 
   const handleDeleteUser = async (userId: number) => {
     try {
@@ -72,29 +69,9 @@ const Users: React.FC = () => {
     }
   };
 
-  const renderUsers = () =>
-    filteredUsers.map((user) => (
-      <tr key={user.id}>
-        <td>{user.username}</td>
-        <td>{user.email}</td>
-        <td>
-          <OverlayTrigger placement="top" overlay={<Tooltip>Delete</Tooltip>}>
-            <button
-              type="button"
-              className="icon delete-icon"
-              onClick={() => handleDeleteUser(user.id)}
-              aria-label="Delete user"
-            >
-              <FaTrashAlt />
-            </button>
-          </OverlayTrigger>
-        </td>
-      </tr>
-    ));
-
   return (
     <Container className="my-5">
-      <Search search={search} onSearchChange={handleSearchChange} />
+      <Search search={search} onSearchChange={setSearch} />
       {loading ? (
         <Loader />
       ) : (
@@ -106,7 +83,29 @@ const Users: React.FC = () => {
               <th>Actions</th>
             </tr>
           </thead>
-          <tbody>{renderUsers()}</tbody>
+          <tbody>
+            {filteredUsers.map((user) => (
+              <tr key={user.id}>
+                <td>{user.username}</td>
+                <td>{user.email}</td>
+                <td>
+                  <OverlayTrigger
+                    placement="top"
+                    overlay={<Tooltip>Delete</Tooltip>}
+                  >
+                    <button
+                      type="button"
+                      className="icon delete-icon"
+                      onClick={() => handleDeleteUser(user.id)}
+                      aria-label="Delete user"
+                    >
+                      <FaTrashAlt />
+                    </button>
+                  </OverlayTrigger>
+                </td>
+              </tr>
+            ))}
+          </tbody>
         </Table>
       )}
     </Container>
