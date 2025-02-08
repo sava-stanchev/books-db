@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import { Col, Row, Button, Card, Container } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
@@ -51,16 +51,12 @@ const Books: React.FC = () => {
 
   const pageCount = Math.ceil(filteredBooks.length / booksPerPage);
 
-  const handleSearchChange = useCallback((value: string) => {
-    setSearch(value);
-  }, []);
-
   const handlePageChange = ({ selected }: { selected: number }) =>
     setPageNumber(selected);
 
   return (
     <Container className="my-5">
-      <Search search={search} onSearchChange={handleSearchChange} />
+      <Search search={search} onSearchChange={setSearch} />
       {loading ? (
         <Loader />
       ) : (
@@ -91,7 +87,6 @@ const Books: React.FC = () => {
             nextLabel={">"}
             pageCount={pageCount}
             onPageChange={handlePageChange}
-            renderOnZeroPageCount={null}
             containerClassName="pagination"
             previousLinkClassName="page-num"
             pageLinkClassName="page-num"
