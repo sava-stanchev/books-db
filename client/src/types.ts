@@ -51,4 +51,5 @@ export interface StarRatingProps {
   id: string;
   user: User;
   disabled: boolean;
+  setUserBookRating: (rating: number) => void;
 }

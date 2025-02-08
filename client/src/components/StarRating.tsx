@@ -32,6 +32,7 @@ export default function StarRating({
   id,
   user,
   disabled,
+  setUserBookRating,
 }: StarRatingProps): JSX.Element {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
@@ -59,6 +60,7 @@ export default function StarRating({
       const { avg_rating, num_ratings } = await response.json();
       setRating(avg_rating);
       setNumRatings(num_ratings);
+      setUserBookRating(newRating);
     } catch (error: any) {
       console.error(error.message);
     }
@@ -68,9 +70,10 @@ export default function StarRating({
     <span
       key={index}
       tabIndex={0}
-      onMouseEnter={() => handleMouseEnter(index)}
+      onMouseEnter={() => !disabled && handleMouseEnter(index)}
       onMouseLeave={handleMouseLeave}
       onClick={() => handleClick(index)}
+      style={{ pointerEvents: disabled ? "none" : "auto" }}
     >
       <Star
         filled={

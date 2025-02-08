@@ -121,6 +121,7 @@ const SingleBook = () => {
                   id={id!}
                   user={user!}
                   disabled={userBookRating > 0}
+                  setUserBookRating={setUserBookRating}
                 />
                 <p>
                   {userBookRating > 0
