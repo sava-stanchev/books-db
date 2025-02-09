@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  useEffect,
-  useMemo,
-  useState,
-  ReactNode,
-} from "react";
+import React, { createContext, useEffect, useMemo, useState } from "react";
 import jwtDecode from "jwt-decode";
 import { User } from "src/types";
 
@@ -29,7 +23,7 @@ export const getUser = (): User | null => {
 };
 
 interface AuthContextProviderProps {
-  children: ReactNode;
+  children: React.ReactNode;
 }
 
 const AuthContextProvider: React.FC<AuthContextProviderProps> = ({
@@ -43,7 +37,7 @@ const AuthContextProvider: React.FC<AuthContextProviderProps> = ({
     return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
 
-  const contextValue = useMemo(() => ({ user, setUser }), [user, setUser]);
+  const contextValue = useMemo(() => ({ user, setUser }), [user]);
 
   return (
     <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>

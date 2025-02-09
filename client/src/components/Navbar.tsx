@@ -12,14 +12,12 @@ const useSignOut = (): (() => Promise<void>) => {
 
   const signOut = async (): Promise<void> => {
     try {
-      const logoutRequest = new Request(`${HOST}/logout`, {
+      const response = await fetch(`${HOST}/logout`, {
         method: "DELETE",
         headers: {
           authorization: `bearer ${localStorage.getItem("token")}`,
         },
       });
-
-      const response = await fetch(logoutRequest);
 
       if (!response.ok) {
         throw new Error(`Response status: ${response.status}`);
@@ -63,7 +61,7 @@ const NavbarComponent: React.FC = () => {
             <Nav>
               {user ? (
                 <>
-                  {user?.is_admin === 1 && (
+                  {user.is_admin === 1 && (
                     <Nav.Link as={Link} to="/users">
                       Users
                     </Nav.Link>

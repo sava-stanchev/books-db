@@ -20,7 +20,7 @@ const ProtectedRoutes: React.FC = () => {
       setUser(null);
       localStorage.removeItem("token");
     }
-  }, [user, setUser, location]);
+  }, [user, location]);
 
   return user ? <Outlet /> : <Navigate to="/login" replace />;
 };
