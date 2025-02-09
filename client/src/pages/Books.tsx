@@ -11,9 +11,9 @@ const Books: React.FC = () => {
   const navigate = useNavigate();
 
   const [books, setBooks] = useState<Book[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [pageNumber, setPageNumber] = useState<number>(0);
-  const [search, setSearch] = useState<string>("");
+  const [loading, setLoading] = useState(true);
+  const [pageNumber, setPageNumber] = useState(0);
+  const [search, setSearch] = useState("");
 
   const booksPerPage = 6;
 
@@ -28,10 +28,10 @@ const Books: React.FC = () => {
           },
         });
         if (!response.ok) throw new Error(`Error: ${response.status}`);
-        const data: Book[] = await response.json();
+        const data = await response.json();
         setBooks(data);
       } catch (error) {
-        console.error("Failed to fetch books:", (error as Error).message);
+        console.error("Failed to fetch books:", error);
       } finally {
         setLoading(false);
       }
@@ -50,9 +50,6 @@ const Books: React.FC = () => {
   );
 
   const pageCount = Math.ceil(filteredBooks.length / booksPerPage);
-
-  const handlePageChange = ({ selected }: { selected: number }) =>
-    setPageNumber(selected);
 
   return (
     <Container className="my-5">
@@ -86,7 +83,7 @@ const Books: React.FC = () => {
             previousLabel={"<"}
             nextLabel={">"}
             pageCount={pageCount}
-            onPageChange={handlePageChange}
+            onPageChange={({ selected }) => setPageNumber(selected)}
             containerClassName="pagination"
             previousLinkClassName="page-num"
             pageLinkClassName="page-num"
