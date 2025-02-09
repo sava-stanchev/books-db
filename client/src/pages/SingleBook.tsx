@@ -12,6 +12,7 @@ const SingleBook = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
+
   const [bookData, setBookData] = useState<Book | null>(null);
   const [loading, setLoading] = useState(true);
   const [rating, setRating] = useState<number | null>(null);
@@ -33,7 +34,7 @@ const SingleBook = () => {
           throw new Error(`Response status: ${response.status}`);
         }
 
-        const result: Book = await response.json();
+        const result = await response.json();
         setBookData(result);
         setRating(result.avg_rating);
         setNumRatings(result.num_ratings);
@@ -107,38 +108,36 @@ const SingleBook = () => {
                 alt="Book Cover"
               />
             </div>
-            <div className="col-lg-8 ps-lg-5">
-              <div className="text-light">
-                <h1>{bookData?.title}</h1>
-                <h2>{bookData?.author}</h2>
-                <h3>({bookData?.year})</h3>
-                <StarRating
-                  value={rating}
-                  rating={rating}
-                  setRating={setRating}
-                  numRatings={numRatings}
-                  setNumRatings={setNumRatings}
-                  id={id!}
-                  user={user!}
-                  disabled={userBookRating > 0}
-                  setUserBookRating={setUserBookRating}
-                />
-                <p>
-                  {userBookRating > 0
-                    ? `You gave this book ${userBookRating} ${
-                        userBookRating === 1 ? "star" : "stars"
-                      }.`
-                    : "You haven't rated this book yet."}
-                </p>
-                <p>Genre: {bookData?.genre}</p>
-                <p>Language: {bookData?.language}</p>
-                <p className="book-description">{bookData?.description}</p>
-                {user && user.is_admin !== 0 && (
-                  <Button variant="danger" onClick={handleDeleteBook}>
-                    Delete Book
-                  </Button>
-                )}
-              </div>
+            <div className="col-lg-8 ps-lg-5 text-light">
+              <h1>{bookData?.title}</h1>
+              <h2>{bookData?.author}</h2>
+              <h3>({bookData?.year})</h3>
+              <StarRating
+                value={rating}
+                rating={rating}
+                setRating={setRating}
+                numRatings={numRatings}
+                setNumRatings={setNumRatings}
+                id={id!}
+                user={user!}
+                disabled={userBookRating > 0}
+                setUserBookRating={setUserBookRating}
+              />
+              <p>
+                {userBookRating > 0
+                  ? `You gave this book ${userBookRating} ${
+                      userBookRating === 1 ? "star" : "stars"
+                    }.`
+                  : "You haven't rated this book yet."}
+              </p>
+              <p>Genre: {bookData?.genre}</p>
+              <p>Language: {bookData?.language}</p>
+              <p className="book-description">{bookData?.description}</p>
+              {user?.is_admin !== 0 && (
+                <Button variant="danger" onClick={handleDeleteBook}>
+                  Delete Book
+                </Button>
+              )}
             </div>
           </Row>
           <SingleBookReviews id={id!} user={user!} />
